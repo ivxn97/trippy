@@ -1,0 +1,15 @@
+.expo/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+config.js
+# macOS
+.DS_Store
+node_modules
+GoogleService-Info.plist

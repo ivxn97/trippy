@@ -23,7 +23,7 @@ function NavBar() {
         screenOptions={({route}) => ({
           tabBarIcon: ({focused}) => {
             let iconName;
-            if (route.name === 'Tour') {
+            if (route.name === 'Deals') {
               iconName = focused ? 'md-flag' : 'md-flag-outline';
             } else if (route.name === 'Guide') {
               iconName = focused ? 'md-map' : 'md-map-outline';
@@ -38,7 +38,7 @@ function NavBar() {
           },
         })}>
         <Tab.Screen
-        name="Tour" 
+        name="Deals" 
         component={TourScreen}
         />
         <Tab.Screen 

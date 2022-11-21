@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-export default function TourScreen (props) {
+export default function DealsScreen (props) {
     return (
         <View>
-        <Text>Hello Tour Screen</Text>
+        <Text>Hello Deals Screen</Text>
         </View>
     )
 }

@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationScreen, ForumScreen, 
-        GuideScreen, ProfileScreen, TourScreen } from './src/screens'
+        GuideScreen, ProfileScreen, DealsScreen } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -39,7 +39,7 @@ function NavBar() {
         })}>
         <Tab.Screen
         name="Deals" 
-        component={TourScreen}
+        component={DealsScreen}
         />
         <Tab.Screen 
         name="Guide" 

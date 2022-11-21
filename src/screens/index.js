@@ -4,4 +4,4 @@ export { default as RegistrationScreen } from './RegistrationScreen/Registration
 export {default as GuideScreen} from './GuideScreen/GuideScreen'
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as ProfileScreen} from './ProfileScreen/ProfileScreen'
-export {default as TourScreen} from './TourScreen/TourScreen'
+export {default as TourScreen} from './DealsScreen/DealsScreen'

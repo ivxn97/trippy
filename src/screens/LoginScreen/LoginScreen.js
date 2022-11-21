@@ -11,7 +11,7 @@ export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const fireSQL = new FireSQL(db);
+    //const fireSQL = new FireSQL(db);
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration')

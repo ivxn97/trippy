@@ -56,14 +56,14 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="Home" component={AttractionList}/>
-        <Stack.Screen name="Home" component={AttractionScreen}/>
-        <Stack.Screen name="Home" component={HotelList}/>
-        <Stack.Screen name="Home" component={HotelScreen}/>
-        <Stack.Screen name="Home" component={RestaurantList}/>
-        <Stack.Screen name="Home" component={RestaurantScreen}/>
-        <Stack.Screen name="Home" component={PaidTourList}/>
-        <Stack.Screen name="Home" component={PaidTourScreen}/>
+        <Stack.Screen name="List of attractions" component={AttractionList}/>
+        <Stack.Screen name="Attraction details" component={AttractionScreen}/>
+        <Stack.Screen name="List of hotels" component={HotelList}/>
+        <Stack.Screen name="Hotel details" component={HotelScreen}/>
+        <Stack.Screen name="List of restaurants" component={RestaurantList}/>
+        <Stack.Screen name="restaurant details" component={RestaurantScreen}/>
+        <Stack.Screen name="List of paid tours" component={PaidTourList}/>
+        <Stack.Screen name="Paid tour details" component={PaidTourScreen}/>
     </HomeStack.Navigator>
   )
 }

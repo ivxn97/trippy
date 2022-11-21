@@ -5,7 +5,6 @@ export default function ProfileScreen ( {navigation} ) {
 
     return (
         <View>
-        <Text>Hello Profile Screen</Text>
         <Button
             title ="Login"
             onPress={() =>

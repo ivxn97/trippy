@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, Button } from 'react-native'
 
 export default function HomeScreen( {navigation} ) {
     return (
@@ -7,25 +7,25 @@ export default function HomeScreen( {navigation} ) {
             <Button
             title ="Restaurants"
             onPress={() =>
-                navigation.navigate('RestaurantList')
+                navigation.navigate('List of restaurants')
             }
             />
         <Button
             title ="Hotels"
             onPress={() =>
-                navigation.navigate('HotelList')
+                navigation.navigate('List of hotels')
             }
         />
         <Button
             title ="Attractions"
             onPress={() =>
-                navigation.navigate('AttractionList')
+                navigation.navigate('List of attractions')
             }
         />
         <Button
             title ="Paid Tours"
             onPress={() =>
-                navigation.navigate('PaidTourList')
+                navigation.navigate('List of paid tours')
             }
         />
         </View>

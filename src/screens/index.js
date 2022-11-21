@@ -15,3 +15,5 @@ export {default as RestaurantList} from './HomeScreen/RestaurantList'
 export {default as RestaurantScreen} from './HomeScreen/RestaurantScreen'
 export {default as PaidTourList} from './HomeScreen/PaidTourList'
 export {default as PaidTourScreen} from './HomeScreen/PaidTourScreen'
+
+export {default as AddAttraction} from './Add/AddAttraction'

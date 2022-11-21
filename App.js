@@ -8,8 +8,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationScreen, ForumScreen, 
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionScreen,
-        RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen
-         } from './src/screens'
+        RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
+        AddAttraction } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -24,6 +24,7 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
+        <Stack.Screen name="Add Attraction" component={AddAttraction}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Registration" component={RegistrationScreen}/>
     </ProfileStack.Navigator>

@@ -11,6 +11,13 @@ export default function ProfileScreen ( {navigation} ) {
                 navigation.navigate('Login')
             }
         />
+
+        <Button
+            title ="Add Attraction"
+            onPress={() =>
+                navigation.navigate('Add Attraction')
+            }
+        />
         </View>
     )
 }

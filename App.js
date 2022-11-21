@@ -7,7 +7,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationScreen, ForumScreen, 
-        GuideScreen, ProfileScreen, DealsScreen } from './src/screens'
+        GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionScreen,
+        RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen
+         } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -16,9 +18,75 @@ if (!global.atob) { global.atob = decode }
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function NavBar() {
+const ProfileStack = createStackNavigator();
+
+function ProfileStackScreen() {
   return (
-    <Tab.Navigator
+    <ProfileStack.Navigator>
+        <Stack.Screen name="Profile" component={ProfileScreen}/>
+        <Stack.Screen name="Login" component={LoginScreen}/>
+        <Stack.Screen name="Registration" component={RegistrationScreen}/>
+    </ProfileStack.Navigator>
+  )
+}
+
+const DealsStack = createStackNavigator();
+
+function DealsStackScreen() {
+  return (
+    <DealsStack.Navigator>
+        <Stack.Screen name="Deals" component={DealsScreen}/>
+    </DealsStack.Navigator>
+  )
+}
+
+const GuideStack = createStackNavigator();
+
+function GuideStackScreen() {
+  return (
+    <GuideStack.Navigator>
+        <Stack.Screen name="Guide" component={GuideScreen}/>
+    </GuideStack.Navigator>
+  )
+}
+
+const HomeStack = createStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Home" component={AttractionList}/>
+        <Stack.Screen name="Home" component={AttractionScreen}/>
+        <Stack.Screen name="Home" component={HotelList}/>
+        <Stack.Screen name="Home" component={HotelScreen}/>
+        <Stack.Screen name="Home" component={RestaurantList}/>
+        <Stack.Screen name="Home" component={RestaurantScreen}/>
+        <Stack.Screen name="Home" component={PaidTourList}/>
+        <Stack.Screen name="Home" component={PaidTourScreen}/>
+    </HomeStack.Navigator>
+  )
+}
+
+const ForumStack = createStackNavigator();
+
+function ForumStackScreen() {
+  return (
+    <ForumStack.Navigator>
+        <Stack.Screen name="Forum" component={ForumScreen}/>
+    </ForumStack.Navigator>
+  )
+}
+
+export default function App() {
+
+  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null)
+
+  //TODO: Hide header with headerShown = false
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
       initialRouteName='Home'
         screenOptions={({route}) => ({
           tabBarIcon: ({focused}) => {
@@ -39,47 +107,27 @@ function NavBar() {
         })}>
         <Tab.Screen
         name="Deals" 
-        component={DealsScreen}
+        component={DealsStackScreen}
         />
         <Tab.Screen 
         name="Guide" 
-        component={GuideScreen}
+        component={GuideStackScreen}
         />
         <Tab.Screen 
         name="Home" 
-        component={HomeScreen}
+        component={HomeStackScreen}
         />
         <Tab.Screen 
         name="Forum" 
-        component={ForumScreen}
+        component={ForumStackScreen}
         />
         <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackScreen}
         />
       </Tab.Navigator>
-  )
-}
-
-export default function App() {
-
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        { user ? (
-          <Stack.Screen name="Home" component={NavBar}>
-            {props => <HomeScreen {...props} extraData={user} />}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={NavBar} />
-            <Stack.Screen name="Registration" component={NavBar} />
-          </>
-        )}
-      </Stack.Navigator>
     </NavigationContainer>
+
+    
   );
 }

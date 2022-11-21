@@ -3,8 +3,10 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { doc, setDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
 import { db } from '../../../config';
+import { render } from 'react-dom';
 
 export default function RegistrationScreen({navigation}) {
     const [firstName, setFirstName] = useState('')
@@ -12,7 +14,15 @@ export default function RegistrationScreen({navigation}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [role, setSelected] = useState('')
     // Implement password length check, minimum length of 6
+
+    const data = [
+        {key:'1', value:'Registered User'},
+        {key:'2', value:'LOL'},
+        {key:'3', value:'Business Owner'},
+    ]
+
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
     }
@@ -27,7 +37,8 @@ export default function RegistrationScreen({navigation}) {
                     first: firstName,
                     last: lastName,
                     email: email,
-                    id: uid
+                    id: uid,
+                    role: role
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Home', {user: auth})
@@ -97,6 +108,12 @@ export default function RegistrationScreen({navigation}) {
                     value={confirmPassword}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
+                />
+                <SelectList
+                    search = 'false'
+                    setSelected={(val) => setSelected(val)}
+                    data={data}
+                    save="value"
                 />
                 <TouchableOpacity
                     style={styles.button}

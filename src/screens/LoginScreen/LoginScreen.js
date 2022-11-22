@@ -5,7 +5,6 @@ import styles from './styles';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { db } from '../../../config';
-import { FireSQL } from 'firesql';
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('')

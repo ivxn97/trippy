@@ -18,6 +18,13 @@ export default function ProfileScreen ( {navigation} ) {
                 navigation.navigate('Add Attraction')
             }
         />
+
+        <Button
+            title ="Registration Selector (TEST)"
+            onPress={() =>
+                navigation.navigate('Registration Selector')
+            }
+        />
         </View>
     )
 }

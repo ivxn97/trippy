@@ -3,29 +3,28 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { doc, setDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { SelectList } from 'react-native-dropdown-select-list';
 import styles from './styles';
 import { db } from '../../../config';
 import { render } from 'react-dom';
 
-export default function RegistrationScreen({navigation}) {
+export default function RegistrationBO({navigation}) {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [role, setSelected] = useState('')
+    const [UEN, setUEN] = useState('')
     // Implement password length check, minimum length of 6
-
-    const data = [
-        {key:'1', value:'Registered User'},
-        {key:'2', value:'LOL'},
-        {key:'3', value:'Business Owner'},
-    ]
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
     }
+
+    const placeholder = {
+        label: 'Social Media Platform',
+        value: null,
+        color: 'black',
+    };
 
     const onRegisterPress = () => {
         const auth = getAuth();
@@ -34,11 +33,13 @@ export default function RegistrationScreen({navigation}) {
             try {
                 const uid = userCredential.user.uid
                 const docRef = await setDoc(doc(db, "users", email), {
+                    status: 'Pending',
                     first: firstName,
                     last: lastName,
                     email: email,
                     id: uid,
-                    role: role
+                    role: 'Business Owner',
+                    UEN: UEN
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Home', {user: auth})
@@ -58,10 +59,10 @@ export default function RegistrationScreen({navigation}) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Image
+                {/*<Image
                     style={styles.logo}
                     source={require('../../../assets/icon.png')}
-                />
+                />*/}
                 <TextInput
                     style={styles.input}
                     placeholder='First Name'
@@ -109,16 +110,19 @@ export default function RegistrationScreen({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <SelectList
-                    search = 'false'
-                    setSelected={(val) => setSelected(val)}
-                    data={data}
-                    save="value"
+                <TextInput
+                    style={styles.input}
+                    placeholderTextColor="#aaaaaa"
+                    placeholder='UEN'
+                    onChangeText={(text) => setUEN(text)}
+                    value={UEN}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
                 />
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onRegisterPress()}>
-                    <Text style={styles.buttonTitle}>Create account</Text>
+                    <Text style={styles.buttonTitle}>Submit for approval</Text>
                 </TouchableOpacity>
                 <View style={styles.footerView}>
                     <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>

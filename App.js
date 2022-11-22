@@ -6,10 +6,10 @@ import { NavigationContainer, TabRouter } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs' 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
-import { LoginScreen, HomeScreen, RegistrationScreen, ForumScreen, 
+import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionScreen,
         RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
-        AddAttraction } from './src/screens'
+        AddAttraction, RegistrationSelector, RegistrationLOL, RegistrationBO } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -24,9 +24,13 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
+        <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
-        <Stack.Screen name="Registration" component={RegistrationScreen}/>
+        <Stack.Screen name="Registration Selector" component={RegistrationSelector}/>
+        <Stack.Screen name="Register User" component={RegistrationRegisteredUser}/>
+        <Stack.Screen name="Register LOL" component={RegistrationLOL}/>
+        <Stack.Screen name="Register BO" component={RegistrationBO}/>
     </ProfileStack.Navigator>
   )
 }

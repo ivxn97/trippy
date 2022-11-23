@@ -25,6 +25,13 @@ export default function ProfileScreen ( {navigation} ) {
                 navigation.navigate('Registration Selector')
             }
         />
+
+        <Button
+            title ="Admin Page (TEST)"
+            onPress={() =>
+                navigation.navigate('Admin Page')
+            }
+        />
         </View>
     )
 }

@@ -10,7 +10,10 @@ export {default as GuideScreen} from './GuideScreen/GuideScreen'
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as ProfileScreen} from './ProfileScreen/ProfileScreen'
 export {default as DealsScreen} from './DealsScreen/DealsScreen'
+
 export {default as AdminScreen} from './AdminScreen/AdminScreen'
+export {default as ListOfUsers} from './AdminScreen/ListOfUsers'
+export {default as AdminViewUser} from './AdminScreen/AdminViewUser'
 
 export {default as AttractionList} from './HomeScreen/AttractionList'
 export {default as AttractionScreen} from './HomeScreen/AttractionScreen'

@@ -34,8 +34,8 @@ export default function RegistrationBO({navigation}) {
                 const uid = userCredential.user.uid
                 const docRef = await setDoc(doc(db, "users", email), {
                     status: 'Pending',
-                    first: firstName,
-                    last: lastName,
+                    firstName: firstName,
+                    lastName: lastName,
                     email: email,
                     id: uid,
                     role: 'Business Owner',

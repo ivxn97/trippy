@@ -9,7 +9,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionScreen,
         RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
-        AddAttraction, RegistrationSelector, RegistrationLOL, RegistrationBO } from './src/screens'
+        AddAttraction, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
+        AdminScreen, AdminViewUser } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -25,12 +26,15 @@ function ProfileStackScreen() {
     <ProfileStack.Navigator>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
         <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Registration Selector" component={RegistrationSelector}/>
         <Stack.Screen name="Register User" component={RegistrationRegisteredUser}/>
         <Stack.Screen name="Register LOL" component={RegistrationLOL}/>
         <Stack.Screen name="Register BO" component={RegistrationBO}/>
+        <Stack.Screen name="List Of Users" component={ListOfUsers}/>
+        <Stack.Screen name="Admin View User" component={AdminViewUser}/>
     </ProfileStack.Navigator>
   )
 }
@@ -80,6 +84,17 @@ function ForumStackScreen() {
     <ForumStack.Navigator>
         <Stack.Screen name="Forum" component={ForumScreen}/>
     </ForumStack.Navigator>
+  )
+}
+
+const AdminStack = createStackNavigator();
+
+function AdminStackScreen() {
+  return (
+    <DealsStack.Navigator>
+        <Stack.Screen name="Admin Page" component={AdminScreen}/>
+        <Stack.Screen name="List Of Users" component={ListOfUsers}/>
+    </DealsStack.Navigator>
   )
 }
 

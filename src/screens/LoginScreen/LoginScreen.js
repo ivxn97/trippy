@@ -13,7 +13,7 @@ export default function LoginScreen({navigation}) {
     //const fireSQL = new FireSQL(db);
 
     const onFooterLinkPress = () => {
-        navigation.navigate('Registration')
+        navigation.navigate('Registration Selector')
     }
     const auth = getAuth();
 

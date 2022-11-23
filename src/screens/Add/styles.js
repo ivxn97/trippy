@@ -26,6 +26,17 @@ export default StyleSheet.create({
         marginRight: 30,
         paddingLeft: 16
     },
+    desc: {
+        height: 120,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingLeft: 16
+    },
     button: {
         backgroundColor: '#788eec',
         marginLeft: 30,
@@ -54,5 +65,19 @@ export default StyleSheet.create({
         color: "#788eec",
         fontWeight: "bold",
         fontSize: 16
+    },
+    inputIOSContainer: {
+        paddingVertical: 20,
+        paddingHorizontal: 30,
+        backgroundColor: 'white',
+        fontSize: '20',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        paddingLeft: 16
+    },
+    inputIOS: {
+        fontSize: 14
     }
 })

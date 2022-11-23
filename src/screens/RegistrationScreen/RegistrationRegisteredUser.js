@@ -28,8 +28,8 @@ export default function RegistrationRegisteredUser({navigation}) {
                 const uid = userCredential.user.uid
                 const docRef = await setDoc(doc(db, "users", email), {
                     status: 'Approved',
-                    first: firstName,
-                    last: lastName,
+                    firstName: firstName,
+                    lastName: lastName,
                     email: email,
                     id: uid,
                     role: 'Registered User'

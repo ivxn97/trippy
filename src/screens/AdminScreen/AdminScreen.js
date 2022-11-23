@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
-export default function AdminScreen () {
+export default function AdminScreen ({navigation}) {
     return (
         <View>
-        <Text>Hello Admin Screen</Text>
+        <Button
+            title ="List Of Users"
+            onPress={() =>
+                navigation.navigate('List Of Users')
+            }
+        />
         </View>
     )
 }

@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
-        GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionScreen,
+        GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
         RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
         AdminScreen, AdminViewUser } from './src/screens'
@@ -66,7 +66,7 @@ function HomeStackScreen() {
     <HomeStack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="List of attractions" component={AttractionList}/>
-        <Stack.Screen name="Attraction details" component={AttractionScreen}/>
+        <Stack.Screen name="Attraction Details" component={AttractionView}/>
         <Stack.Screen name="List of hotels" component={HotelList}/>
         <Stack.Screen name="Hotel details" component={HotelScreen}/>
         <Stack.Screen name="List of restaurants" component={RestaurantList}/>

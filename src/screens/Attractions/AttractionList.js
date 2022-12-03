@@ -5,9 +5,9 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 
-export default function ListOfUsers( {navigation} ) {
+export default function AttractionList( {navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [users, setUsers] = useState([]); // Initial empty array of users
+  const [attractions, setAttractions] = useState([]); // Initial empty array of attractions
 
   //List
   navigation.addListener('willFocus', () => {
@@ -15,15 +15,15 @@ export default function ListOfUsers( {navigation} ) {
   })
 
   useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "users"));
+    const querySnapshot = await getDocs(collection(db, "attractions"));
         querySnapshot.forEach(documentSnapshot => {
-          users.push({
+          attractions.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
         });
 
-        setUsers(users);
+        setAttractions(attractions);
         setLoading(false);
       },[]);
   
@@ -33,17 +33,15 @@ export default function ListOfUsers( {navigation} ) {
 
   return (
     <FlatList
-      data={users}
-      extraData={users}
+      data={attractions}
+      extraData={attractions}
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"
-        onPress={() => {navigation.navigate('Admin View User', {email: item.email, UEN: item.UEN, firstName: item.first,
-        lastName: item.last, role: item.role, id: item.id, status: item.status, socialMediaHandle: item.socialMediaHandle,
-        socialMediaPlatform: item.socialMediaPlatform })}}>
+        onPress={() => {navigation.navigate('Attraction Details', {})}}>
         <View style={styles.list}>
-          <Text>Email: {item.email}</Text>
-          <Text>Role: {item.role}</Text>
+          <Text>{item.name}</Text>
+          <Text>{item.price}</Text>
         </View>
         </TouchableHighlight>
       )}

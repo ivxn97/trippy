@@ -10,6 +10,7 @@ import { render } from 'react-dom';
 export default function RegistrationBO({navigation}) {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
+    const [businessName, setBusinessName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -36,6 +37,7 @@ export default function RegistrationBO({navigation}) {
                     status: 'Pending',
                     firstName: firstName,
                     lastName: lastName,
+                    businessName: businessName,
                     email: email,
                     id: uid,
                     role: 'Business Owner',
@@ -78,6 +80,15 @@ export default function RegistrationBO({navigation}) {
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setLastName(text)}
                     value={lastName}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder='Business Name'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(text) => setBusinessName(text)}
+                    value={businessName}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />

@@ -5,8 +5,13 @@ export default StyleSheet.create({
         flex: 1,
         alignItems: 'center'
     },
-    title: {
-
+    list: {
+        height: 70, 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        marginVertical: 4
     },
     logo: {
         flex: 1,

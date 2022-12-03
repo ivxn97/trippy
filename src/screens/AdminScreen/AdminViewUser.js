@@ -9,51 +9,128 @@ import { db } from '../../../config';
 export default function AdminViewUser ({route, navigation}) {
     const {email, UEN, firstName, lastName, role, id, status, socialMediaHandle, socialMediaPlatform} = route.params;
 
-    const [newRole, setRole] = useState('')
-    const [newStatus, setStatus] = useState('')
-
-    //Placeholders
-    const roleP = {
-        label: 'select a role',
-        value: null,
-        color: 'black',
-    };
-
-    const statusP = {
-        label: 'select a status',
-        value: null,
-        color: 'black',
-    };
-
-    const onChangeRolePress = ()  => {
-        try {
-            const docRef = setDoc(doc(db, "users", email), {
-                role: newRole
-            }, { merge:true });
+    function AllView () {
+        const [newRole, setRole] = useState('')
+        const [newStatus, setStatus] = useState('')
+    
+        //Placeholders
+        const roleP = {
+            label: 'select a role',
+            value: null,
+            color: 'black',
+        };
+    
+        const statusP = {
+            label: 'select a status',
+            value: null,
+            color: 'black',
+        };
+    
+        const onChangeRolePress = ()  => {
+            try {
+                const docRef = setDoc(doc(db, "users", email), {
+                    role: newRole
+                }, { merge:true });
+                navigation.navigate('List Of Users')
+            }
+            catch (e) {
+                console.log("Error updating document: ", e);
+            }
+        }
+    
+        const onChangeStatusPress = ()  => {
+            try {
+                const docRef = setDoc(doc(db, "users", email), {
+                    status: newStatus
+                }, { merge:true });
+                navigation.navigate('List Of Users')
+            }
+            catch (e) {
+                console.log("Error updating document: ", e);
+            }
+        }
+    
+        const onDeletePress = ()  => {
+            deleteDoc(doc(db, "users", email));
             navigation.navigate('List Of Users')
         }
-        catch (e) {
-            console.log("Error updating document: ", e);
-        }
+    
+        return (
+            <View>
+                <Text>Change Account Role:</Text>
+                <RNPickerSelect
+                style={StyleSheet.create({
+                    inputIOSContainer: {
+                        paddingVertical: 20,
+                        paddingHorizontal: 30,
+                        borderLeftWidth: 2,
+                        borderRightWidth:2,
+                        borderTopWidth:2,
+                        borderBottomWidth:2,
+                        backgroundColor: 'white',
+                        fontSize: '20'
+                    },
+                    inputIOS: {
+                        fontSize: 14
+                    }
+                    })}
+                placeholder={roleP}
+                useNativeAndroidPickerStyle={false}
+                onValueChange={(value) => setRole(value)}
+                items = {[
+                    {label:'Registered User', value:'Registered User'},
+                    {label:'LOL', value:'LOL'},
+                    {label:'Business Owner', value:'Business Owner'},
+                    {label:'Admin', value:'Admin'},
+                ]}
+            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => onChangeRolePress()}>
+                <Text style={styles.buttonTitle}>Change Role</Text>
+            </TouchableOpacity>
+    
+            <Text>Change Account Status</Text>
+            <RNPickerSelect
+                style={StyleSheet.create({
+                    inputIOSContainer: {
+                        paddingVertical: 20,
+                        paddingHorizontal: 30,
+                        borderLeftWidth: 2,
+                        borderRightWidth:2,
+                        borderTopWidth:2,
+                        borderBottomWidth:2,
+                        backgroundColor: 'white',
+                        fontSize: '20'
+                    },
+                    inputIOS: {
+                        fontSize: 14
+                    }
+                    })}
+                placeholder={statusP}
+                useNativeAndroidPickerStyle={false}
+                onValueChange={(value) => setStatus(value)}
+                items = {[
+                    {label:'Approved', value:'Approved'},
+                    {label:'Pending', value:'Pending'},
+                    {label:'Suspended', value:'Suspended'},
+                ]}
+            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => onChangeStatusPress()}>
+                <Text style={styles.buttonTitle}>Change Status</Text>
+            </TouchableOpacity>
+    
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => onDeletePress()}>
+                <Text style={styles.buttonTitle}>Delete Account</Text>
+            </TouchableOpacity>
+            </View>
+        )
     }
-
-    const onChangeStatusPress = ()  => {
-        try {
-            const docRef = setDoc(doc(db, "users", email), {
-                status: newStatus
-            }, { merge:true });
-            navigation.navigate('List Of Users')
-        }
-        catch (e) {
-            console.log("Error updating document: ", e);
-        }
-    }
-
-    const onDeletePress = ()  => {
-        deleteDoc(doc(db, "users", email));
-        navigation.navigate('List Of Users')
-    }
-
+    
     if (role == "Registered User") {
         return (
             <View>
@@ -63,8 +140,10 @@ export default function AdminViewUser ({route, navigation}) {
                 <Text>Last Name: {JSON.stringify(lastName)}</Text>
                 <Text>Role: {JSON.stringify(role)}</Text>
                 <Text>Status: {JSON.stringify(status)}</Text>
+                <AllView/>
             </View>
         )
+        
     }
     else if (role == "Business Owner") {
         return (
@@ -76,6 +155,7 @@ export default function AdminViewUser ({route, navigation}) {
                 <Text>Role: {JSON.stringify(role)}</Text>
                 <Text>UEN: {JSON.stringify(UEN)}</Text>
                 <Text>Status: {JSON.stringify(status)}</Text>
+                <AllView/>
             </View>
         )
     }
@@ -90,6 +170,7 @@ export default function AdminViewUser ({route, navigation}) {
                 <Text>Social Media Handle: {JSON.stringify(socialMediaHandle)}</Text>
                 <Text>Social Media Platform: {JSON.stringify(socialMediaPlatform)}</Text>
                 <Text>Status: {JSON.stringify(status)}</Text>
+                <AllView/>
             </View>
         )
     }
@@ -102,82 +183,8 @@ export default function AdminViewUser ({route, navigation}) {
                 <Text>Last Name: {JSON.stringify(lastName)}</Text>
                 <Text>Role: {JSON.stringify(role)}</Text>
                 <Text>Status: {JSON.stringify(status)}</Text>
+                <AllView/>
             </View>
         )
     }
-
-    return (
-        <View>
-            <Text>Change Account Role:</Text>
-            <RNPickerSelect
-            style={StyleSheet.create({
-                inputIOSContainer: {
-                    paddingVertical: 20,
-                    paddingHorizontal: 30,
-                    borderLeftWidth: 2,
-                    borderRightWidth:2,
-                    borderTopWidth:2,
-                    borderBottomWidth:2,
-                    backgroundColor: 'white',
-                    fontSize: '20'
-                },
-                inputIOS: {
-                    fontSize: 14
-                }
-                })}
-            placeholder={roleP}
-            useNativeAndroidPickerStyle={false}
-            onValueChange={(value) => setRole(value)}
-            items = {[
-                {label:'Registered User', value:'Registered User'},
-                {label:'LOL', value:'LOL'},
-                {label:'Business Owner', value:'Business Owner'},
-                {label:'Admin', value:'Admin'},
-            ]}
-        />
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => onChangeRolePress()}>
-            <Text style={styles.buttonTitle}>Change Role</Text>
-        </TouchableOpacity>
-
-        <Text>Change Account Status</Text>
-        <RNPickerSelect
-            style={StyleSheet.create({
-                inputIOSContainer: {
-                    paddingVertical: 20,
-                    paddingHorizontal: 30,
-                    borderLeftWidth: 2,
-                    borderRightWidth:2,
-                    borderTopWidth:2,
-                    borderBottomWidth:2,
-                    backgroundColor: 'white',
-                    fontSize: '20'
-                },
-                inputIOS: {
-                    fontSize: 14
-                }
-                })}
-            placeholder={statusP}
-            useNativeAndroidPickerStyle={false}
-            onValueChange={(value) => setStatus(value)}
-            items = {[
-                {label:'Approved', value:'Approved'},
-                {label:'Pending', value:'Pending'},
-                {label:'Suspended', value:'Suspended'},
-            ]}
-        />
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => onChangeStatusPress()}>
-            <Text style={styles.buttonTitle}>Change Status</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => onDeletePress()}>
-            <Text style={styles.buttonTitle}>Delete Account</Text>
-        </TouchableOpacity>
-        </View>
-    )
 }

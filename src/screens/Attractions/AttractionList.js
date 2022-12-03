@@ -38,10 +38,12 @@ export default function AttractionList( {navigation }) {
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"
-        onPress={() => {navigation.navigate('Attraction Details', {})}}>
+        onPress={() => {navigation.navigate('Attraction Details', {name: item.name, attractionType: item.attractionType, 
+        price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
+        closingTime: item.closingTime, description: item.description, TNC: item.TNC})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
-          <Text>{item.price}</Text>
+          <Text>${item.price}</Text>
         </View>
         </TouchableHighlight>
       )}

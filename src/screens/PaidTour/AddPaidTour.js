@@ -54,7 +54,7 @@ export default function AddPaidTour ( { navigation }) {
                     price: price,
                     ageGroup: ageGroup,
                     groupSize: groupSize,
-                    openingTime: startingHour + ':' + startingMinute,
+                    startingTime: startingHour + ':' + startingMinute,
                     duration: durationHour + ':' + durationMinute,
                     location: '',
                     description: description,

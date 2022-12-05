@@ -9,7 +9,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
         RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
-        AddAttraction, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
+        AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
         AdminScreen, AdminViewUser } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -28,6 +28,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
+        <Stack.Screen name="Add Paid Tour" component={AddPaidTour}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Registration Selector" component={RegistrationSelector}/>
         <Stack.Screen name="Register User" component={RegistrationRegisteredUser}/>

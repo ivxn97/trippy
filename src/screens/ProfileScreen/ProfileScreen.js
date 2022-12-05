@@ -20,6 +20,13 @@ export default function ProfileScreen ( {navigation} ) {
         />
 
         <Button
+            title ="Add Paid Tour"
+            onPress={() =>
+                navigation.navigate('Add Paid Tour')
+            }
+        />
+
+        <Button
             title ="Registration Selector (TEST)"
             onPress={() =>
                 navigation.navigate('Registration Selector')

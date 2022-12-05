@@ -109,6 +109,7 @@ export default function App() {
       <Tab.Navigator
       initialRouteName='Home'
         screenOptions={({route}) => ({
+          headerShown: false,
           tabBarIcon: ({focused}) => {
             let iconName;
             if (route.name === 'Deals') {

@@ -25,3 +25,4 @@ export {default as PaidTourList} from './PaidTour/PaidTourList'
 export {default as PaidTourScreen} from './PaidTour/PaidTourScreen'
 
 export {default as AddAttraction} from './Attractions/AddAttraction'
+export {default as AddPaidTour} from './PaidTour/AddPaidTour'

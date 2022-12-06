@@ -23,8 +23,6 @@ export default function RegistrationRegisteredUser({navigation}) {
     // Interests
     let docData = [];
     const [docTypeData, setD] = useState([])
-    const [isChecked, setChecked] = useState(false);
-    const [userInterests, setUserInterests] = useState([])
 
     //Langauges
     let languageArr = []
@@ -88,36 +86,45 @@ export default function RegistrationRegisteredUser({navigation}) {
     }, []);
 
     const setInterest = (item) => {
-        /*setUserInterests(current => [...current, value]);
-        console.log(userInterests);*/
-        /*
-        let temp = userInterests.map((userInterest) => {
-            if (name === userInterest.name) {
-                return {... userInterest, isChecked: !userInterest.isChecked };
-            }
-            return userInterest;
-        });
-        setUserInterests(temp);
-        console.log (userInterests);
-        */
        setD(
         docTypeData.map(curr => {
             if (item.name === curr.name) {
-                return {...curr, isChecked: !curr.checked};
+                if (curr.isChecked == false) {
+                    //setUserInterests(current => [...current, item.name]);
+                    return {...curr, isChecked: true};
+                    
+                }
+                else if (curr.isChecked == true) {
+                    //setUserInterests((current) => current.filter((item)=> item.name !== userInterests ))
+                    return {...curr, isChecked: false};
+                }
             } else {
                 return curr;
             }
         })
        )
-       setUserInterests(current => [...current, item.name]);
-       console.log(userInterests);
-       console.log(docTypeData);
     }
+    console.log(docTypeData);
 
-    const setLanguage = (value) => {
-        setUserInterests(current => [...current, value]);
-        console.log(userInterests);
+    const setLanguage = (item) => {
+        setLanguages(
+        languageData.map(curr => {
+            if (item.language === curr.language) {
+                if (curr.isChecked == false) {
+                    return {...curr, isChecked: true};
+                    
+                }
+                else if (curr.isChecked == true) {
+                    return {...curr, isChecked: false};
+                }
+            } else {
+                return curr;
+            }
+        })
+        )
     }
+    console.log(languageData);
+    
 
     const onRegisterPress = () => {
         const auth = getAuth();
@@ -131,7 +138,11 @@ export default function RegistrationRegisteredUser({navigation}) {
                     lastName: lastName,
                     email: email,
                     id: uid,
-                    role: 'Registered User'
+                    role: 'Registered User',
+                    country: country,
+                    DOB: day + "/" + month + "/" + year,
+                    interests: docTypeData,
+                    languages: languageData
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Home', {user: auth})
@@ -312,8 +323,8 @@ export default function RegistrationRegisteredUser({navigation}) {
                 <Text>Preferred languages:</Text>
                 {languageData.map((item, index) => (
                     <View style={styles.checklist} key={index}>
-                        <Checkbox style={styles.checkbox} value={isChecked} onValueChange={(value) => setLanguage(item)}/>
-                        <Text>{item}</Text>
+                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setLanguage(item)}/>
+                        <Text>{item.language}</Text>
                     </View>
                ))}
 

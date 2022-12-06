@@ -6,14 +6,15 @@ import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 
+//Placeholders for SELECT lists
 const typePlaceholder = {
-    label: 'Social Media Platform',
+    label: 'Attraction Type',
     value: null,
     color: 'black',
 };
 
 const agePlaceholder = {
-    label: 'Social Media Platform',
+    label: 'Age Group',
     value: null,
     color: 'black',
 };

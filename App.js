@@ -10,7 +10,7 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
         RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
-        AdminScreen, AdminViewUser } from './src/screens'
+        AdminScreen, AdminViewUser, AttractionDeals, AddAttractionDeal } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -25,7 +25,6 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
-        <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="Add Hotel" component={AddHotel} />
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
@@ -47,6 +46,8 @@ function DealsStackScreen() {
   return (
     <DealsStack.Navigator>
         <Stack.Screen name="Deals" component={DealsScreen}/>
+        <Stack.Screen name="Attraction Deals" component={AttractionDeals}/>
+        <Stack.Screen name="Add Attraction Deal" component={AddAttractionDeal}/>
     </DealsStack.Navigator>
   )
 }
@@ -111,6 +112,7 @@ export default function App() {
       <Tab.Navigator
       initialRouteName='Home'
         screenOptions={({route}) => ({
+          headerShown: false,
           tabBarIcon: ({focused}) => {
             let iconName;
             if (route.name === 'Deals') {

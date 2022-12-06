@@ -86,7 +86,7 @@ export default function AddRestaurant ( { navigation }) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
-            <Text>Attraction Type:</Text>
+            <Text>Type of Cuisine:</Text>
             <RNPickerSelect
                 style={StyleSheet.create({
                     inputIOSContainer: {

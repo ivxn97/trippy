@@ -8,9 +8,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
-        RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
+        RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
-        AdminScreen, AdminViewUser } from './src/screens'
+        AdminScreen, AdminViewUser, AttractionDeals, AddAttractionDeal, AddRestaurant } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -26,8 +26,10 @@ function ProfileStackScreen() {
     <ProfileStack.Navigator>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
+        <Stack.Screen name="Add Hotel" component={AddHotel} />
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
         <Stack.Screen name="Add Paid Tour" component={AddPaidTour}/>
+        <Stack.Screen name="Add Restaurant" component={AddRestaurant}/>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Registration Selector" component={RegistrationSelector}/>
         <Stack.Screen name="Register User" component={RegistrationRegisteredUser}/>
@@ -45,6 +47,8 @@ function DealsStackScreen() {
   return (
     <DealsStack.Navigator>
         <Stack.Screen name="Deals" component={DealsScreen}/>
+        <Stack.Screen name="Attraction Deals" component={AttractionDeals}/>
+        <Stack.Screen name="Add Attraction Deal" component={AddAttractionDeal}/>
     </DealsStack.Navigator>
   )
 }

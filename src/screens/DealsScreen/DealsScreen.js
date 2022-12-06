@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
-export default function DealsScreen () {
+export default function DealsScreen ( {navigation} ) {
     return (
         <View>
-        <Text>Hello Deals Screen</Text>
+            <Button
+            title ="Attraction"
+            onPress={() =>
+                navigation.navigate('Attraction Deals')
+            }
+            />
         </View>
     )
 }

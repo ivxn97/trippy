@@ -25,7 +25,6 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
         <Stack.Screen name="Profile" component={ProfileScreen}/>
-        <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
         <Stack.Screen name="Add Paid Tour" component={AddPaidTour}/>

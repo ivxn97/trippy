@@ -10,7 +10,7 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
         RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
-        AdminScreen, AdminViewUser } from './src/screens'
+        AdminScreen, AdminViewUser, AttractionDeals, AddAttractionDeal } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -45,6 +45,8 @@ function DealsStackScreen() {
   return (
     <DealsStack.Navigator>
         <Stack.Screen name="Deals" component={DealsScreen}/>
+        <Stack.Screen name="Attraction Deals" component={AttractionDeals}/>
+        <Stack.Screen name="Add Attraction Deal" component={AddAttractionDeal}/>
     </DealsStack.Navigator>
   )
 }

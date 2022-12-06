@@ -335,13 +335,13 @@ export default function AddRestaurant ( { navigation }) {
             />
             <Text>Language Preferences:</Text>
             {/*TODO */}
-            <Text>Description:</Text>
+            <Text>Menu:</Text>
             <TextInput
                 style={styles.desc}
-                placeholder='Description'
+                placeholder='Menu'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setMenu(Text)}
-                value={description}
+                value={menu}
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 multiline

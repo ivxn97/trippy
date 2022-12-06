@@ -47,7 +47,7 @@ export default function AddRestaurant ( { navigation }) {
 
     const onSubmitPress = async () => {
             try {
-                await setDoc(doc(db, "attractions", name), {
+                await setDoc(doc(db, "restaurants", name), {
                     name: name,
                     typeofCuisine: typeofCuisine,
                     price: price,

@@ -39,11 +39,11 @@ export default function HotelList({ navigation }) {
                 <TouchableHighlight
                     underlayColor="#C8c9c9"
                     onPress={() => {
-                        navigation.navigate('Hotel Details', {
-                            name: item.name, roomType: item.roomType,
+                        navigation.navigate('Hotel details', {
+                            name: item.name, roomTypes: item.roomTypes,
                             priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
                             checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                            language: item.language, location: item.location, TNC: item.TNC
+                            language: item.language, TNC: item.TNC
                         })
                     }}>
                     <View style={styles.list}>

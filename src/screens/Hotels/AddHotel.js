@@ -7,24 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import Checkbox from 'expo-checkbox';
 
-const amenitiesPlaceholder = {
-    label: 'Room Type',
-    value: null,
-    color: 'black',
-};
 
-const roomFeaturesPlaceholder = {
-    label: 'Room Type',
-    value: null,
-    color: 'black',
-};
-
-
-const typePlaceholder = {
-    label: 'Room Type',
-    value: null,
-    color: 'black',
-};
 
 const classPlaceholder = {
     label: 'Hotel Class',
@@ -88,7 +71,6 @@ export default function AddHotel({ navigation }) {
     const [roomTypes, setUserRoomTypes] = useState([])
 
     const [language, setLanguage] = useState('');
-    const [location, setLocation] = useState('');
     const [TNC, setTNC] = useState('');
 
     
@@ -151,7 +133,7 @@ export default function AddHotel({ navigation }) {
             try {
                 await setDoc(doc(db, "hotels", name), {
                     name: name,
-                    roomType: roomType,
+                    roomTypes: roomTypes,
                     priceRange: priceRange,
                     hotelClass: hotelClass,
                     checkInTime: checkInHour + ':' + checkInMinute,

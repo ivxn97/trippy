@@ -29,25 +29,19 @@ export default function ProfileScreen ( {navigation} ) {
     return(
         <View>
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-       
-       
-       
+
         <Button
             title ="Login"
             onPress={() =>
                 navigation.navigate('Login')
             }
         />
-
+        <Button
+            title="Add Hotel"
+            onPress={() =>
+                navigation.navigate('Add Hotel')
+            }
+        />
         <Button
             title ="Add Attraction"
             onPress={() =>

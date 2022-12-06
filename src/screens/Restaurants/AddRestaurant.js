@@ -363,7 +363,7 @@ export default function AddRestaurant ( { navigation }) {
             <TouchableOpacity
                     style={styles.button}
                     onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonTitle}>Add Attraction</Text>
+                    <Text style={styles.buttonTitle}>Add Restaurant</Text>
             </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>

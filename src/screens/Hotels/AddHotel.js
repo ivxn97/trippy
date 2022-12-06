@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
+import Checkbox from 'expo-checkbox';
 
 const amenitiesPlaceholder = {
     label: 'Room Type',
@@ -46,18 +47,105 @@ const minutePlaceholder = {
 //TODO: add image uploading
 export default function AddHotel({ navigation }) {
     const [name, setName] = useState('');
-    const [roomType, setType] = useState('');
     const [priceRange, setPriceRange] = useState('');
     const [hotelClass, setHotelClass] = useState('');
     const [checkInHour, setCheckInHour] = useState('');
     const [checkInMinute, setCheckInMinute] = useState('');
     const [checkOutHour, setCheckOutHour] = useState('');
     const [checkOutMinute, setCheckOutMinute] = useState('');
-    const [amenities, setAmenities] = useState('');
-    const [roomFeatures, setRoomFeatures] = useState('');
+
+    // amenities
+    let amenitiesData = [{ name: 'Swimming Pools', value: 'Swimming Pools' },
+        { name: 'Club Houses', value: 'Club Houses' },
+        { name: 'Tennis Courts', value: 'Tennis Courts' },
+        { name: 'Fitness Facilities', value: 'Fitness Facilities' },
+        { name: 'Parking', value: 'Parking' },
+        { name: 'Room Services', value: 'Room Services' },
+        { name: 'Free Wifi', value: 'Free Wifi' }];
+    const [docAmenitiesData, setAmenitiesData] = useState([])
+    const [isChecked, setChecked] = useState(false);
+    const [amenities, setUserAmenities] = useState([])
+    
+
+    // room features
+    let roomFeaturesData = [{ name: 'Kitchen Facilities', value: 'Kitchen Facilities' },
+    { name: 'TV', value: 'TV' },
+    { name: 'Essentially Kit', value: 'Essentially Kit' },
+    { name: 'Writing Desk', value: 'Writing Desk' },
+    { name: 'Mattress', value: 'Mattress' },
+    { name: 'Wardrobe', value: 'Wardrobe' },
+    { name: 'Tea and Coffee Making Facilities', value: 'Tea and Coffee Making Facilities' }];
+    const [docRoomFeaturesData, setRoomFeaturesData] = useState([])
+    const [roomFeatures, setUserRoomFeatures] = useState([])
+
+    //room Types
+    let roomTypesData = [{ name: 'Single Room', value: 'Single Room' },
+    { name: 'Twin or Double Room', value: 'Twin Or Double Room' },
+    { name: 'Studio Room', value: 'Studio Room' },
+    { name: 'Deluxe Room', value: 'Deluxe Room' },
+    { name: 'Suites', value: 'Suites' },]
+    const [docRoomTypesData, setRoomTypesData] = useState([])
+    const [roomTypes, setUserRoomTypes] = useState([])
+
     const [language, setLanguage] = useState('');
     const [location, setLocation] = useState('');
     const [TNC, setTNC] = useState('');
+
+    
+
+    useEffect(() => {
+        setAmenitiesData(amenitiesData);
+        setRoomFeaturesData(roomFeaturesData);
+        setRoomTypesData(roomTypesData);
+    }, []);
+
+    const setAmenities = (item) => {
+        
+        setAmenitiesData(
+            docAmenitiesData.map(curr => {
+                if (item.name === curr.name) {
+                    return { ...curr, isChecked: !curr.checked };
+                } else {
+                    return curr;
+                }
+            })
+        )
+        setUserAmenities(current => [...current, item.name]);
+        console.log(amenities);
+        console.log(docAmenitiesData);
+    }
+
+    const setRoomFeatures = (item) => {
+
+        setRoomFeaturesData(
+            docRoomFeaturesData.map(curr => {
+                if (item.name === curr.name) {
+                    return { ...curr, isChecked: !curr.checked };
+                } else {
+                    return curr;
+                }
+            })
+        )
+        setUserRoomFeatures(current => [...current, item.name]);
+        console.log(roomFeatures);
+        console.log(docRoomFeaturesData);
+    }
+
+    const setRoomTypes = (item) => {
+
+        setRoomTypesData(
+            docRoomTypesData.map(curr => {
+                if (item.name === curr.name) {
+                    return { ...curr, isChecked: !curr.checked };
+                } else {
+                    return curr;
+                }
+            })
+        )
+        setUserRoomTypes(current => [...current, item.name]);
+        console.log(roomTypes);
+        console.log(docRoomTypesData);
+    }
 
     const onSubmitPress = async () => {
             try {
@@ -101,33 +189,13 @@ export default function AddHotel({ navigation }) {
                     autoCapitalize="none"
                 />
                 <Text>Room Type:</Text>
-                <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder={typePlaceholder}
-                    onValueChange={(value) => setType(value)}
-                    items={[
-                        { label: 'Single Room', value: 'Single Room' },
-                        { label: 'Double Room', value: 'Double Room' },
-                        { label: 'Studio Room', value: 'Studio Room' },
-                        { label: 'Deluxe Room', value: 'Deluxe Room' },
-                    ]}
-                />
+                {docRoomTypesData.map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setRoomTypes(item)} />
+                        <Text>{item.name}</Text>
+                    </View>
+                ))}
+
                 <Text>Price Range:</Text>
                 <TextInput
                     style={styles.input}
@@ -323,63 +391,21 @@ export default function AddHotel({ navigation }) {
                     ]}
                 />
                 <Text>Amenities:</Text>
-                <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder='amenities'
-                    placeholderTextColor="#aaaaaa"
-                    onValueChange={(value) => setAmenities(value)}
-                    items={[
-                        { label: 'Swimming Pools', value: 'Swimming Pools' },
-                        { label: 'Club Houses', value: 'Club Houses' },
-                        { label: 'Tennis Courts', value: 'Tennis Courts' },
-                        { label: 'Fitness Facilities', value: 'Fitness Facilities' },
-                        { label: 'Parking', value: 'Parking' },
-                        { label: 'Room Services', value: 'Room Services' },
-                        { label: 'Free Wifi', value: 'Free Wifi' },
-                    ]}
-                />
+                {docAmenitiesData.map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setAmenities(item)} />
+                        <Text>{item.name}</Text>
+                    </View>
+                ))}
+                
                 <Text>Room Features:</Text>
-                <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder='roomFeatures'
-                    placeholderTextColor="#aaaaaa"
-                    onValueChange={(value) => setRoomFeatures(value)}
-                    items={[
-                        { label: 'testtttt', value: 'testtttt' },
-                    ]}
-                />
+                {docRoomFeaturesData.map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setRoomFeatures(item)} />
+                        <Text>{item.name}</Text>
+                    </View>
+                ))}
+
                 <Text>Language Preferences:</Text>
                 <RNPickerSelect
                     style={StyleSheet.create({

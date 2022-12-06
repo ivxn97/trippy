@@ -8,7 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
-        RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
+        RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
         AdminScreen, AdminViewUser } from './src/screens'
 import {decode, encode} from 'base-64'
@@ -27,6 +27,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Profile" component={ProfileScreen}/>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
+        <Stack.Screen name="Add Hotel" component={AddHotel} />
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
         <Stack.Screen name="Add Paid Tour" component={AddPaidTour}/>
         <Stack.Screen name="Login" component={LoginScreen}/>

@@ -11,7 +11,12 @@ export default function ProfileScreen ( {navigation} ) {
                 navigation.navigate('Login')
             }
         />
-
+        <Button
+            title="Add Hotel"
+            onPress={() =>
+                navigation.navigate('Add Hotel')
+            }
+        />
         <Button
             title ="Add Attraction"
             onPress={() =>

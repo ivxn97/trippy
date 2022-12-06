@@ -9,7 +9,7 @@ export default function ProfileScreen ( {navigation} ) {
         signOut(auth).then(() => {
             // Sign-out successful.
             navigation.replace('Profile');
-            alert("HI")
+            alert("Successfully Logged out")
         }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;

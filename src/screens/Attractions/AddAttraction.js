@@ -43,6 +43,7 @@ export default function AddAttraction ( { navigation }) {
     const [closingHour, setClosingHour] = useState('');
     const [closingMinute, setClosingMinute] = useState('');
     const [description, setDescription] = useState('');
+    const [language, setLanguage] = useState('');
     const [TNC, setTNC] = useState('');
 
     const onSubmitPress = async () => {
@@ -57,6 +58,7 @@ export default function AddAttraction ( { navigation }) {
                     closingTime: closingHour + ':' + closingMinute,
                     location: '',
                     description: description,
+                    language: language,
                     TNC: TNC
                 });
                 //console.log("Document written with ID: ", docRef.id);
@@ -323,7 +325,34 @@ export default function AddAttraction ( { navigation }) {
                 ]}
             />
             <Text>Language Preferences:</Text>
-            {/*TODO */}
+            <RNPickerSelect
+                    style={StyleSheet.create({
+                        inputIOSContainer: {
+                            paddingVertical: 20,
+                            paddingHorizontal: 30,
+                            backgroundColor: 'white',
+                            fontSize: '20',
+                            marginTop: 10,
+                            marginBottom: 10,
+                            marginLeft: 30,
+                            marginRight: 30,
+                            paddingLeft: 16
+                        },
+                        inputIOS: {
+                            fontSize: 14
+                        }
+                    })}
+                    useNativeAndroidPickerStyle={false}
+                    placeholder={languagePlaceholder}
+                    placeholderTextColor="#aaaaaa"
+                    onValueChange={(value) => setLanguage(value)}
+                    items={[
+                        { label: 'Any', value: 'Any'},
+                        { label: 'English', value: 'English' },
+                        { label: 'Chinese', value: 'Chinese' },
+                    ]}
+                />
+
             <Text>Description:</Text>
             <TextInput
                 style={styles.desc}

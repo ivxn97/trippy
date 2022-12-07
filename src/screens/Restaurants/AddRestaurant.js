@@ -31,10 +31,22 @@ const minutePlaceholder = {
     color: 'black',
 };
 
+const pricePlaceholder = {
+    label: 'PRICE',
+    value: null,
+    color: 'black',
+};
+
+const languagePlaceholder = {
+    label: 'LANGUAGE',
+    value: null,
+    color: 'black',
+};
+
 //TODO: add image uploading
 export default function AddRestaurant ( { navigation }) {
     const [name, setName] = useState('');
-    const [typeofCuisine, setType] = useState('');
+    const [typeOfCuisine, setType] = useState('');
     const [price, setPrice] = useState('');
     const [ageGroup, setAge] = useState('');
     const [groupSize, setGroupSize] = useState('');
@@ -43,19 +55,21 @@ export default function AddRestaurant ( { navigation }) {
     const [closingHour, setClosingHour] = useState('');
     const [closingMinute, setClosingMinute] = useState('');
     const [menu, setMenu] = useState('');
+    const [language, setLanguage] = useState('');
     const [TNC, setTNC] = useState('');
 
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "restaurants", name), {
                     name: name,
-                    typeofCuisine: typeofCuisine,
+                    typeOfCuisine: typeOfCuisine,
                     price: price,
                     ageGroup: ageGroup,
                     groupSize: groupSize,
                     openingTime: openingHour + ':' + openingMinute,
                     closingTime: closingHour + ':' + closingMinute,
                     location: '',
+                    language: language,
                     menu: menu,
                     TNC: TNC
                 });
@@ -130,15 +144,33 @@ export default function AddRestaurant ( { navigation }) {
                 ]}
             />
             <Text>Price:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder='Price'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setPrice(Text)}
-                value={price}
-                underlineColorAndroid="transparent"
-                autoCapitalize="none"
-                keyboardType="numeric"
+            <RNPickerSelect
+                style={StyleSheet.create({
+                    inputIOSContainer: {
+                        paddingVertical: 20,
+                        paddingHorizontal: 30,
+                        backgroundColor: 'white',
+                        fontSize: '20',
+                        marginTop: 10,
+                        marginBottom: 10,
+                        marginLeft: 30,
+                        marginRight: 30,
+                        paddingLeft: 16
+                    },
+                    inputIOS: {
+                        fontSize: 14
+                    }
+                    })}
+                useNativeAndroidPickerStyle={false}
+                placeholder= {pricePlaceholder}
+                onValueChange={(value) => setPrice(value)}
+                items = {[
+                    {label:'$', value:'$'},
+                    {label:'$$', value:'$$'},
+                    {label:'$$$', value:'$$$'},
+                    {label:'$$$$', value:'$$$$'},
+                    {label:'$$$$$', value:'$$$$$'},
+                ]}
             />
             <Text>Age Group:</Text>
             <RNPickerSelect
@@ -334,7 +366,34 @@ export default function AddRestaurant ( { navigation }) {
                 ]}
             />
             <Text>Language Preferences:</Text>
-            {/*TODO */}
+            <RNPickerSelect
+                    style={StyleSheet.create({
+                        inputIOSContainer: {
+                            paddingVertical: 20,
+                            paddingHorizontal: 30,
+                            backgroundColor: 'white',
+                            fontSize: '20',
+                            marginTop: 10,
+                            marginBottom: 10,
+                            marginLeft: 30,
+                            marginRight: 30,
+                            paddingLeft: 16
+                        },
+                        inputIOS: {
+                            fontSize: 14
+                        }
+                    })}
+                    useNativeAndroidPickerStyle={false}
+                    placeholder={languagePlaceholder}
+                    placeholderTextColor="#aaaaaa"
+                    onValueChange={(value) => setLanguage(value)}
+                    items={[
+                        { label: 'Any', value: 'Any'},
+                        { label: 'English', value: 'English' },
+                        { label: 'Chinese', value: 'Chinese' },
+                    ]}
+                />
+
             <Text>Menu:</Text>
             <TextInput
                 style={styles.desc}

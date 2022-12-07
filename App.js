@@ -10,7 +10,7 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
         GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
         RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
-        AdminScreen, AdminViewUser, AttractionDeals, AddAttractionDeal, AddRestaurant } from './src/screens'
+        AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -37,6 +37,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Register BO" component={RegistrationBO}/>
         <Stack.Screen name="List Of Users" component={ListOfUsers}/>
         <Stack.Screen name="Admin View User" component={AdminViewUser}/>
+        <Stack.Screen name="Add Attraction Deal" component={AddDeal}/>
     </ProfileStack.Navigator>
   )
 }
@@ -46,9 +47,8 @@ const DealsStack = createStackNavigator();
 function DealsStackScreen() {
   return (
     <DealsStack.Navigator>
-        <Stack.Screen name="Deals" component={DealsScreen}/>
-        <Stack.Screen name="Attraction Deals" component={AttractionDeals}/>
-        <Stack.Screen name="Add Attraction Deal" component={AddAttractionDeal}/>
+        <Stack.Screen name="Deals" component={DealsList}/>
+        <Stack.Screen name="Deal detail" component={DealsScreen}/>
     </DealsStack.Navigator>
   )
 }
@@ -74,7 +74,7 @@ function HomeStackScreen() {
         <Stack.Screen name="List of hotels" component={HotelList}/>
         <Stack.Screen name="Hotel details" component={HotelScreen}/>
         <Stack.Screen name="List of restaurants" component={RestaurantList}/>
-        <Stack.Screen name="restaurant details" component={RestaurantScreen}/>
+        <Stack.Screen name="Restaurant Details" component={RestaurantScreen}/>
         <Stack.Screen name="List of paid tours" component={PaidTourList}/>
         <Stack.Screen name="Paid tour details" component={PaidTourScreen}/>
     </HomeStack.Navigator>

@@ -27,6 +27,12 @@ const minutePlaceholder = {
     color: 'black',
 };
 
+const languagePlaceholder = {
+    label: 'LANGUAGE',
+    value: null,
+    color: 'black',
+};
+
 //TODO: add image uploading
 export default function AddHotel({ navigation }) {
     const [name, setName] = useState('');
@@ -36,44 +42,40 @@ export default function AddHotel({ navigation }) {
     const [checkInMinute, setCheckInMinute] = useState('');
     const [checkOutHour, setCheckOutHour] = useState('');
     const [checkOutMinute, setCheckOutMinute] = useState('');
+    const [language, setLanguage] = useState('');
+    const [TNC, setTNC] = useState('');
 
     // amenities
-    let amenitiesData = [{ name: 'Swimming Pools', value: 'Swimming Pools' },
-        { name: 'Club Houses', value: 'Club Houses' },
-        { name: 'Tennis Courts', value: 'Tennis Courts' },
-        { name: 'Fitness Facilities', value: 'Fitness Facilities' },
-        { name: 'Parking', value: 'Parking' },
-        { name: 'Room Services', value: 'Room Services' },
-        { name: 'Free Wifi', value: 'Free Wifi' }];
+    let amenitiesData = [{ name: 'Swimming Pools', value: 'Swimming Pools', isChecked: false },
+        { name: 'Club Houses', value: 'Club Houses', isChecked: false },
+        { name: 'Tennis Courts', value: 'Tennis Courts', isChecked: false },
+        { name: 'Fitness Facilities', value: 'Fitness Facilities', isChecked: false },
+        { name: 'Parking', value: 'Parking', isChecked: false },
+        { name: 'Room Services', value: 'Room Services', isChecked: false },
+        { name: 'Free Wifi', value: 'Free Wifi', isChecked: false }];
     const [docAmenitiesData, setAmenitiesData] = useState([])
-    const [isChecked, setChecked] = useState(false);
     const [amenities, setUserAmenities] = useState([])
     
 
     // room features
-    let roomFeaturesData = [{ name: 'Kitchen Facilities', value: 'Kitchen Facilities' },
-    { name: 'TV', value: 'TV' },
-    { name: 'Essentially Kit', value: 'Essentially Kit' },
-    { name: 'Writing Desk', value: 'Writing Desk' },
-    { name: 'Mattress', value: 'Mattress' },
-    { name: 'Wardrobe', value: 'Wardrobe' },
-    { name: 'Tea and Coffee Making Facilities', value: 'Tea and Coffee Making Facilities' }];
+    let roomFeaturesData = [{ name: 'Kitchen Facilities', value: 'Kitchen Facilities', isChecked: false },
+    { name: 'TV', value: 'TV', isChecked: false },
+    { name: 'Essential Kit', value: 'Essential Kit', isChecked: false },
+    { name: 'Writing Desk', value: 'Writing Desk', isChecked: false },
+    { name: 'Mattress', value: 'Mattress', isChecked: false },
+    { name: 'Wardrobe', value: 'Wardrobe', isChecked: false },
+    { name: 'Tea and Coffee Making Facilities', value: 'Tea and Coffee Making Facilities', isChecked: false }];
     const [docRoomFeaturesData, setRoomFeaturesData] = useState([])
     const [roomFeatures, setUserRoomFeatures] = useState([])
 
     //room Types
-    let roomTypesData = [{ name: 'Single Room', value: 'Single Room' },
-    { name: 'Twin or Double Room', value: 'Twin Or Double Room' },
-    { name: 'Studio Room', value: 'Studio Room' },
-    { name: 'Deluxe Room', value: 'Deluxe Room' },
-    { name: 'Suites', value: 'Suites' },]
+    let roomTypesData = [{ name: 'Single Room', value: 'Single Room', isChecked: false },
+    { name: 'Twin or Double Room', value: 'Twin Or Double Room', isChecked: false },
+    { name: 'Studio Room', value: 'Studio Room', isChecked: false },
+    { name: 'Deluxe Room', value: 'Deluxe Room', isChecked: false },
+    { name: 'Suites', value: 'Suites', isChecked: false },]
     const [docRoomTypesData, setRoomTypesData] = useState([])
     const [roomTypes, setUserRoomTypes] = useState([])
-
-    const [language, setLanguage] = useState('');
-    const [TNC, setTNC] = useState('');
-
-    
 
     useEffect(() => {
         setAmenitiesData(amenitiesData);
@@ -86,13 +88,20 @@ export default function AddHotel({ navigation }) {
         setAmenitiesData(
             docAmenitiesData.map(curr => {
                 if (item.name === curr.name) {
-                    return { ...curr, isChecked: !curr.checked };
-                } else {
+                    if (curr.isChecked == false) {
+                        return {...curr, isChecked: true};
+                        
+                    }
+                    else if (curr.isChecked == true) {
+                        return {...curr, isChecked: false};
+                    }
+                }
+                 else {
                     return curr;
                 }
             })
         )
-        setUserAmenities(current => [...current, item.name]);
+        //setUserAmenities(current => [...current, item.name]);
         console.log(amenities);
         console.log(docAmenitiesData);
     }
@@ -102,13 +111,19 @@ export default function AddHotel({ navigation }) {
         setRoomFeaturesData(
             docRoomFeaturesData.map(curr => {
                 if (item.name === curr.name) {
-                    return { ...curr, isChecked: !curr.checked };
+                    if (curr.isChecked == false) {
+                        return {...curr, isChecked: true};
+                        
+                    }
+                    else if (curr.isChecked == true) {
+                        return {...curr, isChecked: false};
+                    }
                 } else {
                     return curr;
                 }
             })
         )
-        setUserRoomFeatures(current => [...current, item.name]);
+        //setUserRoomFeatures(current => [...current, item.name]);
         console.log(roomFeatures);
         console.log(docRoomFeaturesData);
     }
@@ -118,13 +133,19 @@ export default function AddHotel({ navigation }) {
         setRoomTypesData(
             docRoomTypesData.map(curr => {
                 if (item.name === curr.name) {
-                    return { ...curr, isChecked: !curr.checked };
+                    if (curr.isChecked == false) {
+                        return {...curr, isChecked: true};
+                        
+                    }
+                    else if (curr.isChecked == true) {
+                        return {...curr, isChecked: false};
+                    }
                 } else {
                     return curr;
                 }
             })
         )
-        setUserRoomTypes(current => [...current, item.name]);
+        //setUserRoomTypes(current => [...current, item.name]);
         console.log(roomTypes);
         console.log(docRoomTypesData);
     }
@@ -133,13 +154,13 @@ export default function AddHotel({ navigation }) {
             try {
                 await setDoc(doc(db, "hotels", name), {
                     name: name,
-                    roomTypes: roomTypes,
+                    roomTypes: docRoomTypesData,
                     priceRange: priceRange,
                     hotelClass: hotelClass,
                     checkInTime: checkInHour + ':' + checkInMinute,
                     checkOutTime: checkOutHour + ':' + checkOutMinute,
-                    amenities: amenities,
-                    roomFeatures: roomFeatures,
+                    amenities: docAmenitiesData,
+                    roomFeatures: docRoomFeaturesData,
                     language: language,
                     location: '',
                     TNC: TNC
@@ -407,15 +428,15 @@ export default function AddHotel({ navigation }) {
                         }
                     })}
                     useNativeAndroidPickerStyle={false}
-                    placeholder='language'
+                    placeholder={languagePlaceholder}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
                     items={[
+                        { label: 'Any', value: 'Any'},
                         { label: 'English', value: 'English' },
                         { label: 'Chinese', value: 'Chinese' },
                     ]}
                 />
-                {/*TODO */}
                 <Text>Location:</Text>
                 {/* insert google maps API and mapview here
             https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}

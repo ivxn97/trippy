@@ -8,7 +8,7 @@ export default function RestaurantScreen({route, navigation}) {
     return (
         <View>
             <Text>{JSON.stringify(name).replace(/"/g,"")}</Text>
-            <Text>Type of Cuisine: {JSON.stringify(typeOfCuisine).replace(/"/g,"")}</Text>
+            <Text>Type of Cuisine: {JSON.stringify(typeofCuisine).replace(/"/g,"")}</Text>
             <Text>${JSON.stringify(price).replace(/"/g,"")}</Text>
             <Text>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
             <Text>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>

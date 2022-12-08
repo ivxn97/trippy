@@ -37,7 +37,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Register BO" component={RegistrationBO}/>
         <Stack.Screen name="List Of Users" component={ListOfUsers}/>
         <Stack.Screen name="Admin View User" component={AdminViewUser}/>
-        <Stack.Screen name="Add Attraction Deal" component={AddDeal}/>
+        <Stack.Screen name="Add Deal" component={AddDeal}/>
     </ProfileStack.Navigator>
   )
 }

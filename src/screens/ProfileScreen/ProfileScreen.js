@@ -15,7 +15,7 @@ export default function ProfileScreen ( {navigation} ) {
             // Sign-out successful.
             removeRole();
             removeEmail();
-            navigation.replace('Profile Page');
+            navigation.navigate('Profile Page');
             alert("Successfully Logged out")
         }).catch((error) => {
             const errorCode = error.code;
@@ -24,6 +24,7 @@ export default function ProfileScreen ( {navigation} ) {
          });
     }
 
+    /*
     onAuthStateChanged(auth, (user) => {
     if (user) {
             
@@ -31,7 +32,7 @@ export default function ProfileScreen ( {navigation} ) {
         navigation.navigate('Login')
     }
     
-    }); 
+    }); */
 
     const removeRole = async () => {
         try {
@@ -70,7 +71,6 @@ export default function ProfileScreen ( {navigation} ) {
     useFocusEffect(React.useCallback(() => 
     {
         getRole();
-        setRefresh(Math.random())
         console.log("Current Role:", role)
     },[role]));
     
@@ -108,6 +108,12 @@ export default function ProfileScreen ( {navigation} ) {
                     title ="Add Restaurant"
                     onPress={() =>
                         navigation.navigate('Add Restaurant')
+                    }
+                />
+                <Button
+                    title ="Add Deal"
+                    onPress={() =>
+                        navigation.navigate('Add Deal')
                     }
                 />
         
@@ -179,6 +185,12 @@ export default function ProfileScreen ( {navigation} ) {
                     }
                 />
                 <Button
+                    title ="Add Deal"
+                    onPress={() =>
+                        navigation.navigate('Add Deal')
+                    }
+                />
+                <Button
                     title ="Sign Out"
                     onPress={() => onSignout()}
                 />
@@ -244,6 +256,7 @@ export default function ProfileScreen ( {navigation} ) {
                     navigation.navigate('Login')
                 }
                 />
+                <Text style={{opacity:0}}>{role}</Text>
             </View>
         )
     }

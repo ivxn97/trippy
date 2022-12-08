@@ -23,8 +23,8 @@ const ProfileStack = createStackNavigator();
 
 function ProfileStackScreen() {
   return (
-    <ProfileStack.Navigator>
-        <Stack.Screen name="Profile" component={ProfileScreen}/>
+    <ProfileStack.Navigator screenOptions={{ unmountOnBlur: true}}>
+        <Stack.Screen name="Profile Page" component={ProfileScreen}/>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="Add Hotel" component={AddHotel} />
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
@@ -47,7 +47,7 @@ const DealsStack = createStackNavigator();
 function DealsStackScreen() {
   return (
     <DealsStack.Navigator>
-        <Stack.Screen name="Deals" component={DealsList}/>
+        <Stack.Screen name="Deals List" component={DealsList}/>
         <Stack.Screen name="Deal detail" component={DealsScreen}/>
     </DealsStack.Navigator>
   )
@@ -58,7 +58,7 @@ const GuideStack = createStackNavigator();
 function GuideStackScreen() {
   return (
     <GuideStack.Navigator>
-        <Stack.Screen name="Guide" component={GuideScreen}/>
+        <Stack.Screen name="Guide List" component={GuideScreen}/>
     </GuideStack.Navigator>
   )
 }
@@ -68,7 +68,7 @@ const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Home Page" component={HomeScreen}/>
         <Stack.Screen name="List of attractions" component={AttractionList}/>
         <Stack.Screen name="Attraction Details" component={AttractionView}/>
         <Stack.Screen name="List of hotels" component={HotelList}/>
@@ -86,7 +86,7 @@ const ForumStack = createStackNavigator();
 function ForumStackScreen() {
   return (
     <ForumStack.Navigator>
-        <Stack.Screen name="Forum" component={ForumScreen}/>
+        <Stack.Screen name="Forum Page" component={ForumScreen}/>
     </ForumStack.Navigator>
   )
 }

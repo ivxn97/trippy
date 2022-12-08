@@ -51,7 +51,7 @@ export default function RegistrationRegisteredUser({navigation}) {
         value: null,
         color: 'black',
     };
-
+    // Get Interests from Firestore
     async function getInterests () {
         var interestRef = doc(db, "types", "RegisteredUserPage");
         const docSnap = await getDoc(interestRef);
@@ -65,7 +65,7 @@ export default function RegistrationRegisteredUser({navigation}) {
         }
         setD(docData);
     }
-
+    // Get Languages from Firestore 
     async function getLanguages () {
         var languageRef = doc(db, "types", "languages");
         const docSnap = await getDoc(languageRef);
@@ -145,7 +145,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     languages: languageData
                 });
                 //console.log("Document written with ID: ", docRef.id);
-                navigation.navigate('Home', {user: auth})
+                navigation.navigate('Login')
             }
             catch (e) {
                 console.log("Error adding document: ", e);
@@ -188,7 +188,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     style={styles.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text) => setEmail(text.toLowerCase())}
                     value={email}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"

@@ -45,7 +45,7 @@ export default function RegistrationLOL({navigation}) {
                     socialMediaHandle: socialMediaHandle
                 });
                 //console.log("Document written with ID: ", docRef.id);
-                navigation.navigate('Home', {user: auth})
+                navigation.navigate('Login', {user: auth})
             }
             catch (e) {
                 console.log("Error adding document: ", e);
@@ -88,7 +88,7 @@ export default function RegistrationLOL({navigation}) {
                     style={styles.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text) => setEmail(text.toLowerCase())}
                     value={email}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"

@@ -1,28 +1,62 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { db } from '../../../config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({navigation}) {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    //const fireSQL = new FireSQL(db);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
     const auth = getAuth();
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration Selector')
     }
 
+    async function getLogin (email) {
+        var loginRef = doc(db, "users", email);
+        const docSnap = await getDoc(loginRef);
+
+        if (docSnap.exists()) {
+            //console.log("Document data: ", docSnap.data());
+            const roleData = docSnap.data().role
+            setRole(roleData);
+        }
+        else {
+            console.log("Error", error)
+        }
+    }
+
+    const storeRole = async (role) => {
+        try {
+            await AsyncStorage.setItem('role', role)
+            console.log('Successfully added to ASync Storage with' , role)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const storeEmail = async (email) => {
+        try {
+            await AsyncStorage.setItem('email', email)
+            console.log('Successfully added to ASync Storage with' , email)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     const onLoginPress = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
             const user = userCredentials.user;
+            getLogin(user.email);
+            storeEmail(user.email);
             console.log('Logged in with: ', user.email);
-            navigation.navigate('Profile');
+            navigation.navigate('Profile Page');
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -30,6 +64,8 @@ export default function LoginScreen({navigation}) {
             alert(errorCode + ': ' + errorMessage)
         })
     }
+    console.log('Role: ' + role)
+    storeRole(role);
 
     return (
         <View style={styles.container}>
@@ -44,7 +80,7 @@ export default function LoginScreen({navigation}) {
                     style={styles.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text) => setEmail(text.toLowerCase())}
                     value={email}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"

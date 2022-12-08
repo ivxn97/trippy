@@ -44,7 +44,7 @@ export default function RegistrationBO({navigation}) {
                     UEN: UEN
                 });
                 //console.log("Document written with ID: ", docRef.id);
-                navigation.navigate('Home', {user: auth})
+                navigation.navigate('Login', {user: auth})
             }
             catch (e) {
                 console.log("Error adding document: ", e);
@@ -96,7 +96,7 @@ export default function RegistrationBO({navigation}) {
                     style={styles.input}
                     placeholder='E-mail'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text) => setEmail(text.toLowerCase())}
                     value={email}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"

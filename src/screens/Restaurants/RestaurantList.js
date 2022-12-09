@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -31,6 +31,22 @@ if (loading) {
 }
 
 return (
+  <View>
+    <TextInput
+        style={styles.inputSearch}
+        placeholder='search'
+        placeholderTextColor="#aaaaaa"
+        underlineColorAndroid="transparent"
+        autoCapitalize="sentences"
+    />
+    <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
+        <TouchableOpacity style={styles.buttonListLeft}>
+          <Text style={styles.buttonSmallListText}>Sort</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonListRight}>
+          <Text style={styles.buttonSmallListText}>Filter</Text>
+        </TouchableOpacity>
+    </View>
   <FlatList
     data={restaurants}
     extraData={restaurants}
@@ -47,5 +63,6 @@ return (
       </TouchableHighlight>
     )}
   />
+  </View>
 );
 }

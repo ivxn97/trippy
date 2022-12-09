@@ -7,6 +7,8 @@ export { default as RegistrationBO } from './RegistrationScreen/RegistrationBO'
 export {default as RegistrationSelector} from './RegistrationScreen/RegistrationSelector'
 
 export {default as GuideScreen} from './GuideScreen/GuideScreen'
+export {default as AddGuide} from './GuideScreen/AddGuide'
+
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as ProfileScreen} from './ProfileScreen/ProfileScreen'
 export {default as DealsScreen} from './DealsScreen/DealsScreen'

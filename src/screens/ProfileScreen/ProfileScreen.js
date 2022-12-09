@@ -129,6 +129,14 @@ export default function ProfileScreen ( {navigation} ) {
                     <Text style={styles.text}>Add Deal</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
+                    title ="Add Deal"
+                    onPress={() =>
+                        navigation.navigate('Add Guide')
+                    }
+                >
+                    <Text style={styles.text}>Add Guide</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Register"
                     onPress={() =>
                         navigation.navigate('Registration Selector')
@@ -250,6 +258,14 @@ export default function ProfileScreen ( {navigation} ) {
                     title="Guide"
                 >
                     <Text style={styles.text}>Guide</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title ="Add Guide"
+                    onPress={() =>
+                        navigation.navigate('Add Guide')
+                    }
+                >
+                    <Text style={styles.text}>Add Guide</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Walking Tour"

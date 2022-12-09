@@ -91,6 +91,21 @@ export default StyleSheet.create({
         marginRight: 20,
         paddingLeft: 16
     },
+    inputSearch: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 38,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
     desc: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -134,6 +149,38 @@ export default StyleSheet.create({
         width: 120,
         borderRadius: 15,
     },
+    buttonListLeft: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: 'white',
+        marginLeft: 2,
+        marginRight: 3,
+        marginTop: 5,
+        marginBottom:5,
+        height: 30,
+        width: 90,
+        borderRadius: 15,
+    },
+    buttonListRight: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: 'white',
+        marginLeft: 2,
+        marginRight: 15,
+        marginTop: 5,
+        marginBottom:5,
+        height: 30,
+        width: 90,
+        borderRadius: 15,
+    },
+    buttonSmallListText: {
+        alignSelf:"center", 
+        marginTop:5,
+    },
     buttonSmallText: {
         alignSelf:"center", 
         marginTop:5,
@@ -172,4 +219,16 @@ export default StyleSheet.create({
     inputIOS: {
         fontSize: 14
     },
+    checklist: {
+        flexDirection: 'row', 
+        alignItems: 'center'
+
+      },
+    checkbox: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 8,
+        paddingLeft: 16
+    }
 })

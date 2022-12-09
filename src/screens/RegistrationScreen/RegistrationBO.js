@@ -61,10 +61,11 @@ export default function RegistrationBO({navigation}) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
+                <Image
                     style={styles.logo}
                     source={require('../../../assets/icon.png')}
-                />*/}
+                />
+                <Text style={styles.text}>Name:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='First Name'
@@ -83,6 +84,7 @@ export default function RegistrationBO({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>Business Name:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='Business Name'
@@ -92,6 +94,7 @@ export default function RegistrationBO({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>E-mail:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='E-mail'
@@ -101,6 +104,7 @@ export default function RegistrationBO({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>Password:</Text>
                 <TextInput
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
@@ -121,6 +125,7 @@ export default function RegistrationBO({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>UEN:</Text>
                 <TextInput
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"

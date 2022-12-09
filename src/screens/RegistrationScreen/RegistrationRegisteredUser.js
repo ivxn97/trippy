@@ -166,6 +166,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     style={styles.logo}
                     source={require('../../../assets/icon.png')}
                 />
+                <Text style={styles.text}>Name:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='First Name'
@@ -184,6 +185,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>E-mail:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='E-mail'
@@ -193,24 +195,9 @@ export default function RegistrationRegisteredUser({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <Text>Date of Birth:</Text>
+                <Text style={styles.text}>Date of Birth:</Text>
                 <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={dayPlaceholder}
                 onValueChange={(value) => setDayDOB(value)}
@@ -229,22 +216,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                 ]}
                 />
                 <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={monthPlaceholder}
                 onValueChange={(value) => setMonthDOB(value)}
@@ -265,7 +237,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                
+                <Text style={styles.text}>Password:</Text>
                 <TextInput
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
@@ -286,24 +258,9 @@ export default function RegistrationRegisteredUser({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <Text>Country of Origin:</Text>
+                <Text style={styles.text}>Country of Origin:</Text>
                 <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={countryPlaceholder}
                 onValueChange={(value) => setCountry(value)}
@@ -312,7 +269,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     {label:'Australia', value:'Australia'},
                 ]}
                 />
-                <Text>Interests:</Text>
+                <Text style={styles.text}>Interests:</Text>
                 {docTypeData.map((item, index) => (
                     <View style={styles.checklist} key={index}>
                         <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setInterest(item)}/>
@@ -320,7 +277,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     </View>
                 ))}
 
-                <Text>Preferred languages:</Text>
+                <Text style={styles.text}>Preferred languages:</Text>
                 {languageData.map((item, index) => (
                     <View style={styles.checklist} key={index}>
                         <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setLanguage(item)}/>
@@ -341,3 +298,35 @@ export default function RegistrationRegisteredUser({navigation}) {
     )
 }
 
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

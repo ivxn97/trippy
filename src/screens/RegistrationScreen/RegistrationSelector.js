@@ -40,25 +40,14 @@ export default function RegistrationSelector({navigation}) {
         <ScrollView
           style={PStyles.scrollContainer}
           contentContainerStyle={PStyles.scrollContentContainer}>
-
+            <Image
+                style={styles.imagePlaceholder}
+                source={require('../../../assets/RegistrationBanner.png')}
+            />
           <View paddingVertical={5} />
-          <Text>Select a Registration Account Role:</Text>
+          <Text style={styles.text}>Select a Registration Account Role:</Text>
             <RNPickerSelect
-            style={StyleSheet.create({
-                inputIOSContainer: {
-                    paddingVertical: 20,
-                    paddingHorizontal: 30,
-                    borderLeftWidth: 2,
-                    borderRightWidth:2,
-                    borderTopWidth:2,
-                    borderBottomWidth:2,
-                    backgroundColor: 'white',
-                    fontSize: '20'
-                },
-                inputIOS: {
-                    fontSize: 14
-                }
-                })}
+            style={pickerSelectStyles}
             placeholder={placeholder}
             useNativeAndroidPickerStyle={false}
             onValueChange={(value) => setSelected(value)}
@@ -122,3 +111,36 @@ const PStyles = StyleSheet.create({
 		right: 15,
 	},
 };
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

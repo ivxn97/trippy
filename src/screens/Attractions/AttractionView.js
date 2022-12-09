@@ -24,6 +24,7 @@ export default function AttractionView({route, navigation}) {
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>
+            <Text style={styles.textNB}>Address: </Text>
             <Text style={styles.textNB}>Type: {JSON.stringify(attractionType).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
@@ -35,7 +36,7 @@ export default function AttractionView({route, navigation}) {
             <Text style={styles.price}>${JSON.stringify(price).replace(/"/g,"")}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonSmall}>
-                        <Text style={styles.buttonSmallText}>Read Review</Text>
+                        <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonSmall}>
                         <Text style={styles.buttonSmallText}>Book</Text>

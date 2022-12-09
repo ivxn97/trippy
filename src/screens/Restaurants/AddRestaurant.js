@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
@@ -56,6 +56,7 @@ export default function AddRestaurant ( { navigation }) {
     const [closingMinute, setClosingMinute] = useState('');
     const [menu, setMenu] = useState('');
     const [language, setLanguage] = useState('');
+    const [description, setDescription] = useState('');
     const [TNC, setTNC] = useState('');
 
     const onSubmitPress = async () => {
@@ -71,6 +72,7 @@ export default function AddRestaurant ( { navigation }) {
                     location: '',
                     language: language,
                     menu: menu,
+                    description: description,
                     TNC: TNC
                 });
                 //console.log("Document written with ID: ", docRef.id);
@@ -86,11 +88,12 @@ export default function AddRestaurant ( { navigation }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
-            <Text>Name:</Text>
+                <Text style={styles.text}>Upload Images:</Text>
+                <Image
+                    style={styles.imagePlaceholder}
+                    source={require('../../../assets/imageUpload4.png')}
+                />
+            <Text style={styles.text}>Name:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Name'
@@ -100,24 +103,9 @@ export default function AddRestaurant ( { navigation }) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
-            <Text>Type of Cuisine:</Text>
+            <Text style={styles.text}>Type of Cuisine:</Text>
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={typePlaceholder}
                 onValueChange={(value) => setType(value)}
@@ -143,24 +131,9 @@ export default function AddRestaurant ( { navigation }) {
 
                 ]}
             />
-            <Text>Price:</Text>
+            <Text style={styles.text}>Price:</Text>
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder= {pricePlaceholder}
                 onValueChange={(value) => setPrice(value)}
@@ -172,24 +145,9 @@ export default function AddRestaurant ( { navigation }) {
                     {label:'$$$$$', value:'$$$$$'},
                 ]}
             />
-            <Text>Age Group:</Text>
+            <Text style={styles.text}>Age Group:</Text>
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={agePlaceholder}
                 onValueChange={(value) => setAge(value)}
@@ -200,7 +158,7 @@ export default function AddRestaurant ( { navigation }) {
                     {label:'Adults Only', value:'Adults Only'},
                 ]}
             />
-            <Text>Group Size:</Text>
+            <Text style={styles.text}>Group Size:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Group Size'
@@ -211,25 +169,10 @@ export default function AddRestaurant ( { navigation }) {
                 autoCapitalize="none"
                 keyboardType="numeric"
             />
-            <Text>Opening Hours:</Text>
+            <Text style={styles.text}>Opening Hours:</Text>
             {/*Opening Hour */}
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={hourPlaceholder}
                 onValueChange={(value) => setOpeningHour(value)}
@@ -246,22 +189,7 @@ export default function AddRestaurant ( { navigation }) {
             />
             {/*Opening Minute */}
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={minutePlaceholder}
                 onValueChange={(value) => setOpeningMinute(value)}
@@ -288,25 +216,10 @@ export default function AddRestaurant ( { navigation }) {
                     {label:'57', value:'57'}, {label:'58', value:'58'}, {label:'59', value:'59'},
                 ]}
             />
-            <Text>Closing Hours:</Text>
+            <Text style={styles.text}>Closing Hours:</Text>
             {/*Closing Hour */}
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={hourPlaceholder}
                 onValueChange={(value) => setClosingHour(value)}
@@ -323,22 +236,7 @@ export default function AddRestaurant ( { navigation }) {
             />
             {/*Closing Minute */}
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        backgroundColor: 'white',
-                        fontSize: '20',
-                        marginTop: 10,
-                        marginBottom: 10,
-                        marginLeft: 30,
-                        marginRight: 30,
-                        paddingLeft: 16
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={minutePlaceholder}
                 onValueChange={(value) => setClosingMinute(value)}
@@ -365,24 +263,9 @@ export default function AddRestaurant ( { navigation }) {
                     {label:'57', value:'57'}, {label:'58', value:'58'}, {label:'59', value:'59'},
                 ]}
             />
-            <Text>Language Preferences:</Text>
+            <Text style={styles.text}>Language Preferences:</Text>
             <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={languagePlaceholder}
                     placeholderTextColor="#aaaaaa"
@@ -394,7 +277,7 @@ export default function AddRestaurant ( { navigation }) {
                     ]}
                 />
 
-            <Text>Menu:</Text>
+            <Text style={styles.text}>Menu:</Text>
             <TextInput
                 style={styles.desc}
                 placeholder='Menu'
@@ -405,10 +288,28 @@ export default function AddRestaurant ( { navigation }) {
                 autoCapitalize="sentences"
                 multiline
             />
-            <Text>Location:</Text>
+            <Text style={styles.text}>Location:</Text>
+            <TextInput
+                style={styles.input}
+                placeholder='Enter Location Name'
+                placeholderTextColor="#aaaaaa"
+                underlineColorAndroid="transparent"
+                autoCapitalize="sentences"
+            />
             {/* insert google maps API and mapview here
             https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
-            <Text>Terms & Conditions:</Text>
+            <Text style={styles.text}>Description:</Text>
+            <TextInput
+                style={styles.desc}
+                placeholder='Description'
+                placeholderTextColor="#aaaaaa"
+                onChangeText={(Text) => setDescription(Text)}
+                value={description}
+                underlineColorAndroid="transparent"
+                autoCapitalize="sentences"
+                multiline
+            />
+            <Text style={styles.text}>Terms & Conditions:</Text>
             <TextInput
                 style={styles.desc}
                 placeholder='Terms & Conditions'
@@ -428,3 +329,36 @@ export default function AddRestaurant ( { navigation }) {
         </View>
     )
 }
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

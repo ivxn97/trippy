@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import styles from './styles';
 
 export default function ProfileScreen ( {navigation} ) {
     const [role, setRole] = useState('');
@@ -77,186 +78,261 @@ export default function ProfileScreen ( {navigation} ) {
     if (role == 'Admin') {
         return(
             <View>
-                <Button
+                <Text style={styles.Heading}>Welcome, Admin!</Text>
+                <TouchableOpacity
                     title ="Login"
-                    key={refresh}
+                    style={styles.button}
                     onPress={() =>
                         navigation.navigate('Login')
                     }
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Add Hotel"
                     onPress={() =>
                         navigation.navigate('Add Hotel')
                     }
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Add Hotel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                 title ="Add Attraction"
                 onPress={() =>
                     navigation.navigate('Add Attraction')
                 }
-                />
-        
-                <Button
+                >
+                    <Text style={styles.text}>Add Attraction</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Add Paid Tour"
                     onPress={() =>
                         navigation.navigate('Add Paid Tour')
                     }
-                />
-    
-                <Button
+                >
+                    <Text style={styles.text}>Add Paid Tour</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Add Restaurant"
                     onPress={() =>
                         navigation.navigate('Add Restaurant')
                     }
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Add Restaurant</Text>
+                </TouchableOpacity> 
+                <TouchableOpacity style={styles.button}
                     title ="Add Deal"
                     onPress={() =>
                         navigation.navigate('Add Deal')
                     }
-                />
-        
-                <Button
-                    title ="Registration Selector (TEST)"
+                >
+                    <Text style={styles.text}>Add Deal</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title ="Register"
                     onPress={() =>
                         navigation.navigate('Registration Selector')
                     }
-                />
+                >
+                    <Text style={styles.text}>Register</Text>
+                </TouchableOpacity>
         
-                <Button
+                <TouchableOpacity style={styles.button}
                     title ="Admin Page (TEST)"
                     onPress={() =>
                         navigation.navigate('Admin Page')
                     }
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Admin Page</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Sign Out"
                     onPress={() => onSignout()}
-                />
+                >
+                    <Text style={styles.text}>Sign Out</Text>
+                </TouchableOpacity>
             </View>
         )
     }
     else if (role == 'Business Owner') {
         return (
             <View>
-                <Button
+                <Text style={styles.Heading}>Welcome, Business Owner!</Text>
+                <TouchableOpacity style={styles.button}
                     title="View Profile"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>View Profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Tour"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Tour</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Hotel"
-                />
-                <Button
-                    title="Attraction"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Hotel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title="Attraction" 
+                >
+                    <Text style={styles.text}>Attraction</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Restaurant"
-                />
-                <Button
-                    title="Setting"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Restaurant</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title="Settings"
+                >
+                    <Text style={styles.text}>Settings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Add Hotel"
                     onPress={() =>
                         navigation.navigate('Add Hotel')
                     }
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Add Hotel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                 title ="Add Attraction"
                 onPress={() =>
                     navigation.navigate('Add Attraction')
                 }
-                />
-        
-                <Button
+                >
+                    <Text style={styles.text}>Add Attraction</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Add Paid Tour"
                     onPress={() =>
                         navigation.navigate('Add Paid Tour')
                     }
-                />
-    
-                <Button
+                >
+                    <Text style={styles.text}>Add Paid Tour</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Add Restaurant"
                     onPress={() =>
                         navigation.navigate('Add Restaurant')
                     }
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Add Restaurant</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Add Deal"
                     onPress={() =>
                         navigation.navigate('Add Deal')
                     }
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Add Deal</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Sign Out"
                     onPress={() => onSignout()}
-                />
+                >
+                    <Text style={styles.text}>Sign Out</Text>
+                </TouchableOpacity>
             </View>
         )
     }
     else if (role == 'LOL') {
         return (
             <View>
-                <Button
+                <Text style={styles.Heading}>Welcome, LOL!</Text>
+                <TouchableOpacity style={styles.button}
                     title="View Profile"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>View Profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Guide"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Guide</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Walking Tour"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Walking Tour</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Active Threads"
-                />
-                <Button
-                    title="Setting"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Active Threads</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title="Settings"
+                >
+                    <Text style={styles.text}>Settings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Sign Out"
                     onPress={() => onSignout()}
-                />
+                >
+                    <Text style={styles.text}>Sign Out</Text>
+                </TouchableOpacity>
             </View>
         )
     }
     else if (role == 'Registered User') {
         return (
             <View>
-                <Button
+                <Text style={styles.Heading}>Welcome, User!</Text>
+                <TouchableOpacity style={styles.button}
                     title="View Profile"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>View Profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Saved"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Saved</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Itinerary"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Itinerary</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title="Active Threads"
-                />
-                <Button
-                    title="Setting"
-                />
-                <Button
+                >
+                    <Text style={styles.text}>Active Threads</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title="Settings"
+                >
+                    <Text style={styles.text}>Settings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
                     title ="Sign Out"
                     onPress={() => onSignout()}
-                />
+                >
+                    <Text style={styles.text}>Sign Out</Text>
+                </TouchableOpacity>
             </View>
         )
     }
     else {
         return (
             <View>
-                <Button
+                <Text style={styles.Heading}>Join Us Today!</Text>
+                <TouchableOpacity style={styles.button}
                 title ="Login"
                 onPress={() =>
                     navigation.navigate('Login')
                 }
-                />
-                <Text style={{opacity:0}}>{role}</Text>
+                >
+                    <Text style={styles.text}>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title ="Register"
+                    onPress={() =>
+                        navigation.navigate('Registration Selector')
+                    }
+                >
+                <Text style={styles.text}>Register</Text>
+                </TouchableOpacity>
             </View>
         )
     }

@@ -62,10 +62,11 @@ export default function RegistrationLOL({navigation}) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
+                <Image
                     style={styles.logo}
                     source={require('../../../assets/icon.png')}
-                />*/}
+                />
+                <Text style={styles.text}>Name:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='First Name'
@@ -84,6 +85,7 @@ export default function RegistrationLOL({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>E-mail:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='E-mail'
@@ -93,6 +95,7 @@ export default function RegistrationLOL({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>Password:</Text>
                 <TextInput
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
@@ -113,24 +116,9 @@ export default function RegistrationLOL({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <Text>Please specify your social media handle for verification:</Text>
+                <Text style={styles.text}>Please specify your social media handle for verification:</Text>
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                        })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={placeholder}
                     onValueChange={(value) => setSelected(value)}
@@ -153,8 +141,12 @@ export default function RegistrationLOL({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <Text>Upload a screenshot of your follower Count/ Page Views</Text>
+                <Text style={styles.text}>Upload a screenshot of your follower Count/ Page Views</Text>
                 {/*TODO: Add image uploading */}
+                <Image
+                    style={{height:30, width: 90, marginLeft:20}}
+                    source={require('../../../assets/upload.png')}
+                />
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onRegisterPress()}>
@@ -167,3 +159,36 @@ export default function RegistrationLOL({navigation}) {
         </View>
     )
 }
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

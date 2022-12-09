@@ -43,7 +43,7 @@ export default function HotelList({ navigation }) {
                             name: item.name, roomTypes: item.roomTypes,
                             priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
                             checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                            language: item.language, TNC: item.TNC
+                            language: item.language,description: item.description, TNC: item.TNC
                         })
                     }}>
                     <View style={styles.list}>

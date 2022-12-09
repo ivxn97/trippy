@@ -59,21 +59,7 @@ export default function AdminViewUser ({route, navigation}) {
             <View>
                 <Text>Change Account Role:</Text>
                 <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        borderLeftWidth: 2,
-                        borderRightWidth:2,
-                        borderTopWidth:2,
-                        borderBottomWidth:2,
-                        backgroundColor: 'white',
-                        fontSize: '20'
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 placeholder={roleP}
                 useNativeAndroidPickerStyle={false}
                 onValueChange={(value) => setRole(value)}
@@ -92,21 +78,7 @@ export default function AdminViewUser ({route, navigation}) {
     
             <Text>Change Account Status</Text>
             <RNPickerSelect
-                style={StyleSheet.create({
-                    inputIOSContainer: {
-                        paddingVertical: 20,
-                        paddingHorizontal: 30,
-                        borderLeftWidth: 2,
-                        borderRightWidth:2,
-                        borderTopWidth:2,
-                        borderBottomWidth:2,
-                        backgroundColor: 'white',
-                        fontSize: '20'
-                    },
-                    inputIOS: {
-                        fontSize: 14
-                    }
-                    })}
+                style={pickerSelectStyles}
                 placeholder={statusP}
                 useNativeAndroidPickerStyle={false}
                 onValueChange={(value) => setStatus(value)}
@@ -188,3 +160,36 @@ export default function AdminViewUser ({route, navigation}) {
         )
     }
 }
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

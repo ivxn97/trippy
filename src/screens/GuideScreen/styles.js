@@ -31,9 +31,11 @@ export default StyleSheet.create({
     },
     text: {
         borderRadius: 5,
-        color: 'black',
-        marginLeft:20,
-        fontSize:18,
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
+        paddingLeft: 16,
+        fontWeight: 'bold',
     },
     textNB: {
         borderRadius: 5,
@@ -89,15 +91,30 @@ export default StyleSheet.create({
         marginRight: 20,
         paddingLeft: 16
     },
-    button: {
+    desc: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         borderBottomRightRadius: 15,
         borderBottomLeftRadius: 15,
-        backgroundColor: '#acacab',
+        height: 120,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
-        marginTop: 10,
+        paddingLeft: 16
+    },
+    button: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: '#8f8f8f',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 20,
         height: 48,
         borderRadius: 5,
         alignItems: "center",
@@ -155,16 +172,4 @@ export default StyleSheet.create({
     inputIOS: {
         fontSize: 14
     },
-    checklist: {
-        flexDirection: 'row', 
-        alignItems: 'center'
-
-      },
-    checkbox: {
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 30,
-        marginRight: 8,
-        paddingLeft: 16
-    }
 })

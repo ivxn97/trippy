@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
@@ -43,6 +43,7 @@ export default function AddHotel({ navigation }) {
     const [checkOutHour, setCheckOutHour] = useState('');
     const [checkOutMinute, setCheckOutMinute] = useState('');
     const [language, setLanguage] = useState('');
+    const [description, setDescription] = useState('');
     const [TNC, setTNC] = useState('');
 
     // amenities
@@ -163,6 +164,7 @@ export default function AddHotel({ navigation }) {
                     roomFeatures: docRoomFeaturesData,
                     language: language,
                     location: '',
+                    description: description,
                     TNC: TNC
                 });
                 //console.log("Document written with ID: ", docRef.id);
@@ -177,11 +179,13 @@ export default function AddHotel({ navigation }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
-                <Text>Name:</Text>
+                
+                <Text style={styles.text}>Upload Images:</Text>
+                <Image
+                    style={styles.imagePlaceholder}
+                    source={require('../../../assets/imageUpload4.png')}
+                />
+                <Text style={styles.text}>Name:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='Name'
@@ -191,7 +195,7 @@ export default function AddHotel({ navigation }) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <Text>Room Type:</Text>
+                <Text style={styles.text}>Room Type:</Text>
                 {docRoomTypesData.map((item, index) => (
                     <View style={styles.checklist} key={index}>
                         <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setRoomTypes(item)} />
@@ -199,7 +203,7 @@ export default function AddHotel({ navigation }) {
                     </View>
                 ))}
 
-                <Text>Price Range:</Text>
+                <Text style={styles.text}>Price Range:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='PriceRange'
@@ -210,24 +214,9 @@ export default function AddHotel({ navigation }) {
                     autoCapitalize="none"
                     keyboardType="numeric"
                 />
-                <Text>Hotel Class:</Text>
+                <Text style={styles.text}>Hotel Class:</Text>
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={classPlaceholder}
                     onValueChange={(value) => setHotelClass(value)}
@@ -239,25 +228,10 @@ export default function AddHotel({ navigation }) {
                         { label: '5 Star', value: '5 Star' },
                     ]}
                 />
-                <Text>CheckIn Hours:</Text>
+                <Text style={styles.text}>CheckIn Hours:</Text>
                 {/*CheckIn Hour */}
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={hourPlaceholder}
                     onValueChange={(value) => setCheckInHour(value)}
@@ -274,22 +248,7 @@ export default function AddHotel({ navigation }) {
                 />
                 {/*CheckIn Minute */}
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={minutePlaceholder}
                     onValueChange={(value) => setCheckInMinute(value)}
@@ -316,25 +275,10 @@ export default function AddHotel({ navigation }) {
                         { label: '57', value: '57' }, { label: '58', value: '58' }, { label: '59', value: '59' },
                     ]}
                 />
-                <Text>CheckOut Hours:</Text>
+                <Text style={styles.text}>CheckOut Hours:</Text>
                 {/*CheckOut Hour */}
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={hourPlaceholder}
                     onValueChange={(value) => setCheckOutHour(value)}
@@ -351,22 +295,7 @@ export default function AddHotel({ navigation }) {
                 />
                 {/*CheckOut Minute */}
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={minutePlaceholder}
                     onValueChange={(value) => setCheckOutMinute(value)}
@@ -393,7 +322,7 @@ export default function AddHotel({ navigation }) {
                         { label: '57', value: '57' }, { label: '58', value: '58' }, { label: '59', value: '59' },
                     ]}
                 />
-                <Text>Amenities:</Text>
+                <Text style={styles.text}>Amenities:</Text>
                 {docAmenitiesData.map((item, index) => (
                     <View style={styles.checklist} key={index}>
                         <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setAmenities(item)} />
@@ -401,7 +330,7 @@ export default function AddHotel({ navigation }) {
                     </View>
                 ))}
                 
-                <Text>Room Features:</Text>
+                <Text style={styles.text}>Room Features:</Text>
                 {docRoomFeaturesData.map((item, index) => (
                     <View style={styles.checklist} key={index}>
                         <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setRoomFeatures(item)} />
@@ -409,24 +338,9 @@ export default function AddHotel({ navigation }) {
                     </View>
                 ))}
 
-                <Text>Language Preferences:</Text>
+                <Text style={styles.text}>Language Preferences:</Text>
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={languagePlaceholder}
                     placeholderTextColor="#aaaaaa"
@@ -437,10 +351,29 @@ export default function AddHotel({ navigation }) {
                         { label: 'Chinese', value: 'Chinese' },
                     ]}
                 />
-                <Text>Location:</Text>
+                <Text style={styles.text}>Location:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Enter Location Name'
+                    placeholderTextColor="#aaaaaa"
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="sentences"
+                />
                 {/* insert google maps API and mapview here
             https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
-                <Text>Terms & Conditions:</Text>
+
+                <Text style={styles.text}>Description:</Text>
+                <TextInput
+                    style={styles.desc}
+                    placeholder='Description'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setDescription(Text)}
+                    value={description}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="sentences"
+                    multiline
+                />
+                <Text style={styles.text}>Terms & Conditions:</Text>
                 <TextInput
                     style={styles.desc}
                     placeholder='Terms & Conditions'
@@ -460,3 +393,36 @@ export default function AddHotel({ navigation }) {
         </View>
     )
 }
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

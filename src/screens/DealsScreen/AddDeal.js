@@ -51,7 +51,7 @@ export default function AddAttractionDeal ( {navigation} ) {
                     style={styles.logo}
                     source={require('../../../assets/icon.png')}
                 />*/}
-            <Text>Deal Name:</Text>
+            <Text style={styles.text}>Deal Name:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Deal Name'
@@ -61,24 +61,9 @@ export default function AddAttractionDeal ( {navigation} ) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
-            <Text>Business Type:</Text>
+            <Text style={styles.text}>Business Type:</Text>
                 <RNPickerSelect
-                    style={StyleSheet.create({
-                        inputIOSContainer: {
-                            paddingVertical: 20,
-                            paddingHorizontal: 30,
-                            backgroundColor: 'white',
-                            fontSize: '20',
-                            marginTop: 10,
-                            marginBottom: 10,
-                            marginLeft: 30,
-                            marginRight: 30,
-                            paddingLeft: 16
-                        },
-                        inputIOS: {
-                            fontSize: 14
-                        }
-                    })}
+                    style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
                     placeholder={businessPlaceholder}
                     placeholderTextColor="#aaaaaa"
@@ -90,7 +75,7 @@ export default function AddAttractionDeal ( {navigation} ) {
                         { label: 'Paid Tour', value: 'Paid Tour' },
                     ]}
             />
-            <Text>Discount:</Text>
+            <Text style={styles.text}>Discount:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Enter Discount %'
@@ -100,7 +85,7 @@ export default function AddAttractionDeal ( {navigation} ) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
-            <Text>Code:</Text>
+            <Text style={styles.text}>Code:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Enter Deal Code'
@@ -110,7 +95,7 @@ export default function AddAttractionDeal ( {navigation} ) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
-            <Text>Quantity:</Text>
+            <Text style={styles.text}>Quantity:</Text>
             <TextInput
                 style={styles.input}
                 placeholder='Quantity'
@@ -121,7 +106,7 @@ export default function AddAttractionDeal ( {navigation} ) {
                 autoCapitalize="none"
                 keyboardType="numeric"
             />
-           <Text>Description:</Text>
+           <Text style={styles.text}>Description:</Text>
             <TextInput
                 style={styles.desc}
                 placeholder='Description'
@@ -132,7 +117,7 @@ export default function AddAttractionDeal ( {navigation} ) {
                 autoCapitalize="sentences"
                 multiline
             />
-            <Text>Terms & Conditions:</Text>
+            <Text style={styles.text}>Terms & Conditions:</Text>
             <TextInput
                 style={styles.desc}
                 placeholder='Terms & Conditions'
@@ -153,3 +138,35 @@ export default function AddAttractionDeal ( {navigation} ) {
     )
 }
 
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

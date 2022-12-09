@@ -172,4 +172,15 @@ export default StyleSheet.create({
     inputIOS: {
         fontSize: 14
     },
+    checklist: {
+        flexDirection: 'row', 
+        alignItems: 'center'
+      },
+    checkbox: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 8,
+        paddingLeft: 16
+    }
 })

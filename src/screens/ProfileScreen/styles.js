@@ -166,5 +166,12 @@ export default StyleSheet.create({
         marginLeft: 30,
         marginRight: 8,
         paddingLeft: 16
-    }
+    },
+    imagePlaceholder: {
+        flex: 1,
+        height: 350,
+        width: 385,
+        margin: 0,
+        marginLeft:14
+    },
 })

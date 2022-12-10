@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { View, Text, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Image } from 'react-native';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import styles from './styles';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ProfileScreen ( {navigation} ) {
     const [role, setRole] = useState('');
@@ -313,7 +314,17 @@ export default function ProfileScreen ( {navigation} ) {
                 <TouchableOpacity style={styles.button}
                     title="Active Threads"
                 >
-                    <Text style={styles.text}>Active Threads</Text>
+                <Text style={styles.text}>Active Threads</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title="My Bookings"
+                >
+                <Text style={styles.text}>My Bookings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button}
+                    title="My Deals"
+                >
+                    <Text style={styles.text}>My Deals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Settings"
@@ -332,7 +343,12 @@ export default function ProfileScreen ( {navigation} ) {
     else {
         return (
             <View>
+                <ScrollView>
                 <Text style={styles.Heading}>Join Us Today!</Text>
+                <Image
+                style={styles.imagePlaceholder}
+                source={require('../../../assets/RegistrationBanner.png')}
+                />
                 <TouchableOpacity style={styles.button}
                 title ="Login"
                 onPress={() =>
@@ -349,6 +365,7 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                 <Text style={styles.text}>Register</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         )
     }

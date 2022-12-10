@@ -18,7 +18,7 @@ if (!global.atob) { global.atob = decode }
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-//LogBox.ignoreAllLogs(); //Disable Log messages
+LogBox.ignoreAllLogs(); //Disable Log messages
 const ProfileStack = createStackNavigator();
 
 function ProfileStackScreen() {

@@ -16,27 +16,17 @@ export default function DealsScreen ( {route, navigation} ) {
             />
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={styles.buttonSmall}>
-                        <Text style={styles.buttonSmallText}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
-                        <Text style={styles.buttonSmallText}>Add To Itinerary</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonSmall}>
+                        <Text style={styles.buttonSmallText}>Claim</Text>
+                </TouchableOpacity>
             </View>
-            <Text style={styles.textNB}>Discount: {JSON.stringify(quantity).replace(/"/g,"")}%</Text>
-            <Text style={styles.textNB}>Code: {JSON.stringify(code).replace(/"/g,"")}</Text>
+            <Text style={styles.textNB}>Discount: {JSON.stringify(quantity).replace(/"/g,"")}% off</Text>
             <Text style={styles.textNB}>Type: {JSON.stringify(dealType).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.buttonSmall}>
-                        <Text style={styles.buttonSmallText}>Read Reviews</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
-                        <Text style={styles.buttonSmallText}>Book</Text>
-                </TouchableOpacity>
             </View>
         </View>
     )

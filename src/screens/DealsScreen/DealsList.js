@@ -58,7 +58,7 @@ export default function AttractionDeals( { navigation }) {
         code: item.code, description: item.description, quantity: item.quantity, TNC: item.TNC})}}>
         <View style={styles.list}>
           <Text>{item.dealname}</Text>
-          <Text>{item.quantity}%</Text>
+          <Text>{item.quantity}% off</Text>
         </View>
         </TouchableHighlight>
       )}

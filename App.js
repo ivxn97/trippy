@@ -1,16 +1,16 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, Text, View } from 'react-native';
+import { StyleSheet, Button, Text, View, LogBox } from 'react-native';
 import React, { useEffect, useState } from 'react'
 import { NavigationContainer, TabRouter } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs' 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
-        GuideScreen, ProfileScreen, DealsScreen, AttractionList, AttractionView,
+        GuideWTList, ProfileScreen, DealsScreen, AttractionList, AttractionView,
         RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
-        AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant, AddGuide } from './src/screens'
+        AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant, AddGuide, GuideScreen, CreatePost } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 if (!global.btoa) {  global.btoa = encode }
@@ -18,7 +18,7 @@ if (!global.atob) { global.atob = decode }
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
+//LogBox.ignoreAllLogs(); //Disable Log messages
 const ProfileStack = createStackNavigator();
 
 function ProfileStackScreen() {
@@ -59,7 +59,8 @@ const GuideStack = createStackNavigator();
 function GuideStackScreen() {
   return (
     <GuideStack.Navigator>
-        <Stack.Screen name="Guide List" component={GuideScreen}/>
+        <Stack.Screen name="Guide List" component={GuideWTList}/>
+        <Stack.Screen name="Guide Screen" component={GuideScreen}/>
     </GuideStack.Navigator>
   )
 }
@@ -88,7 +89,9 @@ function ForumStackScreen() {
   return (
     <ForumStack.Navigator>
         <Stack.Screen name="Forum Page" component={ForumScreen}/>
+        <Stack.Screen name="Create Post" component={CreatePost}/>
     </ForumStack.Navigator>
+    
   )
 }
 

@@ -20,23 +20,13 @@ export default StyleSheet.create({
         marginBottom: 7,
         marginLeft: 8,
     },
-    HeadingDisplay: {
-        flex: 1,
-        fontSize: 30,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        textAlignVertical: 'center',
-        marginTop: 7,
-        marginBottom: 7,
-        marginLeft: 8,
-    },
     HeadingList: {
         fontSize: 30,
-        textAlign: 'left',
+        textAlign: 'right',
         marginTop: 5,
         marginBottom: 5,
-        marginLeft: 30,
-        marginRight: 8
+        marginLeft: 8,
+        marginRight: 30
     },
     price: {
         fontSize: 24,
@@ -167,18 +157,18 @@ export default StyleSheet.create({
         width: 120,
         borderRadius: 15,
     },
-    buttonSmallHome: {
+    buttonSmallWrite: {
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         borderBottomRightRadius: 25,
         borderBottomLeftRadius: 25,
-        backgroundColor: '#c4c4c4',
-        marginLeft: 10,
-        marginRight: 10,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 3,
         marginTop: 5,
         marginBottom:5,
         height: 30,
-        width: 185,
+        width: 160,
         borderRadius: 15,
     },
     buttonListLeft: {
@@ -206,7 +196,7 @@ export default StyleSheet.create({
         marginTop: 5,
         marginBottom:5,
         height: 30,
-        width: 90,
+        width: 120,
         borderRadius: 15,
     },
     buttonSmallListText: {
@@ -262,24 +252,5 @@ export default StyleSheet.create({
         marginLeft: 30,
         marginRight: 8,
         paddingLeft: 16
-    },
-    displayBox: {
-        backgroundColor: "#c4c4c4",
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        borderBottomRightRadius: 16,
-        borderBottomLeftRadius: 16,
-        borderWidth: 1,
-        borderColor: "transparent",
-        borderStyle: "solid",
-        borderTopWidth: 1,
-        borderRightWidth: 1,
-        borderBottomWidth: 1,
-        borderLeftWidth: 1,
-        width: 383,
-        height: 153,
-        marginLeft: 15,
-        marginTop: 5,
-        marginBottom: 5
-}
+    }
 })

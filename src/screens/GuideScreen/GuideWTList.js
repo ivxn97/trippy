@@ -6,24 +6,24 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 
 
-export default function ForumScreen ({ navigation }) {
+export default function GuideWTList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [forum, setForum] = useState([]); // Initial empty array of hotels
+    const [guides, setGuides] = useState([]); // Initial empty array of hotels
 
     navigation.addListener('willFocus', () => {
 
     })
 
     useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "forum"));
+        const querySnapshot = await getDocs(collection(db, "guides"));
         querySnapshot.forEach(documentSnapshot => {
-            forum.push({
+            guides.push({
                 ...documentSnapshot.data(),
                 key: documentSnapshot.id,
             });
         });
 
-        setForum(forum);
+        setGuides(guides);
         setLoading(false);
     }, []);
 
@@ -33,8 +33,9 @@ export default function ForumScreen ({ navigation }) {
 
     return (
         <View>
-        <Text style={styles.HeadingList}>TripAid</Text>
-        <Text style={styles.HeadingList}>Forum</Text>
+        <Text style={styles.HeadingList}>Guides</Text>
+        <Text style={styles.HeadingList}>And</Text>
+        <Text style={styles.HeadingList}>Walking Tours</Text>
         <TextInput
             style={styles.inputSearch}
             placeholder='search'
@@ -43,24 +44,21 @@ export default function ForumScreen ({ navigation }) {
             autoCapitalize="sentences"
         />
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-             <TouchableOpacity style={styles.buttonSmallWrite}
-             onPress={() => {navigation.navigate('Create Post')}}>
-            <Text style={styles.buttonSmallListText}>Write a post...</Text>
-            
-            </TouchableOpacity>
             <TouchableOpacity style={styles.buttonListLeft}>
             <Text style={styles.buttonSmallListText}>Sort</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonListRight}>
-            <Text style={styles.buttonSmallListText}>Browse Forum</Text>
+            <Text style={styles.buttonSmallListText}>Filter</Text>
             </TouchableOpacity>
         </View>
         <FlatList
-            data={forum}
-            extraData={forum}
+            data={guides}
+            extraData={guides}
             renderItem={({ item }) => (
         <TouchableHighlight
-            underlayColor="#C8c9c9">
+            underlayColor="#C8c9c9"
+            onPress={() => {navigation.navigate('Guide Screen', {title: item.title, location: item.location,
+                                                                        mrt: item.mrt, tips: item.tips, description: item.description})}}>
         <View style={styles.list}>
           <Text>{item.title}</Text>
         </View>

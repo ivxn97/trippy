@@ -71,6 +71,7 @@ export default function AdminScreen ({navigation}) {
     return (
         <View>
             <ScrollView>
+            <Text style={styles.Heading}>Welcome, Admin!</Text>
         <List.Section >
         <List.Accordion 
             title="Activities"

@@ -5,9 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import { List } from 'react-native-paper';
 
-export default function AdminScreen ({navigation}) {
+export default function BOScreen ({navigation}) {
 
     const [role, setRole] = useState('');
     const [refresh, setRefresh] = useState();
@@ -18,7 +17,7 @@ export default function AdminScreen ({navigation}) {
             // Sign-out successful.
             removeRole();
             removeEmail();
-            navigation.reset({index: 0, routes: [{name: 'Home'}]})
+            navigation.navigate('Profile Page');
             alert("Successfully Logged out")
         }).catch((error) => {
             const errorCode = error.code;
@@ -67,73 +66,6 @@ export default function AdminScreen ({navigation}) {
         console.log("Current Role:", role)
     },[role]));
 
-    
-    return (
-        <View>
-            <ScrollView>
-        <List.Section >
-        <List.Accordion 
-            title="Activities"
-            left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="Walking Tours" />
-                <List.Item title="Guides" />
-                <List.Item title="Services" />
-                <List.Item title="Deals" />
-        </List.Accordion>
-
-        <List.Accordion 
-            title="Review Pending"
-            left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="Walking Tours" />
-                <List.Item title="Guides" />
-                <List.Item title="Services" />
-                <List.Item title="Deals" />
-        </List.Accordion>
-
-        <List.Accordion 
-            title="Users/Accounts"
-            left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="View Accounts" onPress={() => navigation.navigate('List Of Users')} />
-                <List.Item title="Review Pending Accounts" />
-        </List.Accordion>
-        <List.Accordion 
-            title="Forum"
-            left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="Create thread" />
-                <List.Item title="Delete thread" />
-                <List.Item title="View threads" />
-                <List.Item title="View reports" />
-        </List.Accordion>
-        </List.Section>
-
-        <TouchableOpacity style={styles.button}
-            title ="Page Contents"
-        >
-            <Text style={styles.text}>Page Contents</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}
-            title ="Edit Select Options"
-        >
-            <Text style={styles.text}>Edit Select Options</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}
-            title ="Settings"
-        >
-            <Text style={styles.text}>Settings</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}
-            title ="Sign Out"
-            onPress={() => onSignout()}
-        >
-            <Text style={styles.text}>Sign Out</Text>
-        </TouchableOpacity>
-        </ScrollView>
-        </View>
-    )
-    
     return (
         <View>
         <TouchableOpacity style={styles.button}

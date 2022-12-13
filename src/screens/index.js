@@ -35,3 +35,5 @@ export {default as AddRestaurant} from './Restaurants/AddRestaurant'
 
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as CreatePost} from './ForumScreen/CreatePost'
+
+export {default as BOScreen} from './BOScreen/BOScreen'

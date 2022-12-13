@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { doc, setDoc } from "firebase/firestore";
@@ -6,6 +6,8 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 import { db } from '../../../config';
 import { render } from 'react-dom';
+import Checkbox from 'expo-checkbox';
+
 
 export default function RegistrationBO({navigation}) {
     const [firstName, setFirstName] = useState('')
@@ -27,6 +29,36 @@ export default function RegistrationBO({navigation}) {
         color: 'black',
     };
 
+    let businessData = [{ name: 'Hotels', value: 'Hotels', isChecked: false },
+        { name: 'Restaurants', value: 'Restaurants', isChecked: false },
+        { name: 'Attractions', value: 'Attractions', isChecked: false },
+        { name: 'Paid Tours', value: 'Paid Tours', isChecked: false }];
+    const [docBusinessData, setBusinessData] = useState([])
+
+    useEffect(() => {
+        setBusinessData(businessData);
+    }, [])
+
+    const setBusiness = (item) => {
+        
+        setBusinessData(
+            docBusinessData.map(curr => {
+                if (item.name === curr.name) {
+                    if (curr.isChecked == false) {
+                        return {...curr, isChecked: true};
+                        
+                    }
+                    else if (curr.isChecked == true) {
+                        return {...curr, isChecked: false};
+                    }
+                }
+                 else {
+                    return curr;
+                }
+            })
+        )
+    }
+    
     const onRegisterPress = () => {
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
@@ -38,13 +70,14 @@ export default function RegistrationBO({navigation}) {
                     firstName: firstName,
                     lastName: lastName,
                     businessName: businessName,
+                    businessesTypes: docBusinessData,
                     email: email,
                     id: uid,
                     role: 'Business Owner',
                     UEN: UEN
                 });
                 //console.log("Document written with ID: ", docRef.id);
-                navigation.navigate('Login', {user: auth})
+                navigation.navigate('Profile Page', {user: auth})
             }
             catch (e) {
                 console.log("Error adding document: ", e);
@@ -53,6 +86,8 @@ export default function RegistrationBO({navigation}) {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            console.log(error)
+            alert(error);
         });
     }
 
@@ -94,6 +129,15 @@ export default function RegistrationBO({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                
+                <Text style={styles.text}>Select Business Type:</Text>
+                {docBusinessData.map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setBusiness(item)} />
+                        <Text>{item.name}</Text>
+                    </View>
+                ))}
+
                 <Text style={styles.text}>E-mail:</Text>
                 <TextInput
                     style={styles.input}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
@@ -6,12 +6,14 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationHelpersContext } from '@react-navigation/native';
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const auth = getAuth();
+    const didMount = useRef(false);
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration Selector')
@@ -48,7 +50,7 @@ export default function LoginScreen({navigation}) {
             console.log(e)
         }
     }
-
+    /*
     const onLoginPress = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
@@ -66,6 +68,57 @@ export default function LoginScreen({navigation}) {
     }
     console.log('Role: ' + role)
     storeRole(role);
+    */
+
+    const onLoginPress = () => {
+        signInWithEmailAndPassword(auth, email, password)
+        .then(userCredentials => {
+            const user = userCredentials.user;
+            var loginRef = doc(db, "users", user.email);
+            getDoc(loginRef).then( (docSnap) => {if (docSnap.exists()) {
+                const roleData = docSnap.data().role
+                setRole(roleData)
+            }
+            else {
+                console.log("Error", error)
+            }})
+            //.then(storeEmail(user.email)).then(storeRole(role))
+
+            console.log('Logged in with: ', user.email, "role:" , role);
+            //navigation.navigate('Profile Page');
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(errorCode + ': ' + errorMessage)
+        })
+    }
+
+    useEffect(()=> {
+        if ( !didMount.current ) {
+            return() => { didMount.current = true;}
+          }
+
+        storeEmail(email);
+        storeRole(role);
+
+        if (role == "Admin") {
+            //navigation.navigate('Admin Stack');
+            navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
+        }
+        else if (role == "Business Owner") {
+            navigation.navigate('Business Screen');
+        }
+        else if (role == "Registered User") {
+            navigation.navigate('Profile Page');
+        }
+        else if (role == "LOL") {
+            navigation.navigate('Profile Page');
+        }
+        else {
+            alert("Account does not exist");
+        }
+    }, [role])
 
     return (
         <View style={styles.container}>

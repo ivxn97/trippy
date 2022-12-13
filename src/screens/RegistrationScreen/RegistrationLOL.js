@@ -45,7 +45,7 @@ export default function RegistrationLOL({navigation}) {
                     socialMediaHandle: socialMediaHandle
                 });
                 //console.log("Document written with ID: ", docRef.id);
-                navigation.navigate('Login', {user: auth})
+                navigation.navigate('Profile Page', {user: auth})
             }
             catch (e) {
                 console.log("Error adding document: ", e);
@@ -54,6 +54,8 @@ export default function RegistrationLOL({navigation}) {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            console.log(error);
+            alert(error);
         });
     }
 

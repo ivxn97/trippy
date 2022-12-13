@@ -13,8 +13,10 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
         AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant, AddGuide, GuideScreen, CreatePost } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,7 +27,6 @@ function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator screenOptions={{ unmountOnBlur: true}}>
         <Stack.Screen name="Profile Page" component={ProfileScreen}/>
-        <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="Add Hotel" component={AddHotel} />
         <Stack.Screen name="Add Attraction" component={AddAttraction}/>
         <Stack.Screen name="Add Paid Tour" component={AddPaidTour}/>
@@ -99,21 +100,16 @@ const AdminStack = createStackNavigator();
 
 function AdminStackScreen() {
   return (
-    <DealsStack.Navigator>
+    <AdminStack.Navigator>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="List Of Users" component={ListOfUsers}/>
-    </DealsStack.Navigator>
+        <Stack.Screen name="Admin View User" component={AdminViewUser}/>
+    </AdminStack.Navigator>
   )
 }
 
-export default function App() {
-
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
-
-  //TODO: Hide header with headerShown = false
+function Tabs() {
   return (
-    <NavigationContainer>
       <Tab.Navigator
       initialRouteName='Home'
         screenOptions={({route}) => ({
@@ -155,8 +151,22 @@ export default function App() {
         component={ProfileStackScreen}
         />
       </Tab.Navigator>
-    </NavigationContainer>
-
-    
   );
+}
+
+export default function App() {
+
+  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null)
+
+  return (
+    <NavigationContainer>
+    <Stack.Navigator screenOptions={{
+    headerShown: false
+    }}>
+      <Stack.Screen name = "Home" component={Tabs} />
+      <Stack.Screen name = "Admin Stack" component={AdminStackScreen} />
+    </Stack.Navigator>
+    </NavigationContainer>
+  )
 }

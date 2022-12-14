@@ -74,7 +74,7 @@ export default function AdminScreen ({navigation}) {
             <Text style={styles.Heading}>Welcome, Admin!</Text>
         <List.Section >
         <List.Accordion 
-            title="Activities"
+            title="Manage Activities"
             left={props => <List.Icon{...props} icon="folder"/>}>
                 <List.Item title="Walking Tours" />
                 <List.Item title="Guides" />

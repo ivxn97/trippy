@@ -10,7 +10,8 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
         GuideWTList, ProfileScreen, DealsScreen, AttractionList, AttractionView,
         RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
-        AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant, AddGuide, GuideScreen, CreatePost } from './src/screens'
+        AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant, AddGuide, GuideScreen, CreatePost, BOScreen,
+      BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -108,6 +109,31 @@ function AdminStackScreen() {
   )
 }
 
+const BOStack = createStackNavigator();
+
+function BOStackScreen() {
+  return (
+    <BOStack.Navigator>
+      <Stack.Screen name="BO Page" component={BOScreen}/>
+      <Stack.Screen name="BO Deals List" component={BODealsList}/>
+      <Stack.Screen name="BO Hotels List" component={BOHotelsList}/>
+      <Stack.Screen name="BO Attractions List" component={BOAttractionsList}/>
+      <Stack.Screen name="BO Paid Tours List" component={BOPaidToursList}/>
+      <Stack.Screen name="BO Restaurants List" component={BORestaurantsList}/>
+      <Stack.Screen name="Add Hotel" component={AddHotel} />
+      <Stack.Screen name="Add Attraction" component={AddAttraction}/>
+      <Stack.Screen name="Add Paid Tour" component={AddPaidTour}/>
+      <Stack.Screen name="Add Restaurant" component={AddRestaurant}/>
+      <Stack.Screen name="Add Deal" component={AddDeal}/>
+      <Stack.Screen name="Attraction Details" component={AttractionView}/>
+      <Stack.Screen name="Hotel details" component={HotelScreen}/>
+      <Stack.Screen name="Restaurant Details" component={RestaurantScreen}/>
+      <Stack.Screen name="Paid tour details" component={PaidTourScreen}/>
+      <Stack.Screen name="Deal detail" component={DealsScreen}/>
+
+    </BOStack.Navigator>
+  )
+}
 function Tabs() {
   return (
       <Tab.Navigator
@@ -166,6 +192,7 @@ export default function App() {
     }}>
       <Stack.Screen name = "Home" component={Tabs} />
       <Stack.Screen name = "Admin Stack" component={AdminStackScreen} />
+      <Stack.Screen name = "BO Stack" component={BOStackScreen} />
     </Stack.Navigator>
     </NavigationContainer>
   )

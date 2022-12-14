@@ -12,6 +12,7 @@ export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
+    const [businesses, setBusinesses] = useState('');
     const auth = getAuth();
     const didMount = useRef(false);
 
@@ -50,6 +51,14 @@ export default function LoginScreen({navigation}) {
             console.log(e)
         }
     }
+    const storeBusinesses = async (businesses) => {
+        try {
+            await AsyncStorage.setItem('businesses', JSON.stringify(businesses))
+            console.log('Successfully added to ASync Storage with' , businesses)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     /*
     const onLoginPress = () => {
         signInWithEmailAndPassword(auth, email, password)
@@ -77,7 +86,9 @@ export default function LoginScreen({navigation}) {
             var loginRef = doc(db, "users", user.email);
             getDoc(loginRef).then( (docSnap) => {if (docSnap.exists()) {
                 const roleData = docSnap.data().role
+                const businessData = docSnap.data().businessesTypes
                 setRole(roleData)
+                setBusinesses(businessData);
             }
             else {
                 console.log("Error", error)
@@ -101,13 +112,15 @@ export default function LoginScreen({navigation}) {
 
         storeEmail(email);
         storeRole(role);
+        storeBusinesses(businesses);
 
         if (role == "Admin") {
             //navigation.navigate('Admin Stack');
             navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
         }
         else if (role == "Business Owner") {
-            navigation.navigate('Business Screen');
+            console.log("email", email, "businesses", businesses)
+            navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
         }
         else if (role == "Registered User") {
             navigation.navigate('Profile Page');
@@ -118,7 +131,7 @@ export default function LoginScreen({navigation}) {
         else {
             alert("Account does not exist");
         }
-    }, [role])
+    }, [role, businesses])
 
     return (
         <View style={styles.container}>

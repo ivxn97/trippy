@@ -37,3 +37,8 @@ export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as CreatePost} from './ForumScreen/CreatePost'
 
 export {default as BOScreen} from './BOScreen/BOScreen'
+export {default as BOAttractionsList} from './BOScreen/BOAttractionsList'
+export {default as BODealsList} from './BOScreen/BODealsList'
+export {default as BOHotelsList} from './BOScreen/BOHotelsList'
+export {default as BOPaidToursList} from './BOScreen/BOPaidToursList'
+export {default as BORestaurantsList} from './BOScreen/BORestaurantsList'

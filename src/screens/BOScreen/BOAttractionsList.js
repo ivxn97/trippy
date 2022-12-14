@@ -5,9 +5,9 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 
-export default function Deals( { navigation }) {
+export default function BOAttractionList( {navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [deals, setDeals] = useState([]); // Initial empty array of attractions
+  const [attractions, setAttractions] = useState([]); // Initial empty array of attractions
 
   //List
   navigation.addListener('willFocus', () => {
@@ -15,15 +15,15 @@ export default function Deals( { navigation }) {
   })
 
   useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "deals"));
+    const querySnapshot = await getDocs(collection(db, "attractions"));
         querySnapshot.forEach(documentSnapshot => {
-          deals.push({
+          attractions.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
         });
 
-        setDeals(deals);
+        setAttractions(attractions);
         setLoading(false);
       },[]);
   
@@ -41,24 +41,30 @@ export default function Deals( { navigation }) {
         autoCapitalize="sentences"
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-        <TouchableOpacity style={styles.buttonListLeft}>
-          <Text style={styles.buttonSmallListText}>Sort</Text>
+    <TouchableOpacity style={styles.buttonSmall} onPress={() =>
+                    navigation.navigate('Add Attraction')
+                }>
+          <Text style={styles.buttonSmallListText}>Add</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonListRight}>
-          <Text style={styles.buttonSmallListText}>Filter</Text>
+        <TouchableOpacity style={styles.buttonSmall}>
+          <Text style={styles.buttonSmallListText}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSmall}>
+          <Text style={styles.buttonSmallListText}>Remove</Text>
         </TouchableOpacity>
     </View>
     <FlatList
-      data={deals}
-      extraData={deals}
+      data={attractions}
+      extraData={attractions}
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"
-        onPress={() => {navigation.navigate('Deal detail', {name: item.dealname, dealType: item.type, 
-        code: item.code, description: item.description, quantity: item.quantity, TNC: item.TNC})}}>
+        onPress={() => {navigation.navigate('Attraction Details', {name: item.name, attractionType: item.attractionType, 
+        price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
+        closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC})}}>
         <View style={styles.list}>
-          <Text>{item.dealname}</Text>
-          <Text>{item.quantity}% off</Text>
+          <Text>{item.name}</Text>
+          <Text>${item.price}</Text>
         </View>
         </TouchableHighlight>
       )}

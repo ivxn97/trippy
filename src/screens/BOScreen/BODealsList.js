@@ -5,7 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 
-export default function Deals( { navigation }) {
+export default function BODeals( { navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [deals, setDeals] = useState([]); // Initial empty array of attractions
 
@@ -41,11 +41,16 @@ export default function Deals( { navigation }) {
         autoCapitalize="sentences"
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-        <TouchableOpacity style={styles.buttonListLeft}>
-          <Text style={styles.buttonSmallListText}>Sort</Text>
+        <TouchableOpacity style={styles.buttonSmall} onPress={() =>
+                        navigation.navigate('Add Deal')
+                    }>
+          <Text style={styles.buttonSmallListText}>Add</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonListRight}>
-          <Text style={styles.buttonSmallListText}>Filter</Text>
+        <TouchableOpacity style={styles.buttonSmall}>
+          <Text style={styles.buttonSmallListText}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSmall}>
+          <Text style={styles.buttonSmallListText}>Remove</Text>
         </TouchableOpacity>
     </View>
     <FlatList

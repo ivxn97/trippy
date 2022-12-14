@@ -26,16 +26,6 @@ export default function ProfileScreen ( {navigation} ) {
          });
     }
 
-    /*
-    onAuthStateChanged(auth, (user) => {
-    if (user) {
-            
-    } else {
-        navigation.navigate('Login')
-    }
-    
-    }); */
-
     const removeRole = async () => {
         try {
             const role = await AsyncStorage.removeItem('role');
@@ -76,179 +66,10 @@ export default function ProfileScreen ( {navigation} ) {
         console.log("Current Role:", role)
     },[role]));
     
-    if (role == 'Admin') {
-        return(
-            <View>
-                <Text style={styles.Heading}>Welcome, Admin!</Text>
-                <TouchableOpacity
-                    title ="Login"
-                    style={styles.button}
-                    onPress={() =>
-                        navigation.navigate('Login')
-                    }
-                >
-                    <Text style={styles.text}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Add Hotel"
-                    onPress={() =>
-                        navigation.navigate('Add Hotel')
-                    }
-                >
-                    <Text style={styles.text}>Add Hotel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                title ="Add Attraction"
-                onPress={() =>
-                    navigation.navigate('Add Attraction')
-                }
-                >
-                    <Text style={styles.text}>Add Attraction</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Add Paid Tour"
-                    onPress={() =>
-                        navigation.navigate('Add Paid Tour')
-                    }
-                >
-                    <Text style={styles.text}>Add Paid Tour</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Add Restaurant"
-                    onPress={() =>
-                        navigation.navigate('Add Restaurant')
-                    }
-                >
-                    <Text style={styles.text}>Add Restaurant</Text>
-                </TouchableOpacity> 
-                <TouchableOpacity style={styles.button}
-                    title ="Add Deal"
-                    onPress={() =>
-                        navigation.navigate('Add Deal')
-                    }
-                >
-                    <Text style={styles.text}>Add Deal</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Add Deal"
-                    onPress={() =>
-                        navigation.navigate('Add Guide')
-                    }
-                >
-                    <Text style={styles.text}>Add Guide</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Register"
-                    onPress={() =>
-                        navigation.navigate('Registration Selector')
-                    }
-                >
-                    <Text style={styles.text}>Register</Text>
-                </TouchableOpacity>
-        
-                <TouchableOpacity style={styles.button}
-                    title ="Admin Page (TEST)"
-                    onPress={() =>
-                        navigation.navigate('Admin Page')
-                    }
-                >
-                    <Text style={styles.text}>Admin Page</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Sign Out"
-                    onPress={() => onSignout()}
-                >
-                    <Text style={styles.text}>Sign Out</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
-    else if (role == 'Business Owner') {
+    if (role == 'LOL') {
         return (
             <View>
-                <Text style={styles.Heading}>Welcome, Business Owner!</Text>
-                <TouchableOpacity style={styles.button}
-                    title="View Profile"
-                >
-                    <Text style={styles.text}>View Profile</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Tour"
-                >
-                    <Text style={styles.text}>Tour</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Hotel"
-                >
-                    <Text style={styles.text}>Hotel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Attraction" 
-                >
-                    <Text style={styles.text}>Attraction</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Restaurant"
-                >
-                    <Text style={styles.text}>Restaurant</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Settings"
-                >
-                    <Text style={styles.text}>Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Add Hotel"
-                    onPress={() =>
-                        navigation.navigate('Add Hotel')
-                    }
-                >
-                    <Text style={styles.text}>Add Hotel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                title ="Add Attraction"
-                onPress={() =>
-                    navigation.navigate('Add Attraction')
-                }
-                >
-                    <Text style={styles.text}>Add Attraction</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Add Paid Tour"
-                    onPress={() =>
-                        navigation.navigate('Add Paid Tour')
-                    }
-                >
-                    <Text style={styles.text}>Add Paid Tour</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Add Restaurant"
-                    onPress={() =>
-                        navigation.navigate('Add Restaurant')
-                    }
-                >
-                    <Text style={styles.text}>Add Restaurant</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Add Deal"
-                    onPress={() =>
-                        navigation.navigate('Add Deal')
-                    }
-                >
-                    <Text style={styles.text}>Add Deal</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Sign Out"
-                    onPress={() => onSignout()}
-                >
-                    <Text style={styles.text}>Sign Out</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
-    else if (role == 'LOL') {
-        return (
-            <View>
+                <ScrollView>
                 <Text style={styles.Heading}>Welcome, LOL!</Text>
                 <TouchableOpacity style={styles.button}
                     title="View Profile"
@@ -289,6 +110,7 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                     <Text style={styles.text}>Sign Out</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         )
     }

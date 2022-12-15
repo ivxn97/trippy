@@ -94,7 +94,7 @@ export default function AdminScreen ({navigation}) {
         <List.Accordion 
             title="Users/Accounts"
             left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="View Accounts" onPress={() => navigation.navigate('List Of Users')} />
+                <List.Item title="View Accounts" onPress={() => navigation.navigate('List Of Accounts')} />
                 <List.Item title="Review Pending Accounts" />
         </List.Accordion>
         <List.Accordion 

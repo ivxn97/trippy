@@ -20,6 +20,14 @@ export default StyleSheet.create({
         marginBottom: 7,
         marginLeft: 8,
     },
+    HeadingList: {
+        fontSize: 30,
+        textAlign: 'right',
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 8,
+        marginRight: 30
+    },
     price: {
         fontSize: 24,
         fontWeight: 'bold',
@@ -130,7 +138,6 @@ export default StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginTop: 20,
-        marginBottom: 20,
         height: 48,
         borderRadius: 5,
         alignItems: "center",

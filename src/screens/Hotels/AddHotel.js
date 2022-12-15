@@ -16,19 +16,19 @@ const classPlaceholder = {
 };
 
 const hourPlaceholder = {
-    label: 'HOUR',
+    label: 'Hour',
     value: null,
     color: 'black',
 };
 
 const minutePlaceholder = {
-    label: 'MINUTE',
+    label: 'Minute',
     value: null,
     color: 'black',
 };
 
 const languagePlaceholder = {
-    label: 'LANGUAGE',
+    label: 'Language',
     value: null,
     color: 'black',
 };
@@ -206,7 +206,7 @@ export default function AddHotel({ navigation }) {
                 <Text style={styles.text}>Price Range:</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder='PriceRange'
+                    placeholder='Price Range'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(Text) => setPriceRange(Text)}
                     value={priceRange}
@@ -228,7 +228,7 @@ export default function AddHotel({ navigation }) {
                         { label: '5 Star', value: '5 Star' },
                     ]}
                 />
-                <Text style={styles.text}>CheckIn Hours:</Text>
+                <Text style={styles.text}>Check-In Hours:</Text>
                 {/*CheckIn Hour */}
                 <RNPickerSelect
                     style={pickerSelectStyles}
@@ -275,7 +275,7 @@ export default function AddHotel({ navigation }) {
                         { label: '57', value: '57' }, { label: '58', value: '58' }, { label: '59', value: '59' },
                     ]}
                 />
-                <Text style={styles.text}>CheckOut Hours:</Text>
+                <Text style={styles.text}>Check-Out Hours:</Text>
                 {/*CheckOut Hour */}
                 <RNPickerSelect
                     style={pickerSelectStyles}

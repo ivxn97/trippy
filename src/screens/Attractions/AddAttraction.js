@@ -20,13 +20,13 @@ const agePlaceholder = {
 };
 
 const hourPlaceholder = {
-    label: 'HOUR',
+    label: 'Hour',
     value: null,
     color: 'black',
 };
 
 const minutePlaceholder = {
-    label: 'MINUTE',
+    label: 'Minute',
     value: null,
     color: 'black',
 };

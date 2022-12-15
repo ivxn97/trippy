@@ -57,7 +57,7 @@ export default function AdminViewUser ({route, navigation}) {
     
         return (
             <View>
-                <Text>Change Account Role:</Text>
+                <Text style={styles.text}>Change Account Role:</Text>
                 <RNPickerSelect
                 style={pickerSelectStyles}
                 placeholder={roleP}
@@ -76,7 +76,8 @@ export default function AdminViewUser ({route, navigation}) {
                 <Text style={styles.buttonTitle}>Change Role</Text>
             </TouchableOpacity>
     
-            <Text>Change Account Status</Text>
+            <Text>{"\n"}</Text>
+            <Text style={styles.text}>Change Account Status</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}
                 placeholder={statusP}
@@ -93,7 +94,7 @@ export default function AdminViewUser ({route, navigation}) {
                 onPress={() => onChangeStatusPress()}>
                 <Text style={styles.buttonTitle}>Change Status</Text>
             </TouchableOpacity>
-    
+            <Text>{"\n"}</Text>
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => onDeletePress()}>
@@ -106,12 +107,13 @@ export default function AdminViewUser ({route, navigation}) {
     if (role == "Registered User") {
         return (
             <View>
-                <Text>ID: {JSON.stringify(id)}</Text>
-                <Text>Email: {JSON.stringify(email)}</Text>
-                <Text>First Name: {JSON.stringify(firstName)}</Text>
-                <Text>Last Name: {JSON.stringify(lastName)}</Text>
-                <Text>Role: {JSON.stringify(role)}</Text>
-                <Text>Status: {JSON.stringify(status)}</Text>
+                <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
+                <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
+                <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>
+                <Text style={styles.text}>Status: {JSON.stringify(status)}</Text>
+                <Text>{"\n"}</Text>
                 <AllView/>
             </View>
         )
@@ -120,13 +122,14 @@ export default function AdminViewUser ({route, navigation}) {
     else if (role == "Business Owner") {
         return (
             <View>
-                <Text>ID: {JSON.stringify(id)}</Text>
-                <Text>Email: {JSON.stringify(email)}</Text>
-                <Text>First Name: {JSON.stringify(firstName)}</Text>
-                <Text>Last Name: {JSON.stringify(lastName)}</Text>
-                <Text>Role: {JSON.stringify(role)}</Text>
-                <Text>UEN: {JSON.stringify(UEN)}</Text>
-                <Text>Status: {JSON.stringify(status)}</Text>
+                <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
+                <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
+                <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>
+                <Text style={styles.text}>UEN: {JSON.stringify(UEN)}</Text>
+                <Text style={styles.text}>Status: {JSON.stringify(status)}</Text>
+                <Text>{"\n"}</Text>
                 <AllView/>
             </View>
         )
@@ -134,14 +137,15 @@ export default function AdminViewUser ({route, navigation}) {
     else if (role == "LOL") {
         return (
             <View>
-                <Text>ID: {JSON.stringify(id)}</Text>
-                <Text>Email: {JSON.stringify(email)}</Text>
-                <Text>First Name: {JSON.stringify(firstName)}</Text>
-                <Text>Last Name: {JSON.stringify(lastName)}</Text>
-                <Text>Role: {JSON.stringify(role)}</Text>
-                <Text>Social Media Handle: {JSON.stringify(socialMediaHandle)}</Text>
-                <Text>Social Media Platform: {JSON.stringify(socialMediaPlatform)}</Text>
-                <Text>Status: {JSON.stringify(status)}</Text>
+                <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
+                <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
+                <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>
+                <Text style={styles.text}>Social Media Handle: {JSON.stringify(socialMediaHandle)}</Text>
+                <Text style={styles.text}>Social Media Platform: {JSON.stringify(socialMediaPlatform)}</Text>
+                <Text style={styles.text}>Status: {JSON.stringify(status)}</Text>
+                <Text>{"\n"}</Text>
                 <AllView/>
             </View>
         )
@@ -149,12 +153,13 @@ export default function AdminViewUser ({route, navigation}) {
     else if (role == "Admin") {
         return (
             <View>
-                <Text>ID: {JSON.stringify(id)}</Text>
-                <Text>Email: {JSON.stringify(email)}</Text>
-                <Text>First Name: {JSON.stringify(firstName)}</Text>
-                <Text>Last Name: {JSON.stringify(lastName)}</Text>
-                <Text>Role: {JSON.stringify(role)}</Text>
-                <Text>Status: {JSON.stringify(status)}</Text>
+                <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
+                <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
+                <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>
+                <Text style={styles.text}>Status: {JSON.stringify(status)}</Text>
+                <Text>{"\n"}</Text>
                 <AllView/>
             </View>
         )

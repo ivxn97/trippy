@@ -78,26 +78,21 @@ export default function ProfileScreen ( {navigation} ) {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Guide"
-                >
-                    <Text style={styles.text}>Guide</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title ="Add Guide"
                     onPress={() =>
-                        navigation.navigate('Add Guide')
+                        navigation.navigate('LOL Guides')
                     }
                 >
-                    <Text style={styles.text}>Add Guide</Text>
+                    <Text style={styles.text}>My Guides</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Walking Tour"
                 >
-                    <Text style={styles.text}>Walking Tour</Text>
+                    <Text style={styles.text}>My Walking Tours</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Active Threads"
                 >
-                    <Text style={styles.text}>Active Threads</Text>
+                    <Text style={styles.text}>My Active Threads</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Settings"

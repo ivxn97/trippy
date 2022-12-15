@@ -6,7 +6,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 
 
-export default function GuideWTList ({ navigation }) {
+export default function LOLGuideList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [guides, setGuides] = useState([]); // Initial empty array of hotels
 
@@ -34,8 +34,6 @@ export default function GuideWTList ({ navigation }) {
     return (
         <View>
         <Text style={styles.HeadingList}>Guides</Text>
-        <Text style={styles.HeadingList}>And</Text>
-        <Text style={styles.HeadingList}>Walking Tours</Text>
         <TextInput
             style={styles.inputSearch}
             placeholder='search'
@@ -44,14 +42,13 @@ export default function GuideWTList ({ navigation }) {
             autoCapitalize="sentences"
         />
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-            <TouchableOpacity style={styles.buttonSmall}>
-            <Text style={styles.buttonSmallListText}>Sort</Text>
+            <TouchableOpacity style={styles.buttonListLeft} onPress={() =>
+                            navigation.navigate('Add Guide')
+                        }>
+            <Text style={styles.buttonSmallListText}>Add</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonSmall}>
-            <Text style={styles.buttonSmallListText}>Filter</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonSmall}>
-            <Text style={styles.buttonSmallListText}>View Expired</Text>
+            <TouchableOpacity style={styles.buttonListRight}>
+            <Text style={styles.buttonSmallListText}>Edit</Text>
             </TouchableOpacity>
         </View>
         <FlatList

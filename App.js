@@ -11,7 +11,7 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
         RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
         AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
         AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant, AddGuide, GuideScreen, CreatePost, BOScreen,
-      BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList } from './src/screens'
+      BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -41,6 +41,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Admin View User" component={AdminViewUser}/>
         <Stack.Screen name="Add Deal" component={AddDeal}/>
         <Stack.Screen name="Add Guide" component={AddGuide}/>
+        <Stack.Screen name = "LOL Guides" component={LOLGuideList}/>
     </ProfileStack.Navigator>
   )
 }
@@ -103,8 +104,8 @@ function AdminStackScreen() {
   return (
     <AdminStack.Navigator>
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
-        <Stack.Screen name="List Of Users" component={ListOfUsers}/>
-        <Stack.Screen name="Admin View User" component={AdminViewUser}/>
+        <Stack.Screen name="List Of Accounts" component={ListOfUsers}/>
+        <Stack.Screen name="Admin View Account" component={AdminViewUser}/>
     </AdminStack.Navigator>
   )
 }

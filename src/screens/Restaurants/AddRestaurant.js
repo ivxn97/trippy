@@ -20,25 +20,25 @@ const agePlaceholder = {
 };
 
 const hourPlaceholder = {
-    label: 'HOUR',
+    label: 'Hour',
     value: null,
     color: 'black',
 };
 
 const minutePlaceholder = {
-    label: 'MINUTE',
+    label: 'Minute',
     value: null,
     color: 'black',
 };
 
 const pricePlaceholder = {
-    label: 'PRICE',
+    label: 'Price',
     value: null,
     color: 'black',
 };
 
 const languagePlaceholder = {
-    label: 'LANGUAGE',
+    label: 'Language',
     value: null,
     color: 'black',
 };

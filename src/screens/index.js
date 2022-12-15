@@ -42,3 +42,5 @@ export {default as BODealsList} from './BOScreen/BODealsList'
 export {default as BOHotelsList} from './BOScreen/BOHotelsList'
 export {default as BOPaidToursList} from './BOScreen/BOPaidToursList'
 export {default as BORestaurantsList} from './BOScreen/BORestaurantsList'
+
+export {default as LOLGuideList} from './LOLScreen/LOLGuideList'

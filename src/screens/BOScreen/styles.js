@@ -31,11 +31,9 @@ export default StyleSheet.create({
     },
     text: {
         borderRadius: 5,
-        marginTop: 7,
-        marginBottom: 7,
-        marginLeft: 8,
-        paddingLeft: 16,
-        fontWeight: 'bold',
+        color: 'black',
+        marginLeft:20,
+        fontSize:18,
     },
     textNB: {
         borderRadius: 5,

@@ -131,31 +131,31 @@ export default function BOScreen ({navigation}) {
                     title="Tours"
                     onPress={() =>navigation.navigate("BO Paid Tours List")}
                 >
-                    <Text style={styles.text}>Tours</Text>
+                    <Text style={styles.text}>My Tours</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Hotels"
                     onPress={() =>navigation.navigate("BO Hotels List")}
                 >
-                    <Text style={styles.text}>Hotels</Text>
+                    <Text style={styles.text}>My Hotels</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Attractions" 
                     onPress={() => navigation.navigate("BO Attractions List")}
                 >
-                    <Text style={styles.text}>Attractions</Text>
+                    <Text style={styles.text}>My Attractions</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Restaurants"
                     onPress={() =>navigation.navigate("BO Restaurants List")}
                 >
-                    <Text style={styles.text}>Restaurants</Text>
+                    <Text style={styles.text}>My Restaurants</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Deals"
                     onPress={() =>navigation.navigate("BO Deals List")}
                 >
-                    <Text style={styles.text}>Deals</Text>
+                    <Text style={styles.text}>My Deals</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Settings"

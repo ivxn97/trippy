@@ -76,7 +76,7 @@ export default function AddRestaurant ( { navigation }) {
                     TNC: TNC
                 });
                 //console.log("Document written with ID: ", docRef.id);
-                navigation.navigate('Profile Page')
+                navigation.navigate('BO Page')
             }
             catch (e) {
                 console.log("Error adding document: ", e);

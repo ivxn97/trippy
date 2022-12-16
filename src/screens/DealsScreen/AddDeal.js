@@ -35,7 +35,7 @@ export default function AddAttractionDeal ( {navigation} ) {
                 TNC: TNC
             });
             
-            navigation.navigate('Profile Page')
+            navigation.navigate('BO Page')
         }
         catch (e) {
             console.log("Error adding deal: ", e);

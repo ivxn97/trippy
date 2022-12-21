@@ -5,6 +5,8 @@ import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 
 //Placeholders for SELECT lists
 const typePlaceholder = {
@@ -51,7 +53,38 @@ export default function AddAttraction ( { navigation }) {
     const [description, setDescription] = useState('');
     const [language, setLanguage] = useState('');
     const [TNC, setTNC] = useState('');
+    const [image, setImage] = useState(null);
 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+        const fileName = result.uri.split('/').pop();
+        const fileType = fileName.split('.').pop();
+        console.log(fileName, fileType);
+
+        const response = await fetch(result.uri)
+        const blobFile = await response.blob()
+
+        const storage = getStorage();
+        if (!result.cancelled) {
+          setImage(result.uri);
+          const storageRef = ref(storage, `attractions/${name}/images/${fileName}`)
+          uploadBytes(storageRef, blobFile).then((snapshot) => {
+            console.log("Image uploaded!");
+        })}
+        else {
+            console.log('No Image uploaded!')
+        };
+    };
+
+      
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "attractions", name), {
@@ -81,6 +114,10 @@ export default function AddAttraction ( { navigation }) {
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
             <Text style={styles.text}>Upload Images:</Text>
+            <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
+                disabled={name ? false : true} >
+                <Text>Upload Image</Text>
+            </TouchableOpacity>
             <Image
                 style={styles.imagePlaceholder}
                 source={require('../../../assets/imageUpload4.png')}

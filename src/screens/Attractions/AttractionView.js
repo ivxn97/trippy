@@ -45,7 +45,7 @@ export default function AttractionView({route, navigation}) {
                             justifyContent: 'center',
                         }}
                     >
-                        <Image style={CStyle.carouselStyle} source={{uri: item}}/>
+                        <Image style={styles.carouselStyle} source={{uri: item}}/>
                         <Text style={{ textAlign: 'center', fontSize: 30 }}>
                             {index}
                         </Text>
@@ -85,11 +85,3 @@ export default function AttractionView({route, navigation}) {
         </View>
     )
 }
-
-const CStyle = StyleSheet.create({
-    carouselStyle: {
-        width: 410,
-        height: 250,
-        alignSelf: "center"
-    }
-})

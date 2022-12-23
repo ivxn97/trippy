@@ -60,7 +60,7 @@ export default function AddAttraction ( { navigation }) {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
-          aspect: [4, 3],
+          aspect: [41, 25],
           quality: 1,
         });
     
@@ -73,10 +73,11 @@ export default function AddAttraction ( { navigation }) {
         const blobFile = await response.blob()
 
         const storage = getStorage();
-        if (!result.cancelled) {
+        if (!result.canceled) {
           setImage(result.uri);
           const storageRef = ref(storage, `attractions/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
+            alert("Image uploaded!");
             console.log("Image uploaded!");
         })}
         else {
@@ -113,16 +114,6 @@ export default function AddAttraction ( { navigation }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-            <Text style={styles.text}>Upload Images:</Text>
-            <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
-                disabled={name ? false : true} >
-                <Text>Upload Image</Text>
-            </TouchableOpacity>
-            <Image
-                style={styles.imagePlaceholder}
-                source={require('../../../assets/imageUpload4.png')}
-            />
-
             <Text style={styles.text}>Name:</Text>
             <TextInput
                 style={styles.input}
@@ -133,6 +124,11 @@ export default function AddAttraction ( { navigation }) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
+            <Text style={styles.text}>Upload Images:</Text>
+            <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
+                disabled={name ? false : true} >
+                <Text>Upload Image</Text>
+            </TouchableOpacity>
             <Text style={styles.text}>Attraction Type:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}

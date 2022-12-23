@@ -29,6 +29,11 @@ export default StyleSheet.create({
         marginLeft: 8,
         marginRight: 30
     },
+    carouselStyle: {
+        width: 410,
+        height: 250,
+        alignSelf: "center"
+    },
     text: {
         borderRadius: 5,
         marginTop: 7,

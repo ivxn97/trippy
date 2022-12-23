@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+import Carousel from 'react-native-reanimated-carousel';
 
 export default function HotelScreen({ route, navigation }) {
     const { name, hotelClass, roomTypes, priceRange, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC } = route.params;
+    
+    const [images, setImages] = useState([]);
+    const storage = getStorage();
+    const width = Dimensions.get('window').width;
 
     const filteredRoomTypes = roomTypes.filter(item => item.isChecked === true);
     const valueRoomTypes = filteredRoomTypes.map(item => item.value);
@@ -15,12 +21,45 @@ export default function HotelScreen({ route, navigation }) {
     const filterRoomFeatures = roomFeatures.filter(item => item.isChecked === true);
     const valueRoomFeatures = filterRoomFeatures.map(item => item.value);
 
+    useEffect(() => {
+        const listRef = ref(storage, `hotels/${name.trimEnd()}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then((results) => {
+            const fetchedImages = results[0];
+            console.log(fetchedImages);
+            setImages(fetchedImages);
+          });
+    }, [])
+
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
-            <Image
-                style={styles.imageDetailsPlaceholder}
-                source={require('../../../assets/image-placeholder-large.jpg')}
+           <Carousel width={width}
+                height={width / 2}
+                mode="horizontal"
+                data={images}
+                renderItem={({ item }, index) => (
+                    <View
+                        style={{
+                            flex: 1,
+                            borderWidth: 1,
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Image style={styles.carouselStyle} source={{uri: item}}/>
+                        <Text style={{ textAlign: 'center', fontSize: 30 }}>
+                            {index}
+                        </Text>
+                    </View>
+                )}
             />
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={styles.buttonSmall}>

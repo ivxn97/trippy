@@ -39,6 +39,11 @@ export default StyleSheet.create({
         borderRadius: 5,
         paddingLeft: 16,
     },
+    carouselStyle: {
+        width: 410,
+        height: 250,
+        alignSelf: "center"
+    },
     Heading: {
         fontSize: 30,
         fontWeight: 'bold',

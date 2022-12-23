@@ -5,6 +5,9 @@ import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
+import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
+import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 
 //Placeholders for SELECT lists
 const typePlaceholder = {
@@ -43,7 +46,6 @@ const languagePlaceholder = {
     color: 'black',
 };
 
-//TODO: add image uploading
 export default function AddRestaurant ( { navigation }) {
     const [name, setName] = useState('');
     const [typeOfCuisine, setType] = useState('');
@@ -58,6 +60,61 @@ export default function AddRestaurant ( { navigation }) {
     const [language, setLanguage] = useState('');
     const [description, setDescription] = useState('');
     const [TNC, setTNC] = useState('');
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [41, 25],
+          quality: 1,
+        });
+    
+        console.log(result);
+        const fileName = result.uri.split('/').pop();
+        const fileType = fileName.split('.').pop();
+        console.log(fileName, fileType);
+    
+        const response = await fetch(result.uri)
+        const blobFile = await response.blob()
+    
+        const storage = getStorage();
+        if (!result.canceled) {
+          setImage(result.uri);
+          const storageRef = ref(storage, `restaurants/${name}/images/${fileName}`)
+          uploadBytes(storageRef, blobFile).then((snapshot) => {
+            alert("Image uploaded!");
+            console.log("Image uploaded!");
+        })}
+        else {
+            console.log('No Image uploaded!')
+        };
+    };
+
+    const pickMenu = async () => {
+        let result = await DocumentPicker.getDocumentAsync({});
+    
+        console.log(result);
+        const fileName = result.uri.split('/').pop();
+        const fileType = fileName.split('.').pop();
+        console.log(fileName, fileType);
+    
+        const response = await fetch(result.uri)
+        const blobFile = await response.blob()
+    
+        const storage = getStorage();
+        if (!result.canceled) {
+          setMenu(result.uri);
+          const storageRef = ref(storage, `restaurants/${name}/menu/${fileName}`)
+          uploadBytes(storageRef, blobFile).then((snapshot) => {
+            alert("Menu uploaded!");
+            console.log("Menu uploaded!");
+        })}
+        else {
+            console.log('No Menu uploaded!')
+        };
+    };
 
     const onSubmitPress = async () => {
             try {
@@ -88,11 +145,6 @@ export default function AddRestaurant ( { navigation }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Text style={styles.text}>Upload Images:</Text>
-                <Image
-                    style={styles.imagePlaceholder}
-                    source={require('../../../assets/imageUpload4.png')}
-                />
             <Text style={styles.text}>Name:</Text>
             <TextInput
                 style={styles.input}
@@ -103,6 +155,11 @@ export default function AddRestaurant ( { navigation }) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
+            <Text style={styles.text}>Upload Images:</Text>
+            <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
+                disabled={name ? false : true} >
+                <Text>Upload Image</Text>
+            </TouchableOpacity>
             <Text style={styles.text}>Type of Cuisine:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}
@@ -278,16 +335,10 @@ export default function AddRestaurant ( { navigation }) {
                 />
 
             <Text style={styles.text}>Menu:</Text>
-            <TextInput
-                style={styles.desc}
-                placeholder='Menu'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setMenu(Text)}
-                value={menu}
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-                multiline
-            />
+            <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickMenu} 
+                disabled={name ? false : true} >
+                <Text>Upload Menu</Text>
+            </TouchableOpacity>
             <Text style={styles.text}>Location:</Text>
             <TextInput
                 style={styles.input}

@@ -65,6 +65,11 @@ export default StyleSheet.create({
         alignSelf: "center",
         margin: 30
     },
+    carouselStyle: {
+        width: 410,
+        height: 250,
+        alignSelf: "center"
+    },
     imagePlaceholder: {
         flex: 1,
         height: 70,

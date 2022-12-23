@@ -49,7 +49,8 @@ export default function BOHotelList({ navigation }) {
         <TouchableOpacity style={styles.buttonSmall}>
           <Text style={styles.buttonSmallListText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={() =>
+                    navigation.navigate('Delete Hotel') }>
           <Text style={styles.buttonSmallListText}>Remove</Text>
         </TouchableOpacity>
     </View>

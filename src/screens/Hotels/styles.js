@@ -3,22 +3,20 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    detailsContainer: {
-        color:'#dfdfdf',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
+    message: {
+        fontSize: 18,
+        marginBottom: 20,
     },
-    Heading: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        alignSelf: 'center',
-        marginTop: 7,
-        marginBottom: 7,
-        marginLeft: 8,
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    space: {
+        width: 20, // or whatever size you need
+        height: 20,
     },
     price: {
         fontSize: 24,

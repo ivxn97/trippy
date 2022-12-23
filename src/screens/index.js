@@ -33,6 +33,8 @@ export {default as AddAttraction} from './Attractions/AddAttraction'
 export {default as AddPaidTour} from './PaidTour/AddPaidTour'
 export {default as AddRestaurant} from './Restaurants/AddRestaurant'
 
+export {default as DeleteHotel} from './Hotels/DeleteHotel'
+
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as CreatePost} from './ForumScreen/CreatePost'
 

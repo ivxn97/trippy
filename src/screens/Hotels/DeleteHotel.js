@@ -5,7 +5,9 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import { getStorage, ref, deleteObject, listAll } from "firebase/storage";
+import firebase from 'firebase/app';
+const storage = getStorage();
 
 
 function Item({ title, onPress }) {
@@ -47,9 +49,20 @@ export default function DeleteHotel({ navigation }) {
 
     const onConfirmDelete = () => {
         deleteDoc(doc(db, "hotels", selectedName));
+        deleteFolder(`/hotels/${selectedName}/images`)
         setItems((prevItems) => prevItems.filter((item) => item.name !== selectedName));
         setShowModal(false);
-    };
+    }
+
+    function deleteFolder(path) {
+        const listRef = ref(storage, path)
+        listAll(listRef)
+          .then(dir => {
+            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+            console.log("Files deleted successfully from Firebase Storage");
+          })
+          .catch(error => console.log(error));
+      }
 
     if (loading) {
         return <ActivityIndicator />;
@@ -75,7 +88,13 @@ export default function DeleteHotel({ navigation }) {
             <FlatList
                 data={items}
                 renderItem={({ item }) => (
-                    <Item title={item.name} onPress={() => onDelete(item.name)} />
+                    <TouchableHighlight
+                    underlayColor="#C8c9c9"
+                    onPress={() => onDelete(item.name)}>
+                    <View style={styles.list}>
+                        <Text>{item.name}</Text>
+                    </View>
+                </TouchableHighlight>
                 )}
                 keyExtractor={(item) => item.name}
             />

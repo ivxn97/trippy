@@ -39,6 +39,14 @@ export default StyleSheet.create({
         borderRadius: 5,
         paddingLeft: 16,
     },
+    Heading: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
+    },
     list: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,

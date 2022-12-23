@@ -221,11 +221,11 @@ export default function AddHotel({ navigation }) {
                     placeholder={classPlaceholder}
                     onValueChange={(value) => setHotelClass(value)}
                     items={[
-                        { label: '1 Star', value: '1 Star' },
-                        { label: '2 Star', value: '2 Star' },
-                        { label: '3 Star', value: '3 Star' },
-                        { label: '4 Star', value: '4 Star' },
-                        { label: '5 Star', value: '5 Star' },
+                        { label: '⭐', value: '⭐' },
+                        { label: '⭐⭐', value: '⭐⭐' },
+                        { label: '⭐⭐⭐', value: '⭐⭐⭐' },
+                        { label: '⭐⭐⭐⭐', value: '⭐⭐⭐⭐' },
+                        { label: '⭐⭐⭐⭐⭐', value: '⭐⭐⭐⭐⭐' },
                     ]}
                 />
                 <Text style={styles.text}>Check-In Hours:</Text>

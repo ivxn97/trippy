@@ -8,9 +8,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen, 
         GuideWTList, ProfileScreen, DealsScreen, AttractionList, AttractionView,
-        RestaurantList, RestaurantScreen, AddHotel, HotelList, HotelScreen, DeleteHotel, PaidTourList, PaidTourScreen,
-        AddAttraction, AddPaidTour, RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
-        AdminScreen, AdminViewUser, DealsList, AddDeal, AddRestaurant, AddGuide, GuideScreen, CreatePost, BOScreen,
+        RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen, 
+        RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
+      AdminScreen, AdminViewUser, DealsList, AddHotel, AddDeal, AddRestaurant, AddAttraction, AddPaidTour, AddGuide, 
+      DeleteHotel, DeleteDeal, DeleteRestaurant, DeleteAttraction, DeletePaidTour, GuideScreen, CreatePost, BOScreen,
       BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -123,11 +124,15 @@ function BOStackScreen() {
       <Stack.Screen name="BO Paid Tours List" component={BOPaidToursList}/>
       <Stack.Screen name="BO Restaurants List" component={BORestaurantsList}/>
       <Stack.Screen name="Add Hotel" component={AddHotel} />
-      <Stack.Screen name="Delete Hotel" component={DeleteHotel} />
       <Stack.Screen name="Add Attraction" component={AddAttraction}/>
       <Stack.Screen name="Add Paid Tour" component={AddPaidTour}/>
       <Stack.Screen name="Add Restaurant" component={AddRestaurant}/>
       <Stack.Screen name="Add Deal" component={AddDeal}/>
+      <Stack.Screen name="Delete Hotel" component={DeleteHotel} />
+      <Stack.Screen name="Delete Attraction" component={DeleteAttraction} />
+      <Stack.Screen name="Delete Paid Tour" component={DeletePaidTour} />
+      <Stack.Screen name="Delete Restaurant" component={DeleteRestaurant} />
+      <Stack.Screen name="Delete Deal" component={DeleteDeal} />
       <Stack.Screen name="Attraction Details" component={AttractionView}/>
       <Stack.Screen name="Hotel details" component={HotelScreen}/>
       <Stack.Screen name="Restaurant Details" component={RestaurantScreen}/>

@@ -14,6 +14,7 @@ export {default as ProfileScreen} from './ProfileScreen/ProfileScreen'
 export {default as DealsScreen} from './DealsScreen/DealsScreen'
 export {default as DealsList} from './DealsScreen/DealsList'
 export {default as AddDeal} from './DealsScreen/AddDeal'
+export { default as DeleteDeal } from './DealsScreen/DeleteDeal'
 
 export {default as AdminScreen} from './AdminScreen/AdminScreen'
 export {default as ListOfUsers} from './AdminScreen/ListOfUsers'
@@ -34,6 +35,9 @@ export {default as AddPaidTour} from './PaidTour/AddPaidTour'
 export {default as AddRestaurant} from './Restaurants/AddRestaurant'
 
 export {default as DeleteHotel} from './Hotels/DeleteHotel'
+export { default as DeleteAttraction } from './Attractions/DeleteAttraction'
+export { default as DeletePaidTour } from './PaidTour/DeletePaidTour'
+export { default as DeleteRestaurant } from './Restaurants/DeleteRestaurant'
 
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as CreatePost} from './ForumScreen/CreatePost'

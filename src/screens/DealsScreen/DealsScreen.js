@@ -10,10 +10,6 @@ export default function DealsScreen ( {route, navigation} ) {
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
-            <Image
-                style={styles.imageDetailsPlaceholder}
-                source={require('../../../assets/image-placeholder-large.jpg')}
-            />
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={styles.buttonSmall}>
                         <Text style={styles.buttonSmallText}>Share</Text>

@@ -42,6 +42,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Add Deal" component={AddDeal}/>
         <Stack.Screen name="Add Guide" component={AddGuide}/>
         <Stack.Screen name = "LOL Guides" component={LOLGuideList}/>
+        <Stack.Screen name="Guide Screen" component={GuideScreen}/>
     </ProfileStack.Navigator>
   )
 }

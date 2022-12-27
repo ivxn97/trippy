@@ -49,7 +49,7 @@ export default function BODeals( { navigation }) {
         <TouchableOpacity style={styles.buttonSmall}>
           <Text style={styles.buttonSmallListText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSmall}>
+        <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Delete Deal')}>
           <Text style={styles.buttonSmallListText}>Remove</Text>
         </TouchableOpacity>
     </View>

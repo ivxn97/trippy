@@ -3,7 +3,20 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    message: {
+        fontSize: 18,
+        marginBottom: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    space: {
+        width: 20, // or whatever size you need
+        height: 20,
     },
     detailsContainer: {
         color:'#dfdfdf',

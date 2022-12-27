@@ -49,7 +49,7 @@ export default function BOPaidTourList({navigation}) {
         <TouchableOpacity style={styles.buttonSmall}>
           <Text style={styles.buttonSmallListText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSmall}>
+        <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Delete Paid Tour')}>
           <Text style={styles.buttonSmallListText}>Remove</Text>
         </TouchableOpacity>
     </View>

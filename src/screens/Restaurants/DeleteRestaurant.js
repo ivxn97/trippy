@@ -21,8 +21,6 @@ function Item({ title, onPress }) {
   );
 }
 
-
-
 export default function DeleteRestaurant({ navigation }) {
   const [loading, setLoading] = useState(true); // Set loadiFng to true on component mount
   const [items, setItems] = useState([]); // Initial empty array of restaurants

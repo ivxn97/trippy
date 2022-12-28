@@ -5,51 +5,25 @@ import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const businessPlaceholder = {
-    label: 'Business',
-    value: null,
-    color: 'black',
-};
-
-
-export default function AddDeal ( {navigation} ) {
-    const [email, setEmail] = useState('');
-    const [dealname, setName] = useState('');
-    const [business, setBusiness] = useState('');
-    const [code, setCode] = useState('');
-    const [discount, setDiscount] = useState('');
-    const [quantity, setQuantity] = useState('');
-    const [description, setDescription] = useState('');
-    const [TNC, setTNC] = useState('');
-
-    const getEmail = async () => {
-        try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                setEmail(email);
-            }
-            else {
-                console.log("No Email Selected at Login")
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    getEmail();
+export default function EditDeal ( {route, navigation} ) {
+    const {name, dealType, discount, code, description, quantity, TNC} = route.params;
+    const [business, setBusiness] = useState(dealType);
+    const [newCode, setCode] = useState(code);
+    const [newDiscount, setDiscount] = useState(discount);
+    const [newQuantity, setQuantity] = useState(quantity);
+    const [newDescription, setDescription] = useState(description);
+    const [newTNC, setTNC] = useState(TNC);
 
     const onSubmitPress = async () => {
         try {
-            await setDoc(doc(db, "deals", dealname), {
-                addedBy: email,
-                dealname: dealname,
+            await setDoc(doc(db, "deals", name), {
                 type: business,
-                code: code,
-                discount: discount,
-                quantity: quantity,
-                description: description,
-                TNC: TNC
+                code: newCode,
+                discount: newDiscount,
+                quantity: newQuantity,
+                description: newDescription,
+                TNC: newTNC
             });
             
             navigation.navigate('BO Page')
@@ -64,26 +38,12 @@ export default function AddDeal ( {navigation} ) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
-            <Text style={styles.text}>Deal Name:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder='Deal Name'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setName(Text)}
-                value={dealname}
-                underlineColorAndroid="transparent"
-                autoCapitalize="none"
-            />
+            <Text style={[styles.text, {fontSize:20}]}>Name: {JSON.stringify(name).replace(/"/g,"")}</Text>
             <Text style={styles.text}>Business Type:</Text>
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={businessPlaceholder}
-                    placeholderTextColor="#aaaaaa"
+                    value={business}
                     onValueChange={(value) => setBusiness(value)}
                     items={[
                         { label: 'Attraction', value: 'Attraction'},
@@ -98,7 +58,7 @@ export default function AddDeal ( {navigation} ) {
                 placeholder='Enter Discount %'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setDiscount(Text)}
-                value={discount}
+                value={newDiscount}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
                 keyboardType="numeric"
@@ -109,7 +69,7 @@ export default function AddDeal ( {navigation} ) {
                 placeholder='Enter Deal Code'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setCode(Text)}
-                value={code}
+                value={newCode}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
@@ -119,7 +79,7 @@ export default function AddDeal ( {navigation} ) {
                 placeholder='Quantity'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setQuantity(Text)}
-                value={quantity}
+                value={newQuantity}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
                 keyboardType="numeric"
@@ -130,7 +90,7 @@ export default function AddDeal ( {navigation} ) {
                 placeholder='Description'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setDescription(Text)}
-                value={description}
+                value={newDescription}
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 multiline
@@ -141,7 +101,7 @@ export default function AddDeal ( {navigation} ) {
                 placeholder='Terms & Conditions'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setTNC(Text)}
-                value={TNC}
+                value={newTNC}
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 multiline
@@ -149,7 +109,7 @@ export default function AddDeal ( {navigation} ) {
             <TouchableOpacity
                     style={styles.button}
                     onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonTitle}>Add Deal</Text>
+                    <Text style={styles.buttonTitle}>Edit Deal</Text>
             </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>
@@ -170,7 +130,8 @@ const pickerSelectStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
-        paddingLeft: 16
+        paddingLeft: 16,
+        color: 'black'
     },
     inputAndroid: {
         borderTopLeftRadius: 15,
@@ -185,6 +146,7 @@ const pickerSelectStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
-        paddingLeft: 16
+        paddingLeft: 16,
+        color: 'black'
       }
 })

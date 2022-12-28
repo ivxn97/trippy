@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet } from 'react-native';
+import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, Share } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
@@ -28,6 +28,17 @@ export default function AttractionView({route, navigation}) {
             setImages(fetchedImages);
           });
     }, [])
+
+    const onShare = async () => {
+        try {
+            await Share.share({message:`Check out this amazing attraction I found on TripAid!  
+Attraction name: ${name} 
+Download the App here: URL`})
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
     
     return (
         <View style={styles.detailsContainer}>
@@ -59,7 +70,7 @@ export default function AttractionView({route, navigation}) {
                 <TouchableOpacity style={styles.buttonSmall}>
                         <Text style={styles.buttonSmallText}>Add To Itinerary</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={() => onShare()}>
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>

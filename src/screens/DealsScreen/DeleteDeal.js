@@ -90,13 +90,13 @@ export default function DeleteDeal({ navigation }) {
                 renderItem={({ item }) => (
                     <TouchableHighlight
                         underlayColor="#C8c9c9"attractions
-                        onPress={() => onDelete(item.name)}>
+                        onPress={() => onDelete(item.dealname)}>
                         <View style={styles.list}>
-                            <Text>{item.name}</Text>
+                            <Text>{item.dealname}</Text>
                         </View>
                     </TouchableHighlight>
                 )}
-                keyExtractor={(item) => item.name}
+                keyExtractor={(item) => item.dealname}
             />
             <Modal visible={showModal}>
                 <View style={styles.container}>

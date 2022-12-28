@@ -12,7 +12,9 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
         RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers, 
       AdminScreen, AdminViewUser, DealsList, AddHotel, AddDeal, AddRestaurant, AddAttraction, AddPaidTour, AddGuide, 
       DeleteHotel, DeleteDeal, DeleteRestaurant, DeleteAttraction, DeletePaidTour, GuideScreen, CreatePost, BOScreen,
-      BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList } from './src/screens'
+      BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList, EditRestaurant, 
+      RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
+      EditHotel, DealsEditList, EditDeal } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -138,8 +140,16 @@ function BOStackScreen() {
       <Stack.Screen name="Restaurant Details" component={RestaurantScreen}/>
       <Stack.Screen name="Paid tour details" component={PaidTourScreen}/>
       <Stack.Screen name="Deal detail" component={DealsScreen}/>
-
-
+      <Stack.Screen name="Restaurant Edit List" component={RestaurantEditList}/>
+      <Stack.Screen name="Edit Restaurant" component={EditRestaurant}/>
+      <Stack.Screen name="Paid Tours Edit List" component={PaidTourEditList}/>
+      <Stack.Screen name="Edit Paid Tour" component={EditPaidTour}/>
+      <Stack.Screen name="Attraction Edit List" component={AttractionEditList}/>
+      <Stack.Screen name="Edit Attraction" component={EditAttraction}/>
+      <Stack.Screen name="Hotel Edit List" component={HotelEditList}/>
+      <Stack.Screen name="Edit Hotel" component={EditHotel}/>
+      <Stack.Screen name="Deals Edit List" component={DealsEditList}/>
+      <Stack.Screen name="Edit Deal" component={EditDeal}/>
     </BOStack.Navigator>
   )
 }

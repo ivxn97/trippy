@@ -55,7 +55,9 @@ export default function RestaurantScreen({route, navigation}) {
 
     const onShare = async () => {
         try {
-            await Share.share({message:`I have found this amazing restaurant called ${name}. Download the App here: URL`})
+            await Share.share({message:`Check out this amazing restaurant I found on TripAid!  
+Restaurant name: ${name} 
+Download the App here: URL`})
         }
         catch (error) {
             console.log(error);

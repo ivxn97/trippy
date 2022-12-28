@@ -5,7 +5,7 @@ import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const sectionPlaceholder = {
     label: 'Forum Section',
@@ -15,13 +15,30 @@ const sectionPlaceholder = {
 
 
 export default function CreatePost ( {navigation} ) {
+    const [email, setEmail] = useState('');
     const [title, setTitle] = useState('');
     const [section, setSection] = useState('');
     const [description, setDescription] = useState('');
 
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getEmail();
+
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "forum", title), {
+                addedBy: email,
                 title: title,
                 section: section,
                 description: description

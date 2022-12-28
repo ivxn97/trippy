@@ -37,7 +37,7 @@ export default function LoginScreen({navigation}) {
     const storeRole = async (role) => {
         try {
             await AsyncStorage.setItem('role', role)
-            console.log('Successfully added to ASync Storage with' , role)
+            console.log('Successfully added role to ASync Storage with' , role)
         } catch (e) {
             console.log(e)
         }
@@ -46,7 +46,7 @@ export default function LoginScreen({navigation}) {
     const storeEmail = async (email) => {
         try {
             await AsyncStorage.setItem('email', email)
-            console.log('Successfully added to ASync Storage with' , email)
+            console.log('Successfully added email to ASync Storage with' , email)
         } catch (e) {
             console.log(e)
         }
@@ -54,7 +54,7 @@ export default function LoginScreen({navigation}) {
     const storeBusinesses = async (businesses) => {
         try {
             await AsyncStorage.setItem('businesses', JSON.stringify(businesses))
-            console.log('Successfully added to ASync Storage with' , businesses)
+            console.log('Successfully added businesses to ASync Storage with' , businesses)
         } catch (e) {
             console.log(e)
         }

@@ -6,88 +6,26 @@ import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
-import * as DocumentPicker from 'expo-document-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//Placeholders for SELECT lists
-const typePlaceholder = {
-    label: 'Type Of Cuisine',
-    value: null,
-    color: 'black',
-};
+export default function EditAttraction ( { route, navigation }) {
+    const {name, attractionType, price, ageGroup, groupSize, openingTime, closingTime, description,language, TNC} = route.params;
+    const [openingHour, openingMinute] = openingTime.split(":");
+    const [closingHour, closingMinute] = closingTime.split(":");
 
-const agePlaceholder = {
-    label: 'Age Group',
-    value: null,
-    color: 'black',
-};
-
-const hourPlaceholder = {
-    label: 'Hour',
-    value: null,
-    color: 'black',
-};
-
-const minutePlaceholder = {
-    label: 'Minute',
-    value: null,
-    color: 'black',
-};
-
-const pricePlaceholder = {
-    label: 'Price',
-    value: null,
-    color: 'black',
-};
-
-const languagePlaceholder = {
-    label: 'Language',
-    value: null,
-    color: 'black',
-};
-
-export default function AddRestaurant ( { navigation }) {
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [typeOfCuisine, setType] = useState('');
-    const [price, setPrice] = useState('');
-    const [ageGroup, setAge] = useState('');
-    const [groupSize, setGroupSize] = useState('');
-    const [openingHour, setOpeningHour] = useState('');
-    const [openingMinute, setOpeningMinute] = useState('');
-    const [closingHour, setClosingHour] = useState('');
-    const [closingMinute, setClosingMinute] = useState('');
-    const [language, setLanguage] = useState('');
-    const [description, setDescription] = useState('');
-    const [TNC, setTNC] = useState('');
+    const [newAttractionType, setType] = useState(attractionType);
+    const [newPrice, setPrice] = useState(price);
+    const [newAgeGroup, setAge] = useState(ageGroup);
+    const [newGroupSize, setGroupSize] = useState(groupSize);
+    const [newOpeningHour, setOpeningHour] = useState(openingHour);
+    const [newOpeningMinute, setOpeningMinute] = useState(openingMinute);
+    const [newClosingHour, setClosingHour] = useState(closingHour);
+    const [newClosingMinute, setClosingMinute] = useState(closingMinute);
+    const [newDescription, setDescription] = useState(description);
+    const [newLanguage, setLanguage] = useState(language);
+    const [newTNC, setTNC] = useState(TNC);
     const [image, setImage] = useState(null);
     const storage = getStorage();
-
-    const getEmail = async () => {
-        try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                setEmail(email);
-            }
-            else {
-                console.log("No Email Selected at Login")
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    getEmail();
-
-    function deleteFolder(path) {
-        const listRef = ref(storage, path)
-        listAll(listRef)
-            .then(dir => {
-            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
-            console.log("Files deleted successfully from Firebase Storage");
-            })
-        .catch(error => console.log(error));
-    }
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -102,14 +40,14 @@ export default function AddRestaurant ( { navigation }) {
         const fileName = result.uri.split('/').pop();
         const fileType = fileName.split('.').pop();
         console.log(fileName, fileType);
-    
+
         const response = await fetch(result.uri)
         const blobFile = await response.blob()
-    
+
         const storage = getStorage();
         if (!result.canceled) {
           setImage(result.uri);
-          const storageRef = ref(storage, `restaurants/${name}/images/${fileName}`)
+          const storageRef = ref(storage, `attractions/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
@@ -119,47 +57,35 @@ export default function AddRestaurant ( { navigation }) {
         };
     };
 
-    const pickMenu = async () => {
-        let result = await DocumentPicker.getDocumentAsync({});
-    
-        console.log(result);
-        const fileName = result.uri.split('/').pop();
-        const fileType = fileName.split('.').pop();
-        console.log(fileName, fileType);
-    
-        const response = await fetch(result.uri)
-        const blobFile = await response.blob()
-    
-        const storage = getStorage();
-        if (!result.canceled) {
-        deleteFolder(`restaurants/${name}/menu`);
-          const storageRef = ref(storage, `restaurants/${name}/menu/${fileName}`)
-          uploadBytes(storageRef, blobFile).then((snapshot) => {
-            alert("Menu uploaded!");
-            console.log("Menu uploaded!");
-        })}
-        else {
-            console.log('No Menu uploaded!')
-        };
-    };
+    const deleteImages = () => {
+        deleteFolder(`/attractions/${name}/images`)
+    }
 
+    function deleteFolder(path) {
+        const listRef = ref(storage, path)
+        listAll(listRef)
+            .then(dir => {
+            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+            console.log("Files deleted successfully from Firebase Storage");
+            })
+        .catch(error => console.log(error));
+    }
+
+      
     const onSubmitPress = async () => {
             try {
-                await setDoc(doc(db, "restaurants", name), {
-                    addedBy: email,
-                    name: name,
-                    typeOfCuisine: typeOfCuisine,
-                    price: price,
-                    ageGroup: ageGroup,
-                    groupSize: groupSize,
-                    openingTime: openingHour + ':' + openingMinute,
-                    closingTime: closingHour + ':' + closingMinute,
+                await setDoc(doc(db, "attractions", name), {
+                    attractionType: newAttractionType,
+                    price: newPrice,
+                    ageGroup: newAgeGroup,
+                    groupSize: newGroupSize,
+                    openingTime: newOpeningHour + ':' + newOpeningMinute,
+                    closingTime: newClosingHour + ':' + newClosingMinute,
                     location: '',
-                    language: language,
-                    description: description,
-                    TNC: TNC
+                    description: newDescription,
+                    language: newLanguage,
+                    TNC: newTNC
                 });
-                //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')
             }
             catch (e) {
@@ -172,68 +98,47 @@ export default function AddRestaurant ( { navigation }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-            <Text style={styles.text}>Name:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder='Name'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setName(Text)}
-                value={name}
-                underlineColorAndroid="transparent"
-                autoCapitalize="none"
-            />
+            <Text style={[styles.text, {fontSize:20}]}>Name: {JSON.stringify(name).replace(/"/g,"")}</Text>
             <Text style={styles.text}>Upload Images:</Text>
-            <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
-                disabled={name ? false : true} >
-                <Text>Upload Image</Text>
+            <TouchableOpacity style={styles.button} onPress={pickImage} >
+                <Text>Upload New Image</Text>
             </TouchableOpacity>
-            <Text style={styles.text}>Type of Cuisine:</Text>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
+                <Text>Delete All Uploaded Images</Text>
+            </TouchableOpacity>
+            <Text style={styles.text}>Attraction Type:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
-                placeholder={typePlaceholder}
+                value={newAttractionType}
                 onValueChange={(value) => setType(value)}
                 items = {[
-                    {label:'Singaporean', value:'Singaporean'},
-                    {label:'Chinese', value:'Chinese'},
-                    {label:'Indian', value:'Indian'},
-                    {label:'Italian', value:'Italian'},
-                    {label:'French', value:'French'},
-                    {label:'Thai', value:'Thai'},
-                    {label:'Korean', value:'Korean'},
-                    {label:'Japanese', value:'Japanese'},
-                    {label:'Vietnamese', value:'Vietnamese'},
-                    {label:'Indonesian', value:'Indonesian'},
-                    {label:'Filipino', value:'Filipino'},
-                    {label:'Mexican', value:'Mexican'},
-                    {label:'Brazilian', value:'Brazilian'},
-                    {label:'German', value:'German'},
-                    {label:'Fast Food', value:'Fast Food'},
-                    {label:'Halal', value:'Halal'},
-                    {label:'Vegan', value:'Vegan'},
-                    {label:'Vegetarian', value:'Vegetarian'},
-
+                    {label:'Museum', value:'Museum'},
+                    {label:'Theme Park', value:'Theme Park'},
+                    {label:'Natural Landscape', value:'Natural Landscape'},
+                    {label:'Observation Site', value:'Observation Site'},
+                    {label:'Historical Site', value:'Historical Site'},
+                    {label:'Regular Show', value:'Regular Show'},
+                    {label:'Aquariums & Zoos', value:'Aquariums & Zoos'},
+                    {label:'Outdoors', value:'Outdoors'},
                 ]}
             />
             <Text style={styles.text}>Price:</Text>
-            <RNPickerSelect
-                style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
-                placeholder= {pricePlaceholder}
-                onValueChange={(value) => setPrice(value)}
-                items = {[
-                    {label:'$', value:'$'},
-                    {label:'$$', value:'$$'},
-                    {label:'$$$', value:'$$$'},
-                    {label:'$$$$', value:'$$$$'},
-                    {label:'$$$$$', value:'$$$$$'},
-                ]}
+            <TextInput
+                style={styles.input}
+                placeholder='Price'
+                placeholderTextColor="#aaaaaa"
+                onChangeText={(Text) => setPrice(Text)}
+                value={newPrice}
+                underlineColorAndroid="transparent"
+                autoCapitalize="none"
+                keyboardType="numeric"
             />
             <Text style={styles.text}>Age Group:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
-                placeholder={agePlaceholder}
+                value={newAgeGroup}
                 onValueChange={(value) => setAge(value)}
                 items = {[
                     {label:'All Ages', value:'All Ages'},
@@ -248,7 +153,7 @@ export default function AddRestaurant ( { navigation }) {
                 placeholder='Group Size'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setGroupSize(Text)}
-                value={groupSize}
+                value={newGroupSize}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
                 keyboardType="numeric"
@@ -258,7 +163,7 @@ export default function AddRestaurant ( { navigation }) {
             <RNPickerSelect
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
-                placeholder={hourPlaceholder}
+                value={newOpeningHour}
                 onValueChange={(value) => setOpeningHour(value)}
                 items = {[
                     {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
@@ -275,7 +180,7 @@ export default function AddRestaurant ( { navigation }) {
             <RNPickerSelect
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
-                placeholder={minutePlaceholder}
+                value={newOpeningMinute}
                 onValueChange={(value) => setOpeningMinute(value)}
                 items = {[
                     {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
@@ -305,7 +210,7 @@ export default function AddRestaurant ( { navigation }) {
             <RNPickerSelect
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
-                placeholder={hourPlaceholder}
+                value={newClosingHour}
                 onValueChange={(value) => setClosingHour(value)}
                 items = {[
                     {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
@@ -322,7 +227,7 @@ export default function AddRestaurant ( { navigation }) {
             <RNPickerSelect
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
-                placeholder={minutePlaceholder}
+                value={newClosingMinute}
                 onValueChange={(value) => setClosingMinute(value)}
                 items = {[
                     {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
@@ -351,7 +256,7 @@ export default function AddRestaurant ( { navigation }) {
             <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={languagePlaceholder}
+                    value={newLanguage}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
                     items={[
@@ -361,11 +266,17 @@ export default function AddRestaurant ( { navigation }) {
                     ]}
                 />
 
-            <Text style={styles.text}>Menu:</Text>
-            <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickMenu} 
-                disabled={name ? false : true} >
-                <Text>Upload Menu</Text>
-            </TouchableOpacity>
+            <Text style={styles.text}>Description:</Text>
+            <TextInput
+                style={styles.desc}
+                placeholder='Description'
+                placeholderTextColor="#aaaaaa"
+                onChangeText={(Text) => setDescription(Text)}
+                value={newDescription}
+                underlineColorAndroid="transparent"
+                autoCapitalize="sentences"
+                multiline
+            />
             <Text style={styles.text}>Location:</Text>
             <TextInput
                 style={styles.input}
@@ -376,24 +287,13 @@ export default function AddRestaurant ( { navigation }) {
             />
             {/* insert google maps API and mapview here
             https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
-            <Text style={styles.text}>Description:</Text>
-            <TextInput
-                style={styles.desc}
-                placeholder='Description'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setDescription(Text)}
-                value={description}
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-                multiline
-            />
             <Text style={styles.text}>Terms & Conditions:</Text>
             <TextInput
                 style={styles.desc}
                 placeholder='Terms & Conditions'
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setTNC(Text)}
-                value={TNC}
+                value={newTNC}
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 multiline
@@ -401,7 +301,7 @@ export default function AddRestaurant ( { navigation }) {
             <TouchableOpacity
                     style={styles.button}
                     onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonTitle}>Add Restaurant</Text>
+                    <Text style={styles.buttonTitle}>Edit Attraction</Text>
             </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>
@@ -422,7 +322,8 @@ const pickerSelectStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
-        paddingLeft: 16
+        paddingLeft: 16,
+        color:'black'
     },
     inputAndroid: {
         borderTopLeftRadius: 15,
@@ -437,6 +338,7 @@ const pickerSelectStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
-        paddingLeft: 16
+        paddingLeft: 16,
+        color:'black'
       }
 })

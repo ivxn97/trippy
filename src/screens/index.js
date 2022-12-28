@@ -50,3 +50,15 @@ export {default as BOPaidToursList} from './BOScreen/BOPaidToursList'
 export {default as BORestaurantsList} from './BOScreen/BORestaurantsList'
 
 export {default as LOLGuideList} from './LOLScreen/LOLGuideList'
+
+//Edit
+export {default as RestaurantEditList} from './Restaurants/RestaurantEditList'
+export {default as EditRestaurant} from './Restaurants/EditRestaurant'
+export {default as PaidTourEditList} from './PaidTour/PaidTourEditList'
+export {default as EditPaidTour} from './PaidTour/EditPaidTour'
+export {default as AttractionEditList} from './Attractions/AttractionEditList'
+export {default as EditAttraction} from './Attractions/EditAttraction'
+export {default as HotelEditList} from './Hotels/HotelEditList'
+export {default as EditHotel} from './Hotels/EditHotel'
+export {default as DealsEditList} from './DealsScreen/EditDealsList'
+export {default as EditDeal} from './DealsScreen/EditDeal'

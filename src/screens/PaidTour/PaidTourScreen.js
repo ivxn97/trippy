@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet } from 'react-native';
+import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, Share } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
@@ -30,6 +30,18 @@ export default function PaidTourScreen({route, navigation}) {
           });
     }, [])
 
+    const onShare = async () => {
+        try {
+            await Share.share({message:`Check out this amazing tour I found on TripAid!  
+Tour name: ${title} 
+Download the App here: URL`})
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(title).replace(/"/g,"")}</Text>
@@ -59,7 +71,7 @@ export default function PaidTourScreen({route, navigation}) {
                 <TouchableOpacity style={styles.buttonSmall}>
                         <Text style={styles.buttonSmallText}>Add To Itinerary</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={() => onShare()}>
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>

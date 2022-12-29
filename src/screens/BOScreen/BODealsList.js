@@ -46,7 +46,7 @@ export default function BODeals( { navigation }) {
                     }>
           <Text style={styles.buttonSmallListText}>Add</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSmall}>
+        <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Deals Edit List')}>
           <Text style={styles.buttonSmallListText}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Delete Deal')}>
@@ -60,11 +60,11 @@ export default function BODeals( { navigation }) {
         <TouchableHighlight
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Deal detail', {name: item.dealname, dealType: item.type, 
-        code: item.code, description: item.description, quantity: item.quantity, TNC: item.TNC})}}>
-        <View style={styles.list}>
-          <Text>{item.dealname}</Text>
-          <Text>{item.quantity}% off</Text>
-        </View>
+          code: item.code, description: item.description, discount: item.discount, quantity: item.quantity, TNC: item.TNC})}}>
+          <View style={styles.list}>
+            <Text>{item.dealname}</Text>
+            <Text>{item.discount}% off</Text>
+          </View>
         </TouchableHighlight>
       )}
     />

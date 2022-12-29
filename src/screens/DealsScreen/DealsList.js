@@ -55,10 +55,10 @@ export default function Deals( { navigation }) {
         <TouchableHighlight
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Deal detail', {name: item.dealname, dealType: item.type, 
-        code: item.code, description: item.description, quantity: item.quantity, TNC: item.TNC})}}>
+        code: item.code, description: item.description, discount: item.discount, quantity: item.quantity, TNC: item.TNC})}}>
         <View style={styles.list}>
           <Text>{item.dealname}</Text>
-          <Text>{item.quantity}% off</Text>
+          <Text>{item.discount}% off</Text>
         </View>
         </TouchableHighlight>
       )}

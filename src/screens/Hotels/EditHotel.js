@@ -7,62 +7,39 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
 
-const classPlaceholder = {
-    label: 'Hotel Class',
-    value: null,
-    color: 'black',
-};
+export default function AddHotel({ route, navigation }) {
+    const { name, hotelClass, roomTypes, priceRange, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC } = route.params;
 
-const hourPlaceholder = {
-    label: 'Hour',
-    value: null,
-    color: 'black',
-};
+    const [checkInHour, checkInMinute] = checkInTime.split(":");
+    const [checkOutHour, checkOutMinute] = checkOutTime.split(":");
 
-const minutePlaceholder = {
-    label: 'Minute',
-    value: null,
-    color: 'black',
-};
-
-const languagePlaceholder = {
-    label: 'Language',
-    value: null,
-    color: 'black',
-};
-
-export default function AddHotel({ navigation }) {
-    const [email, setEmail] = useState('')
-    const [name, setName] = useState('');
-    const [priceRange, setPriceRange] = useState('');
-    const [hotelClass, setHotelClass] = useState('');
-    const [checkInHour, setCheckInHour] = useState('');
-    const [checkInMinute, setCheckInMinute] = useState('');
-    const [checkOutHour, setCheckOutHour] = useState('');
-    const [checkOutMinute, setCheckOutMinute] = useState('');
-    const [language, setLanguage] = useState('');
-    const [description, setDescription] = useState('');
-    const [TNC, setTNC] = useState('');
+    const [newPriceRange, setPriceRange] = useState(priceRange);
+    const [newHotelClass, setHotelClass] = useState(hotelClass);
+    const [newCheckInHour, setCheckInHour] = useState(checkInHour);
+    const [newCheckInMinute, setCheckInMinute] = useState(checkInMinute);
+    const [newCheckOutHour, setCheckOutHour] = useState(checkOutHour);
+    const [newCheckOutMinute, setCheckOutMinute] = useState(checkOutMinute);
+    const [newLanguage, setLanguage] = useState(language);
+    const [newDescription, setDescription] = useState(description);
+    const [newTNC, setTNC] = useState(TNC);
     const [image, setImage] = useState(null);
+    const storage = getStorage();
 
-    const getEmail = async () => {
-        try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                setEmail(email);
-                console.log(email)
-            }
-            else {
-                console.log("No Email Selected at Login")
-            }
-        } catch (error) {
-            console.log(error)
-        }
+    const deleteImages = () => {
+        deleteFolder(`/hotels/${name}/images`)
     }
-    getEmail();
+
+    function deleteFolder(path) {
+        const listRef = ref(storage, path)
+        listAll(listRef)
+            .then(dir => {
+            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+            console.log("Files deleted successfully from Firebase Storage");
+            })
+        .catch(error => console.log(error));
+    }
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -102,7 +79,7 @@ export default function AddHotel({ navigation }) {
         { name: 'Parking', value: 'Parking', isChecked: false },
         { name: 'Room Services', value: 'Room Services', isChecked: false },
         { name: 'Free Wifi', value: 'Free Wifi', isChecked: false }];
-    const [docAmenitiesData, setAmenitiesData] = useState([])
+    const [docAmenitiesData, setAmenitiesData] = useState(amenities)
     
 
     // room features
@@ -113,7 +90,7 @@ export default function AddHotel({ navigation }) {
     { name: 'Mattress', value: 'Mattress', isChecked: false },
     { name: 'Wardrobe', value: 'Wardrobe', isChecked: false },
     { name: 'Tea and Coffee Making Facilities', value: 'Tea and Coffee Making Facilities', isChecked: false }];
-    const [docRoomFeaturesData, setRoomFeaturesData] = useState([])
+    const [docRoomFeaturesData, setRoomFeaturesData] = useState(roomFeatures)
 
     //room Types
     let roomTypesData = [{ name: 'Single Room', value: 'Single Room', isChecked: false },
@@ -121,12 +98,12 @@ export default function AddHotel({ navigation }) {
     { name: 'Studio Room', value: 'Studio Room', isChecked: false },
     { name: 'Deluxe Room', value: 'Deluxe Room', isChecked: false },
     { name: 'Suites', value: 'Suites', isChecked: false },]
-    const [docRoomTypesData, setRoomTypesData] = useState([])
+    const [docRoomTypesData, setRoomTypesData] = useState(roomTypes)
 
     useEffect(() => {
-        setAmenitiesData(amenitiesData);
-        setRoomFeaturesData(roomFeaturesData);
-        setRoomTypesData(roomTypesData);
+        setAmenitiesData(amenities);
+        setRoomFeaturesData(roomFeatures);
+        setRoomTypesData(roomTypes);
     }, []);
 
     const setAmenities = (item) => {
@@ -196,20 +173,18 @@ export default function AddHotel({ navigation }) {
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "hotels", name), {
-                    addedBy: email,
-                    name: name,
                     roomTypes: docRoomTypesData,
-                    priceRange: priceRange,
-                    hotelClass: hotelClass,
-                    checkInTime: checkInHour + ':' + checkInMinute,
-                    checkOutTime: checkOutHour + ':' + checkOutMinute,
+                    priceRange: newPriceRange,
+                    hotelClass: newHotelClass,
+                    checkInTime: newCheckInHour + ':' + newCheckInMinute,
+                    checkOutTime: newCheckOutHour + ':' + newCheckOutMinute,
                     amenities: docAmenitiesData,
                     roomFeatures: docRoomFeaturesData,
-                    language: language,
+                    language: newLanguage,
                     location: '',
-                    description: description,
-                    TNC: TNC
-                });
+                    description: newDescription,
+                    TNC: newTNC
+                }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')
             }
@@ -223,22 +198,17 @@ export default function AddHotel({ navigation }) {
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 
-                <Text style={styles.text}>Name:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Name'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(Text) => setName(Text)}
-                    value={name}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
+                <Text style={[styles.text, {fontSize:20}]}>Name: {JSON.stringify(name).replace(/"/g,"")}</Text>
                 <Text style={styles.text}>Upload Images:</Text>
                 <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
                     disabled={name ? false : true} >
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
+                    <Text>Delete All Uploaded Images</Text>
+                </TouchableOpacity>
                 <Text style={styles.text}>Room Type:</Text>
+
                 {docRoomTypesData.map((item, index) => (
                     <View style={styles.checklist} key={index}>
                         <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setRoomTypes(item)} />
@@ -252,7 +222,7 @@ export default function AddHotel({ navigation }) {
                     placeholder='Price Range'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(Text) => setPriceRange(Text)}
-                    value={priceRange}
+                    value={newPriceRange}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                     keyboardType="numeric"
@@ -261,7 +231,7 @@ export default function AddHotel({ navigation }) {
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={classPlaceholder}
+                    value={newHotelClass}
                     onValueChange={(value) => setHotelClass(value)}
                     items={[
                         { label: '⭐', value: '⭐' },
@@ -276,7 +246,7 @@ export default function AddHotel({ navigation }) {
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={hourPlaceholder}
+                    value={newCheckInHour}
                     onValueChange={(value) => setCheckInHour(value)}
                     items={[
                         { label: '00', value: '00' }, { label: '01', value: '01' }, { label: '02', value: '02' },
@@ -293,7 +263,7 @@ export default function AddHotel({ navigation }) {
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={minutePlaceholder}
+                    value={newCheckInMinute}
                     onValueChange={(value) => setCheckInMinute(value)}
                     items={[
                         { label: '00', value: '00' }, { label: '01', value: '01' }, { label: '02', value: '02' },
@@ -323,7 +293,7 @@ export default function AddHotel({ navigation }) {
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={hourPlaceholder}
+                    value={newCheckOutHour}
                     onValueChange={(value) => setCheckOutHour(value)}
                     items={[
                         { label: '00', value: '00' }, { label: '01', value: '01' }, { label: '02', value: '02' },
@@ -340,7 +310,7 @@ export default function AddHotel({ navigation }) {
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={minutePlaceholder}
+                    value={newCheckOutMinute}
                     onValueChange={(value) => setCheckOutMinute(value)}
                     items={[
                         { label: '00', value: '00' }, { label: '01', value: '01' }, { label: '02', value: '02' },
@@ -385,7 +355,7 @@ export default function AddHotel({ navigation }) {
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={languagePlaceholder}
+                    value={newLanguage}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
                     items={[
@@ -411,7 +381,7 @@ export default function AddHotel({ navigation }) {
                     placeholder='Description'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(Text) => setDescription(Text)}
-                    value={description}
+                    value={newDescription}
                     underlineColorAndroid="transparent"
                     autoCapitalize="sentences"
                     multiline
@@ -422,7 +392,7 @@ export default function AddHotel({ navigation }) {
                     placeholder='Terms & Conditions'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(Text) => setTNC(Text)}
-                    value={TNC}
+                    value={newTNC}
                     underlineColorAndroid="transparent"
                     autoCapitalize="sentences"
                     multiline
@@ -430,7 +400,7 @@ export default function AddHotel({ navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonTitle}>Add Hotel</Text>
+                    <Text style={styles.buttonTitle}>Edit Hotel</Text>
                 </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>
@@ -451,7 +421,8 @@ const pickerSelectStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
-        paddingLeft: 16
+        paddingLeft: 16,
+        color: 'black'
     },
     inputAndroid: {
         borderTopLeftRadius: 15,
@@ -466,6 +437,7 @@ const pickerSelectStyles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
-        paddingLeft: 16
+        paddingLeft: 16,
+        color: 'black'
       }
 })

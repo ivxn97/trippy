@@ -7,6 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const typePlaceholder = {
     label: 'Paid Tour Type',
@@ -40,6 +41,7 @@ const languagePlaceholder = {
 
 //TODO: add image uploading
 export default function AddPaidTour ( { navigation }) {
+    const [email, setEmail] = useState('')
     const [tourTitle, setTourTitle] = useState('');
     const [tourType, setType] = useState('');
     const [price, setPrice] = useState('');
@@ -55,6 +57,22 @@ export default function AddPaidTour ( { navigation }) {
     const [durationHour, setDurationHour] = useState('');
     const [durationMinute, setDurationMinute] = useState('');
     const [image, setImage] = useState(null);
+
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+                console.log(email)
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getEmail();
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -89,6 +107,7 @@ export default function AddPaidTour ( { navigation }) {
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "paidtours", tourTitle), {
+                    addedBy: email,
                     tourTitle: tourTitle,
                     tourType: tourType,
                     language: language,

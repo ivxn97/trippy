@@ -8,15 +8,32 @@ import { db } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //TODO: add image uploading, add account linkage for all Adds
 export default function AddGuide({ navigation }) {
+    const [email, setEmail] = useState('');
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [mrt, setMRT] = useState('');
     const [tips, setTips] = useState('');
     const [description, setDescription] = useState('');
+
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+                console.log(email)
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getEmail();
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -51,6 +68,7 @@ export default function AddGuide({ navigation }) {
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "guides", title), {
+                    addedBy: email,
                     title: title,
                     location: location,
                     mrt: mrt,

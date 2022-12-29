@@ -32,7 +32,9 @@ export default function GuideScreen({ route, navigation }) {
 
     const onShare = async () => {
         try {
-            await Share.share({message:`I have found this amazing guide called ${title}. Download the App here: URL`})
+            await Share.share({message:`Check out this amazing guide I found on TripAid!  
+            Guide name: ${title} 
+            Download the App here: URL`})
         }
         catch (error) {
             console.log(error);

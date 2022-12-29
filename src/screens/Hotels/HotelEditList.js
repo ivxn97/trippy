@@ -5,7 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 
-export default function BOHotelList({ navigation }) {
+export default function HotelEditList({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [hotels, setHotels] = useState([]); // Initial empty array of hotels
 
@@ -41,17 +41,11 @@ export default function BOHotelList({ navigation }) {
         autoCapitalize="sentences"
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-    <TouchableOpacity style={styles.buttonSmall} onPress={() =>
-                        navigation.navigate('Add Hotel')
-                    }>
-          <Text style={styles.buttonSmallListText}>Add</Text>
+        <TouchableOpacity style={styles.buttonListLeft}>
+          <Text style={styles.buttonSmallListText}>Sort</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Hotel Edit List')}>
-          <Text style={styles.buttonSmallListText}>Edit</Text>
-        </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall} onPress={() =>
-                    navigation.navigate('Delete Hotel') }>
-          <Text style={styles.buttonSmallListText}>Remove</Text>
+        <TouchableOpacity style={styles.buttonListRight}>
+          <Text style={styles.buttonSmallListText}>Filter</Text>
         </TouchableOpacity>
     </View>
         <FlatList
@@ -61,7 +55,7 @@ export default function BOHotelList({ navigation }) {
                 <TouchableHighlight
                     underlayColor="#C8c9c9"
                     onPress={() => {
-                    navigation.navigate('Hotel details', {
+                    navigation.navigate('Edit Hotel', {
                         name: item.name, roomTypes: item.roomTypes,
                         priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
                         checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 

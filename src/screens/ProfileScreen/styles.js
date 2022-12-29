@@ -29,11 +29,42 @@ export default StyleSheet.create({
         marginLeft: 8,
         marginRight: 30
     },
+    buttonListRight: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: 'white',
+        marginLeft: 2,
+        marginRight: 15,
+        marginTop: 5,
+        marginBottom:5,
+        height: 30,
+        width: 90,
+        borderRadius: 15,
+    },
+    title: {
+        fontSize: 22,
+        textAlign: 'left',
+        marginLeft: 15
+    },
+    HeadingList: {
+        fontSize: 30,
+        textAlign: 'right',
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 8,
+        marginRight: 30
+    },
     text: {
         borderRadius: 5,
         color: 'black',
         marginLeft:20,
         fontSize:18,
+    },
+    buttonSmallListText: {
+        alignSelf:"center", 
+        marginTop:5,
     },
     textNB: {
         borderRadius: 5,

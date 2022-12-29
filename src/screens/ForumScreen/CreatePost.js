@@ -15,7 +15,7 @@ const sectionPlaceholder = {
 
 
 export default function CreatePost ( {navigation} ) {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [title, setTitle] = useState('');
     const [section, setSection] = useState('');
     const [description, setDescription] = useState('');
@@ -24,7 +24,8 @@ export default function CreatePost ( {navigation} ) {
         try {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
-                setEmail(email);
+                const [username, website] = email.split("@")
+                setUsername(username);
             }
             else {
                 console.log("No Email Selected at Login")
@@ -38,13 +39,13 @@ export default function CreatePost ( {navigation} ) {
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "forum", title), {
-                addedBy: email,
+                addedBy: username,
                 title: title,
                 section: section,
                 description: description
             });
             
-            navigation.navigate('Forum Screen')
+            navigation.replace('Forum Page')
         }
         catch (e) {
             console.log("Error adding Post: ", e);

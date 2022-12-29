@@ -118,10 +118,10 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                     <Text style={styles.text}>View Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bookmarks')}
                     title="Saved"
                 >
-                    <Text style={styles.text}>Saved</Text>
+                    <Text style={styles.text}>Bookmarks</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title="Itinerary"

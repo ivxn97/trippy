@@ -62,3 +62,5 @@ export {default as HotelEditList} from './Hotels/HotelEditList'
 export {default as EditHotel} from './Hotels/EditHotel'
 export {default as DealsEditList} from './DealsScreen/EditDealsList'
 export {default as EditDeal} from './DealsScreen/EditDeal'
+
+export {default as Bookmarks} from './ProfileScreen/Bookmarks'

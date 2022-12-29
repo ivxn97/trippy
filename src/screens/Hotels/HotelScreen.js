@@ -4,6 +4,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
+import {bookmark, itinerary} from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HotelScreen({ route, navigation }) {
     const { name, hotelClass, roomTypes, priceRange, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC } = route.params;
@@ -20,6 +23,29 @@ export default function HotelScreen({ route, navigation }) {
 
     const filterRoomFeatures = roomFeatures.filter(item => item.isChecked === true);
     const valueRoomFeatures = filterRoomFeatures.map(item => item.value);
+    const [email, setEmail] = useState('');
+    const [registeredButton, setRegisteredButton] = useState(true);
+
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setRegisteredButton(false);
+                setEmail(email);
+                console.log(email)
+            }
+            else {
+                console.log("No Email Selected at Login")
+                setRegisteredButton(true);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useFocusEffect(React.useCallback(async ()=> {
+        getEmail();
+    }, []));
 
     useEffect(() => {
         const listRef = ref(storage, `hotels/${name.trimEnd()}/images`);
@@ -50,6 +76,14 @@ Download the App here: URL`})
         }
     }
 
+    const onSave = () => {
+        bookmark(email, name)
+      }
+  
+      const onItinerary = () => {
+        itinerary(email, name)
+      }
+
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
@@ -73,10 +107,12 @@ Download the App here: URL`})
                 )}
             />
             <View style={{ flexDirection:"row" }}>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                disabled ={registeredButton} onPress={() => onSave()}>
                         <Text style={styles.buttonSmallText}>Save</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]} 
+                disabled ={registeredButton} onPress={() => onItinerary()}>
                         <Text style={styles.buttonSmallText}>Add To Itinerary</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonSmall} onPress={() => onShare()}>
@@ -98,7 +134,8 @@ Download the App here: URL`})
                 <TouchableOpacity style={styles.buttonSmall}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                disabled ={registeredButton}>
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>

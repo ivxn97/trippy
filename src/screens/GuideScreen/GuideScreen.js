@@ -5,12 +5,38 @@ import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
 import * as WebBrowser from 'expo-web-browser';
+import {bookmark, itinerary} from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function GuideScreen({ route, navigation }) {
     const { title, location, mrt, tips, description } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
     const [images, setImages] = useState([]);
+    const [email, setEmail] = useState('');
+    const [registeredButton, setRegisteredButton] = useState(true);
+
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setRegisteredButton(false);
+                setEmail(email);
+                console.log(email)
+            }
+            else {
+                console.log("No Email Selected at Login")
+                setRegisteredButton(true);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useFocusEffect(React.useCallback(async ()=> {
+        getEmail();
+    }, []));
 
     useEffect(() => {
         const listRef = ref(storage, `guides/${title.trimEnd()}/images`);
@@ -41,14 +67,24 @@ export default function GuideScreen({ route, navigation }) {
         }
     }
 
+    const onSave = () => {
+        bookmark(email, title)
+    }
+  
+    const onItinerary = () => {
+        itinerary(email, title)
+    }
+
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(title).replace(/"/g,"")}</Text>
             <View style={{ flexDirection:"row" }}>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                disabled ={registeredButton} onPress={() => onSave()}>
                         <Text style={styles.buttonSmallText}>Save</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]} 
+                disabled ={registeredButton} onPress={() => onItinerary()}>
                         <Text style={styles.buttonSmallText}>Add To Itinerary</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonSmall}  onPress={() => onShare()}>

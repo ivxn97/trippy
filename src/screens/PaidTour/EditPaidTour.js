@@ -10,7 +10,7 @@ import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/st
 
 //TODO: add image uploading
 export default function EditPaidTour ( { route, navigation }) {
-    const {title, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, description, TNC} = route.params;
+    const {name, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, description, TNC} = route.params;
 
     const [startingHour, startingMinute] = startingTime.split(":");
     const [endingHour, endingMinute] = endingTime.split(":");
@@ -34,7 +34,7 @@ export default function EditPaidTour ( { route, navigation }) {
 
 
     const deleteImages = () => {
-        deleteFolder(`/paidtours/${title}/images`)
+        deleteFolder(`/paidtours/${name}/images`)
     }
 
     function deleteFolder(path) {
@@ -67,7 +67,7 @@ export default function EditPaidTour ( { route, navigation }) {
         const storage = getStorage();
         if (!result.canceled) {
           setImage(result.uri);
-          const storageRef = ref(storage, `paidtours/${title}/images/${fileName}`)
+          const storageRef = ref(storage, `paidtours/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
@@ -79,7 +79,7 @@ export default function EditPaidTour ( { route, navigation }) {
 
     const onSubmitPress = async () => {
             try {
-                await setDoc(doc(db, "paidtours", title), {
+                await setDoc(doc(db, "paidtours", name), {
                     tourType: tourType,
                     language: language,
                     price: price,
@@ -105,7 +105,7 @@ export default function EditPaidTour ( { route, navigation }) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-            <Text style={[styles.text, {fontSize:20}]}>Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
+            <Text style={[styles.text, {fontSize:20}]}>Title: {JSON.stringify(name).replace(/"/g,"")}</Text>
             <Text style={styles.text}>Upload Images:</Text>
                 <TouchableOpacity style={styles.button} onPress={pickImage}  >
                     <Text>Upload New Image</Text>

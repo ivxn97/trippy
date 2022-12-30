@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //TODO: add image uploading, add account linkage for all Adds
 export default function AddGuide({ navigation }) {
     const [email, setEmail] = useState('');
-    const [title, setTitle] = useState('');
+    const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [mrt, setMRT] = useState('');
     const [tips, setTips] = useState('');
@@ -55,7 +55,7 @@ export default function AddGuide({ navigation }) {
         const storage = getStorage();
         if (!result.canceled) {
           setImage(result.uri);
-          const storageRef = ref(storage, `guides/${title}/images/${fileName}`)
+          const storageRef = ref(storage, `guides/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
@@ -67,9 +67,9 @@ export default function AddGuide({ navigation }) {
 
     const onSubmitPress = async () => {
             try {
-                await setDoc(doc(db, "guides", title), {
+                await setDoc(doc(db, "guides", name), {
                     addedBy: email,
-                    title: title,
+                    name: name,
                     location: location,
                     mrt: mrt,
                     tips: tips,
@@ -88,19 +88,19 @@ export default function AddGuide({ navigation }) {
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
     
-                <Text style={styles.text}>Guide Title:</Text>
+                <Text style={styles.text}>Guide Name:</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder='Guide Title'
+                    placeholder='Guide Name'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(Text) => setTitle(Text)}
-                    value={title}
+                    onChangeText={(Text) => setName(Text)}
+                    value={name}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
                 <Text style={styles.text}>Upload Images:</Text>
-                <TouchableOpacity style={[styles.button, {opacity: title ? 1: 0.2}]} onPress={pickImage} 
-                    disabled={title ? false : true} >
+                <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
+                    disabled={name ? false : true} >
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
                 
@@ -152,7 +152,7 @@ export default function AddGuide({ navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonTitle}>Add Guide</Text>
+                    <Text style={styles.buttonName}>Add Guide</Text>
                 </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>

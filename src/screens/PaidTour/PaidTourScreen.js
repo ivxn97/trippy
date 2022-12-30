@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function PaidTourScreen({route, navigation}) {
-    const {title, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, description, TNC} = route.params;
+    const {name, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, description, TNC} = route.params;
     
     const [images, setImages] = useState([]);
     const storage = getStorage();
@@ -39,7 +39,7 @@ export default function PaidTourScreen({route, navigation}) {
     }, []));
 
     useEffect(() => {
-        const listRef = ref(storage, `paidtours/${title.trimEnd()}/images`);
+        const listRef = ref(storage, `paidtours/${name.trimEnd()}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {
@@ -59,7 +59,7 @@ export default function PaidTourScreen({route, navigation}) {
     const onShare = async () => {
         try {
             await Share.share({message:`Check out this amazing tour I found on TripAid!  
-Tour name: ${title} 
+Tour name: ${name} 
 Download the App here: URL`})
         }
         catch (error) {
@@ -68,17 +68,17 @@ Download the App here: URL`})
     }
 
     const onSave = () => {
-        bookmark(email, title)
+        bookmark(email, name)
       }
   
       const onItinerary = () => {
-        itinerary(email, title)
+        itinerary(email, name)
       }
 
 
     return (
         <View style={styles.detailsContainer}>
-            <Text style={styles.Heading}>{JSON.stringify(title).replace(/"/g,"")}</Text>
+            <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
             <Carousel width={width}
                 height={width / 2}
                 mode="horizontal"

@@ -42,7 +42,7 @@ const languagePlaceholder = {
 //TODO: add image uploading
 export default function AddPaidTour ( { navigation }) {
     const [email, setEmail] = useState('')
-    const [tourTitle, setTourTitle] = useState('');
+    const [name, setName] = useState('');
     const [tourType, setType] = useState('');
     const [price, setPrice] = useState('');
     const [ageGroup, setAge] = useState('');
@@ -94,7 +94,7 @@ export default function AddPaidTour ( { navigation }) {
         const storage = getStorage();
         if (!result.canceled) {
           setImage(result.uri);
-          const storageRef = ref(storage, `paidtours/${tourTitle}/images/${fileName}`)
+          const storageRef = ref(storage, `paidtours/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
@@ -106,9 +106,9 @@ export default function AddPaidTour ( { navigation }) {
 
     const onSubmitPress = async () => {
             try {
-                await setDoc(doc(db, "paidtours", tourTitle), {
+                await setDoc(doc(db, "paidtours", name), {
                     addedBy: email,
-                    tourTitle: tourTitle,
+                    name: name,
                     tourType: tourType,
                     language: language,
                     price: price,
@@ -140,14 +140,14 @@ export default function AddPaidTour ( { navigation }) {
                 style={styles.input}
                 placeholder='Name'
                 placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setTourTitle(Text)}
-                value={tourTitle}
+                onChangeText={(Text) => setName(Text)}
+                value={name}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
             <Text style={styles.text}>Upload Images:</Text>
-                <TouchableOpacity style={[styles.button, {opacity: tourTitle ? 1: 0.2}]} onPress={pickImage} 
-                    disabled={tourTitle ? false : true} >
+                <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
+                    disabled={name ? false : true} >
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
             <Text style={styles.text}>Paid Tour Type:</Text>

@@ -76,7 +76,7 @@ export default function Bookmarks ( {navigation} ) {
 
     const getPaidTours = async () => {
         const collectionRef = collection(db, "paidtours")
-        const q = query(collectionRef, where('tourTitle', 'in', bookmarksArr));
+        const q = query(collectionRef, where('name', 'in', bookmarksArr));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             paidTours.push({
@@ -100,7 +100,7 @@ export default function Bookmarks ( {navigation} ) {
 
     const getGuides = async () => {
         const collectionRef = collection(db, "guides")
-        const q = query(collectionRef, where('title', 'in', bookmarksArr));
+        const q = query(collectionRef, where('name', 'in', bookmarksArr));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             guides.push({
@@ -115,7 +115,7 @@ export default function Bookmarks ( {navigation} ) {
 
     const getWalkingTours = async () => {
         const collectionRef = collection(db, "walkingtours")
-        const q = query(collectionRef, where('title', 'in', bookmarksArr));
+        const q = query(collectionRef, where('name', 'in', bookmarksArr));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             walkingTours.push({
@@ -133,7 +133,6 @@ export default function Bookmarks ( {navigation} ) {
         if (shouldRun) {
             getEmail();
             getBookmarks(email);
-            console.log("Bookmarks", bookmarksArr)
             getRestaurants();
             getHotels();
             getPaidTours();
@@ -202,12 +201,12 @@ export default function Bookmarks ( {navigation} ) {
             renderItem={({ item }) => (
                 <TouchableHighlight
                 underlayColor="#C8c9c9"
-                onPress={() => {navigation.navigate('Paid tour details', {title: item.tourTitle, tourType: item.tourType, 
+                onPress={() => {navigation.navigate('Paid tour details', {name: item.name, tourType: item.tourType, 
                 price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
                 endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
                 TNC: item.TNC})}}>
                 <View style={styles.list}>
-                <Text>{item.tourTitle}</Text>
+                <Text>{item.name}</Text>
                 <Text>${item.price}</Text>
                 </View>
                 </TouchableHighlight>
@@ -237,10 +236,10 @@ export default function Bookmarks ( {navigation} ) {
                 renderItem={({ item }) => (
                 <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => {navigation.navigate('Guide Screen', {title: item.title, location: item.location,
+                    onPress={() => {navigation.navigate('Guide Screen', {name: item.name, location: item.location,
                                                                                 mrt: item.mrt, tips: item.tips, description: item.description})}}>
                 <View style={styles.list}>
-                <Text>{item.title}</Text>
+                <Text>{item.name}</Text>
                 </View>
                 </TouchableHighlight>
             )}

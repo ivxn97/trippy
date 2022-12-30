@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function GuideScreen({ route, navigation }) {
-    const { title, location, mrt, tips, description } = route.params;
+    const { name, location, mrt, tips, description } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
     const [images, setImages] = useState([]);
@@ -39,7 +39,7 @@ export default function GuideScreen({ route, navigation }) {
     }, []));
 
     useEffect(() => {
-        const listRef = ref(storage, `guides/${title.trimEnd()}/images`);
+        const listRef = ref(storage, `guides/${name.trimEnd()}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {
@@ -59,7 +59,7 @@ export default function GuideScreen({ route, navigation }) {
     const onShare = async () => {
         try {
             await Share.share({message:`Check out this amazing guide I found on TripAid!  
-            Guide name: ${title} 
+            Guide name: ${name} 
             Download the App here: URL`})
         }
         catch (error) {
@@ -68,16 +68,16 @@ export default function GuideScreen({ route, navigation }) {
     }
 
     const onSave = () => {
-        bookmark(email, title)
+        bookmark(email, name)
     }
   
     const onItinerary = () => {
-        itinerary(email, title)
+        itinerary(email, name)
     }
 
     return (
         <View style={styles.detailsContainer}>
-            <Text style={styles.Heading}>{JSON.stringify(title).replace(/"/g,"")}</Text>
+            <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
                 disabled ={registeredButton} onPress={() => onSave()}>

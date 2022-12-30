@@ -10,10 +10,10 @@ import firebase from 'firebase/app';
 const storage = getStorage();
 
 
-function Item({ title, onPress }) {
+function Item({ name, onPress }) {
     return (
         <View style={styles.item}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{name}</Text>
             <TouchableOpacity onPress={onPress}>
                 <Text style={styles.deleteButton}>Delete</Text>
             </TouchableOpacity>
@@ -96,7 +96,7 @@ export default function DeletePaidTour({ navigation }) {
                     </View>
                 </TouchableHighlight>
                 )}
-                keyExtractor={(item) => item.title}
+                keyExtractor={(item) => item.name}
             />
             <Modal visible={showModal}>
                 <View style={styles.container}>

@@ -64,3 +64,4 @@ export {default as DealsEditList} from './DealsScreen/EditDealsList'
 export {default as EditDeal} from './DealsScreen/EditDeal'
 
 export {default as Bookmarks} from './ProfileScreen/Bookmarks'
+export {default as Itinerary} from './ProfileScreen/Itinerary'

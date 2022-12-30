@@ -60,10 +60,10 @@ export default function GuideWTList ({ navigation }) {
             renderItem={({ item }) => (
         <TouchableHighlight
             underlayColor="#C8c9c9"
-            onPress={() => {navigation.navigate('Guide Screen', {title: item.title, location: item.location,
+            onPress={() => {navigation.navigate('Guide Screen', {name: item.name, location: item.location,
                                                                         mrt: item.mrt, tips: item.tips, description: item.description})}}>
         <View style={styles.list}>
-          <Text>{item.title}</Text>
+          <Text>{item.name}</Text>
         </View>
         </TouchableHighlight>
       )}

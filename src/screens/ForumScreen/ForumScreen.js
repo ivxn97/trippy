@@ -1,39 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
-import { useFocusEffect } from '@react-navigation/native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function ForumScreen ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [forum, setForum] = useState([]); // Initial empty array of hotels
-    const [writeButton, setWriteButton] = useState(true);
+    const [search, setSearch] = useState('');
+    const [filteredData, setfilteredData] = useState([]);
 
     navigation.addListener('willFocus', () => {
 
     })
 
-    const getEmail = async () => {
-        try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                setWriteButton(false);
-                console.log(email)
-            }
-            else {
-                console.log("No Email Selected at Login")
-                setWriteButton(true);
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect( async () => {
+    useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "forum"));
         querySnapshot.forEach(documentSnapshot => {
             forum.push({
@@ -41,13 +24,37 @@ export default function ForumScreen ({ navigation }) {
                 key: documentSnapshot.id,
             });
         });
+
         setForum(forum);
         setLoading(false);
-    },[])
+    }, []);
 
-    useFocusEffect(React.useCallback(async ()=> {
-        getEmail();
-    }, []));
+    const searchFilter = (text) => {
+        if (text) {
+            const newData = forum.filter((item) => {
+                const itemData = item.title ? item.title.toUpperCase()
+                    : ''.toUpperCase()
+                const textData = text.toUpperCase()
+                return itemData.indexOf(textData) > -1;
+            });
+            setfilteredData(newData);
+            setSearch(text);
+        } else {
+            setfilteredData(forum);
+            setSearch(text);
+        }
+       }
+
+       const ItemView = ({item}) => {
+        return (
+            <TouchableHighlight
+                underlayColor="#C8c9c9">
+                <View style={styles.list}>
+                <Text>{item.title}</Text>
+                </View>
+            </TouchableHighlight>
+        )
+       }
 
     if (loading) {
         return <ActivityIndicator />;
@@ -57,16 +64,24 @@ export default function ForumScreen ({ navigation }) {
         <View>
         <Text style={styles.HeadingList}>TripAid</Text>
         <Text style={styles.HeadingList}>Forum</Text>
+
+
+        {/* Search Bar */}
+
         <TextInput
-            style={styles.inputSearch}
-            placeholder='search'
-            placeholderTextColor="#aaaaaa"
-            underlineColorAndroid="transparent"
-            autoCapitalize="sentences"
+            style={styles.textInputStyle}
+            value={search}
+            placeholder="Search Forum"
+            underlineColorAndroid="transparent"  
+            onChangeText={(text) => searchFilter(text)}              
         />
+
+
+
+        {/* Buttons */}
+
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-             <TouchableOpacity style={[styles.buttonSmallWrite, {opacity: writeButton ? 0.3 : 1}]} 
-             disabled={writeButton}
+             <TouchableOpacity style={styles.buttonSmallWrite}
              onPress={() => {navigation.navigate('Create Post')}}>
             <Text style={styles.buttonSmallListText}>Write a post...</Text>
             
@@ -78,17 +93,14 @@ export default function ForumScreen ({ navigation }) {
             <Text style={styles.buttonSmallListText}>Browse Forum</Text>
             </TouchableOpacity>
         </View>
+
+
+        {/* FlatList */}
+    
         <FlatList
-            data={forum}
-            extraData={forum}
-            renderItem={({ item }) => (
-        <TouchableHighlight
-            underlayColor="#C8c9c9">
-        <View style={styles.list}>
-          <Text>{item.title}</Text>
-        </View>
-        </TouchableHighlight>
-      )}
+            data={filteredData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={ItemView}
     />
         </View>
     )

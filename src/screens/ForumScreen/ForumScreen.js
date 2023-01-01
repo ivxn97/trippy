@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -9,8 +9,8 @@ import styles from './styles';
 export default function ForumScreen ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [forum, setForum] = useState([]); // Initial empty array of hotels
-    const [search, setSearch] = useState();
-    const [filteredData, setfilteredData] = useState(forum);
+    const [search, setSearch] = useState('');
+    const [filteredData, setfilteredData] = useState([]);
 
     navigation.addListener('willFocus', () => {
 

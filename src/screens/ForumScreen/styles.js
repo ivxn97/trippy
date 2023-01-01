@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
     detailsContainer: {
         color:'#dfdfdf',
@@ -252,5 +253,16 @@ export default StyleSheet.create({
         marginLeft: 30,
         marginRight: 8,
         paddingLeft: 16
+    },
+    itemStyle: {
+        padding: 10
+    },
+    textInputStyle: {
+        height: 50,
+        borderWidth: 1,
+        paddingLeft: 20,
+        margin: 5,
+        borderColor: '#009688',
+        backgroundColor: 'white'
     }
 })

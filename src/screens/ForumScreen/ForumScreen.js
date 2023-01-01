@@ -9,8 +9,8 @@ import styles from './styles';
 export default function ForumScreen ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [forum, setForum] = useState([]); // Initial empty array of hotels
-    const [search, setSearch] = useState('');
-    const [filteredData, setfilteredData] = useState([]);
+    const [search, setSearch] = useState();
+    const [filteredData, setfilteredData] = useState(forum);
 
     navigation.addListener('willFocus', () => {
 

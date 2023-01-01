@@ -69,7 +69,7 @@ export default function ForumScreen ({ navigation }) {
         {/* Search Bar */}
 
         <TextInput
-            style={styles.textInputStyle}
+            style={styles.inputSearch}
             value={search}
             placeholder="Search Forum"
             underlineColorAndroid="transparent"  

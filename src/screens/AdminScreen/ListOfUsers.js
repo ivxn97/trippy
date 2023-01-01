@@ -8,6 +8,8 @@ import styles from './styles';
 export default function ListOfUsers( {navigation} ) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [users, setUsers] = useState([]); // Initial empty array of users
+  const [search, setSearch] = useState('');
+  const [filteredData, setfilteredData] = useState(users);
 
   //List
   navigation.addListener('willFocus', () => {
@@ -31,10 +33,36 @@ export default function ListOfUsers( {navigation} ) {
     return <ActivityIndicator />;
   }
 
+  const searchFilter = (text, type) => {
+    if (text) {
+        const newData = type.filter((item) => {
+            const itemData = item.name ? item.name.toUpperCase()
+                : ''.toUpperCase()
+            const textData = text.toUpperCase()
+            return itemData.indexOf(textData) > -1;
+        });
+        setfilteredData(newData);
+        setSearch(text);
+    } else {
+        setfilteredData(type);
+        setSearch(text);
+    }
+  }
+
   return (
+    <View>
+    <TextInput
+        style={styles.inputSearch}
+        placeholder='search'
+        placeholderTextColor="#aaaaaa"
+        underlineColorAndroid="transparent"
+        autoCapitalize="sentences"
+        value={search}
+        onChangeText={(text) => searchFilter(text, users)}
+    />
     <FlatList
-      data={users}
-      extraData={users}
+      data={filteredData}
+      extraData={filteredData}
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"
@@ -48,5 +76,6 @@ export default function ListOfUsers( {navigation} ) {
         </TouchableHighlight>
       )}
     />
+    </View>
   );
 }

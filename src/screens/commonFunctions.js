@@ -22,3 +22,4 @@ export async function itinerary(document, name ) {
     alert(`${name} Added to itinerary`)
     console.log(`${name} Added to itinerary`)
 }
+

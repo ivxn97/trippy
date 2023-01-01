@@ -8,6 +8,8 @@ import styles from './styles';
 export default function AttractionList( {navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [attractions, setAttractions] = useState([]); // Initial empty array of attractions
+  const [search, setSearch] = useState('');
+  const [filteredData, setfilteredData] = useState(attractions);
 
   //List
   navigation.addListener('willFocus', () => {
@@ -31,6 +33,22 @@ export default function AttractionList( {navigation }) {
     return <ActivityIndicator />;
   }
 
+  const searchFilter = (text, type) => {
+    if (text) {
+        const newData = type.filter((item) => {
+            const itemData = item.name ? item.name.toUpperCase()
+                : ''.toUpperCase()
+            const textData = text.toUpperCase()
+            return itemData.indexOf(textData) > -1;
+        });
+        setfilteredData(newData);
+        setSearch(text);
+    } else {
+        setfilteredData(type);
+        setSearch(text);
+    }
+  }
+
   return (
     <View>
     <TextInput
@@ -39,6 +57,8 @@ export default function AttractionList( {navigation }) {
         placeholderTextColor="#aaaaaa"
         underlineColorAndroid="transparent"
         autoCapitalize="sentences"
+        value={search}
+        onChangeText={(text) => searchFilter(text, attractions)}
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
         <TouchableOpacity style={styles.buttonListLeft}>
@@ -49,8 +69,8 @@ export default function AttractionList( {navigation }) {
         </TouchableOpacity>
     </View>
     <FlatList
-      data={attractions}
-      extraData={attractions}
+      data={filteredData}
+      extraData={filteredData}
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"

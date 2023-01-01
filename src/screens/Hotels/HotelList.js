@@ -8,6 +8,8 @@ import styles from './styles';
 export default function HotelList({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [hotels, setHotels] = useState([]); // Initial empty array of hotels
+    const [search, setSearch] = useState('');
+    const [filteredData, setfilteredData] = useState(hotels);
 
     //List
     navigation.addListener('willFocus', () => {
@@ -31,6 +33,22 @@ export default function HotelList({ navigation }) {
         return <ActivityIndicator />;
     }
 
+    const searchFilter = (text, type) => {
+    if (text) {
+        const newData = type.filter((item) => {
+            const itemData = item.name ? item.name.toUpperCase()
+                : ''.toUpperCase()
+            const textData = text.toUpperCase()
+            return itemData.indexOf(textData) > -1;
+        });
+        setfilteredData(newData);
+        setSearch(text);
+    } else {
+        setfilteredData(type);
+        setSearch(text);
+    }
+  }
+
     return (
     <View>
     <TextInput
@@ -39,6 +57,8 @@ export default function HotelList({ navigation }) {
         placeholderTextColor="#aaaaaa"
         underlineColorAndroid="transparent"
         autoCapitalize="sentences"
+        value={search}
+        onChangeText={(text) => searchFilter(text, hotels)}
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
         <TouchableOpacity style={styles.buttonListLeft}>
@@ -49,8 +69,8 @@ export default function HotelList({ navigation }) {
         </TouchableOpacity>
     </View>
         <FlatList
-            data={hotels}
-            extraData={hotels}
+            data={filteredData}
+            extraData={filteredData}
             renderItem={({ item }) => (
                 <TouchableHighlight
                     underlayColor="#C8c9c9"

@@ -8,6 +8,8 @@ import styles from './styles';
 export default function BORestaurantList( {navigation}) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
+    const [search, setSearch] = useState('');
+    const [filteredData, setfilteredData] = useState(restaurants);
    //List
    navigation.addListener('willFocus', () => {
     
@@ -30,6 +32,22 @@ if (loading) {
   return <ActivityIndicator />;
 }
 
+const searchFilter = (text, type) => {
+  if (text) {
+      const newData = type.filter((item) => {
+          const itemData = item.name ? item.name.toUpperCase()
+              : ''.toUpperCase()
+          const textData = text.toUpperCase()
+          return itemData.indexOf(textData) > -1;
+      });
+      setfilteredData(newData);
+      setSearch(text);
+  } else {
+      setfilteredData(type);
+      setSearch(text);
+  }
+}
+
 return (
   <View>
     <TextInput
@@ -38,6 +56,8 @@ return (
         placeholderTextColor="#aaaaaa"
         underlineColorAndroid="transparent"
         autoCapitalize="sentences"
+        value={search}
+        onChangeText={(text) => searchFilter(text, restaurants)}
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
     <TouchableOpacity style={styles.buttonSmall} onPress={() =>
@@ -53,8 +73,8 @@ return (
         </TouchableOpacity>
     </View>
   <FlatList
-    data={restaurants}
-    extraData={restaurants}
+      data={filteredData}
+      extraData={filteredData}
     renderItem={({ item }) => (
       <TouchableHighlight
       underlayColor="#C8c9c9"

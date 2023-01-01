@@ -7,7 +7,9 @@ import styles from './styles';
 
 export default function EditDealsDeals( { navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
-  const [deals, setDeals] = useState([]); // Initial empty array of attractions
+  const [deals, setDeals] = useState([]); // Initial empty array of deals
+  const [search, setSearch] = useState('');
+  const [filteredData, setfilteredData] = useState(deals);
 
   //List
   navigation.addListener('willFocus', () => {
@@ -31,6 +33,22 @@ export default function EditDealsDeals( { navigation }) {
     return <ActivityIndicator />;
   }
 
+  const searchFilter = (text, type) => {
+    if (text) {
+        const newData = type.filter((item) => {
+            const itemData = item.name ? item.name.toUpperCase()
+                : ''.toUpperCase()
+            const textData = text.toUpperCase()
+            return itemData.indexOf(textData) > -1;
+        });
+        setfilteredData(newData);
+        setSearch(text);
+    } else {
+        setfilteredData(type);
+        setSearch(text);
+    }
+  }
+
   return (
     <View>
     <TextInput
@@ -39,6 +57,8 @@ export default function EditDealsDeals( { navigation }) {
         placeholderTextColor="#aaaaaa"
         underlineColorAndroid="transparent"
         autoCapitalize="sentences"
+        value={search}
+        onChangeText={(text) => searchFilter(text, deals)}
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
         <TouchableOpacity style={styles.buttonListLeft}>
@@ -49,8 +69,8 @@ export default function EditDealsDeals( { navigation }) {
         </TouchableOpacity>
     </View>
     <FlatList
-      data={deals}
-      extraData={deals}
+      data={filteredData}
+      extraData={filteredData}
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"

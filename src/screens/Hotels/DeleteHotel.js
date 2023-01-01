@@ -7,6 +7,7 @@ import styles from './styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getStorage, ref, deleteObject, listAll } from "firebase/storage";
 import firebase from 'firebase/app';
+import { sortFiles } from '../commonFunctions';
 const storage = getStorage();
 
 
@@ -28,6 +29,27 @@ export default function DeleteHotel({ navigation }) {
     const [items, setItems] = useState([]); // Initial empty array of hotels
     const [selectedName, setSelectedName] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [sortBy, setSortBy] = useState(null);
+    const [sortOrder, setSortOrder] = useState(null);
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+
+    function openDropdown() {
+        setDropdownVisible(true);
+    }
+
+    function closeDropdown() {
+        setDropdownVisible(false);
+    }
+
+    function openInnerDropdown() {
+        setInnerDropdownVisible(true);
+    }
+
+    function closeInnerDropdown() {
+        setInnerDropdownVisible(false);
+    }
+
 
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "hotels"));
@@ -64,6 +86,22 @@ export default function DeleteHotel({ navigation }) {
           .catch(error => console.log(error));
       }
 
+  
+   
+
+    function handleSortChange(sort) {
+        if (sort === 'asc' || sort === 'desc') {
+            setSortOrder(sort);
+            setInnerDropdownVisible(false);
+        } else {
+            setSortBy(sort);
+            setDropdownVisible(false);
+            openInnerDropdown();
+        }
+        // Call the sort function with the selected values
+        sortFiles(items, sortBy, sortOrder);
+    }
+
     if (loading) {
         return <ActivityIndicator />;
     }
@@ -78,9 +116,42 @@ export default function DeleteHotel({ navigation }) {
                 autoCapitalize="sentences"
             />
             <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.buttonListLeft}>
-                    <Text style={styles.buttonSmallListText}>Sort</Text>
-                </TouchableOpacity>
+                {!sortBy && (
+                    <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
+                        <Text style={styles.buttonSmallListText}>Sort</Text>
+                    </TouchableOpacity>
+                )}
+                {sortBy && !sortOrder && (
+                    <TouchableOpacity style={styles.buttonListLeft} onPress={openInnerDropdown}>
+                        <Text style={styles.buttonSmallListText} >Sort by {sortBy}</Text>
+                    </TouchableOpacity>
+                )}
+                {sortBy && sortOrder && (
+                    <Text style={styles.buttonSmallListText}>Sorted by {sortBy} ({sortOrder})</Text>
+                )}
+                {dropdownVisible && (
+                    <FlatList
+                        data={['name', 'hotelClass']}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => handleSortChange(item)}>
+                                <Text>Sort by {item}</Text>
+                            </TouchableOpacity>
+                        )}
+                        keyExtractor={item => item}
+                    />
+                )}
+                {innerDropdownVisible && (
+                    <FlatList
+                        data={['asc', 'desc']}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => handleSortChange(item)}>
+                                <Text>{item}ending</Text>
+                            </TouchableOpacity>
+                        )}
+                        keyExtractor={item => item}
+                    />
+                )}
+                
                 <TouchableOpacity style={styles.buttonListRight}>
                     <Text style={styles.buttonSmallListText}>Filter</Text>
                 </TouchableOpacity>
@@ -93,6 +164,7 @@ export default function DeleteHotel({ navigation }) {
                     onPress={() => onDelete(item.name)}>
                     <View style={styles.list}>
                         <Text>{item.name}</Text>
+                        <Text>{item.hotelClass}</Text>
                     </View>
                 </TouchableHighlight>
                 )}
@@ -109,7 +181,7 @@ export default function DeleteHotel({ navigation }) {
                     </View>
                 </View>
             </Modal>
-
+            
         </View>
     );
 }

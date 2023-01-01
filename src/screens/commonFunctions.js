@@ -23,3 +23,14 @@ export async function itinerary(document, name ) {
     console.log(`${name} Added to itinerary`)
 }
 
+
+
+export async function sortFiles(array, property, order) {
+    return array.sort((a, b) => {
+        if (order === 'asc') {
+            return a[property] > b[property] ? 1 : -1;
+        } else {
+            return a[property] < b[property] ? 1 : -1;
+        }
+    });
+}

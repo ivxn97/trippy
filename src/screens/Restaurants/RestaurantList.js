@@ -4,13 +4,14 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
-
+import Checkbox from 'expo-checkbox';
 
 export default function RestaurantList( {navigation}) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(restaurants);
+    const [checked, setChecked] = useState(false);
    //List
    navigation.addListener('willFocus', () => {
     
@@ -49,6 +50,29 @@ export default function RestaurantList( {navigation}) {
     }
   }
 
+  useEffect(() => {
+    setfilteredData(filteredData);
+}, [])
+
+  const toggleCheckbox = (typeOfCuisine, type) => {
+    setChecked(!typeOfCuisine.checked);
+    console.log(checked + ' ' + typeOfCuisine);
+
+    if (checked) {
+      const newData = type.filter((item) => {
+        if(item.typeOfCuisine === typeOfCuisine) {
+          return {...item};
+        }
+      });
+    
+    setfilteredData(newData);
+    } else {
+      setfilteredData(type);
+    }
+    //console.log(filteredData)
+  };
+    
+
   return (
     <View>
       <TextInput
@@ -67,6 +91,16 @@ export default function RestaurantList( {navigation}) {
           <TouchableOpacity style={styles.buttonListRight}>
             <Text style={styles.buttonSmallListText}>Filter</Text>
           </TouchableOpacity>
+      </View>
+      <View>
+      {restaurants
+        //.filter((item) => !checked || item.checked)
+        .map((item, index) => (
+          <View style={styles.checklist} key={index}>
+              <Checkbox style={styles.checkbox} value={item.checked} onValueChange={() => toggleCheckbox(item.typeOfCuisine, restaurants)} />
+              <Text>{item.typeOfCuisine}</Text>
+          </View>
+      ))}
       </View>
     <FlatList
       data={filteredData}

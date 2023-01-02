@@ -23,6 +23,16 @@ export async function itinerary(document, name ) {
     console.log(`${name} Added to itinerary`)
 }
 
+export async function claimDeals(document, name ) {
+    const ref = doc(db, "users", document);
+
+    await updateDoc (ref, {
+        deals: arrayUnion(name)
+    })
+    alert(`${name} Deal Redeemed`)
+    console.log(`${name} Deal Redeemed`)
+}
+
 
 
 export async function sortFiles(array, property, order) {

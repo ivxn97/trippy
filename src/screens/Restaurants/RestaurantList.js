@@ -27,6 +27,7 @@ export default function RestaurantList( {navigation}) {
         });
 
         setRestaurants(restaurants);
+        setfilteredData(filteredData);
         setLoading(false);
       },[]);
 
@@ -49,10 +50,6 @@ export default function RestaurantList( {navigation}) {
         setSearch(text);
     }
   }
-
-  useEffect(() => {
-    setfilteredData(filteredData);
-}, [])
 
   const toggleCheckbox = (typeOfCuisine, type) => {
     setChecked(!typeOfCuisine.checked);

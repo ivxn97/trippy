@@ -52,19 +52,21 @@ export default function RestaurantList( {navigation}) {
   }
 
   const toggleCheckbox = (typeOfCuisine, type) => {
-    setChecked(!typeOfCuisine.checked);
-    console.log(checked + ' ' + typeOfCuisine);
+    //setChecked(!typeOfCuisine.checked);
+    //console.log(checked + ' ' + typeOfCuisine);
 
-    if (checked) {
+    if (checked == false) {
       const newData = type.filter((item) => {
         if(item.typeOfCuisine === typeOfCuisine) {
-          return {...item};
+          return {...item, checked: true};
         }
       });
     
     setfilteredData(newData);
+    setChecked(true)
     } else {
       setfilteredData(type);
+      setChecked(false)
     }
     //console.log(filteredData)
   };

@@ -11,7 +11,7 @@ export default function RestaurantList( {navigation}) {
     const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(restaurants);
-    const [checked, setChecked] = useState(false);
+    const [reducedType, setReducedType] = useState();
    //List
    navigation.addListener('willFocus', () => {
     
@@ -26,8 +26,18 @@ export default function RestaurantList( {navigation}) {
           });
         });
 
+        const typesOf = restaurants.map(item => ({
+          name: item.typeOfCuisine,
+          isChecked: false
+      }))
+    
+      const reducedTypes = typesOf.filter((item, index) => {
+        return typesOf.findIndex((otherItem) => otherItem.name === item.name) === index;
+      });
+
         setRestaurants(restaurants);
         setfilteredData(filteredData);
+        setReducedType(reducedTypes);
         setLoading(false);
       },[]);
 
@@ -51,26 +61,28 @@ export default function RestaurantList( {navigation}) {
     }
   }
 
-  const toggleCheckbox = (typeOfCuisine, type) => {
-    //setChecked(!typeOfCuisine.checked);
-    //console.log(checked + ' ' + typeOfCuisine);
-
-    if (checked == false) {
-      const newData = type.filter((item) => {
-        if(item.typeOfCuisine === typeOfCuisine) {
-          return {...item, checked: true};
+  const toggleCheckbox = (filters, type) => {
+    setReducedType(prevState => {
+      return prevState.map(status => {
+        if (filters.name === status.name) {
+          if (status.isChecked == false) {
+            const newData = type.filter((item) => {
+              if(item.typeOfCuisine === filters.name) {
+                return {...item};
+              }
+            });
+            setfilteredData(newData);
+            return {...status, isChecked: true};
+          } 
+          else if (status.isChecked == true) {
+            setfilteredData(type);
+            return {...status, isChecked: false}
+          }
         }
+        return status;
       });
-    
-    setfilteredData(newData);
-    setChecked(true)
-    } else {
-      setfilteredData(type);
-      setChecked(false)
-    }
-    //console.log(filteredData)
-  };
-    
+    });
+  }
 
   return (
     <View>
@@ -92,12 +104,12 @@ export default function RestaurantList( {navigation}) {
           </TouchableOpacity>
       </View>
       <View>
-      {restaurants
+      {reducedType
         //.filter((item) => !checked || item.checked)
         .map((item, index) => (
           <View style={styles.checklist} key={index}>
-              <Checkbox style={styles.checkbox} value={item.checked} onValueChange={() => toggleCheckbox(item.typeOfCuisine, restaurants)} />
-              <Text>{item.typeOfCuisine}</Text>
+              <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => toggleCheckbox(item, restaurants)} />
+              <Text>{item.name}</Text>
           </View>
       ))}
       </View>

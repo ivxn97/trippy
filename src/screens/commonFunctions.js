@@ -27,9 +27,8 @@ export async function claimDeals(document, name ) {
     const ref = doc(db, "users", document);
 
     await updateDoc (ref, {
-        deals: arrayUnion(name)
+        redeemedDeals: arrayUnion(name)
     })
-    alert(`${name} Deal Redeemed`)
     console.log(`${name} Deal Redeemed`)
 }
 

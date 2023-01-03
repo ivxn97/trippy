@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import {claimDeals} from '../commonFunctions';
 import styles from './styles';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DealsScreen ( {route, navigation} ) {
 
@@ -23,19 +24,17 @@ Download the App here: URL`})
         try {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
-                setRegisteredButton(false);
                 setEmail(email);
                 console.log(email)
             }
             else {
                 console.log("No Email Selected at Login")
-                setRegisteredButton(true);
             }
         } catch (error) {
             console.log(error)
         }
     }
-
+    
     useFocusEffect(React.useCallback(async ()=> {
         getEmail();
     }, []));
@@ -44,7 +43,7 @@ Download the App here: URL`})
         {
             claimDeals(email, code)
             Alert.alert
-            (`${name}`,`Here is your code : ${code}`)
+            (`${name}`,`Deal Redeemed. Here is your code : ${code}`)
         }
     }
 

@@ -33,13 +33,12 @@ export async function claimDeals(document, name ) {
 }
 
 
-
 export async function sortFiles(array, property, order) {
     return array.sort((a, b) => {
         if (order === 'asc') {
-            return a[property] > b[property] ? 1 : -1;
+            return a[property].toLowerCase().localeCompare(b[property].toLowerCase(), undefined, { numeric: true, sensitivity: 'base' });
         } else {
-            return a[property] < b[property] ? 1 : -1;
+            return b[property].toLowerCase().localeCompare(a[property].toLowerCase(), undefined, { numeric: true, sensitivity: 'base' });
         }
     });
 }

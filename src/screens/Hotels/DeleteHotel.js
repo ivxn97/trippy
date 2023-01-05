@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, Modal, Button} from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
 import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -51,17 +51,21 @@ export default function DeleteHotel({ navigation }) {
     }
 
 
-    useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "hotels"));
-        querySnapshot.forEach(documentSnapshot => {
-            items.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
+    useEffect(() => {
+        async function fetchData() {
+            const querySnapshot = await getDocs(collection(db, "hotels"));
+            querySnapshot.forEach(documentSnapshot => {
+                items.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                });
             });
-        });
 
-        setItems(items);
-        setLoading(false);
+            setItems(items);
+            setLoading(false);
+        }
+
+        fetchData();
     }, []);
 
     const onDelete = (name) => {
@@ -79,33 +83,36 @@ export default function DeleteHotel({ navigation }) {
     function deleteFolder(path) {
         const listRef = ref(storage, path)
         listAll(listRef)
-          .then(dir => {
-            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
-            console.log("Files deleted successfully from Firebase Storage");
-          })
-          .catch(error => console.log(error));
-      }
+            .then(dir => {
+                dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+                console.log("Files deleted successfully from Firebase Storage");
+            })
+            .catch(error => console.log(error));
+    }
 
-  
-   
+    
 
-    function handleSortChange(sort) {
+
+    async function handleSortChange(sort) {
         if (sort === 'asc' || sort === 'desc') {
             setSortOrder(sort);
             setInnerDropdownVisible(false);
+            const sortedArray = await sortFiles(items, sortBy, sortOrder);
+            setItems(sortedArray)
+            
         } else {
             setSortBy(sort);
             setDropdownVisible(false);
             openInnerDropdown();
         }
         // Call the sort function with the selected values
-        sortFiles(items, sortBy, sortOrder);
+        
     }
 
     if (loading) {
         return <ActivityIndicator />;
     }
-    
+
     return (
         <View>
             <TextInput
@@ -126,8 +133,10 @@ export default function DeleteHotel({ navigation }) {
                         <Text style={styles.buttonSmallListText} >Sort by {sortBy}</Text>
                     </TouchableOpacity>
                 )}
-                {sortBy && sortOrder && (
-                    <Text style={styles.buttonSmallListText}>Sorted by {sortBy} ({sortOrder})</Text>
+                {sortBy && sortOrder && (    
+                    <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
+                        <Text style={styles.buttonSmallListText}>Sort</Text>
+                    </TouchableOpacity>
                 )}
                 {dropdownVisible && (
                     <FlatList
@@ -151,7 +160,7 @@ export default function DeleteHotel({ navigation }) {
                         keyExtractor={item => item}
                     />
                 )}
-                
+
                 <TouchableOpacity style={styles.buttonListRight}>
                     <Text style={styles.buttonSmallListText}>Filter</Text>
                 </TouchableOpacity>
@@ -160,13 +169,13 @@ export default function DeleteHotel({ navigation }) {
                 data={items}
                 renderItem={({ item }) => (
                     <TouchableHighlight
-                    underlayColor="#C8c9c9"
-                    onPress={() => onDelete(item.name)}>
-                    <View style={styles.list}>
-                        <Text>{item.name}</Text>
-                        <Text>{item.hotelClass}</Text>
-                    </View>
-                </TouchableHighlight>
+                        underlayColor="#C8c9c9"
+                        onPress={() => onDelete(item.name)}>
+                        <View style={styles.list}>
+                            <Text>{item.name}</Text>
+                            <Text>{item.hotelClass}</Text>
+                        </View>
+                    </TouchableHighlight>
                 )}
                 keyExtractor={(item) => item.name}
             />
@@ -177,11 +186,11 @@ export default function DeleteHotel({ navigation }) {
                         <Button title="Confirm" onPress={onConfirmDelete} />
                         <View style={styles.space} />
                         <Button title="Cancel" onPress={() => setShowModal(false)} />
-                        
+
                     </View>
                 </View>
             </Modal>
-            
+
         </View>
     );
 }

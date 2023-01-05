@@ -92,7 +92,6 @@ export default function DeleteHotel({ navigation }) {
 
     
 
-
     async function handleSortChange(sort) {
         if (sort === 'asc' || sort === 'desc') {
             setSortOrder(sort);
@@ -105,8 +104,6 @@ export default function DeleteHotel({ navigation }) {
             setDropdownVisible(false);
             openInnerDropdown();
         }
-        // Call the sort function with the selected values
-        
     }
 
     if (loading) {

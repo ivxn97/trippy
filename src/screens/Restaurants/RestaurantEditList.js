@@ -4,13 +4,34 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
+import { sortFiles } from '../commonFunctions';
 
 export default function RestaurantEditList( {navigation}) {
-    const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
-    const [search, setSearch] = useState('');
-    const [filteredData, setfilteredData] = useState(restaurants);
-   //List
+  const [loading, setLoading] = useState(true); // Set loading to true on component mount
+  const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
+  const [search, setSearch] = useState('');
+  const [filteredData, setfilteredData] = useState(restaurants);
+  const [sortBy, setSortBy] = useState(null);
+  const [sortOrder, setSortOrder] = useState(null);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+
+  function openDropdown() {
+    setDropdownVisible(true);
+  }
+
+  function closeDropdown() {
+    setDropdownVisible(false);
+  }
+
+  function openInnerDropdown() {
+    setInnerDropdownVisible(true);
+  }
+
+  function closeInnerDropdown() {
+    setInnerDropdownVisible(false);
+  }
+    //List
    navigation.addListener('willFocus', () => {
     
 })
@@ -27,6 +48,20 @@ export default function RestaurantEditList( {navigation}) {
         setRestaurants(restaurants);
         setLoading(false);
       },[]);
+
+  async function handleSortChange(sort) {
+    if (sort === 'asc' || sort === 'desc') {
+      setSortOrder(sort);
+      setInnerDropdownVisible(false);
+      const sortedArray = await sortFiles(restaurants, sortBy, sortOrder);
+      setRestaurants(sortedArray)
+
+    } else {
+      setSortBy(sort);
+      setDropdownVisible(false);
+      openInnerDropdown();
+    }
+  }
 
   if (loading) {
     return <ActivityIndicator />;
@@ -59,9 +94,43 @@ export default function RestaurantEditList( {navigation}) {
           onChangeText={(text) => searchFilter(text, restaurants)}
       />
       <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-          <TouchableOpacity style={styles.buttonListLeft}>
+        {!sortBy && (
+          <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
             <Text style={styles.buttonSmallListText}>Sort</Text>
           </TouchableOpacity>
+        )}
+        {sortBy && !sortOrder && (
+          <TouchableOpacity style={styles.buttonListLeft} onPress={openInnerDropdown}>
+            <Text style={styles.buttonSmallListText} >Sort by {sortBy}</Text>
+          </TouchableOpacity>
+        )}
+        {sortBy && sortOrder && (
+          <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
+            <Text style={styles.buttonSmallListText}>Sort</Text>
+          </TouchableOpacity>
+        )}
+        {dropdownVisible && (
+          <FlatList
+            data={['name', 'typeOfCuisine']}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleSortChange(item)}>
+                <Text>Sort by {item}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item}
+          />
+        )}
+        {innerDropdownVisible && (
+          <FlatList
+            data={['asc', 'desc']}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleSortChange(item)}>
+                <Text>{item}ending</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item}
+          />
+        )}
           <TouchableOpacity style={styles.buttonListRight}>
             <Text style={styles.buttonSmallListText}>Filter</Text>
           </TouchableOpacity>

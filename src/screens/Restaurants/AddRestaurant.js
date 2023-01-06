@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FilteredTextInput } from '../commonFunctions';
 
 //Placeholders for SELECT lists
 const typePlaceholder = {
@@ -377,7 +378,7 @@ export default function AddRestaurant ( { navigation }) {
             {/* insert google maps API and mapview here
             https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
             <Text style={styles.text}>Description:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Description'
                 placeholderTextColor="#aaaaaa"

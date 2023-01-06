@@ -1,5 +1,7 @@
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from '../../config';
+import React, { useState } from 'react';
+import { TextInput } from 'react-native';
 
 //document = email of logged in user
 //name = activity name
@@ -42,3 +44,26 @@ export async function sortFiles(array, property, order) {
         }
     });
 }
+
+export const FilteredTextInput = ({ onChangeText, ...props }) => {
+    const [value, setValue] = useState('');
+    const filteredWords = ['bad', 'evil', 'naughty'];
+  
+    const handleChange = (text) => {
+      // Replace filtered words with an empty string
+      text = filteredWords.reduce((acc, word) => acc.replace(word, ''), text);
+      setValue(text);
+      if (onChangeText) {
+        onChangeText(text);
+      }
+    };
+  
+    return (
+      <TextInput
+        {...props}
+        value={value}
+        onChangeText={handleChange}
+      />
+    );
+  };
+  

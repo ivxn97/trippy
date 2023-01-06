@@ -3,6 +3,7 @@ import { db } from '../../config';
 import React, { useState } from 'react';
 import { TextInput } from 'react-native';
 
+var filter = require('leo-profanity');
 //document = email of logged in user
 //name = activity name
 export async function bookmark(document, name ) {
@@ -51,7 +52,7 @@ export const FilteredTextInput = ({ onChangeText, ...props }) => {
   
     const handleChange = (text) => {
       // Replace filtered words with an empty string
-      text = filteredWords.reduce((acc, word) => acc.replace(word, ''), text);
+      text = filter.list().reduce((acc, word) => acc.replace(word, ''), text);
       setValue(text);
       if (onChangeText) {
         onChangeText(text);

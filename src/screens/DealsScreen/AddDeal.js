@@ -6,6 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FilteredTextInput } from '../commonFunctions';
 
 const businessPlaceholder = {
     label: 'Business',
@@ -104,7 +105,7 @@ export default function AddDeal ( {navigation} ) {
                 keyboardType="numeric"
             />
             <Text style={styles.text}>Code:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.input}
                 placeholder='Enter Deal Code'
                 placeholderTextColor="#aaaaaa"
@@ -125,7 +126,7 @@ export default function AddDeal ( {navigation} ) {
                 keyboardType="numeric"
             />
            <Text style={styles.text}>Description:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Description'
                 placeholderTextColor="#aaaaaa"
@@ -136,7 +137,7 @@ export default function AddDeal ( {navigation} ) {
                 multiline
             />
             <Text style={styles.text}>Terms & Conditions:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Terms & Conditions'
                 placeholderTextColor="#aaaaaa"

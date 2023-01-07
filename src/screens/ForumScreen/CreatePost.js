@@ -6,6 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FilteredTextInput } from '../commonFunctions';
 
 const sectionPlaceholder = {
     label: 'Forum Section',
@@ -62,7 +63,7 @@ export default function CreatePost ( {navigation} ) {
                     source={require('../../../assets/icon.png')}
                 />*/}
             <Text style={styles.text}>Title:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.input}
                 placeholder='Title'
                 placeholderTextColor="#aaaaaa"
@@ -90,7 +91,7 @@ export default function CreatePost ( {navigation} ) {
                     ]}
             />
            <Text style={styles.text}>Description:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Description'
                 placeholderTextColor="#aaaaaa"

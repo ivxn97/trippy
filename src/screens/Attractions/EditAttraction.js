@@ -7,6 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
+import { FilteredTextInput } from '../commonFunctions';
 
 export default function EditAttraction ( { route, navigation }) {
     const {name, attractionType, price, ageGroup, groupSize, openingTime, closingTime, description,language, TNC} = route.params;
@@ -267,7 +268,7 @@ export default function EditAttraction ( { route, navigation }) {
                 />
 
             <Text style={styles.text}>Description:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Description'
                 placeholderTextColor="#aaaaaa"
@@ -288,7 +289,7 @@ export default function EditAttraction ( { route, navigation }) {
             {/* insert google maps API and mapview here
             https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
             <Text style={styles.text}>Terms & Conditions:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Terms & Conditions'
                 placeholderTextColor="#aaaaaa"

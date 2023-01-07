@@ -9,6 +9,7 @@ import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FilteredTextInput } from '../commonFunctions';
 
 const classPlaceholder = {
     label: 'Hotel Class',
@@ -407,7 +408,7 @@ export default function AddHotel({ navigation }) {
             https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
 
                 <Text style={styles.text}>Description:</Text>
-                <TextInput
+                <FilteredTextInput
                     style={styles.desc}
                     placeholder='Description'
                     placeholderTextColor="#aaaaaa"
@@ -418,7 +419,7 @@ export default function AddHotel({ navigation }) {
                     multiline
                 />
                 <Text style={styles.text}>Terms & Conditions:</Text>
-                <TextInput
+                <FilteredTextInput
                     style={styles.desc}
                     placeholder='Terms & Conditions'
                     placeholderTextColor="#aaaaaa"

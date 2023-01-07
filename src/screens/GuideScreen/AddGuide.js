@@ -9,6 +9,7 @@ import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FilteredTextInput } from '../commonFunctions';
 
 //TODO: add image uploading, add account linkage for all Adds
 export default function AddGuide({ navigation }) {
@@ -130,7 +131,7 @@ export default function AddGuide({ navigation }) {
                 />
 
                 <Text style={styles.text}>Tips:</Text>
-                <TextInput
+                <FilteredTextInput
                     style={styles.desc}
                     placeholder='Tips'
                     placeholderTextColor="#aaaaaa"
@@ -140,7 +141,7 @@ export default function AddGuide({ navigation }) {
                     autoCapitalize="none"
                 />
                 <Text style={styles.text}>Description:</Text>
-                <TextInput
+                <FilteredTextInput
                     style={styles.desc}
                     placeholder='Description'
                     placeholderTextColor="#aaaaaa"

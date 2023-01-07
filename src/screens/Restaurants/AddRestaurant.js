@@ -390,7 +390,7 @@ export default function AddRestaurant ( { navigation }) {
                 multiline
             />
             <Text style={styles.text}>Terms & Conditions:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Terms & Conditions'
                 placeholderTextColor="#aaaaaa"

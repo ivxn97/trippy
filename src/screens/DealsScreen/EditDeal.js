@@ -5,6 +5,7 @@ import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
+import { FilteredTextInput } from '../commonFunctions';
 
 export default function EditDeal ( {route, navigation} ) {
     const {name, dealType, discount, code, description, quantity, TNC} = route.params;
@@ -64,7 +65,7 @@ export default function EditDeal ( {route, navigation} ) {
                 keyboardType="numeric"
             />
             <Text style={styles.text}>Code:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.input}
                 placeholder='Enter Deal Code'
                 placeholderTextColor="#aaaaaa"
@@ -85,7 +86,7 @@ export default function EditDeal ( {route, navigation} ) {
                 keyboardType="numeric"
             />
            <Text style={styles.text}>Description:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Description'
                 placeholderTextColor="#aaaaaa"
@@ -96,7 +97,7 @@ export default function EditDeal ( {route, navigation} ) {
                 multiline
             />
             <Text style={styles.text}>Terms & Conditions:</Text>
-            <TextInput
+            <FilteredTextInput
                 style={styles.desc}
                 placeholder='Terms & Conditions'
                 placeholderTextColor="#aaaaaa"

@@ -146,7 +146,7 @@ export default function PaidTourEditList({navigation}) {
         onPress={() => {navigation.navigate('Edit Paid Tour', {name: item.name, tourType: item.tourType, 
         price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
         endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
-        TNC: item.TNC})}}>
+        TNC: item.TNC, activityType: item.activityType})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>${item.price}</Text>

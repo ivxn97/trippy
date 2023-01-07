@@ -12,6 +12,7 @@ export default function Itinerary ( {navigation} ) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [email, setEmail] = useState();
     const [itineraryArr, setItineraryArr] = useState();
+    const [finalArr, setFinalArr] = useState();
     const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
     const [hotels, setHotels] = useState([]);
     const [paidTours, setPaidTours] = useState([]);
@@ -19,6 +20,7 @@ export default function Itinerary ( {navigation} ) {
     const [guides, setGuides] = useState([]);
     const [walkingTours, setWalkingTours] = useState([]);
     const [mergedArr, setMergedArr] = useState([]);
+    const [completedArr, setCompletedArr] = useState([]);
 
     const [shouldRun, setShouldRun] = useState(true);
 
@@ -44,7 +46,20 @@ export default function Itinerary ( {navigation} ) {
         if (docSnap.exists()) {
             //console.log("Document data: ", docSnap.data());
             const itineraryData = docSnap.data().itinerary
+            console.log("Itinerary Data:", itineraryData);
+            let finalArray = itineraryData;
+            if (!itineraryData.every(element => element.hasOwnProperty('position') && element.hasOwnProperty('name'))) {
+            finalArray = itineraryData.sort((a, b) => a.position - b.position).map((name, index) => ({
+                name,
+                position: index + 1,
+                //name: element.hasOwnProperty('name') ? element.name : 'Unknown'
+            }));
+            }
+            console.log("initial arr:", itineraryData)
+            console.log("final Array:", finalArray)
             setItineraryArr(itineraryData);
+            setFinalArr(finalArray);
+
             setShouldRun(false);
         }
         else {
@@ -135,18 +150,31 @@ export default function Itinerary ( {navigation} ) {
         mergedArr.push(...attractions);
         mergedArr.push(...guides);
         mergedArr.push(...walkingTours);
-
-        if (itineraryArr) {
+        console.log("merged arr:", mergedArr)
+        console.log("Final arr in merged arr:", finalArr)
+        if (finalArr) {
+        const completedArr = finalArr.map((item) => {
+            const correspondingItem = mergedArr.find((i) => i.name === item.name);
+            return {
+                ...item,
+                ...correspondingItem
+            }
+        })
+        console.log("Completed Array:", completedArr)
+        setCompletedArr(completedArr)
+        }
+        
+        if (finalArr) {
             setLoading(false);
         }
     }
 
     const onSubmitPress = async () => {
-        const names = mergedArr.map(item => item.name)
-        console.log("Names:", names)
+        const submitList = completedArr.map(item => ({ name: item.name, position: item.position }))
+        console.log("submitted list:", submitList)
         try {
             await setDoc(doc(db, "users", email), {
-                itinerary: names
+                itinerary: submitList
             }, {merge:true});
             //console.log("Document written with ID: ", docRef.id);
             navigation.navigate('Profile Page')
@@ -167,7 +195,7 @@ export default function Itinerary ( {navigation} ) {
             getGuides();
             //getWalkingTours();
         }
-    },[shouldRun, email, itineraryArr]))
+    },[shouldRun, email, finalArr]))
 
     if (loading) {
         return <ActivityIndicator />;
@@ -181,8 +209,19 @@ export default function Itinerary ( {navigation} ) {
               onLongPress={drag}
               disabled={isActive}
               style={styles.list}
+              onPress={() => {
+                navigation.navigate('Details', {
+                    name: item.name, roomTypes: item.roomTypes,
+                    priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
+                    checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
+                    language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine, 
+                    price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                    closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
+                    startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
+                })
+                }}
             >
-              <Text>{item.name}</Text>
+              <Text>{item.position}. {item.name}</Text>
             </TouchableOpacity>
           </ScaleDecorator>
         )
@@ -197,10 +236,10 @@ export default function Itinerary ( {navigation} ) {
             </TouchableOpacity>
         </View>
         <NestableDraggableFlatList
-            data={mergedArr}
+            data={completedArr}
             renderItem={renderItem}
-            onDragEnd={({data}) => setMergedArr(data)}
-            keyExtractor={(item) => item.key}
+            onDragEnd={({data}) => setCompletedArr(data)}
+            keyExtractor={(item) => item.position}
         />
         <TouchableOpacity
             style={styles.button}

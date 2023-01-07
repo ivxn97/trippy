@@ -208,7 +208,8 @@ export default function AddHotel({ navigation }) {
                     language: language,
                     location: '',
                     description: description,
-                    TNC: TNC
+                    TNC: TNC,
+                    activityType: 'hotels'
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

@@ -120,6 +120,7 @@ export default function AddPaidTour ( { navigation }) {
                     location: '',
                     description: description,
                     TNC: TNC,
+                    activityType: 'paidtours'
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

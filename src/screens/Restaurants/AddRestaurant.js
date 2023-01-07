@@ -158,7 +158,8 @@ export default function AddRestaurant ( { navigation }) {
                     location: '',
                     language: language,
                     description: description,
-                    TNC: TNC
+                    TNC: TNC,
+                    activityType: 'restaurants'
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

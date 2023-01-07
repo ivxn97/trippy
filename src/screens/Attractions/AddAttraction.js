@@ -116,7 +116,8 @@ export default function AddAttraction ( { navigation }) {
                     location: '',
                     description: description,
                     language: language,
-                    TNC: TNC
+                    TNC: TNC,
+                    activityType: 'attractions'
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

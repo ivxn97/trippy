@@ -14,7 +14,7 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
       DeleteHotel, DeleteDeal, DeleteRestaurant, DeleteAttraction, DeletePaidTour, GuideScreen, CreatePost, BOScreen,
       BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList, EditRestaurant, 
       RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
-      EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary } from './src/screens'
+      EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -52,6 +52,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Restaurant Details" component={RestaurantScreen}/>
         <Stack.Screen name="Attraction Details" component={AttractionView}/>
         <Stack.Screen name="Hotel details" component={HotelScreen}/>
+        <Stack.Screen name="Details" component={Details}/>
     </ProfileStack.Navigator>
   )
 }
@@ -92,6 +93,7 @@ function HomeStackScreen() {
         <Stack.Screen name="Restaurant Details" component={RestaurantScreen}/>
         <Stack.Screen name="List of paid tours" component={PaidTourList}/>
         <Stack.Screen name="Paid tour details" component={PaidTourScreen}/>
+        <Stack.Screen name="Details" component={Details}/>
     </HomeStack.Navigator>
   )
 }

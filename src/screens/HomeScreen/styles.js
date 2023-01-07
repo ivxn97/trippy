@@ -281,5 +281,19 @@ export default StyleSheet.create({
         marginLeft: 15,
         marginTop: 5,
         marginBottom: 5
-}
+    },
+    price: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign:'right',
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
+        marginRight: 30
+    },
+    carouselStyle: {
+        width: 410,
+        height: 250,
+        alignSelf: "center"
+    },
 })

@@ -78,9 +78,9 @@ return (
     renderItem={({ item }) => (
       <TouchableHighlight
       underlayColor="#C8c9c9"
-      onPress={() => {navigation.navigate('Restaurant Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
+      onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
       price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
-      closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language})}}>
+      closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language, activityType: item.activityType})}}>
       <View style={styles.list}>
         <Text>{item.name}</Text>
         <Text>{item.price}</Text>

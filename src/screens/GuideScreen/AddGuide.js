@@ -73,7 +73,8 @@ export default function AddGuide({ navigation }) {
                     location: location,
                     mrt: mrt,
                     tips: tips,
-                    description: description
+                    description: description,
+                    activityType: 'guides'
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')

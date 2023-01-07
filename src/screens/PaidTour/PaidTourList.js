@@ -143,10 +143,10 @@ export default function PaidTourList({navigation}) {
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"
-        onPress={() => {navigation.navigate('Paid tour details', {name: item.name, tourType: item.tourType, 
+        onPress={() => {navigation.navigate('Details', {name: item.name, tourType: item.tourType, 
         price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
         endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
-        TNC: item.TNC})}}>
+        TNC: item.TNC, activityType: item.activityType})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>${item.price}</Text>

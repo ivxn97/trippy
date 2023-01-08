@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
@@ -12,7 +12,6 @@ import { FilteredTextInput } from '../commonFunctions';
 
 export default function AddHotel({ route, navigation }) {
     const { name, hotelClass, roomTypes, priceRange, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC } = route.params;
-
     const [checkInHour, checkInMinute] = checkInTime.split(":");
     const [checkOutHour, checkOutMinute] = checkOutTime.split(":");
 
@@ -23,10 +22,15 @@ export default function AddHotel({ route, navigation }) {
     const [newCheckOutHour, setCheckOutHour] = useState(checkOutHour);
     const [newCheckOutMinute, setCheckOutMinute] = useState(checkOutMinute);
     const [newLanguage, setLanguage] = useState(language);
-    const [newDescription, setDescription] = useState(description);
+    const [newDescription, setDescription] = useState(JSON.stringify(description));
     const [newTNC, setTNC] = useState(TNC);
     const [image, setImage] = useState(null);
     const storage = getStorage();
+    const [docAmenitiesData, setAmenitiesData] = useState(amenities)
+    const [docRoomFeaturesData, setRoomFeaturesData] = useState(roomFeatures)
+    const [docRoomTypesData, setRoomTypesData] = useState(roomTypes)
+    const [loading, setLoading] = useState(true)
+    const [languageData, setLanguageData] = useState();
 
     const deleteImages = () => {
         deleteFolder(`/hotels/${name}/images`)
@@ -59,7 +63,6 @@ export default function AddHotel({ route, navigation }) {
         const response = await fetch(result.uri)
         const blobFile = await response.blob()
 
-        const storage = getStorage();
         if (!result.canceled) {
           setImage(result.uri);
           const storageRef = ref(storage, `hotels/${name}/images/${fileName}`)
@@ -73,39 +76,44 @@ export default function AddHotel({ route, navigation }) {
     };
 
     // amenities
-    let amenitiesData = [{ name: 'Swimming Pools', value: 'Swimming Pools', isChecked: false },
-        { name: 'Club Houses', value: 'Club Houses', isChecked: false },
-        { name: 'Tennis Courts', value: 'Tennis Courts', isChecked: false },
-        { name: 'Fitness Facilities', value: 'Fitness Facilities', isChecked: false },
-        { name: 'Parking', value: 'Parking', isChecked: false },
-        { name: 'Room Services', value: 'Room Services', isChecked: false },
-        { name: 'Free Wifi', value: 'Free Wifi', isChecked: false }];
-    const [docAmenitiesData, setAmenitiesData] = useState(amenities)
-    
 
-    // room features
-    let roomFeaturesData = [{ name: 'Kitchen Facilities', value: 'Kitchen Facilities', isChecked: false },
-    { name: 'TV', value: 'TV', isChecked: false },
-    { name: 'Essential Kit', value: 'Essential Kit', isChecked: false },
-    { name: 'Writing Desk', value: 'Writing Desk', isChecked: false },
-    { name: 'Mattress', value: 'Mattress', isChecked: false },
-    { name: 'Wardrobe', value: 'Wardrobe', isChecked: false },
-    { name: 'Tea and Coffee Making Facilities', value: 'Tea and Coffee Making Facilities', isChecked: false }];
-    const [docRoomFeaturesData, setRoomFeaturesData] = useState(roomFeatures)
+    const getData = async () => {
+        const docRef = doc(db, "types", "AddHotel");
+        const docSnap = await getDoc(docRef);
 
-    //room Types
-    let roomTypesData = [{ name: 'Single Room', value: 'Single Room', isChecked: false },
-    { name: 'Twin or Double Room', value: 'Twin Or Double Room', isChecked: false },
-    { name: 'Studio Room', value: 'Studio Room', isChecked: false },
-    { name: 'Deluxe Room', value: 'Deluxe Room', isChecked: false },
-    { name: 'Suites', value: 'Suites', isChecked: false },]
-    const [docRoomTypesData, setRoomTypesData] = useState(roomTypes)
+        if (docSnap.exists()) {
+            const amenitiesData = docSnap.data().amenitiesData
+            const roomFeaturesData = docSnap.data().roomFeaturesData
+            const roomTypesData = docSnap.data().roomTypesData
+            setAmenitiesData(amenitiesData);
+            setRoomFeaturesData(roomFeaturesData);
+            setRoomTypesData(roomTypesData);
+        }
+        else {
+            console.log("No data found")
+        }
+    }
+
+    const getLanguages = async () => {
+        const docRef = doc(db, "types", "commonFields");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const language = docSnap.data().preferredLanguage
+            setLanguageData(language)
+        }
+        else {
+            console.log("No data found")
+        }
+        setLoading(false)
+    }
 
     useEffect(() => {
-        setAmenitiesData(amenities);
-        setRoomFeaturesData(roomFeatures);
-        setRoomTypesData(roomTypes);
-    }, []);
+        if (loading) {
+        //getData();
+        getLanguages()
+        }
+    }, [languageData]);
 
     const setAmenities = (item) => {
         
@@ -193,6 +201,11 @@ export default function AddHotel({ route, navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+
+    if (loading) {
+        return <ActivityIndicator />;
+    }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -359,11 +372,7 @@ export default function AddHotel({ route, navigation }) {
                     value={newLanguage}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
-                    items={[
-                        { label: 'Any', value: 'Any'},
-                        { label: 'English', value: 'English' },
-                        { label: 'Chinese', value: 'Chinese' },
-                    ]}
+                    items={languageData}
                 />
                 <Text style={styles.text}>Location:</Text>
                 <TextInput

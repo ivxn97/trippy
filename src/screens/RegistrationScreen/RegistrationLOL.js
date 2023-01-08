@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 import { db } from '../../../config';
 import { render } from 'react-dom';
 import RNPickerSelect from 'react-native-picker-select';
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 
 export default function RegistrationLOL({navigation}) {
     const [firstName, setFirstName] = useState('')
@@ -16,12 +18,64 @@ export default function RegistrationLOL({navigation}) {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [socialMediaPlatform, setSelected] = useState('')
     const [socialMediaHandle, setSocialMediaHandle] = useState('')
+    const [socialMediaPlatformData, setSelectedData] = useState()
+    const [loading, setLoading] = useState(true)
     // Implement password length check, minimum length of 6
+
+    const getData = async () => {
+        const docRef = doc(db, "types", "RegistrationLOL");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data().socialMediaPlatform
+            setSelectedData(data)
+        }
+        else {
+            console.log("No data found")
+        }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        if (loading) {
+            getData();
+        }
+    }, [socialMediaPlatformData]);
 
     const placeholder = {
         label: 'Social Media Platform',
         value: null,
         color: 'black',
+    };
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [41, 25],
+          quality: 1,
+        });
+    
+        console.log(result);
+        const fileName = result.uri.split('/').pop();
+        const fileType = fileName.split('.').pop();
+        console.log(fileName, fileType);
+
+        const response = await fetch(result.uri)
+        const blobFile = await response.blob()
+
+        const storage = getStorage();
+        if (!result.canceled) {
+          setImage(result.uri);
+          const storageRef = ref(storage, `RegistrationLOL/${email}/images/${fileName}`)
+          uploadBytes(storageRef, blobFile).then((snapshot) => {
+            alert("Image uploaded!");
+            console.log("Image uploaded!");
+        })}
+        else {
+            console.log('No Image uploaded!')
+        };
     };
 
     const onFooterLinkPress = () => {
@@ -58,6 +112,11 @@ export default function RegistrationLOL({navigation}) {
             alert(error);
         });
     }
+
+    if (loading) {
+        return <ActivityIndicator />;
+    }
+
 
     return (
         <View style={styles.container}>
@@ -124,15 +183,7 @@ export default function RegistrationLOL({navigation}) {
                     useNativeAndroidPickerStyle={false}
                     placeholder={placeholder}
                     onValueChange={(value) => setSelected(value)}
-                    items = {[
-                        {label:'Tiktok', value:'Tiktok'},
-                        {label:'Instagram', value:'Instagram'},
-                        {label:'Twitter', value:'Twitter'},
-                        {label:'Facebook', value:'Facebook'},
-                        {label:'Youtube', value:'Youtube'},
-                        {label:'Twitch', value:'Twitch'},
-                        {label:'Blog', value:'Blog'},
-                    ]}
+                    items = {socialMediaPlatformData}
                 />
                 <TextInput
                     style={styles.input}
@@ -144,11 +195,10 @@ export default function RegistrationLOL({navigation}) {
                     autoCapitalize="none"
                 />
                 <Text style={styles.text}>Upload a screenshot of your follower Count/ Page Views</Text>
-                {/*TODO: Add image uploading */}
-                <Image
-                    style={{height:30, width: 90, marginLeft:20}}
-                    source={require('../../../assets/upload.png')}
-                />
+                <TouchableOpacity style={[styles.button, {opacity: email ? 1: 0.2}]} onPress={pickImage} 
+                disabled={email ? false : true} >
+                <Text>Upload Image</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onRegisterPress()}>

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
@@ -56,6 +56,10 @@ export default function AddAttraction ( { navigation }) {
     const [language, setLanguage] = useState('');
     const [TNC, setTNC] = useState('');
     const [image, setImage] = useState(null);
+    const [languageData, setLanguageData] = useState();
+    const [attractionTypeData, setAttractionTypeData] = useState();
+    const [ageGroupData, setAgeGroupData] = useState();
+    const [loading, setLoading] = useState(true)
 
     const getEmail = async () => {
         try {
@@ -102,6 +106,41 @@ export default function AddAttraction ( { navigation }) {
         };
     };
 
+    const getAttractionTypes = async () => {
+        const docRef = doc(db, "types", "AddAttraction");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const attractionType = docSnap.data().attractionType
+            setAttractionTypeData(attractionType)
+        }
+        else {
+            console.log("No data found")
+        }
+    }
+
+    const getData = async () => {
+        const docRef = doc(db, "types", "commonFields");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const language = docSnap.data().preferredLanguage
+            const ageGroup = docSnap.data().ageGroup
+            setLanguageData(language)
+            setAgeGroupData(ageGroup)
+        }
+        else {
+            console.log("No data found")
+        }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        if (loading) {
+            getAttractionTypes();
+            getData();
+        }
+    }, [ageGroupData]);
       
     const onSubmitPress = async () => {
             try {
@@ -126,7 +165,11 @@ export default function AddAttraction ( { navigation }) {
             catch (e) {
                 console.log("Error adding document: ", e);
             }
-        }
+    }
+    
+    if (loading) {
+        return <ActivityIndicator />;
+    }
 
     return (
         <View style={styles.container}>
@@ -154,16 +197,7 @@ export default function AddAttraction ( { navigation }) {
                 useNativeAndroidPickerStyle={false}
                 placeholder={typePlaceholder}
                 onValueChange={(value) => setType(value)}
-                items = {[
-                    {label:'Museum', value:'Museum'},
-                    {label:'Theme Park', value:'Theme Park'},
-                    {label:'Natural Landscape', value:'Natural Landscape'},
-                    {label:'Observation Site', value:'Observation Site'},
-                    {label:'Historical Site', value:'Historical Site'},
-                    {label:'Regular Show', value:'Regular Show'},
-                    {label:'Aquariums & Zoos', value:'Aquariums & Zoos'},
-                    {label:'Outdoors', value:'Outdoors'},
-                ]}
+                items = {attractionTypeData}
             />
             <Text style={styles.text}>Price:</Text>
             <TextInput
@@ -182,12 +216,7 @@ export default function AddAttraction ( { navigation }) {
                 useNativeAndroidPickerStyle={false}
                 placeholder={agePlaceholder}
                 onValueChange={(value) => setAge(value)}
-                items = {[
-                    {label:'All Ages', value:'All Ages'},
-                    {label:'13+', value:'13+'},
-                    {label:'18+', value:'18+'},
-                    {label:'Adults Only', value:'Adults Only'},
-                ]}
+                items = {ageGroupData}
             />
             <Text style={styles.text}>Group Size:</Text>
             <TextInput
@@ -301,11 +330,7 @@ export default function AddAttraction ( { navigation }) {
                     placeholder={languagePlaceholder}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
-                    items={[
-                        { label: 'Any', value: 'Any'},
-                        { label: 'English', value: 'English' },
-                        { label: 'Chinese', value: 'Chinese' },
-                    ]}
+                    items={languageData}
                 />
 
             <Text style={styles.text}>Description:</Text>

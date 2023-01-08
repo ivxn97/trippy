@@ -46,6 +46,7 @@ export default function AddHotel({ navigation }) {
     const [checkOutHour, setCheckOutHour] = useState('');
     const [checkOutMinute, setCheckOutMinute] = useState('');
     const [language, setLanguage] = useState('');
+    const [languageData, setLanguageData] = useState();
     const [description, setDescription] = useState('');
     const [TNC, setTNC] = useState('');
     const [image, setImage] = useState(null);
@@ -114,14 +115,28 @@ export default function AddHotel({ navigation }) {
         else {
             console.log("No data found")
         }
+    }
+
+    const getLanguages = async () => {
+        const docRef = doc(db, "types", "commonFields");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const language = docSnap.data().preferredLanguage
+            setLanguageData(language)
+        }
+        else {
+            console.log("No data found")
+        }
         setLoading(false)
     }
 
     useEffect(() => {
         if (loading) {
         getData();
+        getLanguages()
         }
-    }, [docRoomTypesData]);
+    }, [languageData]);
     
     const setAmenities = (item) => {
         
@@ -387,11 +402,7 @@ export default function AddHotel({ navigation }) {
                     placeholder={languagePlaceholder}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
-                    items={[
-                        { label: 'Any', value: 'Any'},
-                        { label: 'English', value: 'English' },
-                        { label: 'Chinese', value: 'Chinese' },
-                    ]}
+                    items={languageData}
                 />
                 <Text style={styles.text}>Location:</Text>
                 <TextInput

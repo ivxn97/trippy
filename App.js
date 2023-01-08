@@ -158,6 +158,7 @@ function BOStackScreen() {
       <Stack.Screen name="Edit Hotel" component={EditHotel}/>
       <Stack.Screen name="Deals Edit List" component={DealsEditList}/>
       <Stack.Screen name="Edit Deal" component={EditDeal}/>
+      <Stack.Screen name="Details" component={Details}/>
     </BOStack.Navigator>
   )
 }

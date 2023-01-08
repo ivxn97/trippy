@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
@@ -214,7 +214,6 @@ export default function AddRestaurant ( { navigation }) {
                     {label:'Halal', value:'Halal'},
                     {label:'Vegan', value:'Vegan'},
                     {label:'Vegetarian', value:'Vegetarian'},
-
                 ]}
             />
             <Text style={styles.text}>Price:</Text>

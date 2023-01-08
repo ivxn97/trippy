@@ -67,7 +67,7 @@ export default function RegistrationRegisteredUser({navigation}) {
     }
     // Get Languages from Firestore 
     async function getLanguages () {
-        var languageRef = doc(db, "types", "languages");
+        var languageRef = doc(db, "types", "commonFields");
         const docSnap = await getDoc(languageRef);
 
         if (docSnap.exists()) {

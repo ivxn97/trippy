@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
@@ -36,6 +36,7 @@ const languagePlaceholder = {
 };
 
 export default function AddHotel({ navigation }) {
+    const [loading, setLoading] = useState(true)
     const [email, setEmail] = useState('')
     const [name, setName] = useState('');
     const [priceRange, setPriceRange] = useState('');
@@ -48,6 +49,9 @@ export default function AddHotel({ navigation }) {
     const [description, setDescription] = useState('');
     const [TNC, setTNC] = useState('');
     const [image, setImage] = useState(null);
+    const [docAmenitiesData, setAmenitiesData] = useState([])
+    const [docRoomFeaturesData, setRoomFeaturesData] = useState([])
+    const [docRoomTypesData, setRoomTypesData] = useState([])
 
     const getEmail = async () => {
         try {
@@ -95,41 +99,30 @@ export default function AddHotel({ navigation }) {
         };
     };
 
-    // amenities
-    let amenitiesData = [{ name: 'Swimming Pools', value: 'Swimming Pools', isChecked: false },
-        { name: 'Club Houses', value: 'Club Houses', isChecked: false },
-        { name: 'Tennis Courts', value: 'Tennis Courts', isChecked: false },
-        { name: 'Fitness Facilities', value: 'Fitness Facilities', isChecked: false },
-        { name: 'Parking', value: 'Parking', isChecked: false },
-        { name: 'Room Services', value: 'Room Services', isChecked: false },
-        { name: 'Free Wifi', value: 'Free Wifi', isChecked: false }];
-    const [docAmenitiesData, setAmenitiesData] = useState([])
-    
+    const getData = async () => {
+        const docRef = doc(db, "types", "AddHotel");
+        const docSnap = await getDoc(docRef);
 
-    // room features
-    let roomFeaturesData = [{ name: 'Kitchen Facilities', value: 'Kitchen Facilities', isChecked: false },
-    { name: 'TV', value: 'TV', isChecked: false },
-    { name: 'Essential Kit', value: 'Essential Kit', isChecked: false },
-    { name: 'Writing Desk', value: 'Writing Desk', isChecked: false },
-    { name: 'Mattress', value: 'Mattress', isChecked: false },
-    { name: 'Wardrobe', value: 'Wardrobe', isChecked: false },
-    { name: 'Tea and Coffee Making Facilities', value: 'Tea and Coffee Making Facilities', isChecked: false }];
-    const [docRoomFeaturesData, setRoomFeaturesData] = useState([])
-
-    //room Types
-    let roomTypesData = [{ name: 'Single Room', value: 'Single Room', isChecked: false },
-    { name: 'Twin or Double Room', value: 'Twin Or Double Room', isChecked: false },
-    { name: 'Studio Room', value: 'Studio Room', isChecked: false },
-    { name: 'Deluxe Room', value: 'Deluxe Room', isChecked: false },
-    { name: 'Suites', value: 'Suites', isChecked: false },]
-    const [docRoomTypesData, setRoomTypesData] = useState([])
+        if (docSnap.exists()) {
+            const amenitiesData = docSnap.data().amenitiesData
+            const roomFeaturesData = docSnap.data().roomFeaturesData
+            const roomTypesData = docSnap.data().roomTypesData
+            setAmenitiesData(amenitiesData);
+            setRoomFeaturesData(roomFeaturesData);
+            setRoomTypesData(roomTypesData);
+        }
+        else {
+            console.log("No data found")
+        }
+        setLoading(false)
+    }
 
     useEffect(() => {
-        setAmenitiesData(amenitiesData);
-        setRoomFeaturesData(roomFeaturesData);
-        setRoomTypesData(roomTypesData);
-    }, []);
-
+        if (loading) {
+        getData();
+        }
+    }, [docRoomTypesData]);
+    
     const setAmenities = (item) => {
         
         setAmenitiesData(
@@ -174,7 +167,6 @@ export default function AddHotel({ navigation }) {
     }
 
     const setRoomTypes = (item) => {
-
         setRoomTypesData(
             docRoomTypesData.map(curr => {
                 if (item.name === curr.name) {
@@ -193,7 +185,7 @@ export default function AddHotel({ navigation }) {
         //setUserRoomTypes(current => [...current, item.name]);
         console.log(docRoomTypesData);
     }
-
+    
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "hotels", name), {
@@ -219,6 +211,11 @@ export default function AddHotel({ navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+
+        if (loading) {
+            return <ActivityIndicator />;
+        }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView

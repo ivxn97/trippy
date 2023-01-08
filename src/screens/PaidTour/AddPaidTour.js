@@ -290,6 +290,43 @@ const countries = [
     { value: 'ZM', label: 'Zambia' },
     { value: 'ZW', label: 'Zimbabwe' },
   ]
+const ageGroup = [
+    {label:'All Ages', value:'All Ages'},
+    {label:'13+', value:'13+'},
+    {label:'18+', value:'18+'},
+    {label:'Adults Only', value:'Adults Only'},
+]
+
+const typeOfCuisine = [
+    {label:'Singaporean', value:'Singaporean'},
+    {label:'Chinese', value:'Chinese'},
+    {label:'Indian', value:'Indian'},
+    {label:'Italian', value:'Italian'},
+    {label:'French', value:'French'},
+    {label:'Thai', value:'Thai'},
+    {label:'Korean', value:'Korean'},
+    {label:'Japanese', value:'Japanese'},
+    {label:'Vietnamese', value:'Vietnamese'},
+    {label:'Indonesian', value:'Indonesian'},
+    {label:'Filipino', value:'Filipino'},
+    {label:'Mexican', value:'Mexican'},
+    {label:'Brazilian', value:'Brazilian'},
+    {label:'German', value:'German'},
+    {label:'Fast Food', value:'Fast Food'},
+    {label:'Halal', value:'Halal'},
+    {label:'Vegan', value:'Vegan'},
+    {label:'Vegetarian', value:'Vegetarian'},
+]
+
+const preferredLanguage = [
+    { label: 'Any', value: 'Any'},
+    { label: 'English', value: 'English' },
+    { label: 'Chinese', value: 'Chinese' },
+]
+
+
+
+
 
 //TODO: add image uploading
 export default function AddPaidTour ( { navigation }) {

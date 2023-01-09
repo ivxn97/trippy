@@ -76,24 +76,6 @@ export default function AddHotel({ route, navigation }) {
     };
 
     // amenities
-
-    const getData = async () => {
-        const docRef = doc(db, "types", "AddHotel");
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            const amenitiesData = docSnap.data().amenitiesData
-            const roomFeaturesData = docSnap.data().roomFeaturesData
-            const roomTypesData = docSnap.data().roomTypesData
-            setAmenitiesData(amenitiesData);
-            setRoomFeaturesData(roomFeaturesData);
-            setRoomTypesData(roomTypesData);
-        }
-        else {
-            console.log("No data found")
-        }
-    }
-
     const getLanguages = async () => {
         const docRef = doc(db, "types", "commonFields");
         const docSnap = await getDoc(docRef);
@@ -110,7 +92,6 @@ export default function AddHotel({ route, navigation }) {
 
     useEffect(() => {
         if (loading) {
-        //getData();
         getLanguages()
         }
     }, [languageData]);

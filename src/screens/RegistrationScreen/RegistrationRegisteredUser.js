@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Image, Text, TextInput, TouchableOpacity, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { doc, setDoc, getDoc, DocumentSnapshot } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
@@ -19,6 +19,8 @@ export default function RegistrationRegisteredUser({navigation}) {
     const [month, setMonthDOB] = useState('')
     const [year, setYearDOB] = useState('')
     const [country, setCountry] = useState('')
+    const [countryData, setCountryData] = useState()
+    const [loading, setLoading] = useState(true)
     
     // Interests
     let docData = [];
@@ -66,24 +68,29 @@ export default function RegistrationRegisteredUser({navigation}) {
         setD(docData);
     }
     // Get Languages from Firestore 
-    async function getLanguages () {
+    async function getData () {
         var languageRef = doc(db, "types", "commonFields");
         const docSnap = await getDoc(languageRef);
 
         if (docSnap.exists()) {
             console.log("Document data: ", docSnap.data());
-            languageArr = docSnap.data().languages
+            const languageArr = docSnap.data().languages
+            const countriesArr = docSnap.data().countries
+            setLanguages(languageArr);
+            setCountryData(countriesArr);
         }
         else {
             console.log("Error")
         }
-        setLanguages(languageArr);
+        setLoading(false)
     }
 
     useEffect(() => {
+    if (loading) {
         getInterests();
-        getLanguages();
-    }, []);
+        getData();
+        }
+    }, [countryData]);
 
     const setInterest = (item) => {
        setD(
@@ -155,6 +162,10 @@ export default function RegistrationRegisteredUser({navigation}) {
             const errorCode = error.code;
             const errorMessage = error.message;
         });
+    }
+
+    if (loading) {
+        return <ActivityIndicator />;
     }
 
     return (
@@ -264,10 +275,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                 useNativeAndroidPickerStyle={false}
                 placeholder={countryPlaceholder}
                 onValueChange={(value) => setCountry(value)}
-                items = {[
-                    {label:'USA', value:'USA'}, {label:'Singapore', value:'Singapore'}, {label:'UK', value:'UK'},
-                    {label:'Australia', value:'Australia'},
-                ]}
+                items = {countryData}
                 />
                 <Text style={styles.text}>Interests:</Text>
                 {docTypeData.map((item, index) => (

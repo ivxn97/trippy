@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
@@ -32,6 +32,10 @@ export default function EditPaidTour ( { route, navigation }) {
     const [newDurationMinute, setDurationMinute] = useState(durationMinute);
     const [image, setImage] = useState(null);
     const storage = getStorage();
+    const [languageData, setLanguageData] = useState();
+    const [tourTypeData, setTourTypeData] = useState();
+    const [ageGroupData, setAgeGroupData] = useState();
+    const [loading, setLoading] = useState(true)
 
 
     const deleteImages = () => {
@@ -78,6 +82,42 @@ export default function EditPaidTour ( { route, navigation }) {
         };
     };
 
+    const getTourTypes = async () => {
+        const docRef = doc(db, "types", "AddPaidTour");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const paidTourType = docSnap.data().paidTourType
+            setTourTypeData(paidTourType)
+        }
+        else {
+            console.log("No data found")
+        }
+    }
+
+    const getData = async () => {
+        const docRef = doc(db, "types", "commonFields");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const language = docSnap.data().preferredLanguage
+            const ageGroup = docSnap.data().ageGroup
+            setLanguageData(language)
+            setAgeGroupData(ageGroup)
+        }
+        else {
+            console.log("No data found")
+        }
+        setLoading(false)
+    }
+    
+    useEffect(() => {
+        if (loading) {
+            getTourTypes();
+            getData();
+        }
+    }, [ageGroupData]);
+
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "paidtours", name), {
@@ -101,6 +141,10 @@ export default function EditPaidTour ( { route, navigation }) {
             }
         }
 
+        if (loading) {
+            return <ActivityIndicator />;
+        }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -120,16 +164,7 @@ export default function EditPaidTour ( { route, navigation }) {
                 useNativeAndroidPickerStyle={false}
                 value={newTourType}
                 onValueChange={(value) => setType(value)}
-                items = {[
-                    {label:'Museums', value:'Museums'},
-                    {label:'Theme Park', value:'Theme Park'},
-                    {label:'Natural Landscape', value:'Natural Landscape'},
-                    {label:'Observation Site', value:'Observation Site'},
-                    {label:'Historical Site', value:'Historical Site'},
-                    {label:'Regular Show', value:'Regular Show'},
-                    {label:'Aquariums & Zoos', value:'Aquariums & Zoos'},
-                    {label:'Outdoors', value:'Outdoors'},
-                ]}
+                items = {tourTypeData}
             />
 
             <Text style={styles.text}>Language Preferences:</Text>
@@ -139,11 +174,7 @@ export default function EditPaidTour ( { route, navigation }) {
                     value={newLanguage}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
-                    items={[
-                        { label: 'Any', value: 'Any'},
-                        { label: 'English', value: 'English' },
-                        { label: 'Chinese', value: 'Chinese' },
-                    ]}
+                    items={languageData}
                 />
 
             <Text style={styles.text}>Price:</Text>
@@ -163,12 +194,7 @@ export default function EditPaidTour ( { route, navigation }) {
                 useNativeAndroidPickerStyle={false}
                 value={newAgeGroup}
                 onValueChange={(value) => setAge(value)}
-                items = {[
-                    {label:'All Ages', value:'All Ages'},
-                    {label:'13+', value:'13+'},
-                    {label:'18+', value:'18+'},
-                    {label:'Adults Only', value:'Adults Only'},
-                ]}
+                items = {ageGroupData}
             />
             <Text style={styles.text}>Group Size:</Text>
             <TextInput

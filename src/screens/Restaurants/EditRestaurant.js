@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
@@ -30,6 +30,10 @@ export default function EditRestaurant ( { route, navigation }) {
     const [newTNC, setTNC] = useState(TNC);
     const [image, setImage] = useState(null);
     const storage = getStorage();
+    const [typeOfCuisineData, setTypeData] = useState('');
+    const [languageData, setLanguageData] = useState();
+    const [ageGroupData, setAgeGroupData] = useState();
+    const [loading, setLoading] = useState(true)
 
     const deleteImages = () => {
         deleteFolder(`/restaurants/${name}/images`)
@@ -100,6 +104,42 @@ export default function EditRestaurant ( { route, navigation }) {
         };
     };
 
+    const getCuisine = async () => {
+        const docRef = doc(db, "types", "AddRestaurant");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const typesOfCuisine = docSnap.data().typesOfCuisine
+            setTypeData(typesOfCuisine)
+        }
+        else {
+            console.log("No data found")
+        }
+    }
+
+    const getData = async () => {
+        const docRef = doc(db, "types", "commonFields");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const language = docSnap.data().preferredLanguage
+            const ageGroup = docSnap.data().ageGroup
+            setLanguageData(language)
+            setAgeGroupData(ageGroup)
+        }
+        else {
+            console.log("No data found")
+        }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        if (loading) {
+            getCuisine();
+            getData();
+        }
+    }, [ageGroupData]);
+
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "restaurants", name), {
@@ -122,6 +162,10 @@ export default function EditRestaurant ( { route, navigation }) {
             }
         }
 
+    if (loading) {
+        return <ActivityIndicator />;
+    }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -141,27 +185,7 @@ export default function EditRestaurant ( { route, navigation }) {
                 useNativeAndroidPickerStyle={false}
                 value={newTypeOfCuisine}
                 onValueChange={(value) => setType(value)}
-                items = {[
-                    {label:'Singaporean', value:'Singaporean'},
-                    {label:'Chinese', value:'Chinese'},
-                    {label:'Indian', value:'Indian'},
-                    {label:'Italian', value:'Italian'},
-                    {label:'French', value:'French'},
-                    {label:'Thai', value:'Thai'},
-                    {label:'Korean', value:'Korean'},
-                    {label:'Japanese', value:'Japanese'},
-                    {label:'Vietnamese', value:'Vietnamese'},
-                    {label:'Indonesian', value:'Indonesian'},
-                    {label:'Filipino', value:'Filipino'},
-                    {label:'Mexican', value:'Mexican'},
-                    {label:'Brazilian', value:'Brazilian'},
-                    {label:'German', value:'German'},
-                    {label:'Fast Food', value:'Fast Food'},
-                    {label:'Halal', value:'Halal'},
-                    {label:'Vegan', value:'Vegan'},
-                    {label:'Vegetarian', value:'Vegetarian'},
-
-                ]}
+                items = {typeOfCuisineData}
             />
             <Text style={styles.text}>Price:</Text>
             <RNPickerSelect
@@ -183,12 +207,7 @@ export default function EditRestaurant ( { route, navigation }) {
                 useNativeAndroidPickerStyle={false}
                 value={newAgeGroup}
                 onValueChange={(value) => setAge(value)}
-                items = {[
-                    {label:'All Ages', value:'All Ages'},
-                    {label:'13+', value:'13+'},
-                    {label:'18+', value:'18+'},
-                    {label:'Adults Only', value:'Adults Only'},
-                ]}
+                items = {ageGroupData}
             />
             <Text style={styles.text}>Group Size:</Text>
             <TextInput
@@ -302,11 +321,7 @@ export default function EditRestaurant ( { route, navigation }) {
                     value={newLanguage}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setLanguage(value)}
-                    items={[
-                        { label: 'Any', value: 'Any'},
-                        { label: 'English', value: 'English' },
-                        { label: 'Chinese', value: 'Chinese' },
-                    ]}
+                    items={languageData}
                 />
 
             <Text style={styles.text}>Menu:</Text>

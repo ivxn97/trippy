@@ -22,7 +22,7 @@ export default function AddHotel({ route, navigation }) {
     const [newCheckOutHour, setCheckOutHour] = useState(checkOutHour);
     const [newCheckOutMinute, setCheckOutMinute] = useState(checkOutMinute);
     const [newLanguage, setLanguage] = useState(language);
-    const [newDescription, setDescription] = useState(JSON.stringify(description));
+    const [newDescription, setDescription] = useState(description);
     const [newTNC, setTNC] = useState(TNC);
     const [image, setImage] = useState(null);
     const storage = getStorage();

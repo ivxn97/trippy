@@ -46,19 +46,14 @@ export async function sortFiles(array, property, order) {
     });
 }
 
-export const FilteredTextInput = ({ onChangeText, ...props }) => {
-    const [value, setValue] = useState('');
-    const filteredWords = ['bad', 'evil', 'naughty'];
-  
+export const FilteredTextInput = ({ value, onChangeText, ...props }) => {
     const handleChange = (text) => {
       // Replace filtered words with an empty string
       text = filter.list().reduce((acc, word) => acc.replace(word, ''), text);
-      setValue(text);
       if (onChangeText) {
         onChangeText(text);
       }
     };
-  
     return (
       <TextInput
         {...props}

@@ -166,5 +166,20 @@ export default StyleSheet.create({
         marginLeft: 30,
         marginRight: 8,
         paddingLeft: 16
-    }
+    },
+    desc: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 120,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
 })

@@ -14,7 +14,8 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
       DeleteHotel, DeleteDeal, DeleteRestaurant, DeleteAttraction, DeletePaidTour, GuideScreen, CreatePost, BOScreen,
       BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList, EditRestaurant, 
       RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
-      EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details } from './src/screens'
+      EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection, 
+      EditForumSection, ForumSectionsEditList, ForumSections, Section } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -105,6 +106,8 @@ function ForumStackScreen() {
     <ForumStack.Navigator>
         <Stack.Screen name="Forum Page" component={ForumScreen}/>
         <Stack.Screen name="Create Post" component={CreatePost}/>
+        <Stack.Screen name="Forum Sections" component={ForumSections}/>
+        <Stack.Screen name="Section" component={Section}/>
     </ForumStack.Navigator>
     
   )
@@ -118,6 +121,11 @@ function AdminStackScreen() {
         <Stack.Screen name="Admin Page" component={AdminScreen}/>
         <Stack.Screen name="List Of Accounts" component={ListOfUsers}/>
         <Stack.Screen name="Admin View Account" component={AdminViewUser}/>
+        <Stack.Screen name="Manage Forum Sections" component={ManageForumSections}/>
+        <Stack.Screen name="Forum Sections Edit List" component={ForumSectionsEditList}/>
+        <Stack.Screen name="Add Forum Section" component={AddForumSection}/>
+        <Stack.Screen name="Edit Forum Section" component={EditForumSection}/>
+        <Stack.Screen name="Create Post" component={CreatePost}/>
     </AdminStack.Navigator>
   )
 }

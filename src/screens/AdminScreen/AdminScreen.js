@@ -100,7 +100,8 @@ export default function AdminScreen ({navigation}) {
         <List.Accordion 
             title="Forum"
             left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="Create thread" />
+                <List.Item title="Manage Forum Sections" onPress={() => navigation.navigate('Manage Forum Sections')}/>
+                <List.Item title="Create thread" onPress={() => navigation.navigate('Create Post')}/>
                 <List.Item title="Delete thread" />
                 <List.Item title="View threads" />
                 <List.Item title="View reports" />

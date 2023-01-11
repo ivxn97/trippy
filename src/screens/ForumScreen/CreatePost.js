@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDocs, setDoc, collection } from "firebase/firestore";
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
@@ -14,12 +14,14 @@ const sectionPlaceholder = {
     color: 'black',
 };
 
-
 export default function CreatePost ( {navigation} ) {
     const [username, setUsername] = useState('');
     const [title, setTitle] = useState('');
     const [section, setSection] = useState('');
     const [description, setDescription] = useState('');
+    const [forumSections, setForumSections] = useState([]);
+    const [loading, setLoading] = useState(true); // Set loading to true on component mount
+    const datetime = new Date();
 
     const getEmail = async () => {
         try {
@@ -37,13 +39,26 @@ export default function CreatePost ( {navigation} ) {
     }
     getEmail();
 
+    const getSections = async () => {
+        const querySnapshot = await getDocs(collection(db, "forum sections"));
+        querySnapshot.forEach(docSnap => {
+            forumSections.push({label: docSnap.data().name, value: docSnap.data().name})
+        })
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        getSections();
+    }, [forumSections]);
+
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "forum", title), {
                 addedBy: username,
                 title: title,
                 section: section,
-                description: description
+                description: description,
+                datetime: datetime
             });
             
             navigation.replace('Forum Page')
@@ -53,15 +68,16 @@ export default function CreatePost ( {navigation} ) {
         }
     }
 
+    if (loading) {
+        return <ActivityIndicator />;
+    }
+
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
             <Text style={styles.text}>Title:</Text>
             <FilteredTextInput
                 style={styles.input}
@@ -79,16 +95,7 @@ export default function CreatePost ( {navigation} ) {
                     placeholder={sectionPlaceholder}
                     placeholderTextColor="#aaaaaa"
                     onValueChange={(value) => setSection(value)}
-                    items={[
-                        { label: 'Food', value: 'Food'},
-                        { label: 'Outdoors', value: 'Outdoors' },
-                        { label: 'Hotel Talk', value: 'Hotel Talk' },
-                        { label: 'Travel Gadgets & Gear', value: 'Travel Gadgets & Gear' },
-                        { label: 'Travelling with Pets', value: 'Travelling with Pets' },
-                        { label: 'Solo Travel', value: 'Solo Travel' },
-                        { label: 'Honeymoons and Romance', value: 'Honeymoons and Romance' },
-                        { label: 'Family Travel', value: 'Family Travel' },
-                    ]}
+                    items={forumSections}
             />
            <Text style={styles.text}>Description:</Text>
             <FilteredTextInput

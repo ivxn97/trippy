@@ -6,9 +6,10 @@ import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
 
-export default function ForumScreen ({ navigation }) {
+export default function Section ({ route, navigation }) {
+    const {sectionName} = route.params;
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [forum, setForum] = useState([]); // Initial empty array of hotels
+    const [forum, setForum] = useState([]); // Initial empty array
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(forum);
     const [sortBy, setSortBy] = useState(null);
@@ -36,18 +37,23 @@ export default function ForumScreen ({ navigation }) {
 
     })
 
-    useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "forum"));
-        querySnapshot.forEach(documentSnapshot => {
+    const getForumPosts = async () => {
+        const collectionRef = collection(db, "forum")
+        console.log("Section Name:", sectionName)
+        const q = query(collectionRef, where('section', '==', sectionName));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
             forum.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-            });
-        });
-
-        setForum(forum);
+                ...doc.data(),
+                key: doc.id
+            })
+        })
         setLoading(false);
-    }, []);
+    }
+
+    useEffect(() => {
+        getForumPosts();
+    }, [forum]);
 
     const searchFilter = (text) => {
         if (text) {
@@ -71,6 +77,7 @@ export default function ForumScreen ({ navigation }) {
                 underlayColor="#C8c9c9">
                 <View style={styles.list}>
                 <Text>{item.title}</Text>
+                <Text>Posted By {item.addedBy}</Text>
                 </View>
             </TouchableHighlight>
         )
@@ -96,10 +103,7 @@ export default function ForumScreen ({ navigation }) {
 
     return (
         <View>
-        <ScrollView>
-        <Text style={styles.HeadingList}>TripAid</Text>
-        <Text style={styles.HeadingList}>Forum</Text>
-
+        <Text style={styles.HeadingList}>{sectionName}</Text>
 
         {/* Search Bar */}
 
@@ -158,9 +162,6 @@ export default function ForumScreen ({ navigation }) {
                         keyExtractor={item => item}
                     />
                 )}
-            <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Forum Sections')}>
-            <Text style={styles.buttonSmallListText}>Browse Sections</Text>
-            </TouchableOpacity>
         </View>
 
 
@@ -170,7 +171,6 @@ export default function ForumScreen ({ navigation }) {
             keyExtractor={(item, index) => index.toString()}
             renderItem={ItemView}
         />
-        </ScrollView>
         </View>
     )
 }

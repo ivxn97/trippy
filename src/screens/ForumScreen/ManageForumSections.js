@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
-import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
 
-export default function ForumScreen ({ navigation }) {
+export default function ManageForumSections ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [forum, setForum] = useState([]); // Initial empty array of hotels
     const [search, setSearch] = useState('');
@@ -37,7 +37,7 @@ export default function ForumScreen ({ navigation }) {
     })
 
     useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "forum"));
+        const querySnapshot = await getDocs(collection(db, "forum sections"));
         querySnapshot.forEach(documentSnapshot => {
             forum.push({
                 ...documentSnapshot.data(),
@@ -70,7 +70,7 @@ export default function ForumScreen ({ navigation }) {
             <TouchableHighlight
                 underlayColor="#C8c9c9">
                 <View style={styles.list}>
-                <Text>{item.title}</Text>
+                <Text>{item.name}</Text>
                 </View>
             </TouchableHighlight>
         )
@@ -96,9 +96,8 @@ export default function ForumScreen ({ navigation }) {
 
     return (
         <View>
-        <ScrollView>
-        <Text style={styles.HeadingList}>TripAid</Text>
-        <Text style={styles.HeadingList}>Forum</Text>
+        <Text style={styles.HeadingList}>Forum Section</Text>
+        <Text style={styles.HeadingList}>Management</Text>
 
 
         {/* Search Bar */}
@@ -116,61 +115,28 @@ export default function ForumScreen ({ navigation }) {
         {/* Buttons */}
 
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-             <TouchableOpacity style={styles.buttonSmallWrite}
-             onPress={() => {navigation.navigate('Create Post')}}>
-            <Text style={styles.buttonSmallListText}>Write a post...</Text>
-            
+        <TouchableOpacity style={styles.buttonSmall} onPress={() =>
+                            navigation.navigate('Add Forum Section')
+                        }>
+            <Text style={styles.buttonSmallListText}>Add</Text>
             </TouchableOpacity>
-                {!sortBy && (
-                    <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
-                        <Text style={styles.buttonSmallListText}>Sort</Text>
-                    </TouchableOpacity>
-                )}
-                {sortBy && !sortOrder && (
-                    <TouchableOpacity style={styles.buttonListLeft} onPress={openInnerDropdown}>
-                        <Text style={styles.buttonSmallListText} >Sort by {sortBy}</Text>
-                    </TouchableOpacity>
-                )}
-                {sortBy && sortOrder && (
-                    <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
-                        <Text style={styles.buttonSmallListText}>Sort</Text>
-                    </TouchableOpacity>
-                )}
-                {dropdownVisible && (
-                    <FlatList
-                        data={['title', 'section']}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => handleSortChange(item)}>
-                                <Text>Sort by {item}</Text>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item}
-                    />
-                )}
-                {innerDropdownVisible && (
-                    <FlatList
-                        data={['asc', 'desc']}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => handleSortChange(item)}>
-                                <Text>{item}ending</Text>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item}
-                    />
-                )}
-            <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Forum Sections')}>
-            <Text style={styles.buttonSmallListText}>Browse Sections</Text>
+            <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Forum Sections Edit List')}>
+            <Text style={styles.buttonSmallListText}>Edit</Text>
+            </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() =>
+                        navigation.navigate('Delete Forum Section') }>
+            <Text style={styles.buttonSmallListText}>Delete</Text>
             </TouchableOpacity>
         </View>
 
 
         {/* FlatList */}
+    
         <FlatList
             data={filteredData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={ItemView}
-        />
-        </ScrollView>
+    />
         </View>
     )
 }

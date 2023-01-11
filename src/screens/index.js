@@ -39,9 +39,6 @@ export { default as DeleteAttraction } from './Attractions/DeleteAttraction'
 export { default as DeletePaidTour } from './PaidTour/DeletePaidTour'
 export { default as DeleteRestaurant } from './Restaurants/DeleteRestaurant'
 
-export {default as ForumScreen} from './ForumScreen/ForumScreen'
-export {default as CreatePost} from './ForumScreen/CreatePost'
-
 export {default as BOScreen} from './BOScreen/BOScreen'
 export {default as BOAttractionsList} from './BOScreen/BOAttractionsList'
 export {default as BODealsList} from './BOScreen/BODealsList'
@@ -67,3 +64,13 @@ export {default as Bookmarks} from './ProfileScreen/Bookmarks'
 export {default as Itinerary} from './ProfileScreen/Itinerary'
 
 export {default as Details} from './HomeScreen/Details'
+
+export {default as ForumScreen} from './ForumScreen/ForumScreen'
+export {default as CreatePost} from './ForumScreen/CreatePost'
+export {default as ForumSections} from './ForumScreen/ForumSections'
+export {default as Section} from './ForumScreen/Section'
+
+export {default as ManageForumSections} from './ForumScreen/ManageForumSections'
+export {default as AddForumSection} from './AdminScreen/AddForumSection'
+export {default as EditForumSection} from './AdminScreen/EditForumSection'
+export {default as ForumSectionsEditList} from './ForumScreen/ForumSectionsEditList'

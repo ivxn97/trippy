@@ -47,14 +47,16 @@ export default function Itinerary ( {navigation} ) {
             //console.log("Document data: ", docSnap.data());
             const itineraryData = docSnap.data().itinerary
             console.log("Itinerary Data:", itineraryData);
-            let finalArray = itineraryData;
-            if (!itineraryData.every(element => element.hasOwnProperty('position') && element.hasOwnProperty('name'))) {
-            finalArray = itineraryData.sort((a, b) => a.position - b.position).map((name, index) => ({
-                name,
-                position: index + 1,
-                //name: element.hasOwnProperty('name') ? element.name : 'Unknown'
-            }));
-            }
+            let finalArray = itineraryData.map((element, index) => {
+                if(element.hasOwnProperty('position') && element.hasOwnProperty('name')) {
+                    return element;
+                } else {
+                    return {
+                        name: element,
+                        position: index + 1
+                    }
+                }
+            });
             console.log("initial arr:", itineraryData)
             console.log("final Array:", finalArray)
             setItineraryArr(itineraryData);
@@ -200,7 +202,7 @@ export default function Itinerary ( {navigation} ) {
     if (loading) {
         return <ActivityIndicator />;
     }
-
+    
     const renderItem = ({ item, drag, isActive }) => {
         return (
           <ScaleDecorator>

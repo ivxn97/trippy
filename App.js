@@ -15,7 +15,7 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
       BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList, EditRestaurant, 
       RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
       EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection, 
-      EditForumSection, ForumSectionsEditList, ForumSections, Section } from './src/screens'
+      EditForumSection, ForumSectionsEditList, ForumSections, Section, Thread, CreateReply } from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -108,6 +108,8 @@ function ForumStackScreen() {
         <Stack.Screen name="Create Post" component={CreatePost}/>
         <Stack.Screen name="Forum Sections" component={ForumSections}/>
         <Stack.Screen name="Section" component={Section}/>
+        <Stack.Screen name="Create Reply" component={CreateReply}/>
+        <Stack.Screen name="Thread" component={Thread}/>
     </ForumStack.Navigator>
     
   )

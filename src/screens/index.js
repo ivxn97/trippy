@@ -74,3 +74,6 @@ export {default as ManageForumSections} from './ForumScreen/ManageForumSections'
 export {default as AddForumSection} from './AdminScreen/AddForumSection'
 export {default as EditForumSection} from './AdminScreen/EditForumSection'
 export {default as ForumSectionsEditList} from './ForumScreen/ForumSectionsEditList'
+
+export {default as ReviewScreen} from './ReviewScreen/ReviewScreen'
+export {default as AddReviewScreen} from './ReviewScreen/AddReviewScreen'

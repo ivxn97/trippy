@@ -7,13 +7,14 @@ import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
 import * as WebBrowser from 'expo-web-browser';
 import {bookmark, itinerary} from '../commonFunctions';
+import ReviewScreen from '../ReviewScreen/ReviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function Details({route, navigation}) {
     const {activityType, name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
         description, TNC, tourType, startingTime, endingTime, duration, hotelClass, roomTypes, priceRange, 
-        checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location} = route.params;
+        checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location, review} = route.params;
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
     //Restaurants only 
@@ -186,7 +187,7 @@ Download the App here: URL`})
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> getMenu()}>
                         <Text style={styles.buttonSmallText}>Menu</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={()=> navigation.navigate('Review Screen', {name, review})}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}

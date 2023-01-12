@@ -9,10 +9,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity, Button } from 'react-native';
 
-export default function RestaurantScreen({route, navigation}) {
+export default function ReviewScreen({route, navigation}) {
     const {name, review} = route.params;
-    console.log(review);
-    
+    useEffect(() => {
+        console.log(review);
+      });
+
     return(
         <View>
             <Text>{name}</Text>
@@ -27,7 +29,7 @@ export default function RestaurantScreen({route, navigation}) {
             )}
             />
             <View>
-                <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Add Review Screen')}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Add Review Screen', {name, review})}>
                             <Text style={styles.buttonSmallText}>Add Review</Text>
                 </TouchableOpacity>
             </View>

@@ -134,6 +134,11 @@ Download the App here: URL`})
       itinerary(email, name)
     }
 
+    const onReview = () => {
+        navigation.navigate('Review Screen', {name, review});
+        console.log(review);
+    }
+
     const handlePress = () => {
         const url = 'https://www.google.com'
         Linking.canOpenURL(url).then(supported => {
@@ -150,6 +155,7 @@ Download the App here: URL`})
     }
 
     if (activityType == 'restaurants') {
+        
         return (
             <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
@@ -199,7 +205,7 @@ Download the App here: URL`})
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> getMenu()}>
                         <Text style={styles.buttonSmallText}>Menu</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall} onPress={()=> navigation.navigate('Review Screen', {name, review})}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}

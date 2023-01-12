@@ -263,6 +263,10 @@ export default StyleSheet.create({
     backgroundColor:'#FFFFFF',
     opacity: 1,
     radius:29
-    }
+    },
+    buttonView: {
+        bottom:0,
+        position:'fixed'
+        }
 
 })

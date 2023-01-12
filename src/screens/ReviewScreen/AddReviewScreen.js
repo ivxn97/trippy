@@ -3,7 +3,7 @@ import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityInd
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc, getDoc, collection } from "firebase/firestore";
+import { doc, setDoc, arrayUnion, collection, updateDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import * as DocumentPicker from 'expo-document-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
@@ -17,8 +17,10 @@ const ratingPlaceholder = {
     color: 'black',
 };
 
-export default function AddReviewScreen ( { navigation }) {
-    const [name, setName] = useState('');
+export default function AddReviewScreen ( { route, navigation }) {
+    const {name, review} = route.params;
+    
+
     const [userName, setUserName] = useState('');
     const [rating, setRating] = useState('');
     const [comment, setComment] = useState('');
@@ -37,18 +39,20 @@ export default function AddReviewScreen ( { navigation }) {
         } catch (error) {
             console.log(error)
         }
+        
     }
-    getUserName();
 
+    getUserName();
+    console.log(name);
     const onSubmitPress = async () => {
         try {
-            await setDoc(doc(db, "restaurants", name), {
-                review:{comment: comment,
+            await updateDoc(doc(db, "restaurants", name), {
+                review: arrayUnion(...[{comment: comment,
                         rating: rating,
-                        userName: userName}
-            });
-            console.log("Document written with ID: ", docRef.id);
-            navigation.navigate('Review Screen')
+                        userName: userName}])
+            }, {merge:true});
+            //console.log("Document written with ID: ", docRef.id);
+            navigation.navigate('Review Screen', {name, review});
         }
         catch (e) {
             console.log("Error adding document: ", e);
@@ -61,8 +65,6 @@ export default function AddReviewScreen ( { navigation }) {
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
             
-            
-
             <Text style={styles.text}>Comment:</Text>
                 <TextInput
                 style={styles.input}

@@ -80,3 +80,4 @@ export {default as AddReviewScreen} from './ReviewScreen/AddReviewScreen'
 
 export {default as Thread} from './ForumScreen/Thread'
 export {default as CreateReply} from './ForumScreen/CreateReply'
+export {default as EditReply} from './ForumScreen/EditReply'

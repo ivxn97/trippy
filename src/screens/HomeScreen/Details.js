@@ -135,8 +135,7 @@ Download the App here: URL`})
     }
 
     const onReview = () => {
-        navigation.navigate('Review Screen', {name, review});
-        console.log(review);
+        navigation.navigate('Review Screen', {name});
     }
 
     const handlePress = () => {

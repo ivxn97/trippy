@@ -18,19 +18,28 @@ const ratingPlaceholder = {
 };
 
 export default function AddReviewScreen ( { route, navigation }) {
-    const {name, review} = route.params;
+    const {name} = route.params;
     
 
     const [userName, setUserName] = useState('');
+    const [email, setEamil] = useState('');
     const [rating, setRating] = useState('');
     const [comment, setComment] = useState('');
     const [addReview, setAddReview] = useState([]);
 
-    const getUserName = async () => {
+    const getUserInfo = async () => {
         try {
             const fullName = await AsyncStorage.getItem('userName');
             if (fullName !== null) {
                 setUserName(fullName);
+                //console.log(fullName);
+            }
+            else {
+                console.log("No Name Selected at Login")
+            }
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEamil(email);
                 //console.log(fullName);
             }
             else {
@@ -42,17 +51,18 @@ export default function AddReviewScreen ( { route, navigation }) {
         
     }
 
-    getUserName();
+    getUserInfo();
     console.log(name);
     const onSubmitPress = async () => {
         try {
             await updateDoc(doc(db, "restaurants", name), {
                 review: arrayUnion(...[{comment: comment,
                         rating: rating,
-                        userName: userName}])
+                        userName: userName,
+                        email: email}])
             }, {merge:true});
             //console.log("Document written with ID: ", docRef.id);
-            navigation.navigate('Review Screen', {name, review});
+            navigation.navigate('Review Screen', {name});
         }
         catch (e) {
             console.log("Error adding document: ", e);

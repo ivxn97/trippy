@@ -46,6 +46,7 @@ export default function RestaurantList( {navigation}) {
             key: documentSnapshot.id,
           });
         });
+        console.log(restaurants);
 
         const typesOf = restaurants.map(item => ({
           name: item.typeOfCuisine,

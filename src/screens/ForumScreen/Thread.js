@@ -35,7 +35,8 @@ export default function Thread({route, navigation}) {
     }
 
     useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "forum reply"));
+        const q = query(collection(db, "forum reply"), where('title', '==', title))
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach(documentSnapshot => {
             reply.push({
                 ...documentSnapshot.data(),

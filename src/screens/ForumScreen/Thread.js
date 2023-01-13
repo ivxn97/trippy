@@ -66,7 +66,8 @@ export default function Thread({route, navigation}) {
     const ItemView = ({item}) => {
         return (
             <TouchableHighlight
-                underlayColor="#C8c9c9">
+                underlayColor="#C8c9c9"
+                onPress={() => {navigation.navigate('Edit Reply', {title : item.title, description: item.description, section: item.section, comment_id: item.comment_id})}}>
                 <View style={styles.list}>
                     <Text>{item.addedBy}</Text>
                     <Text>{item.description}</Text>
@@ -74,22 +75,6 @@ export default function Thread({route, navigation}) {
             </TouchableHighlight>
         )
        }
-      
-    //    temporary
-    const DATA = [
-        {
-          comment_id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-          description: 'First Item',
-        },
-        {
-            comment_id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-            description: 'Second Item',
-        },
-        {
-            comment_id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            description: 'Third Item',
-        },
-      ];
 
     return(
         <View style={styles.threadContainer}>
@@ -116,7 +101,7 @@ export default function Thread({route, navigation}) {
                     </TouchableOpacity>
                 </View>
 
-            {/* FlatList */}
+            {/* FlatList -- replies */}
             
                 <FlatList
                     data={reply}

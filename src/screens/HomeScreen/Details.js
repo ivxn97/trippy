@@ -209,7 +209,7 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                disabled ={registeredButton} onPress={handlePress} title="Open Web Browser">
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>
@@ -268,7 +268,7 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                disabled ={registeredButton} onPress={handlePress} title="Open Web Browser" >
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking" >
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>
@@ -327,7 +327,7 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton} onPress={handlePress} title="Open Web Browser">
+                    disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
                             <Text style={styles.buttonSmallText}>Book</Text>
                     </TouchableOpacity>
                 </View>
@@ -386,7 +386,7 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton} onPress={handlePress} title="Open Web Browser">
+                    disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
                             <Text style={styles.buttonSmallText}>Book</Text>
                     </TouchableOpacity>
                 </View>
@@ -435,7 +435,7 @@ Download the App here: URL`})
                 />
                 <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={handlePress} title="Open Web Browser">
+                    <TouchableOpacity style={styles.buttonSmall} >
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                 </View>

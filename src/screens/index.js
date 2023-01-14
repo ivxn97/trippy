@@ -64,6 +64,7 @@ export {default as Bookmarks} from './ProfileScreen/Bookmarks'
 export {default as Itinerary} from './ProfileScreen/Itinerary'
 
 export {default as Details} from './HomeScreen/Details'
+export {default as Booking} from './HomeScreen/Booking'
 
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as CreatePost} from './ForumScreen/CreatePost'

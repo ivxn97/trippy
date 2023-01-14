@@ -263,7 +263,7 @@ Download the App here: URL`})
             <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
             <Text style={styles.price}>${JSON.stringify(price).replace(/"/g,"")}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
@@ -322,7 +322,7 @@ Download the App here: URL`})
                 <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g, "")}</Text>
                 <Text style={styles.price}>${JSON.stringify(priceRange).replace(/"/g, "")}</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
@@ -381,7 +381,7 @@ Download the App here: URL`})
                 <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
                 <Text style={styles.price}>${JSON.stringify(price).replace(/"/g,"")}</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
@@ -434,7 +434,7 @@ Download the App here: URL`})
                 />
                 <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={handlePress} title="Open Web Browser">
+                    <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                 </View>

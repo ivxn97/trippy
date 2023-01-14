@@ -109,6 +109,8 @@ export default function DeleteRestaurant({ navigation }) {
         placeholderTextColor="#aaaaaa"
         underlineColorAndroid="transparent"
         autoCapitalize="sentences"
+        value={search}
+        onChangeText={(text) => searchFilter(text, users)}
       />
       <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
         {!sortBy && (

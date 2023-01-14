@@ -51,31 +51,31 @@ export default function ListOfUsers( {navigation} ) {
 
   return (
     <View>
-    <TextInput
-        style={styles.inputSearch}
-        placeholder='search'
-        placeholderTextColor="#aaaaaa"
-        underlineColorAndroid="transparent"
-        autoCapitalize="sentences"
-        value={search}
-        onChangeText={(text) => searchFilter(text, users)}
-    />
-    <FlatList
-      data={filteredData}
-      extraData={filteredData}
-      renderItem={({ item }) => (
-        <TouchableHighlight
-        underlayColor="#C8c9c9"
-        onPress={() => {navigation.navigate('Admin View Account', {email: item.email, UEN: item.UEN, firstName: item.firstName,
-        lastName: item.lastName, role: item.role, id: item.id, status: item.status, socialMediaHandle: item.socialMediaHandle,
-        socialMediaPlatform: item.socialMediaPlatform })}}>
-        <View style={styles.list}>
-          <Text>Email: {item.email}</Text>
-          <Text>Role: {item.role}</Text>
-        </View>
-        </TouchableHighlight>
-      )}
-    />
+      <TextInput
+          style={styles.inputSearch}
+          placeholder='search'
+          placeholderTextColor="#aaaaaa"
+          underlineColorAndroid="transparent"
+          autoCapitalize="sentences"
+          value={search}
+          onChangeText={(text) => searchFilter(text, users)}
+      />
+      <FlatList
+        data={filteredData}
+        extraData={filteredData}
+        renderItem={({ item }) => (
+          <TouchableHighlight
+          underlayColor="#C8c9c9"
+          onPress={() => {navigation.navigate('Admin View Account', {email: item.email, UEN: item.UEN, firstName: item.firstName,
+          lastName: item.lastName, role: item.role, id: item.id, status: item.status, socialMediaHandle: item.socialMediaHandle,
+          socialMediaPlatform: item.socialMediaPlatform })}}>
+          <View style={styles.list}>
+            <Text>Email: {item.email}</Text>
+            <Text>Role: {item.role}</Text>
+          </View>
+          </TouchableHighlight>
+        )}
+      />
     </View>
   );
 }

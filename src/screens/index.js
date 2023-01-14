@@ -62,6 +62,9 @@ export {default as EditDeal} from './DealsScreen/EditDeal'
 
 export {default as Bookmarks} from './ProfileScreen/Bookmarks'
 export {default as Itinerary} from './ProfileScreen/Itinerary'
+export { default as ActiveThread } from './ProfileScreen/ActiveThread'
+export { default as PageContent } from './ProfileScreen/PageContent'
+export { default as PageContentChoice } from './ProfileScreen/PageContentChoice'
 
 export {default as Details} from './HomeScreen/Details'
 export {default as Booking} from './HomeScreen/Booking'
@@ -78,6 +81,7 @@ export {default as ForumSectionsEditList} from './ForumScreen/ForumSectionsEditL
 
 export {default as ReviewScreen} from './ReviewScreen/ReviewScreen'
 export {default as AddReviewScreen} from './ReviewScreen/AddReviewScreen'
+export {default as ReviewDetailScreen} from './ReviewScreen/ReviewDetailScreen'
 
 export {default as Thread} from './ForumScreen/Thread'
 export {default as CreateReply} from './ForumScreen/CreateReply'

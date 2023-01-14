@@ -264,9 +264,16 @@ export default StyleSheet.create({
     opacity: 1,
     radius:29
     },
-    buttonView: {
-        bottom:0,
-        position:'fixed'
-        }
+
+    reviewBorderBox: {
+        width: 389,
+        height: 300,
+        left: 20,
+        right: 20,
+        top: 20,
+        backgroundColor:'#FFFFFF',
+        opacity: 1,
+        radius:29
+    }
 
 })

@@ -59,7 +59,7 @@ export default function AddHotel({ navigation }) {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
                 setEmail(email);
-                console.log(email)
+                console.log(email);
             }
             else {
                 console.log("No Email Selected at Login")

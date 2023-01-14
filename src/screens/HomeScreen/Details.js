@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, 
-    StyleSheet, Share } from 'react-native';
+    StyleSheet, Share, Linking } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
 import * as WebBrowser from 'expo-web-browser';
 import {bookmark, itinerary} from '../commonFunctions';
+import ReviewScreen from '../ReviewScreen/ReviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import WebView from 'react-native-webview';
 
 export default function Details({route, navigation}) {
     const {activityType, name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
         description, TNC, tourType, startingTime, endingTime, duration, hotelClass, roomTypes, priceRange, 
-        checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location} = route.params;
+        checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location, review} = route.params;
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
     //Restaurants only 
@@ -132,11 +134,27 @@ Download the App here: URL`})
       itinerary(email, name)
     }
 
+    const onReview = () => {
+        navigation.navigate('Review Screen', {name});
+    }
+
+    const handlePress = () => {
+        const url = 'https://www.google.com'
+        Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+            Linking.openURL(url);
+          } else {
+            console.log("Don't know how to open URI: " + url);
+          }
+        });
+    }
+      
     if (loading) {
         return <ActivityIndicator />;
     }
 
     if (activityType == 'restaurants') {
+        
         return (
             <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
@@ -186,11 +204,11 @@ Download the App here: URL`})
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> getMenu()}>
                         <Text style={styles.buttonSmallText}>Menu</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                disabled ={registeredButton}>
+                disabled ={registeredButton} onPress={handlePress} title="Open Web Browser">
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>
@@ -249,7 +267,7 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                disabled ={registeredButton}>
+                disabled ={registeredButton} onPress={handlePress} title="Open Web Browser" >
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>
@@ -308,7 +326,7 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton}>
+                    disabled ={registeredButton} onPress={handlePress} title="Open Web Browser">
                             <Text style={styles.buttonSmallText}>Book</Text>
                     </TouchableOpacity>
                 </View>
@@ -367,7 +385,7 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton}>
+                    disabled ={registeredButton} onPress={handlePress} title="Open Web Browser">
                             <Text style={styles.buttonSmallText}>Book</Text>
                     </TouchableOpacity>
                 </View>
@@ -416,7 +434,7 @@ Download the App here: URL`})
                 />
                 <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={handlePress} title="Open Web Browser">
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                 </View>

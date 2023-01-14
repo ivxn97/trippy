@@ -15,7 +15,9 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
       BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList, EditRestaurant, 
       RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
       EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection, 
-      EditForumSection, ForumSectionsEditList, ForumSections, Section } from './src/screens'
+  EditForumSection, ForumSectionsEditList, ForumSections, Section, ActiveThread, ReviewScreen, AddReviewScreen, ReviewDetailScreen,
+  CreateReply, Thread, EditReply, PageContent, PageContentChoice
+} from './src/screens'
 import {decode, encode} from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -49,11 +51,13 @@ function ProfileStackScreen() {
         <Stack.Screen name="Guide Screen" component={GuideScreen}/>
         <Stack.Screen name="Bookmarks" component={Bookmarks}/>
         <Stack.Screen name="Itinerary" component={Itinerary}/>
+        <Stack.Screen name="ActiveThread" component={ActiveThread} />
         <Stack.Screen name="Paid tour details" component={PaidTourScreen}/>
         <Stack.Screen name="Restaurant Details" component={RestaurantScreen}/>
         <Stack.Screen name="Attraction Details" component={AttractionView}/>
         <Stack.Screen name="Hotel details" component={HotelScreen}/>
         <Stack.Screen name="Details" component={Details}/>
+        <Stack.Screen name="Review Screen" component={ReviewScreen}/>
     </ProfileStack.Navigator>
   )
 }
@@ -95,6 +99,9 @@ function HomeStackScreen() {
         <Stack.Screen name="List of paid tours" component={PaidTourList}/>
         <Stack.Screen name="Paid tour details" component={PaidTourScreen}/>
         <Stack.Screen name="Details" component={Details}/>
+        <Stack.Screen name="Review Screen" component={ReviewScreen}/>
+        <Stack.Screen name="Add Review Screen" component={AddReviewScreen}/>
+        <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen}/>
     </HomeStack.Navigator>
   )
 }
@@ -108,6 +115,9 @@ function ForumStackScreen() {
         <Stack.Screen name="Create Post" component={CreatePost}/>
         <Stack.Screen name="Forum Sections" component={ForumSections}/>
         <Stack.Screen name="Section" component={Section}/>
+        <Stack.Screen name="Create Reply" component={CreateReply}/>
+        <Stack.Screen name="Thread" component={Thread}/>
+        <Stack.Screen name="Edit Reply" component={EditReply}/>
     </ForumStack.Navigator>
     
   )
@@ -126,6 +136,8 @@ function AdminStackScreen() {
         <Stack.Screen name="Add Forum Section" component={AddForumSection}/>
         <Stack.Screen name="Edit Forum Section" component={EditForumSection}/>
         <Stack.Screen name="Create Post" component={CreatePost}/>
+        <Stack.Screen name="Page Content" component={PageContent} />
+        <Stack.Screen name="Page Content Choice" component={PageContentChoice} />
     </AdminStack.Navigator>
   )
 }

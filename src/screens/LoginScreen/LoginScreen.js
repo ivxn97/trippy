@@ -10,6 +10,7 @@ import { NavigationHelpersContext } from '@react-navigation/native';
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const [businesses, setBusinesses] = useState('');
@@ -51,6 +52,15 @@ export default function LoginScreen({navigation}) {
             console.log(e)
         }
     }
+    const storeUserName = async (userName) => {
+        try {
+            await AsyncStorage.setItem('userName', userName)
+            console.log('Successfully added userName to ASync Storage with' , userName)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     const storeBusinesses = async (businesses) => {
         try {
             await AsyncStorage.setItem('businesses', JSON.stringify(businesses))
@@ -87,7 +97,9 @@ export default function LoginScreen({navigation}) {
             getDoc(loginRef).then( (docSnap) => {if (docSnap.exists()) {
                 const roleData = docSnap.data().role
                 const businessData = docSnap.data().businessesTypes
-                setRole(roleData)
+                const fullName = docSnap.data().firstName + ' ' + docSnap.data().lastName;
+                setUserName(fullName);
+                setRole(roleData);
                 setBusinesses(businessData);
             }
             else {
@@ -113,6 +125,7 @@ export default function LoginScreen({navigation}) {
         storeEmail(email);
         storeRole(role);
         storeBusinesses(businesses);
+        storeUserName(userName);
 
         if (role == "Admin") {
             //navigation.navigate('Admin Stack');

@@ -68,7 +68,8 @@ export default function ForumScreen ({ navigation }) {
        const ItemView = ({item}) => {
         return (
             <TouchableHighlight
-                underlayColor="#C8c9c9">
+                underlayColor="#C8c9c9"
+                onPress={() => {navigation.navigate('Thread', {title : item.title, description: item.description, section: item.section})}}>
                 <View style={styles.list}>
                 <Text>{item.title}</Text>
                 </View>

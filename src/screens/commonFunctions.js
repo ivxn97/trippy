@@ -63,3 +63,13 @@ export const FilteredTextInput = ({ value, onChangeText, ...props }) => {
     );
   };
   
+
+export async function PageContent(document, name) {
+    const ref = doc(db, "users", document);
+
+    await updateDoc(ref, {
+        itinerary: arrayUnion(name)
+    })
+    alert(`${name} Added to Page Content`)
+    console.log(`${name} Added to Page Content`)
+}

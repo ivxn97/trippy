@@ -14,8 +14,9 @@ import { LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
       DeleteHotel, DeleteDeal, DeleteRestaurant, DeleteAttraction, DeletePaidTour, GuideScreen, CreatePost, BOScreen,
       BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList, EditRestaurant, 
       RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
-      EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection, 
-  EditForumSection, ForumSectionsEditList, ForumSections, Section, ActiveThread, ReviewScreen, AddReviewScreen, ReviewDetailScreen,
+      EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection,
+  EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, CreateReply, 
+      EditReply, ReviewDetailScreen, ActiveThread, ReviewScreen, AddReviewScreen, ReviewDetailScreen,
   CreateReply, Thread, EditReply, PageContent, PageContentChoice
 } from './src/screens'
 import {decode, encode} from 'base-64'
@@ -57,6 +58,7 @@ function ProfileStackScreen() {
         <Stack.Screen name="Attraction Details" component={AttractionView}/>
         <Stack.Screen name="Hotel details" component={HotelScreen}/>
         <Stack.Screen name="Details" component={Details}/>
+        <Stack.Screen name="Review Screen" component={ReviewScreen}/>
         <Stack.Screen name="Review Screen" component={ReviewScreen}/>
     </ProfileStack.Navigator>
   )
@@ -102,6 +104,9 @@ function HomeStackScreen() {
         <Stack.Screen name="Review Screen" component={ReviewScreen}/>
         <Stack.Screen name="Add Review Screen" component={AddReviewScreen}/>
         <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen}/>
+        <Stack.Screen name="Review Screen" component={ReviewScreen}/>
+        <Stack.Screen name="Add Review Screen" component={AddReviewScreen}/>
+        <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen}/>
     </HomeStack.Navigator>
   )
 }
@@ -115,6 +120,9 @@ function ForumStackScreen() {
         <Stack.Screen name="Create Post" component={CreatePost}/>
         <Stack.Screen name="Forum Sections" component={ForumSections}/>
         <Stack.Screen name="Section" component={Section}/>
+        <Stack.Screen name="Create Reply" component={CreateReply}/>
+        <Stack.Screen name="Thread" component={Thread}/>
+        <Stack.Screen name="Edit Reply" component={EditReply}/>
         <Stack.Screen name="Create Reply" component={CreateReply}/>
         <Stack.Screen name="Thread" component={Thread}/>
         <Stack.Screen name="Edit Reply" component={EditReply}/>

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { doc, getDoc, collection, query, where, getDocs, QuerySnapshot } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs, QuerySnapshot, arrayRemove, updateDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Bookmarks ( {navigation} ) {
+export default function DeleteBookmark ( {navigation} ) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [email, setEmail] = useState();
     const [bookmarksArr, setBookmarksArr] = useState();
@@ -17,7 +17,6 @@ export default function Bookmarks ( {navigation} ) {
     const [attractions, setAttractions] = useState([]);
     const [guides, setGuides] = useState([]);
     const [walkingTours, setWalkingTours] = useState([]);
-    const [status, setStatus] = useState('Loading Bookmarks')
 
     const [shouldRun, setShouldRun] = useState(true);
 
@@ -130,6 +129,13 @@ export default function Bookmarks ( {navigation} ) {
         } */
     }
 
+    const delBookmark = async (activity) => {
+        const docRef = doc(db, "users", email);
+        await updateDoc(docRef, {bookmarks: arrayRemove(activity)})
+        alert(`${activity} removed from your Bookmarks!`)
+        navigation.replace('Bookmarks')
+    }
+
     useFocusEffect(React.useCallback(() => {
         if (shouldRun) {
             getEmail();
@@ -143,19 +149,8 @@ export default function Bookmarks ( {navigation} ) {
         }
     },[shouldRun, email, bookmarksArr]))
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setStatus('Bookmarks is empty!');
-        }, 8000);
-        return () => clearInterval(interval)
-    })
-
     if (loading) {
-        return (
-            <View>
-                <ActivityIndicator />
-                <Text style={styles.Heading}>{status}</Text>
-            </View>);
+        return <ActivityIndicator />;
     }
 
     if (restaurants == null && hotels == null && paidTours == null && attractions == null && guides == null && walkingTours == null) {
@@ -170,12 +165,6 @@ export default function Bookmarks ( {navigation} ) {
             <View>
                 <ScrollView>
                 <Text style={styles.HeadingList}>Bookmarks</Text>
-                <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonListRight}
-                    onPress={() => {navigation.navigate('Delete Bookmark')}}>
-                    <Text style={styles.buttonSmallListText}>Remove</Text>
-                    </TouchableOpacity>
-                </View>
                 <Text style={styles.title}>Restaurants</Text>
                 <FlatList
                     data={restaurants}
@@ -183,9 +172,7 @@ export default function Bookmarks ( {navigation} ) {
                     renderItem={({ item }) => (
                     <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => {navigation.navigate('Restaurant Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
-                    price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
-                    closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language})}}>
+                    onPress={() => delBookmark(item.name)}>
                     <View style={styles.list}>
                         <Text>{item.name}</Text>
                         <Text>{item.price}</Text>
@@ -200,14 +187,7 @@ export default function Bookmarks ( {navigation} ) {
                 renderItem={({ item }) => (
                     <TouchableHighlight
                         underlayColor="#C8c9c9"
-                        onPress={() => {
-                        navigation.navigate('Hotel details', {
-                            name: item.name, roomTypes: item.roomTypes,
-                            priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
-                            checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                            language: item.language,description: item.description, TNC: item.TNC
-                        })
-                        }}>
+                        onPress={() => delBookmark(item.name)}>
                         <View style={styles.list}>
                             <Text>{item.name}</Text>
                             <Text>{item.hotelClass}</Text>
@@ -222,10 +202,7 @@ export default function Bookmarks ( {navigation} ) {
                 renderItem={({ item }) => (
                     <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => {navigation.navigate('Paid tour details', {name: item.name, tourType: item.tourType, 
-                    price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
-                    endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
-                    TNC: item.TNC})}}>
+                    onPress={() => delBookmark(item.name)}>
                     <View style={styles.list}>
                     <Text>{item.name}</Text>
                     <Text>${item.price}</Text>
@@ -240,9 +217,7 @@ export default function Bookmarks ( {navigation} ) {
                 renderItem={({ item }) => (
                     <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => {navigation.navigate('Attraction Details', {name: item.name, attractionType: item.attractionType, 
-                    price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
-                    closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC})}}>
+                    onPress={() => delBookmark(item.name)}>
                     <View style={styles.list}>
                     <Text>{item.name}</Text>
                     <Text>${item.price}</Text>
@@ -257,8 +232,7 @@ export default function Bookmarks ( {navigation} ) {
                     renderItem={({ item }) => (
                     <TouchableHighlight
                         underlayColor="#C8c9c9"
-                        onPress={() => {navigation.navigate('Guide Screen', {name: item.name, location: item.location,
-                                                                                    mrt: item.mrt, tips: item.tips, description: item.description})}}>
+                        onPress={() => delBookmark(item.name)}>
                     <View style={styles.list}>
                     <Text>{item.name}</Text>
                     </View>

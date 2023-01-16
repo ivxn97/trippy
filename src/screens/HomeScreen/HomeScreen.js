@@ -3,8 +3,38 @@ import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView,
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import Carousel from 'react-native-reanimated-carousel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HomeScreen( {navigation} ) {
+
+
+    const getRole = async () => {
+        try {
+            const role = await AsyncStorage.getItem('role');
+            if (role !== null) {
+                if (role == "Admin") {
+                    //navigation.navigate('Admin Stack');
+                    navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
+                }
+                else if (role == "Business Owner") {
+                    navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
+                }
+                console.log(role)
+            }
+            else {
+                console.log("No Role Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useFocusEffect(React.useCallback(() => 
+    {
+        getRole();
+    },[]));
+
     const width = Dimensions.get('window').width;
     return (
         <View style={styles.container}>

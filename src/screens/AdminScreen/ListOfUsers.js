@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TextInput } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';

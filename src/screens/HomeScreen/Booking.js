@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, View, ActivityIndicator, Text, TouchableOpacity } from "react-native";
+import {  View, ActivityIndicator, Text, TouchableOpacity, Alert, StyleSheet, KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import styles from './styles';
+//import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
 import * as WebBrowser from 'expo-web-browser';
@@ -9,6 +9,9 @@ import {bookmark, itinerary} from '../commonFunctions';
 import ReviewScreen from '../ReviewScreen/ReviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { FormProvider, useForm } from 'react-hook-form'
+import LottieView from 'lottie-react-native'
+import CreditCardForm, { Button } from 'rn-credit-card'
 
 //Check capacity for paid tour has reached
 //Check to ensure date and time matches operating hours
@@ -21,6 +24,21 @@ export default function Booking ({route, navigation}) {
   const [email, setEmail] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDateTimePickerVisible, setDateTimePickerVisiblity] = useState(false);
+
+  const formMethods = useForm({
+    mode: 'onBlur',
+    defaultValues: {
+    holderName: '',
+    cardNumber: '',
+    expiration: '',
+    cvv: '',
+  },})
+
+  const { handleSubmit, formState } = formMethods
+
+  function onSubmit(model) {
+    Alert.alert('Success: ' + JSON.stringify(model, null, 2))
+  }
 
   const getEmail = async () => {
     try {
@@ -39,6 +57,34 @@ export default function Booking ({route, navigation}) {
         console.log(error)
     }
 }
+
+return (
+  <FormProvider {...formMethods}>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.avoider}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <CreditCardForm
+          LottieView={LottieView}
+          horizontalStart
+          overrides={{
+            labelText: {
+              marginTop: 16,
+            },
+          }}
+        />
+      </KeyboardAvoidingView>
+      {formState.isValid && (
+        <Button
+          style={styles.button}
+          title={'CONFIRM PAYMENT'}
+          onPress={handleSubmit(onSubmit)}
+        />
+      )}
+    </SafeAreaView>
+  </FormProvider>
+)
 
 useFocusEffect(React.useCallback(async ()=> {
     getEmail();
@@ -111,3 +157,17 @@ useFocusEffect(React.useCallback(async ()=> {
     )
   }
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  avoider: {
+    flex: 1,
+    padding: 36,
+  },
+  button: {
+    margin: 36,
+    marginTop: 0,
+  },
+  })

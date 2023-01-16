@@ -15,9 +15,14 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 export default function ReviewScreen({route, navigation}) {
     const {name} = route.params;
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [email, setEamil] = useState('');
+    const [email, setEmail] = useState('');
     const [review, setReview] = useState([]);
     const [restaurants, setRestaurants] = useState([]);
+    const [reviewButton, setReviewButton] = useState(true);
+
+    useFocusEffect(React.useCallback(async ()=> {
+        getUserInfo();
+    }, []));
 
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "restaurants"));
@@ -43,10 +48,12 @@ export default function ReviewScreen({route, navigation}) {
         try {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
-                setEamil(email);
+                setReviewButton(false)
+                setEmail(email);
                 //console.log(fullName);
             }
             else {
+                setReviewButton(true)
                 console.log("No Name Selected at Login")
             }
         } catch (error) {
@@ -55,10 +62,9 @@ export default function ReviewScreen({route, navigation}) {
         
     }
 
-    getUserInfo();
     return(
         <View>
-            <Text>{name}</Text>
+            <Text style={styles.Heading}>{name}</Text>
             <FlatList
             data = {review}
             renderItem={({ item }) => (
@@ -68,13 +74,14 @@ export default function ReviewScreen({route, navigation}) {
                 <View style={styles.list}>
                     <Text>{item.userName}</Text>
                     <Text>{item.rating}</Text>
-                    <Text>{item.comment}</Text>
+                    <Text numberOfLines={1}>{item.comment}</Text>
                 </View>
                 </TouchableHighlight>
             )}
             />
             <View>
-                <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.replace('Add Review Screen', {name})}>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: reviewButton ? 0.3 : 1}]} onPress={() => navigation.replace('Add Review Screen', {name})}
+                    disabled={reviewButton}>
                             <Text style={styles.buttonSmallText}>Add Review</Text>
                 </TouchableOpacity>
             </View>

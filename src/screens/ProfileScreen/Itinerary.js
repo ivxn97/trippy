@@ -21,6 +21,7 @@ export default function Itinerary ( {navigation} ) {
     const [walkingTours, setWalkingTours] = useState([]);
     const [mergedArr, setMergedArr] = useState([]);
     const [completedArr, setCompletedArr] = useState([]);
+    const [status, setStatus] = useState('Loading Itinerary')
 
     const [shouldRun, setShouldRun] = useState(true);
 
@@ -199,8 +200,19 @@ export default function Itinerary ( {navigation} ) {
         }
     },[shouldRun, email, finalArr]))
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setStatus('Itinerary is empty!');
+        }, 8000);
+        return () => clearInterval(interval)
+    })
+
     if (loading) {
-        return <ActivityIndicator />;
+        return (
+            <View>
+                <ActivityIndicator />
+                <Text style={styles.Heading}>{status}</Text>
+            </View>);
     }
     
     const renderItem = ({ item, drag, isActive }) => {

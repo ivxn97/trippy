@@ -61,6 +61,7 @@ export {default as DealsEditList} from './DealsScreen/EditDealsList'
 export {default as EditDeal} from './DealsScreen/EditDeal'
 
 export {default as Bookmarks} from './ProfileScreen/Bookmarks'
+export {default as DeleteBookmark} from './ProfileScreen/DeleteBookmark'
 export {default as Itinerary} from './ProfileScreen/Itinerary'
 export { default as ActiveThread } from './ProfileScreen/ActiveThread'
 export { default as PageContent } from './ProfileScreen/PageContent'

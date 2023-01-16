@@ -8,6 +8,7 @@ import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import uuid from 'react-native-uuid';
+import { useFocusEffect } from '@react-navigation/native';
 
 const sectionPlaceholder = {
     label: 'Forum Section',
@@ -16,9 +17,10 @@ const sectionPlaceholder = {
 };
 
 export default function EditReply ( {route, navigation} ) {
-    const {title, description, comment_id} = route.params;
+    const {title, description, comment_id, addedBy} = route.params;
     const [username, setUsername] = useState('');
     const [newDescription, setDescription] = useState(description);
+    const [disabledButton, setDisabledButton] = useState(true)
     const datetime = new Date();
 
     const getEmail = async () => {
@@ -27,27 +29,30 @@ export default function EditReply ( {route, navigation} ) {
             if (email !== null) {
                 const [username, website] = email.split("@")
                 setUsername(username);
+                if (addedBy == username) {
+                    setDisabledButton(false)
+                }
             }
             else {
+                setDisabledButton(true)
                 console.log("No Email Selected at Login")
             }
         } catch (error) {
             console.log(error)
         }
     }
-    getEmail();
+    useFocusEffect(React.useCallback(async ()=> {
+        getEmail();
+    }, []));    
 
     // edit reply
 
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "forum reply", comment_id), {
-                addedBy: username,
-                title: title,
                 datetime: datetime,
-                comment_id: comment_id,
                 description: newDescription
-            });
+            }, {merge:true});
             
             navigation.replace('Forum Page')
         }
@@ -69,41 +74,60 @@ export default function EditReply ( {route, navigation} ) {
         }
     }
 
-    return (
-        <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
-            <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
-            <Text style={styles.text}>Description:</Text>
-            <FilteredTextInput
-                style={styles.desc}
-                placeholder='Description'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setDescription(Text)}
-                value={newDescription}
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-                multiline
-            />
-            <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonTitle}>Edit Forum Reply</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => onConfirmDelete()}>
-                    <Text style={styles.buttonTitle}>Delete Forum Reply</Text>
-            </TouchableOpacity>
-            </KeyboardAwareScrollView>
-        </View>
-    )
+    if (addedBy == username) {
+        return (
+            <View style={styles.container}>
+                <KeyboardAwareScrollView
+                    style={{ flex: 1, width: '100%' }}
+                    keyboardShouldPersistTaps="always">
+                    {/*<Image
+                        style={styles.logo}
+                        source={require('../../../assets/icon.png')}
+                    />*/}
+                <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
+                <Text style={styles.text}>Description:</Text>
+                <FilteredTextInput
+                    style={styles.desc}
+                    placeholder='Description'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setDescription(Text)}
+                    value={newDescription}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="sentences"
+                    multiline
+                />
+                <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => onSubmitPress()}>
+                        <Text style={styles.buttonTitle}>Edit Forum Reply</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => onConfirmDelete()}>
+                        <Text style={styles.buttonTitle}>Delete Forum Reply</Text>
+                </TouchableOpacity>
+                </KeyboardAwareScrollView>
+            </View>
+        )
+    }
+    else {
+        return (
+            <View style={styles.container}>
+                <KeyboardAwareScrollView
+                    style={{ flex: 1, width: '100%' }}
+                    keyboardShouldPersistTaps="always">
+                    {/*<Image
+                        style={styles.logo}
+                        source={require('../../../assets/icon.png')}
+                    />*/}
+                <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
+                <Text style={styles.text}>Description:</Text>
+                <Text style={styles.desc}>{newDescription}</Text>
+                </KeyboardAwareScrollView>
+            </View>
+        )
+    }
 }
 
 const pickerSelectStyles = StyleSheet.create({

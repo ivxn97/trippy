@@ -17,7 +17,8 @@ import {
   RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
   EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection,
   EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
-      CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice
+      CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice,
+      DeleteBookmark
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -51,6 +52,7 @@ function ProfileStackScreen() {
       <Stack.Screen name="LOL Guides" component={LOLGuideList} />
       <Stack.Screen name="Guide Screen" component={GuideScreen} />
       <Stack.Screen name="Bookmarks" component={Bookmarks} />
+      <Stack.Screen name="Delete Bookmark" component={DeleteBookmark} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
       <Stack.Screen name="Paid tour details" component={PaidTourScreen} />
       <Stack.Screen name="Restaurant Details" component={RestaurantScreen} />

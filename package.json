@@ -27,10 +27,13 @@
     "expo-web-browser": "~12.0.0",
     "firebase": "^9.13.0",
     "leo-profanity": "^1.7.0",
+    "lottie-react-native": "^5.1.4",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-hook-form": "^7.42.0",
     "react-native": "0.70.5",
     "react-native-draggable-flatlist": "^4.0.0",
+    "react-native-dropdown-select-list": "^2.0.4",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-keychain": "^8.1.1",
@@ -44,6 +47,7 @@
     "react-native-uuid": "^2.0.1",
     "react-native-web": "~0.18.7",
     "react-native-webview": "11.23.1",
+    "rn-credit-card": "^1.0.4",
     "uniqid": "^5.4.0"
   },
   "devDependencies": {

@@ -5,6 +5,8 @@ import { db } from '../../../config';
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function ForumScreen ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -15,6 +17,7 @@ export default function ForumScreen ({ navigation }) {
     const [sortOrder, setSortOrder] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+    const [postButton, setPostButton] = useState(true)
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -35,6 +38,26 @@ export default function ForumScreen ({ navigation }) {
     navigation.addListener('willFocus', () => {
 
     })
+
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setPostButton(false);
+                console.log(email)
+            }
+            else {
+                console.log("No Email Selected at Login")
+                setPostbutton(true);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useFocusEffect(React.useCallback(async ()=> {
+        getEmail();
+    }, []));
 
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "forum"));
@@ -117,8 +140,8 @@ export default function ForumScreen ({ navigation }) {
         {/* Buttons */}
 
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-             <TouchableOpacity style={styles.buttonSmallWrite}
-             onPress={() => {navigation.navigate('Create Post')}}>
+             <TouchableOpacity style={[styles.buttonSmallWrite, {opacity: postButton ? 0.3 : 1}]}
+             onPress={() => {navigation.navigate('Create Post')}} disabled={postButton}>
             <Text style={styles.buttonSmallListText}>Write a post...</Text>
             
             </TouchableOpacity>

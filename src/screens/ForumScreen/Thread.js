@@ -67,7 +67,8 @@ export default function Thread({route, navigation}) {
         return (
             <TouchableHighlight
                 underlayColor="#C8c9c9"
-                onPress={() => {navigation.navigate('Edit Reply', {title : item.title, description: item.description, section: item.section, comment_id: item.comment_id})}}>
+                onPress={() => {navigation.navigate('Edit Reply', {title : item.title, description: item.description,
+                 section: item.section, comment_id: item.comment_id, addedBy: item.addedBy})}}>
                 <View style={styles.list}>
                     <Text>{item.addedBy}</Text>
                     <Text>{item.description}</Text>
@@ -111,6 +112,4 @@ export default function Thread({route, navigation}) {
                 </ScrollView>
         </View>
     )
-    
-
 }

@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, getDocs, collection, updateDoc } from "firebase/firestore";
 import { db } from '../../../config';
-import Carousel from 'react-native-reanimated-carousel';
-import * as WebBrowser from 'expo-web-browser';
-import {bookmark, itinerary} from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, Button } from 'react-native';
@@ -70,7 +65,7 @@ export default function ReviewScreen({route, navigation}) {
             renderItem={({ item }) => (
                 <TouchableHighlight 
                 underlayColor="#C8c9c9"
-                onPress={() => navigation.navigate('Review Detail Screen', {userName: item.userName, rating: item.rating, comment: item.comment, email:item.email})}>
+                onPress={() => navigation.navigate('Review Detail Screen', {name: name, review: review, index: review.indexOf(item)})}>
                 <View style={styles.list}>
                     <Text>{item.userName}</Text>
                     <Text>{item.rating}</Text>

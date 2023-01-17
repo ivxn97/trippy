@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import { doc, setDoc, getDocs, collection, updateDoc } from "firebase/firestore";
-import { db } from '../../../config';
-import Carousel from 'react-native-reanimated-carousel';
-import * as WebBrowser from 'expo-web-browser';
-import {bookmark, itinerary} from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, Button, Div } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { doc, setDoc, arrayUnion, collection, updateDoc } from "firebase/firestore";
+import { db } from '../../../config';
 
 export default function ReviewDetailScreen({route, navigation}) {
-    const {userName, rating, comment, email} = route.params;
-    const [currenUserEmail, setCurrentUserEamil] = useState('');
+    const {name, index, review} = route.params;
+    const [currentUserEmail, setCurrentUserEamil] = useState('');
+    const [userName, setUserName] = useState ('');
+    const [rating, setRating] = useState ('');
+    const [comment, setComment] = useState ('');
+    const [currReview, setCurrReview] = useState (review[index]);
 
     const getUserInfo = async () => {
         try {
@@ -32,8 +29,34 @@ export default function ReviewDetailScreen({route, navigation}) {
         
     }
 
+    const getReviewDetails = () => {
+        setUserName(currReview.userName);
+        setRating(currReview.rating);
+        setComment(currReview.comment);
+    }
+
+    const onDelete = async () => {
+        review.splice(index, 1);
+        console.log(review);
+        try {
+            await updateDoc(doc(db, "restaurants", name), {
+                review: review
+            });
+            //console.log("Document written with ID: ", docRef.id);
+            navigation.navigate('Review Screen', {name});
+        }
+        catch (e) {
+            console.log("Error adding document: ", e);
+        }
+    }
+
+    useEffect(() => {
+        getReviewDetails();
+    }, [])
+    
     getUserInfo();
-    if (email === currenUserEmail) {
+
+    if (currReview.email === currentUserEmail) {
         return(
             <View>
                 <View style={styles.desc}>
@@ -51,10 +74,10 @@ export default function ReviewDetailScreen({route, navigation}) {
                     </Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.replace('Add Review Screen')}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Edit Review', {name: name, review: review, index: index})}>
                                 <Text style={styles.buttonSmallText}>Edit</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.replace('Add Review Screen')}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() => onDelete()}>
                                 <Text style={styles.buttonSmallText}>Delete</Text>
                     </TouchableOpacity>
                 </View>

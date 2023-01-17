@@ -8,17 +8,12 @@ import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 
-const sectionPlaceholder = {
-    label: 'Forum Section',
-    value: null,
-    color: 'black',
-};
 
-export default function CreatePost ( {navigation} ) {
+export default function ActiveThreadEdit({ navigation, route }) {
+    const {title, section, description} = route.params;
     const [username, setUsername] = useState('');
-    const [title, setTitle] = useState('');
-    const [section, setSection] = useState('');
-    const [description, setDescription] = useState('');
+    const [newSection, setNewSection] = useState('');
+    const [newDescription, setNewDescription] = useState('');
     const [forumSections, setForumSections] = useState([]);
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const datetime = new Date();
@@ -42,7 +37,7 @@ export default function CreatePost ( {navigation} ) {
     const getSections = async () => {
         const querySnapshot = await getDocs(collection(db, "forum sections"));
         querySnapshot.forEach(docSnap => {
-            forumSections.push({label: docSnap.data().name, value: docSnap.data().name})
+            forumSections.push({ label: docSnap.data().name, value: docSnap.data().name })
         })
         setLoading(false)
     }
@@ -55,12 +50,11 @@ export default function CreatePost ( {navigation} ) {
         try {
             await setDoc(doc(db, "forum", title), {
                 addedBy: username,
-                title: title,
-                section: section,
-                description: description,
+                section: newSection,
+                description: newDescription,
                 datetime: datetime
             });
-            navigation.replace('Forum Page')
+            navigation.replace('Active Thread')
         }
         catch (e) {
             console.log("Error adding Post: ", e);
@@ -77,41 +71,31 @@ export default function CreatePost ( {navigation} ) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-            <Text style={styles.text}>Title:</Text>
-            <FilteredTextInput
-                style={styles.input}
-                placeholder='Title'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setTitle(Text)}
-                value={title}
-                underlineColorAndroid="transparent"
-                autoCapitalize="none"
-            />
-            <Text style={styles.text}>Forum Section:</Text>
+                <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g, "")}</Text>
+                <Text style={styles.text}>Forum Section:</Text>
                 <RNPickerSelect
                     style={pickerSelectStyles}
                     useNativeAndroidPickerStyle={false}
-                    placeholder={sectionPlaceholder}
-                    placeholderTextColor="#aaaaaa"
-                    onValueChange={(value) => setSection(value)}
+                    value= {section}
+                    onValueChange={(value) => setNewSection(value)}
                     items={forumSections}
-            />
-           <Text style={styles.text}>Description:</Text>
-            <FilteredTextInput
-                style={styles.desc}
-                placeholder='Description'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setDescription(Text)}
-                value={description}
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-                multiline
-            />
-            <TouchableOpacity
+                />
+                <Text style={styles.text}>Description:</Text>
+                <FilteredTextInput
+                    style={styles.desc}
+                    placeholder='Description'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setNewDescription(Text)}
+                    value={description}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="sentences"
+                    multiline
+                />
+                <TouchableOpacity
                     style={styles.button}
                     onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonTitle}>Create Forum Post</Text>
-            </TouchableOpacity>
+                    <Text style={styles.buttonTitle}>Edit Forum Post</Text>
+                </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>
     )
@@ -147,5 +131,5 @@ const pickerSelectStyles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         paddingLeft: 16
-      }
+    }
 })

@@ -128,7 +128,7 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                     <Text style={styles.text}>Itinerary</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ActiveThread')}
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Active Thread')}
                     title="Active Threads"
                 >
                 <Text style={styles.text}>Active Threads</Text>

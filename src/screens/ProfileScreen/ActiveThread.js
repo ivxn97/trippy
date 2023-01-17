@@ -15,17 +15,7 @@ export default function ActiveThread({ navigation }) {
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(items);
     
-  
-    
-
-
-    navigation.addListener('willFocus', () => {
-
-    })
-
-    
-
-    useEffect(async () => {
+    const getEmail = async() => {
         try {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
@@ -39,11 +29,9 @@ export default function ActiveThread({ navigation }) {
         } catch (error) {
             console.log(error)
         }
+    }
 
-        if(username == ""){
-            console.log("username is empty");
-        }
-
+    const getThreads = async() => {
         const q = query(collection(db, "forum"), where("addedBy", "==", username));
         const querySnapshot = await getDocs(q)
         querySnapshot.forEach(documentSnapshot => {
@@ -52,13 +40,22 @@ export default function ActiveThread({ navigation }) {
                 key: documentSnapshot.id,
             });
         });
-
         setItems(items);
         setLoading(false);
-    }, []);
+    }
+
+    useEffect(() => {
+        getEmail()
+        if (username) {
+            getThreads();
+        }
+    }, [username]);
 
     
-
+    if (loading) {
+        return <ActivityIndicator />;
+    }
+    
     const ItemView = ({ item }) => {
         return (
             <TouchableHighlight
@@ -71,11 +68,6 @@ export default function ActiveThread({ navigation }) {
         )
     }
 
-   
-
-    if (loading) {
-        return <ActivityIndicator />;
-    }
     const searchFilter = (text, type) => {
         if (text) {
             const newData = type.filter((item) => {

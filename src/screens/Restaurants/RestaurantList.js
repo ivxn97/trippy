@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity, Modal, TouchableHighlight, StyleSheet } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import Checkbox from 'expo-checkbox';
 import { sortFiles } from '../commonFunctions';
+import { check } from 'leo-profanity';
 
 export default function RestaurantList( {navigation}) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -17,6 +17,9 @@ export default function RestaurantList( {navigation}) {
   const [sortOrder, setSortOrder] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+  const [checkboxFilter, setCheckboxFilter] = useState([]);
 
   function openDropdown() {
     setDropdownVisible(true);
@@ -97,29 +100,39 @@ export default function RestaurantList( {navigation}) {
     }
   }
 
-  const toggleCheckbox = (filters, type) => {
-    setReducedType(prevState => {
-      return prevState.map(status => {
-        if (filters.name === status.name) {
-          if (status.isChecked == false) {
-            const newData = type.filter((item) => {
-              if(item.typeOfCuisine === filters.name) {
-                return {...item};
-              }
-            });
-            setfilteredData(newData);
-            return {...status, isChecked: true};
-          } 
-          else if (status.isChecked == true) {
-            setfilteredData(type);
-            return {...status, isChecked: false}
-          }
-        }
-        return status;
-      });
-    });
+  const toggleButton = (filters) => {
+    reducedType.map((item) => {
+      if (filters.name === item.name) {
+        item.isChecked = !item.isChecked;
+        setIsPressed(!isPressed);
+      }
+    })
+    //console.log(reducedType);
   }
 
+  const onSubmitFilter = () => {
+    setModalVisible(!modalVisible)
+    reducedType.map ((item) => {
+      const allIsFalse = reducedType.every(({ isChecked }) => !isChecked)
+      const allIsTrue = reducedType.every(({ isChecked }) => isChecked)
+      if (allIsFalse || allIsTrue) {
+        setfilteredData(restaurants);
+      } else if (item.isChecked) {
+        if(!checkboxFilter.includes(item.name)) {
+          checkboxFilter.push(item.name);
+        }
+        //
+      } else if (item.isChecked === false) {
+        if(checkboxFilter.includes(item.name)) {
+          const index = checkboxFilter.indexOf(item.name);
+          checkboxFilter.splice(index, 1);
+        }
+      }
+    })
+    
+    const newData = restaurants.filter(item => checkboxFilter.includes(item.typeOfCuisine));
+    setfilteredData(newData);
+  }
   return (
     <View>
       <TextInput
@@ -169,20 +182,11 @@ export default function RestaurantList( {navigation}) {
             keyExtractor={item => item}
           />
         )}
-          <TouchableOpacity style={styles.buttonListRight}>
+          <TouchableOpacity style={styles.buttonListRight} onPress={() => setModalVisible(!modalVisible)}>
             <Text style={styles.buttonSmallListText}>Filter</Text>
           </TouchableOpacity>
       </View>
-      <View>
-      {reducedType
-        //.filter((item) => !checked || item.checked)
-        .map((item, index) => (
-          <View style={styles.checklist} key={index}>
-              <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => toggleCheckbox(item, restaurants)} />
-              <Text>{item.name}</Text>
-          </View>
-      ))}
-      </View>
+  
     <FlatList
       data={filteredData}
       extraData={filteredData}
@@ -200,6 +204,99 @@ export default function RestaurantList( {navigation}) {
         </TouchableHighlight>
       )}
     />
+
+
+
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={modal.centeredView}>
+          <View style={modal.modalView}>
+            <Text style={modal.modalText}>Type Of Cuisine</Text>
+            <View style={modal.buttonView}>
+            {reducedType
+              //.filter((item) => !checked || item.checked)
+              .map((item, index) => (
+                <View style={styles.checklist} key={index}>
+                    <TouchableHighlight 
+                    onPress={() => toggleButton(item)}
+                    style={item.isChecked? modal.buttonPressed : modal.button}>
+                      <Text>{item.name}</Text>
+                    </TouchableHighlight>
+                </View>
+            ))}
+            </View>
+            <TouchableHighlight 
+                    onPress={() => onSubmitFilter()}
+                    style={modal.button}>
+                      <Text>Submit</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
+
+const modal = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'flex-start',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    borderColor: 'grey',
+    borderWidth: 2,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  buttonPressed: {
+    borderRadius: 20,
+    padding: 10,
+    borderColor: 'grey',
+    backgroundColor: 'lightgrey',
+    borderWidth: 2,
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  buttonView: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+});

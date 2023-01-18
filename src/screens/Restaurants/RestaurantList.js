@@ -115,9 +115,7 @@ export default function RestaurantList( {navigation}) {
     reducedType.map ((item) => {
       const allIsFalse = reducedType.every(({ isChecked }) => !isChecked)
       const allIsTrue = reducedType.every(({ isChecked }) => isChecked)
-      if (allIsFalse || allIsTrue) {
-        setfilteredData(restaurants);
-      } else if (item.isChecked) {
+      if (item.isChecked) {
         if(!checkboxFilter.includes(item.name)) {
           checkboxFilter.push(item.name);
         }
@@ -127,11 +125,15 @@ export default function RestaurantList( {navigation}) {
           const index = checkboxFilter.indexOf(item.name);
           checkboxFilter.splice(index, 1);
         }
-      }
+      } 
     })
     
-    const newData = restaurants.filter(item => checkboxFilter.includes(item.typeOfCuisine));
-    setfilteredData(newData);
+    if(checkboxFilter?.length > 0) {
+      const newData = restaurants.filter(item => checkboxFilter.includes(item.typeOfCuisine));
+      setfilteredData(newData);
+    } else {
+      setfilteredData(restaurants);
+    }
   }
   return (
     <View>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs} from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ActiveThreadEditList({ navigation }) {
     const [username, setUsername] = useState('');
@@ -17,22 +18,7 @@ export default function ActiveThreadEditList({ navigation }) {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
 
-    const getEmail = async () => {
-        try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                const [username, website] = email.split("@")
-                setUsername(username);
-            }
-            else {
-                console.log("No Email Selected at Login")
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    getEmail();
-
+    
     function openDropdown() {
         setDropdownVisible(true);
     }
@@ -54,18 +40,41 @@ export default function ActiveThreadEditList({ navigation }) {
 
     })
 
-    useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "forum"));
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                const [username, website] = email.split("@")
+                setUsername(username);
+                console.log("username is " + username)
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getThreads = async () => {
+        const q = query(collection(db, "forum"), where("addedBy", "==", username));
+        const querySnapshot = await getDocs(q)
         querySnapshot.forEach(documentSnapshot => {
             items.push({
                 ...documentSnapshot.data(),
                 key: documentSnapshot.id,
             });
         });
-
         setItems(items);
         setLoading(false);
-    }, []);
+    }
+
+    useEffect(() => {
+        getEmail()
+        if (username) {
+            getThreads();
+        }
+    }, [username]);
 
 
     async function handleSortChange(sort) {

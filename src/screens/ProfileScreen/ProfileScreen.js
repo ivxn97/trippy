@@ -1,17 +1,56 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import { View, Text, Button, TouchableOpacity, Image } from 'react-native';
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function ProfileScreen ( {navigation} ) {
+    const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
-    const [refresh, setRefresh] = useState();
+    const [items, setItems] = useState([]); 
     const auth = getAuth();
+    const [user, setUser] = useState(null);
 
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+                console.log(email)
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     
+
+    const getUser = async () => {
+        const q = query(collection(db, "users"), where("email", "==", email));
+        
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach(documentSnapshot => {
+            items.push({
+                ...documentSnapshot.data(),
+                key: documentSnapshot.id,
+            });
+        });
+        setUser(items[0]);
+    }
+
+    useEffect(() => {
+        getEmail()
+        if(email){
+            getUser()
+        }
+
+    }, [email]);
     const onSignout = () => {
         signOut(auth).then(() => {
             // Sign-out successful.
@@ -113,7 +152,12 @@ export default function ProfileScreen ( {navigation} ) {
         return (
             <View>
                 <Text style={styles.Heading}>Welcome, User!</Text>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile', {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    role: user.role,
+                    country: user.country,})}
                     title="View Profile"
                 >
                     <Text style={styles.text}>View Profile</Text>

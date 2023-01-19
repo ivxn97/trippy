@@ -1,24 +1,36 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    containerProfile: {
+        flex: 1,
+        padding: 20,
+    },
+    label: {
+        fontWeight: 'bold',
+        marginTop: 20,
+    },
+    inputProfile: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        marginTop: 10,
+    },
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    detailsContainer: {
-        color:'#dfdfdf',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
+    message: {
+        fontSize: 18,
+        marginBottom: 20,
     },
-    Heading: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        alignSelf: 'center',
-        marginTop: 7,
-        marginBottom: 7,
-        marginLeft: 8,
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    space: {
+        width: 20, // or whatever size you need
+        height: 20,
     },
     price: {
         fontSize: 24,
@@ -29,46 +41,30 @@ export default StyleSheet.create({
         marginLeft: 8,
         marginRight: 30
     },
-    buttonListRight: {
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-        borderBottomRightRadius: 25,
-        borderBottomLeftRadius: 25,
-        backgroundColor: 'white',
-        marginLeft: 2,
-        marginRight: 15,
-        marginTop: 5,
-        marginBottom:5,
-        height: 30,
-        width: 90,
-        borderRadius: 15,
-    },
-    title: {
-        fontSize: 22,
-        textAlign: 'left',
-        marginLeft: 15
-    },
-    HeadingList: {
-        fontSize: 30,
-        textAlign: 'right',
-        marginTop: 5,
-        marginBottom: 5,
-        marginLeft: 8,
-        marginRight: 30
-    },
     text: {
         borderRadius: 5,
-        color: 'black',
-        marginLeft:20,
-        fontSize:18,
-    },
-    buttonSmallListText: {
-        alignSelf:"center", 
-        marginTop:5,
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
+        paddingLeft: 16,
+        fontWeight: 'bold',
     },
     textNB: {
         borderRadius: 5,
         paddingLeft: 16,
+    },
+    carouselStyle: {
+        width: 410,
+        height: 250,
+        alignSelf: "center"
+    },
+    Heading: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
     },
     list: {
         borderTopLeftRadius: 15,
@@ -120,15 +116,46 @@ export default StyleSheet.create({
         marginRight: 20,
         paddingLeft: 16
     },
-    button: {
+    inputSearch: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         borderBottomRightRadius: 15,
         borderBottomLeftRadius: 15,
-        backgroundColor: '#acacab',
+        height: 38,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
         marginLeft: 20,
         marginRight: 20,
+        paddingLeft: 16
+    },
+    desc: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 120,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
         marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    button: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: '#8f8f8f',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 20,
+        marginBottom: 20,
         height: 48,
         borderRadius: 5,
         alignItems: "center",
@@ -147,6 +174,38 @@ export default StyleSheet.create({
         height: 30,
         width: 120,
         borderRadius: 15,
+    },
+    buttonListLeft: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: 'white',
+        marginLeft: 2,
+        marginRight: 3,
+        marginTop: 5,
+        marginBottom:5,
+        height: 30,
+        width: 90,
+        borderRadius: 15,
+    },
+    buttonListRight: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: 'white',
+        marginLeft: 2,
+        marginRight: 15,
+        marginTop: 5,
+        marginBottom:5,
+        height: 30,
+        width: 90,
+        borderRadius: 15,
+    },
+    buttonSmallListText: {
+        alignSelf:"center", 
+        marginTop:5,
     },
     buttonSmallText: {
         alignSelf:"center", 
@@ -197,27 +256,5 @@ export default StyleSheet.create({
         marginLeft: 30,
         marginRight: 8,
         paddingLeft: 16
-    },
-    imagePlaceholder: {
-        flex: 1,
-        height: 350,
-        width: 385,
-        margin: 0,
-        marginLeft:14
-    },
-    inputSearch: {
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
-        height: 38,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        paddingLeft: 16
-    },
+    }
 })

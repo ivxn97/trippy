@@ -6,7 +6,6 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationHelpersContext } from '@react-navigation/native';
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('');
@@ -14,11 +13,16 @@ export default function LoginScreen({navigation}) {
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const [businesses, setBusinesses] = useState('');
+    const [status, setStatus] = useState('');
     const auth = getAuth();
     const didMount = useRef(false);
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration Selector')
+    }
+
+    const onPasswordResetPress = () => {
+        navigation.navigate('Reset Password')
     }
 
     async function getLogin (email) {
@@ -98,6 +102,8 @@ export default function LoginScreen({navigation}) {
                 const roleData = docSnap.data().role
                 const businessData = docSnap.data().businessesTypes
                 const fullName = docSnap.data().firstName + ' ' + docSnap.data().lastName;
+                const status = docSnap.data().status;
+                setStatus(status);
                 setUserName(fullName);
                 setRole(roleData);
                 setBusinesses(businessData);
@@ -107,13 +113,13 @@ export default function LoginScreen({navigation}) {
             }})
             //.then(storeEmail(user.email)).then(storeRole(role))
 
-            console.log('Logged in with: ', user.email, "role:" , role);
             //navigation.navigate('Profile Page');
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert(errorCode + ': ' + errorMessage)
+            console.log('Error Code: ', errorCode, 'Error Message: ', errorMessage)
+            alert('Wrong username or password entered')
         })
     }
 
@@ -122,24 +128,72 @@ export default function LoginScreen({navigation}) {
             return() => { didMount.current = true;}
           }
 
-        storeEmail(email);
-        storeRole(role);
-        storeBusinesses(businesses);
-        storeUserName(userName);
-
         if (role == "Admin") {
-            //navigation.navigate('Admin Stack');
-            navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
+            if (status == "Pending") {
+                alert("Your registration has not yet been approved.")
+            }
+            else if (status == "Awaiting") {
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+            }
+            else if (status == "Approved") {
+                storeEmail(email);
+                storeRole(role);
+                storeBusinesses(businesses);
+                storeUserName(userName);
+                navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
+            }
+            else if (status == "Suspended") {
+                alert("Your account has been suspended.")
+            }
         }
         else if (role == "Business Owner") {
-            console.log("email", email, "businesses", businesses)
-            navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
+            if (status == "Pending") {
+                alert("Your registration has not yet been approved.")
+            }
+            else if (status == "Awaiting") {
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+            }
+            else if (status == "Approved") {
+                storeEmail(email);
+                storeRole(role);
+                storeBusinesses(businesses);
+                storeUserName(userName);
+                navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
+            }
+            else if (status == "Suspended") {
+                alert("Your account has been suspended.")
+            }
         }
         else if (role == "Registered User") {
-            navigation.navigate('Profile Page');
+            if (status == "Awaiting") {
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+            }
+            else if (status == "Approved") {
+                storeEmail(email);
+                storeRole(role);
+                storeUserName(userName);
+                navigation.navigate('Profile Page');
+            }
+            else if (status == "Suspended") {
+                alert("Your account has been suspended.")
+            }
         }
         else if (role == "LOL") {
-            navigation.navigate('Profile Page');
+            if (status == "Pending") {
+                alert("Your registration has not yet been approved.")
+            }
+            else if (status == "Awaiting") {
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+            }
+            else if (status == "Approved") {
+                storeEmail(email);
+                storeRole(role);
+                storeUserName(userName);
+                navigation.navigate('Profile Page');
+            }
+            else if (status == "Suspended") {
+                alert("Your account has been suspended.")
+            }
         }
         else {
             alert("Account does not exist");
@@ -181,6 +235,7 @@ export default function LoginScreen({navigation}) {
                 </TouchableOpacity>
                 <View style={styles.footerView}>
                     <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+                    <Text onPress={onPasswordResetPress} style={styles.footerLink}>Reset Password</Text>
                 </View>
             </KeyboardAwareScrollView>
         </View>

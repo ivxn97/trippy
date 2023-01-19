@@ -78,11 +78,6 @@ export default function PageContent ( {navigation, route} ) {
         
     };
 
-
-  
-
-   
-
     const getRestaurants = async () => {
         const collectionRef = collection(db, "restaurants")
         const q = query(collectionRef, where('name', 'in', itineraryArr));

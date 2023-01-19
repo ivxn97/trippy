@@ -31,7 +31,8 @@ export default function AdminViewUser ({route, navigation}) {
                 const docRef = setDoc(doc(db, "users", email), {
                     role: newRole
                 }, { merge:true });
-                navigation.navigate('List Of Users')
+                alert(`Role changed to ${newRole}`)
+                navigation.navigate('List Of Accounts')
             }
             catch (e) {
                 console.log("Error updating document: ", e);
@@ -43,7 +44,8 @@ export default function AdminViewUser ({route, navigation}) {
                 const docRef = setDoc(doc(db, "users", email), {
                     status: newStatus
                 }, { merge:true });
-                navigation.navigate('List Of Users')
+                alert(`Account status changed to ${newStatus}`)
+                navigation.navigate('List Of Accounts')
             }
             catch (e) {
                 console.log("Error updating document: ", e);
@@ -52,7 +54,8 @@ export default function AdminViewUser ({route, navigation}) {
     
         const onDeletePress = ()  => {
             deleteDoc(doc(db, "users", email));
-            navigation.navigate('List Of Users')
+            alert(`Account deleted`)
+            navigation.navigate('List Of Accounts')
         }
     
         return (
@@ -85,6 +88,7 @@ export default function AdminViewUser ({route, navigation}) {
                 onValueChange={(value) => setStatus(value)}
                 items = {[
                     {label:'Approved', value:'Approved'},
+                    {label:'Awaiting', value:'Awaiting'},
                     {label:'Pending', value:'Pending'},
                     {label:'Suspended', value:'Suspended'},
                 ]}

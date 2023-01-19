@@ -18,7 +18,8 @@ import {
   EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection,
   EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
       CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
-      ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview
+      ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, OTPScreen,
+      ResetPassword, ReviewPendingAccounts, ReviewAccount
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -41,6 +42,8 @@ function ProfileStackScreen() {
       <Stack.Screen name="Add Paid Tour" component={AddPaidTour} />
       <Stack.Screen name="Add Restaurant" component={AddRestaurant} />
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="OTP Screen" component={OTPScreen} />
+      <Stack.Screen name="Reset Password" component={ResetPassword} />
       <Stack.Screen name="Registration Selector" component={RegistrationSelector} />
       <Stack.Screen name="Register User" component={RegistrationRegisteredUser} />
       <Stack.Screen name="Register LOL" component={RegistrationLOL} />
@@ -141,11 +144,13 @@ function AdminStackScreen() {
       <Stack.Screen name="Admin View Account" component={AdminViewUser} />
       <Stack.Screen name="Manage Forum Sections" component={ManageForumSections} />
       <Stack.Screen name="Forum Sections Edit List" component={ForumSectionsEditList} />
+      <Stack.Screen name="Review Pending Accounts" component={ReviewPendingAccounts} />
       <Stack.Screen name="Add Forum Section" component={AddForumSection} />
       <Stack.Screen name="Edit Forum Section" component={EditForumSection} />
       <Stack.Screen name="Create Post" component={CreatePost} />
       <Stack.Screen name="Page Content" component={PageContent} />
       <Stack.Screen name="Page Content Choice" component={PageContentChoice} />
+      <Stack.Screen name="Review Account" component={ReviewAccount} />
     </AdminStack.Navigator>
   )
 }

@@ -20,6 +20,7 @@ export default function RegistrationLOL({navigation}) {
     const [socialMediaHandle, setSocialMediaHandle] = useState('')
     const [socialMediaPlatformData, setSelectedData] = useState()
     const [loading, setLoading] = useState(true)
+    const [image, setImage] = useState(null);
     // Implement password length check, minimum length of 6
 
     const getData = async () => {
@@ -98,7 +99,7 @@ export default function RegistrationLOL({navigation}) {
                     socialMediaPlatform: socialMediaPlatform,
                     socialMediaHandle: socialMediaHandle
                 });
-                //console.log("Document written with ID: ", docRef.id);
+                alert("Your registration request has been received and is awaiting approval.")
                 navigation.navigate('Profile Page', {user: auth})
             }
             catch (e) {

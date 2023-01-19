@@ -76,7 +76,7 @@ export default function RegistrationBO({navigation}) {
                     role: 'Business Owner',
                     UEN: UEN
                 });
-                //console.log("Document written with ID: ", docRef.id);
+                alert("Your registration request has been received and is awaiting approval.")
                 navigation.navigate('Profile Page', {user: auth})
             }
             catch (e) {

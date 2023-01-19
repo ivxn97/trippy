@@ -1,4 +1,7 @@
+//Login Screen
 export { default as LoginScreen } from './LoginScreen/LoginScreen'
+export {default as OTPScreen} from './LoginScreen/OTPScreen'
+export {default as ResetPassword} from './LoginScreen/ResetPassword'
 export { default as HomeScreen } from './HomeScreen/HomeScreen'
 
 export { default as RegistrationRegisteredUser } from './RegistrationScreen/RegistrationRegisteredUser'
@@ -15,10 +18,6 @@ export {default as DealsScreen} from './DealsScreen/DealsScreen'
 export {default as DealsList} from './DealsScreen/DealsList'
 export {default as AddDeal} from './DealsScreen/AddDeal'
 export { default as DeleteDeal } from './DealsScreen/DeleteDeal'
-
-export {default as AdminScreen} from './AdminScreen/AdminScreen'
-export {default as ListOfUsers} from './AdminScreen/ListOfUsers'
-export {default as AdminViewUser} from './AdminScreen/AdminViewUser'
 
 export {default as AttractionList} from './Attractions/AttractionList'
 export {default as AttractionView} from './Attractions/AttractionView'
@@ -73,21 +72,30 @@ export { default as PageContentChoice } from './ProfileScreen/PageContentChoice'
 export {default as Details} from './HomeScreen/Details'
 export {default as Booking} from './HomeScreen/Booking'
 
-export {default as ForumScreen} from './ForumScreen/ForumScreen'
-export {default as CreatePost} from './ForumScreen/CreatePost'
-export {default as ForumSections} from './ForumScreen/ForumSections'
-export {default as Section} from './ForumScreen/Section'
-
 export {default as ManageForumSections} from './ForumScreen/ManageForumSections'
-export {default as AddForumSection} from './AdminScreen/AddForumSection'
-export {default as EditForumSection} from './AdminScreen/EditForumSection'
 export {default as ForumSectionsEditList} from './ForumScreen/ForumSectionsEditList'
 
+// Review Screens
 export {default as ReviewScreen} from './ReviewScreen/ReviewScreen'
 export {default as AddReviewScreen} from './ReviewScreen/AddReviewScreen'
 export {default as ReviewDetailScreen} from './ReviewScreen/ReviewDetailScreen'
 export {default as EditReview} from './ReviewScreen/EditReview'
 
+
+// Forum Screens
+export {default as ForumScreen} from './ForumScreen/ForumScreen'
+export {default as CreatePost} from './ForumScreen/CreatePost'
+export {default as ForumSections} from './ForumScreen/ForumSections'
+export {default as Section} from './ForumScreen/Section'
 export {default as Thread} from './ForumScreen/Thread'
 export {default as CreateReply} from './ForumScreen/CreateReply'
 export {default as EditReply} from './ForumScreen/EditReply'
+
+//Admin Screens
+export {default as AdminScreen} from './AdminScreen/AdminScreen'
+export {default as ListOfUsers} from './AdminScreen/ListOfUsers'
+export {default as AdminViewUser} from './AdminScreen/AdminViewUser'
+export {default as AddForumSection} from './AdminScreen/AddForumSection'
+export {default as EditForumSection} from './AdminScreen/EditForumSection'
+export {default as ReviewPendingAccounts} from './AdminScreen/ReviewPendingAccounts'
+export {default as ReviewAccount} from './AdminScreen/ReviewAccount'

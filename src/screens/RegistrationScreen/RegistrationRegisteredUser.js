@@ -4,10 +4,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { doc, setDoc, getDoc, DocumentSnapshot } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
-import { db } from '../../../config';
+import { db, serviceID, OTPID, publicKey } from '../../../config';
 import { render } from 'react-dom';
 import RNPickerSelect from 'react-native-picker-select';
 import Checkbox from 'expo-checkbox';
+import emailjs from '@emailjs/browser';
 
 export default function RegistrationRegisteredUser({navigation}) {
     const [firstName, setFirstName] = useState('')
@@ -132,6 +133,38 @@ export default function RegistrationRegisteredUser({navigation}) {
     }
     console.log(languageData);
     
+    const generateOTP = async () => {
+        const digits = '0123456789';
+        let OTP = '';
+        for (let i = 0; i < 4; i++) {
+          OTP += digits[Math.floor(Math.random() * 10)];
+        }
+        console.log(OTP)
+
+        try {
+            await setDoc(doc(db, "OTP", email), {
+                email: email,
+                OTP: OTP, 
+                type: 'logging in'
+            }, {merge:true})
+        }
+        catch (e) {
+            console.log(e)
+        }
+
+        let templateParams = {
+            to_email: `${email}`,
+            OTP: `${OTP}`
+        }
+        emailjs.send(serviceID, OTPID, templateParams, publicKey).then(
+            function (response) {
+                console.log('SUCCESS!', response.status, response.text);
+            },
+            function (error) {
+                console.log('FAILED...', error);
+            }
+        )
+    };
 
     const onRegisterPress = () => {
         const auth = getAuth();
@@ -139,8 +172,9 @@ export default function RegistrationRegisteredUser({navigation}) {
         .then(async (userCredential) => {
             try {
                 const uid = userCredential.user.uid
+                generateOTP();
                 const docRef = await setDoc(doc(db, "users", email), {
-                    status: 'Approved',
+                    status: 'Awaiting',
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
@@ -151,7 +185,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     interests: docTypeData,
                     languages: languageData
                 });
-                //console.log("Document written with ID: ", docRef.id);
+                alert("Account created! Check your email for your One-Time-Password.")
                 navigation.navigate('Login')
             }
             catch (e) {

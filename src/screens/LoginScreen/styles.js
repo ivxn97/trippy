@@ -62,5 +62,25 @@ export default StyleSheet.create({
         color: "#145da0",
         fontWeight: "bold",
         fontSize: 16
-    }
+    },
+    borderStyleBase: {
+        width: 30,
+        height: 45
+      },
+    
+      borderStyleHighLighted: {
+        borderColor: "black",
+      },
+    
+      underlineStyleBase: {
+        width: 30,
+        height: 45,
+        borderWidth:1,
+        color: 'black',
+        borderColor:"grey"
+      },
+    
+      underlineStyleHighLighted: {
+        borderColor: "black",
+      },
 })

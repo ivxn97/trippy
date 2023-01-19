@@ -18,7 +18,7 @@ import {
   EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection,
   EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
       CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
-      ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview
+      ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -64,6 +64,8 @@ function ProfileStackScreen() {
       <Stack.Screen name="Edit Thread" component={ActiveThreadEdit} />
       <Stack.Screen name="Edit Thread List" component={ActiveThreadEditList} />
       <Stack.Screen name="Delete Thread" component={ActiveThreadDelete} />
+      <Stack.Screen name="Profile" component={ProfilePage} />
+
     </ProfileStack.Navigator>
   )
 }

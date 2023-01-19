@@ -69,6 +69,7 @@ export { default as ActiveThreadEdit } from './ProfileScreen/ActiveThreadEdit'
 export { default as ActiveThreadDelete } from './ProfileScreen/ActiveThreadDelete'
 export { default as PageContent } from './ProfileScreen/PageContent'
 export { default as PageContentChoice } from './ProfileScreen/PageContentChoice'
+export { default as ProfilePage } from './ProfileScreen/ProfilePage'
 
 export {default as Details} from './HomeScreen/Details'
 export {default as Booking} from './HomeScreen/Booking'

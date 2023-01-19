@@ -5,9 +5,34 @@ import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import RNPickerSelect from 'react-native-picker-select';
 import styles from './styles';
 import { db } from '../../../config';
+import * as WebBrowser from 'expo-web-browser';
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 
 export default function AdminViewUser ({route, navigation}) {
     const {email, UEN, firstName, lastName, role, id, status, socialMediaHandle, socialMediaPlatform} = route.params;
+    const [screenshot, setScreenshot] = useState();
+    const storage = getStorage();
+
+    const getScreenshot = () => {
+        const listRef = ref(storage, `RegistrationLOL/${email}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then(async (results) => {
+            const fetchedScreenshot = results[0];
+            const processedURL = fetchedScreenshot.toString()
+            console.log(fetchedScreenshot);
+            console.log(processedURL)
+            setScreenshot(fetchedScreenshot)
+            await WebBrowser.openBrowserAsync(processedURL);
+        });
+    }
 
     function AllView () {
         const [newRole, setRole] = useState('')
@@ -149,6 +174,9 @@ export default function AdminViewUser ({route, navigation}) {
                 <Text style={styles.text}>Social Media Handle: {JSON.stringify(socialMediaHandle)}</Text>
                 <Text style={styles.text}>Social Media Platform: {JSON.stringify(socialMediaPlatform)}</Text>
                 <Text style={styles.text}>Status: {JSON.stringify(status)}</Text>
+                <TouchableOpacity style={styles.button} onPress={()=> getScreenshot()}>
+                    <Text style={styles.buttonTitle}>View follower count screenshot</Text>
+                </TouchableOpacity>
                 <Text>{"\n"}</Text>
                 <AllView/>
             </View>

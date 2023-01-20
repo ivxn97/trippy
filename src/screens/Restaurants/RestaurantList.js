@@ -12,7 +12,6 @@ export default function RestaurantList( {navigation}) {
   const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(restaurants);
-  const [reducedType, setReducedType] = useState();
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -20,6 +19,8 @@ export default function RestaurantList( {navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [checkboxFilter, setCheckboxFilter] = useState([]);
+  const [typesOfCuisineFilter, setTypesOfCuisineFilter] = useState();
+  const [typesOfPriceFilter, setTypesOfPriceFilter] = useState();
 
   function openDropdown() {
     setDropdownVisible(true);
@@ -51,18 +52,28 @@ export default function RestaurantList( {navigation}) {
         });
         console.log(restaurants);
 
-        const typesOf = restaurants.map(item => ({
+        const allTypeOfCuisine = restaurants.map(item => ({
           name: item.typeOfCuisine,
           isChecked: false
       }))
+
+      const allTypeOfPrice = restaurants.map(item => ({
+        name: item.price,
+        isChecked: false,
+      }))
     
-      const reducedTypes = typesOf.filter((item, index) => {
-        return typesOf.findIndex((otherItem) => otherItem.name === item.name) === index;
+      const reducedTOC = allTypeOfCuisine.filter((item, index) => {
+        return allTypeOfCuisine.findIndex((otherItem) => otherItem.name === item.name) === index;
       });
+
+      const reducedPrice = allTypeOfPrice.filter((item, index) => {
+        return allTypeOfPrice.findIndex((otherItem) => otherItem.name === item.name) === index;
+      })
 
         setRestaurants(restaurants);
         setfilteredData(filteredData);
-        setReducedType(reducedTypes);
+        setTypesOfCuisineFilter(reducedTOC);
+        setTypesOfPriceFilter(reducedPrice);
         setLoading(false);
       },[]);
       
@@ -100,36 +111,79 @@ export default function RestaurantList( {navigation}) {
     }
   }
 
+  const onPressFilter =() => {
+    const allCuisineIsTrue = typesOfCuisineFilter.every(({ isChecked }) => isChecked)
+    const allPriceIsTrue = typesOfPriceFilter.every(({ isChecked }) => isChecked)
+    if (allCuisineIsTrue) {typesOfCuisineFilter.map(item => item.isChecked = false)}
+    if (allPriceIsTrue) {typesOfPriceFilter.map(item => item.isChecked = false)}
+    setIsPressed(!isPressed);
+    setModalVisible(!modalVisible)
+  }
+
   const toggleButton = (filters) => {
-    reducedType.map((item) => {
+    typesOfCuisineFilter.map((item) => {
       if (filters.name === item.name) {
         item.isChecked = !item.isChecked;
         setIsPressed(!isPressed);
       }
     })
-    //console.log(reducedType);
+    typesOfPriceFilter.map((item) => {
+      if (filters.name === item.name) {
+        item.isChecked = !item.isChecked;
+        setIsPressed(!isPressed);
+      }
+    })
+    console.log(isPressed);
   }
 
   const onSubmitFilter = () => {
     setModalVisible(!modalVisible)
-    reducedType.map ((item) => {
-      const allIsFalse = reducedType.every(({ isChecked }) => !isChecked)
-      const allIsTrue = reducedType.every(({ isChecked }) => isChecked)
-      if (item.isChecked) {
-        if(!checkboxFilter.includes(item.name)) {
-          checkboxFilter.push(item.name);
-        }
-        //
-      } else if (item.isChecked === false) {
-        if(checkboxFilter.includes(item.name)) {
-          const index = checkboxFilter.indexOf(item.name);
-          checkboxFilter.splice(index, 1);
-        }
-      } 
-    })
+    const allCuisineIsFalse = typesOfCuisineFilter.every(({ isChecked }) => !isChecked)
+    const allPriceIsFalse = typesOfPriceFilter.every(({ isChecked }) => !isChecked)
     
+    if (allCuisineIsFalse) {
+      typesOfCuisineFilter.map(item => item.isChecked = true);
+    }
+
+    if (allPriceIsFalse) {
+      typesOfPriceFilter.map(item => item.isChecked = true);
+    }
+
+      typesOfCuisineFilter.map ((item) => {
+        const allIsTrue = typesOfCuisineFilter.every(({ isChecked }) => isChecked)
+        if (item.isChecked) {
+          if(!checkboxFilter.includes(item.name)) {
+            checkboxFilter.push(item.name);
+          }
+          //
+        } else if (item.isChecked === false) {
+          if(checkboxFilter.includes(item.name)) {
+            const index = checkboxFilter.indexOf(item.name);
+            checkboxFilter.splice(index, 1);
+          }
+        } 
+      })
+
+    
+      typesOfPriceFilter.map ((item) => {
+        const allIsTrue = typesOfCuisineFilter.every(({ isChecked }) => isChecked)
+        if (item.isChecked) {
+          if(!checkboxFilter.includes(item.name)) {
+            checkboxFilter.push(item.name);
+          }
+          //
+        } else if (item.isChecked === false) {
+          if(checkboxFilter.includes(item.name)) {
+            const index = checkboxFilter.indexOf(item.name);
+            checkboxFilter.splice(index, 1);
+          }
+        } 
+      })
+    console.log(checkboxFilter);
+    
+
     if(checkboxFilter?.length > 0) {
-      const newData = restaurants.filter(item => checkboxFilter.includes(item.typeOfCuisine));
+      const newData = restaurants.filter(item => checkboxFilter.includes(item.price) && checkboxFilter.includes(item.typeOfCuisine));
       setfilteredData(newData);
     } else {
       setfilteredData(restaurants);
@@ -184,7 +238,7 @@ export default function RestaurantList( {navigation}) {
             keyExtractor={item => item}
           />
         )}
-          <TouchableOpacity style={styles.buttonListRight} onPress={() => setModalVisible(!modalVisible)}>
+          <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressFilter()}>
             <Text style={styles.buttonSmallListText}>Filter</Text>
           </TouchableOpacity>
       </View>
@@ -223,7 +277,22 @@ export default function RestaurantList( {navigation}) {
           <View style={modal.modalView}>
             <Text style={modal.modalText}>Type Of Cuisine</Text>
             <View style={modal.buttonView}>
-            {reducedType
+            {typesOfCuisineFilter
+              //.filter((item) => !checked || item.checked)
+              .map((item, index) => (
+                <View style={styles.checklist} key={index}>
+                    <TouchableHighlight 
+                    onPress={() => toggleButton(item)}
+                    style={item.isChecked? modal.buttonPressed : modal.button}>
+                      <Text>{item.name}</Text>
+                    </TouchableHighlight>
+                </View>
+            ))}
+            </View>
+
+            <Text style={modal.modalText}>Price</Text>
+            <View style={modal.buttonView}>
+            {typesOfPriceFilter
               //.filter((item) => !checked || item.checked)
               .map((item, index) => (
                 <View style={styles.checklist} key={index}>

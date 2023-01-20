@@ -89,10 +89,9 @@ export default function GuideWTList ({ navigation }) {
                 Alert.alert('Alert', 'No Expired Guides', [
                     {
                     text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
                     style: 'cancel',
                     },
-                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    {text: 'OK'},
                 ]);
             } else {
                 const newData = filteredData.filter(item => item.expired === true);

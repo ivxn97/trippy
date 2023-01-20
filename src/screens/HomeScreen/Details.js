@@ -199,7 +199,7 @@ Download the App here: URL`})
             <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
             <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
-            <Text style={styles.price}>${JSON.stringify(price).replace(/"/g, "")}</Text>
+            <Text style={styles.price}>{JSON.stringify(price).replace(/"/g, "")}</Text>
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> getMenu()}>
                         <Text style={styles.buttonSmallText}>Menu</Text>

@@ -207,7 +207,7 @@ export default function ProfileScreen ( {navigation} ) {
                 <ScrollView>
                 <Text style={styles.Heading}>Join Us Today!</Text>
                 <Image
-                style={styles.imagePlaceholder}
+                style={styles.imageBanner}
                 source={require('../../../assets/RegistrationBanner.png')}
                 />
                 <TouchableOpacity style={styles.button}

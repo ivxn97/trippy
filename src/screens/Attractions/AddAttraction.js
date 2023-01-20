@@ -4,11 +4,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from '../../../config';
+import { db, mapSearch } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 //Placeholders for SELECT lists
 const typePlaceholder = {
@@ -59,6 +60,11 @@ export default function AddAttraction ( { navigation }) {
     const [languageData, setLanguageData] = useState();
     const [attractionTypeData, setAttractionTypeData] = useState();
     const [ageGroupData, setAgeGroupData] = useState();
+    const [address, setAddress] = useState();
+    const [mapURL, setMapURL] = useState();
+    const [latitude, setLat] = useState();
+    const [longitude, setLong] = useState();
+    const [capacity, setCapacity] = useState();
     const [loading, setLoading] = useState(true)
 
     const getEmail = async () => {
@@ -153,7 +159,11 @@ export default function AddAttraction ( { navigation }) {
                     groupSize: groupSize,
                     openingTime: openingHour + ':' + openingMinute,
                     closingTime: closingHour + ':' + closingMinute,
-                    location: '',
+                    capacity: capacity,
+                    location: address,
+                    longitude: longitude,
+                    latitude: latitude,
+                    mapURL: mapURL,
                     description: description,
                     language: language,
                     TNC: TNC,
@@ -227,6 +237,17 @@ export default function AddAttraction ( { navigation }) {
                 value={groupSize}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
+                keyboardType="numeric"
+            />
+            <Text style={styles.text}>Capacity:</Text>
+            <TextInput
+                style={styles.input}
+                placeholder='Enter Capacity Per 30 minutes interval'
+                placeholderTextColor="#aaaaaa"
+                onChangeText={(Text) => setCapacity(Text)}
+                value={capacity}
+                underlineColorAndroid="transparent"
+                autoCapitalize="sentences"
                 keyboardType="numeric"
             />
             <Text style={styles.text}>Opening Hours:</Text>
@@ -345,15 +366,24 @@ export default function AddAttraction ( { navigation }) {
                 multiline
             />
             <Text style={styles.text}>Location:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder='Enter Location Name'
-                placeholderTextColor="#aaaaaa"
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-            />
-            {/* insert google maps API and mapview here
-            https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
+            <GooglePlacesAutocomplete 
+                placeholder='Enter Location'
+                fetchDetails
+                GooglePlacesDetailsQuery={{fields: 'geometry,url'}}
+                onPress={(data, details = null) => {
+                    console.log('Data address:', data.description,'Location Details: ', details)
+                    const lat = details.geometry.location.lat
+                    const long = details.geometry.location.lng
+                    const mapURL = details.url
+                    const address = data.description
+                    setLat(lat);
+                    setLong(long);
+                    setMapURL(mapURL);
+                    setAddress(address);
+                }}
+                query={mapSearch}
+                styles={{textInput:styles.input}}/>
+
             <Text style={styles.text}>Terms & Conditions:</Text>
             <FilteredTextInput
                 style={styles.desc}

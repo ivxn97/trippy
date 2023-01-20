@@ -101,6 +101,13 @@ export default StyleSheet.create({
         width: 400,
         alignSelf: "center"
     },
+    imageBanner: {
+        flex: 1,
+        height: 350,
+        width: 385,
+        margin: 0,
+        marginLeft:14
+    },
     input: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,

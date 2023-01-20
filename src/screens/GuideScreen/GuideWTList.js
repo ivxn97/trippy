@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -15,6 +15,7 @@ export default function GuideWTList ({ navigation }) {
     const [sortOrder, setSortOrder] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+    const [isPressed, setIsPressed] = useState (false);
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -79,6 +80,29 @@ export default function GuideWTList ({ navigation }) {
         }
     }
 
+    const onPressExpired = () => {
+        setIsPressed(!isPressed)
+        const pressed = !isPressed
+        const allIsFalse = filteredData.every(({ expired }) => !expired)
+        if (pressed) {
+            if(allIsFalse){
+                Alert.alert('Alert', 'No Expired Guides', [
+                    {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                    },
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ]);
+            } else {
+                const newData = filteredData.filter(item => item.expired === true);
+                setfilteredData(newData);
+            }
+        } else {
+            setfilteredData(guides);
+        }
+    }
+
     if (loading) {
         return <ActivityIndicator />;
     }
@@ -138,7 +162,9 @@ export default function GuideWTList ({ navigation }) {
             <TouchableOpacity style={styles.buttonSmall}>
             <Text style={styles.buttonSmallListText}>Filter</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonSmall}>
+            <TouchableOpacity 
+            style={styles.buttonSmall}
+            onPress={() => onPressExpired()}>
             <Text style={styles.buttonSmallListText}>View Expired</Text>
             </TouchableOpacity>
         </View>

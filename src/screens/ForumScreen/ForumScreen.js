@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
-import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
 
-export default function ForumScreen ({ navigation }) {
+export default function ForumSections ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [forum, setForum] = useState([]); // Initial empty array of hotels
     const [search, setSearch] = useState('');
@@ -17,7 +15,6 @@ export default function ForumScreen ({ navigation }) {
     const [sortOrder, setSortOrder] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
-    const [postButton, setPostButton] = useState(true)
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -39,28 +36,8 @@ export default function ForumScreen ({ navigation }) {
 
     })
 
-    const getEmail = async () => {
-        try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                setPostButton(false);
-                console.log(email)
-            }
-            else {
-                console.log("No Email Selected at Login")
-                setPostbutton(true);
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useFocusEffect(React.useCallback(async ()=> {
-        getEmail();
-    }, []));
-
     useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "forum"));
+        const querySnapshot = await getDocs(collection(db, "forum sections"));
         querySnapshot.forEach(documentSnapshot => {
             forum.push({
                 ...documentSnapshot.data(),
@@ -90,13 +67,13 @@ export default function ForumScreen ({ navigation }) {
 
        const ItemView = ({item}) => {
         return (
-            <TouchableHighlight
+            <TouchableOpacity
                 underlayColor="#C8c9c9"
-                onPress={() => {navigation.navigate('Thread', {title : item.title, description: item.description, section: item.section})}}>
+                onPress={() => navigation.navigate('Section', {sectionName: item.name})}>
                 <View style={styles.list}>
-                <Text>{item.title}</Text>
+                <Text>{item.name}</Text>
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
        }
 
@@ -120,10 +97,7 @@ export default function ForumScreen ({ navigation }) {
 
     return (
         <View>
-        <ScrollView>
-        <Text style={styles.HeadingList}>TripAid</Text>
         <Text style={styles.HeadingList}>Forum</Text>
-
 
         {/* Search Bar */}
 
@@ -135,16 +109,10 @@ export default function ForumScreen ({ navigation }) {
             onChangeText={(text) => searchFilter(text)}              
         />
 
+                {/* Buttons */}
 
+                <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
 
-        {/* Buttons */}
-
-        <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-             <TouchableOpacity style={[styles.buttonSmallWrite, {opacity: postButton ? 0.3 : 1}]}
-             onPress={() => {navigation.navigate('Create Post')}} disabled={postButton}>
-            <Text style={styles.buttonSmallListText}>Write a post...</Text>
-            
-            </TouchableOpacity>
                 {!sortBy && (
                     <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
                         <Text style={styles.buttonSmallListText}>Sort</Text>
@@ -182,19 +150,15 @@ export default function ForumScreen ({ navigation }) {
                         keyExtractor={item => item}
                     />
                 )}
-            <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Forum Sections')}>
-            <Text style={styles.buttonSmallListText}>Browse Sections</Text>
-            </TouchableOpacity>
         </View>
 
-
         {/* FlatList */}
+    
         <FlatList
             data={filteredData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={ItemView}
-        />
-        </ScrollView>
+    />
         </View>
     )
 }

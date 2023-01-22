@@ -12,6 +12,7 @@ export {default as RegistrationSelector} from './RegistrationScreen/Registration
 export {default as GuideWTList} from './GuideScreen/GuideWTList'
 export {default as AddGuide} from './GuideScreen/AddGuide'
 export {default as GuideScreen} from './GuideScreen/GuideScreen'
+export {default as GuideSection} from './GuideScreen/GuideSection'
 
 export {default as ProfileScreen} from './ProfileScreen/ProfileScreen'
 export {default as DealsScreen} from './DealsScreen/DealsScreen'

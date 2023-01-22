@@ -38,7 +38,7 @@ export default function GuideWTList ({ navigation }) {
     })
 
     useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "guides"));
+        const querySnapshot = await getDocs(collection(db, "guide sections"));
         querySnapshot.forEach(documentSnapshot => {
             guides.push({
                 ...documentSnapshot.data(),
@@ -101,6 +101,18 @@ export default function GuideWTList ({ navigation }) {
             setfilteredData(guides);
         }
     }
+    
+    const ItemView = ({item}) => {
+        return (
+            <TouchableOpacity
+                underlayColor="#C8c9c9"
+                onPress={() => navigation.navigate('Guide Section', {sectionName: item.name})}>
+                <View style={styles.list}>
+                <Text>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+       }
 
     if (loading) {
         return <ActivityIndicator />;
@@ -111,6 +123,8 @@ export default function GuideWTList ({ navigation }) {
         <Text style={styles.HeadingList}>Guides</Text>
         <Text style={styles.HeadingList}>And</Text>
         <Text style={styles.HeadingList}>Walking Tours</Text>
+
+        {/* Searchbar */}
         <TextInput
             style={styles.inputSearch}
             placeholder='search'
@@ -120,6 +134,8 @@ export default function GuideWTList ({ navigation }) {
             value={search}
             onChangeText={(text) => searchFilter(text, guides)}
         />
+
+        {/* Buttons */}
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 {!sortBy && (
                     <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
@@ -167,20 +183,12 @@ export default function GuideWTList ({ navigation }) {
             <Text style={styles.buttonSmallListText}>View Expired</Text>
             </TouchableOpacity>
         </View>
+        
+        {/* Flatlist */}
         <FlatList
             data={filteredData}
-            extraData={filteredData}
-            renderItem={({ item }) => (
-        <TouchableHighlight
-            underlayColor="#C8c9c9"
-            onPress={() => {navigation.navigate('Details', {name: item.name, location: item.location,
-                                                                        mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType})}}>
-        <View style={styles.list}>
-            <Text>{item.name}</Text>
-            <Text>{item.location}</Text>
-        </View>
-        </TouchableHighlight>
-      )}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={ItemView}
     />
         </View>
     )

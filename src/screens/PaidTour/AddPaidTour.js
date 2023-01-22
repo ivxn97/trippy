@@ -3,13 +3,14 @@ import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityInd
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import moment from 'moment';
 
 const typePlaceholder = {
     label: 'Paid Tour Type',
@@ -66,6 +67,7 @@ export default function AddPaidTour ( { navigation }) {
     const [address, setAddress] = useState();
     const [mapURL, setMapURL] = useState();
     const [latitude, setLat] = useState();
+    const [longitude, setLong] = useState();
     const [loading, setLoading] = useState(true)
 
     const getEmail = async () => {
@@ -152,25 +154,23 @@ export default function AddPaidTour ( { navigation }) {
 
     const onSubmitPress = async () => {
         const timeSlots = [];
-        for (let i = Number(startingHour); i <= Number(endingHour); i++) {
-            for (let j = Number(startingMinute); j < 60; j+= 30) {
-                if (i === Number(endingHour) && j > Number(endingMinute)) {
-                    break;
-                }
-                let time = i + '';
-                    if (j === 0) {
-                        time += '00';
-                    } else {
-                    time += j;
-                    }
-                    //Add time slot to the array
-                    timeSlots.push({
-                    time: time,
-                    capacity: capacity
-                });
-            }
+
+        const startingTime = startingHour+startingMinute
+        const endingTime = endingHour+endingMinute
+        const interval = durationMinute
+
+        let currentTime = moment(startingTime, 'HHmm');
+
+        while (currentTime.isBefore(moment(endingTime, 'HHmm'))) {
+            timeSlots.push({
+                time: currentTime.format('HHmm'),
+                capacity: capacity
+            })
+            currentTime.add(interval, 'minutes');
         }
+
         console.log(timeSlots)
+        
             try {
                 await setDoc(doc(db, "paidtours", name), {
                     addedBy: email,
@@ -180,8 +180,7 @@ export default function AddPaidTour ( { navigation }) {
                     price: price,
                     ageGroup: ageGroup,
                     groupSize: groupSize,
-                    startingTime: startingHour + ':' + startingMinute,
-                    endingTime: endingHour + ':' + endingMinute,
+                    timeSlots: timeSlots,
                     duration: durationHour + ':' + durationMinute,
                     location: address,
                     longitude: longitude,
@@ -197,6 +196,7 @@ export default function AddPaidTour ( { navigation }) {
             catch (e) {
                 console.log("Error adding document: ", e);
             }
+            
         }
 
     if (loading) {
@@ -298,12 +298,7 @@ export default function AddPaidTour ( { navigation }) {
                 useNativeAndroidPickerStyle={false}
                 placeholder={minutePlaceholder}
                 onValueChange={(value) => setStartingMinute(value)}
-                items = {[
-                    {label:'00', value:'00'},
-                    {label:'15', value:'15'}, 
-                    {label:'30', value:'30'}, 
-                    {label:'45', value:'45'}
-                ]}
+                items = {[{label:'00', value:'00'}, {label:'30', value:'30'}]}
             />
             
             <Text style={styles.text}>Ending Time:</Text>
@@ -331,12 +326,7 @@ export default function AddPaidTour ( { navigation }) {
                 useNativeAndroidPickerStyle={false}
                 placeholder={minutePlaceholder}
                 onValueChange={(value) => setEndingMinute(value)}
-                items = {[
-                    {label:'00', value:'00'},
-                    {label:'15', value:'15'}, 
-                    {label:'30', value:'30'}, 
-                    {label:'45', value:'45'}
-                ]}
+                items = {[{label:'00', value:'00'}, {label:'30', value:'30'}]}
             />
 
             <Text style={styles.text}>Duration:</Text>

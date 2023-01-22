@@ -19,7 +19,7 @@ import {
   EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
-  ResetPassword, ReviewPendingAccounts, ReviewAccount
+  ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -91,6 +91,7 @@ function GuideStackScreen() {
     <GuideStack.Navigator>
       <Stack.Screen name="Guide List" component={GuideWTList} />
       <Stack.Screen name="Guide Screen" component={GuideScreen} />
+      <Stack.Screen name="Guide Section" component={GuideSection} />
     </GuideStack.Navigator>
   )
 }

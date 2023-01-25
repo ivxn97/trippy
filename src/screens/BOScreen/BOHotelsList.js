@@ -4,30 +4,48 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BOHotelList({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [hotels, setHotels] = useState([]); // Initial empty array of hotels
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(hotels);
+    const [email, setEmail] = useState('');
 
-    //List
-    navigation.addListener('willFocus', () => {
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
-    })
-
-    useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "hotels"));
-        querySnapshot.forEach(documentSnapshot => {
+    const getHotels = async () => {
+        const collectionRef = collection(db, "hotels")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
             hotels.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-            });
-        });
-
-        setHotels(hotels);
+                ...doc.data(),
+                key: doc.id
+            })
+        })
         setLoading(false);
-    }, []);
+    }
+
+    useEffect(() => {
+        getEmail();
+        if (email) {
+          getHotels();
+        }
+    },[email]);
 
     if (loading) {
         return <ActivityIndicator />;

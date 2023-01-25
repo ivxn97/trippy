@@ -30,7 +30,7 @@ export async function claimDeals(document, name ) {
     const ref = doc(db, "users", document);
 
     await updateDoc (ref, {
-        redeemedDeals: arrayUnion(name)
+        claimedDeals: arrayUnion(name)
     })
     console.log(`${name} Deal Redeemed`)
 }

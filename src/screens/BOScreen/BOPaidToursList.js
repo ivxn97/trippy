@@ -4,30 +4,48 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BOPaidTourList({navigation}) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [paidtours, setPaidtours] = useState([]); // Initial empty array of paid tours
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(paidtours);
+  const [email, setEmail] = useState('');
 
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
+  const getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null) {
+            setEmail(email);
+        }
+        else {
+            console.log("No Email Selected at Login")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "paidtours"));
-        querySnapshot.forEach(documentSnapshot => {
-            paidtours.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
+  const getPaidTours = async () => {
+    const collectionRef = collection(db, "paidtours")
+    const q = query(collectionRef, where('addedBy', '==', email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        paidtours.push({
+            ...doc.data(),
+            key: doc.id
+        })
+    })
+    setLoading(false);
+  }
 
-        setPaidtours(paidtours);
-        setLoading(false);
-      },[]);
+  useEffect(() => {
+    getEmail();
+    if (email) {
+      getPaidTours();
+    }
+  },[email]);
   
   if (loading) {
     return <ActivityIndicator />;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {  View, ActivityIndicator, Text, TouchableOpacity, Alert, StyleSheet, KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-//import styles from './styles';
+import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
 import * as WebBrowser from 'expo-web-browser';
@@ -9,9 +9,10 @@ import {bookmark, itinerary} from '../commonFunctions';
 import ReviewScreen from '../ReviewScreen/ReviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { FormProvider, useForm } from 'react-hook-form'
-import LottieView from 'lottie-react-native'
-import CreditCardForm, { Button } from 'rn-credit-card'
+import RNPickerSelect from 'react-native-picker-select';
+import Moment from 'moment';
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import uuid from 'react-native-uuid';
 
 //Check capacity for paid tour has reached
 //Check to ensure date and time matches operating hours
@@ -20,31 +21,41 @@ import CreditCardForm, { Button } from 'rn-credit-card'
 
 
 export default function Booking ({route, navigation}) {
-  const {activityType, name} = route.params;
+  const {activityType, name, timeSlots, capacity, startingTime, endingTime, duration, price, groupSize} = route.params;
   const [email, setEmail] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isDateTimePickerVisible, setDateTimePickerVisiblity] = useState(false);
+  const [time, setTime] = useState('');
+  const [size, setGroupSize] = useState('');
+  const [date, setDate] = useState(new Date());
 
-  const formMethods = useForm({
-    mode: 'onBlur',
-    defaultValues: {
-    holderName: '',
-    cardNumber: '',
-    expiration: '',
-    cvv: '',
-  },})
+  const groupSizePicker = Array.from({length: groupSize}, (_, i) => i + 1).map(n => ({label: `${n}`, value: `${n}`}));
+  console.log(groupSizePicker);
+  console.log(timeSlots)
 
-  const { handleSubmit, formState } = formMethods
+  const timeSlotsPicker = timeSlots.map(item => {
+    return {label: item.time, value: item.time}})
 
   function onSubmit(model) {
     Alert.alert('Success: ' + JSON.stringify(model, null, 2))
   }
 
+  const timeSlotPlaceholder = {
+    label: 'Select time-slot',
+    value: null,
+    color: 'black',
+  };
+
+  const groupSizePlaceholder = {
+    label: 'Select group size',
+    value: null,
+    color: 'black',
+  };
+
   const getEmail = async () => {
     try {
         const email = await AsyncStorage.getItem('email');
         if (email !== null) {
-            setRegisteredButton(false);
             setEmail(email);
             console.log(email)
         }
@@ -56,39 +67,39 @@ export default function Booking ({route, navigation}) {
     } catch (error) {
         console.log(error)
     }
-}
+  }
 
-return (
-  <FormProvider {...formMethods}>
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        style={styles.avoider}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
-        <CreditCardForm
-          LottieView={LottieView}
-          horizontalStart
-          overrides={{
-            labelText: {
-              marginTop: 16,
-            },
-          }}
-        />
-      </KeyboardAvoidingView>
-      {formState.isValid && (
-        <Button
-          style={styles.button}
-          title={'CONFIRM PAYMENT'}
-          onPress={handleSubmit(onSubmit)}
-        />
-      )}
-    </SafeAreaView>
-  </FormProvider>
-)
+  const onConfirmPress = async () => {
+    
+  }
+/*
+  const onPaymentPress = async () => {
+    try {
+      await setDoc(doc(db, "bookings", id), {
+        bookedBy: email,
+        name: name,
+        activityType: activityType,
+        groupSize: size,
+        time: time,
+        date: date
+      })
+      navigation.navigate('Payment', {id: id, time: time, date: date, groupSize: groupSize, 
+        name: name, email: email, price: price})
+    }
+    catch (e) {
+      console.log("Error adding document: ", e);
+    }
+  }
+*/
 
-useFocusEffect(React.useCallback(async ()=> {
-    getEmail();
-}, []));
+  const onPaymentPress = async () => {
+      navigation.navigate('Payment', {time: time, date: date, groupSize: groupSize, 
+        name: name, email: email, price: price})
+  }
+
+  useFocusEffect(React.useCallback(async ()=> {
+      getEmail();
+  }, []));
 
 
   const showDatePicker = () => {
@@ -114,21 +125,49 @@ useFocusEffect(React.useCallback(async ()=> {
 
   const handleConfirmDate = (date) => {
     console.warn("A date has been picked: ", date);
+    setDate(date);
     hideDatePicker();
   };
 
-  if (activityType == 'restaurants' || activityType == 'attractions') {
+  if (activityType == 'restaurants' || activityType == 'attractions' || activityType == 'paidtours') {
     return (
       <View>
-        <TouchableOpacity style={styles.button} onPress={showDateTimePicker}>
-          <Text style={styles.buttonTitle}>Select Date and Time</Text>
+        <Text style={styles.Heading}>You are making a booking for {name}</Text>
+        <Text style={[styles.Heading, {fontSize:23}]}>Selected Date: {Moment(date).format('DD MMM YYYY')}</Text>
+        <TouchableOpacity style={styles.button} onPress={showDatePicker}>
+          <Text style={styles.buttonTitle}>Select Date</Text>
         </TouchableOpacity>
         <DateTimePickerModal
-          isVisible={isDateTimePickerVisible}
-          mode="datetime"
-          onConfirm={handleConfirmDateTime}
+          isVisible={isDatePickerVisible}
+          mode="date"
+          minimumDate={new Date()}
+          onConfirm={handleConfirmDate}
           onCancel={hideDatePicker}
         />
+        <RNPickerSelect
+          style={pickerSelectStyles}
+          useNativeAndroidPickerStyle={false}
+          placeholder={timeSlotPlaceholder}
+          onValueChange={(value) => setTime(value)}
+          items = {timeSlotsPicker}
+        />
+        <RNPickerSelect
+          style={pickerSelectStyles}
+          useNativeAndroidPickerStyle={false}
+          placeholder={groupSizePlaceholder}
+          onValueChange={(value) => setGroupSize(value)}
+          items = {groupSizePicker}
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => onConfirmPress()}>
+          <Text style={styles.buttonTitle}>Confirm Details</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => onPaymentPress()}>
+          <Text style={styles.buttonTitle}>Proceed To Payment</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -147,27 +186,37 @@ useFocusEffect(React.useCallback(async ()=> {
       </View>
     )
   }
-  else if (activityType == 'paidtours') {
-    return (
-      <View>
-        <TouchableOpacity style={styles.button} onPress={showDateTimePicker}>
-          <Text style={styles.buttonTitle}>Select Date and Time</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  avoider: {
-    flex: 1,
-    padding: 36,
-  },
-  button: {
-    margin: 36,
-    marginTop: 0,
-  },
-  })
+  const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

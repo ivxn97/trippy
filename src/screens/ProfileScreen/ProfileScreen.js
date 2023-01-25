@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { View, Text, Button, TouchableOpacity, Image } from 'react-native';
+import { View, Text, button, TouchableOpacity, Image } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { db } from '../../../config';
@@ -110,39 +110,39 @@ export default function ProfileScreen ( {navigation} ) {
             <View>
                 <ScrollView>
                 <Text style={styles.Heading}>Welcome, LOL!</Text>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="View Profile"
                 >
-                    <Text style={styles.text}>View Profile</Text>
+                    <Text style={styles.textList}>View Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="Guide"
                     onPress={() =>
                         navigation.navigate('LOL Guides')
                     }
                 >
-                    <Text style={styles.text}>My Guides</Text>
+                    <Text style={styles.textList}>My Guides</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="Walking Tour"
                 >
-                    <Text style={styles.text}>My Walking Tours</Text>
+                    <Text style={styles.textList}>My Walking Tours</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="Active Threads"
                 >
-                    <Text style={styles.text}>My Active Threads</Text>
+                    <Text style={styles.textList}>My Active Threads</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="Settings"
                 >
-                    <Text style={styles.text}>Settings</Text>
+                    <Text style={styles.textList}>Settings</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title ="Sign Out"
                     onPress={() => onSignout()}
                 >
-                    <Text style={styles.text}>Sign Out</Text>
+                    <Text style={styles.textList}>Sign Out</Text>
                 </TouchableOpacity>
                 </ScrollView>
             </View>
@@ -152,7 +152,7 @@ export default function ProfileScreen ( {navigation} ) {
         return (
             <View>
                 <Text style={styles.Heading}>Welcome, User!</Text>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Profile', {
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Profile', {
                     firstName: user.firstName,
                     lastName: user.lastName,
                     email: user.email,
@@ -160,43 +160,43 @@ export default function ProfileScreen ( {navigation} ) {
                     country: user.country,})}
                     title="View Profile"
                 >
-                    <Text style={styles.text}>View Profile</Text>
+                    <Text style={styles.textList}>View Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bookmarks')}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Bookmarks')}
                     title="Saved"
                 >
-                    <Text style={styles.text}>Bookmarks</Text>
+                    <Text style={styles.textList}>Bookmarks</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Itinerary')}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Itinerary')}
                     title="Itinerary"
                 >
-                    <Text style={styles.text}>Itinerary</Text>
+                    <Text style={styles.textList}>Itinerary</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Active Thread')}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Active Thread')}
                     title="Active Threads"
                 >
-                <Text style={styles.text}>Active Threads</Text>
+                <Text style={styles.textList}>Active Threads</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="My Bookings"
                 >
-                <Text style={styles.text}>My Bookings</Text>
+                <Text style={styles.textList}>My Bookings</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="My Deals"
                 >
-                    <Text style={styles.text}>My Deals</Text>
+                    <Text style={styles.textList}>My Deals</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title="Settings"
                 >
-                    <Text style={styles.text}>Settings</Text>
+                    <Text style={styles.textList}>Settings</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title ="Sign Out"
                     onPress={() => onSignout()}
                 >
-                    <Text style={styles.text}>Sign Out</Text>
+                    <Text style={styles.textList}>Sign Out</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -210,21 +210,21 @@ export default function ProfileScreen ( {navigation} ) {
                 style={styles.imageBanner}
                 source={require('../../../assets/RegistrationBanner.png')}
                 />
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                 title ="Login"
                 onPress={() =>
                     navigation.navigate('Login')
                 }
                 >
-                    <Text style={styles.text}>Login</Text>
+                    <Text style={styles.textList}>Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity style={styles.buttonList}
                     title ="Register"
                     onPress={() =>
                         navigation.navigate('Registration Selector')
                     }
                 >
-                <Text style={styles.text}>Register</Text>
+                <Text style={styles.textList}>Register</Text>
                 </TouchableOpacity>
                 </ScrollView>
             </View>

@@ -19,7 +19,7 @@ import {
   EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
-  ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection
+  ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -116,6 +116,8 @@ function HomeStackScreen() {
       <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen} />
       <Stack.Screen name="Edit Review" component={EditReview} />
       <Stack.Screen name="Booking" component={Booking}/>
+      <Stack.Screen name="Payment" component={Payment}/>
+      <Stack.Screen name="Confirm Booking" component={ConfirmBooking}/>
     </HomeStack.Navigator>
   )
 }

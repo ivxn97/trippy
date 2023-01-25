@@ -170,7 +170,6 @@ export default function AddPaidTour ( { navigation }) {
         }
 
         console.log(timeSlots)
-        
             try {
                 await setDoc(doc(db, "paidtours", name), {
                     addedBy: email,
@@ -181,8 +180,11 @@ export default function AddPaidTour ( { navigation }) {
                     ageGroup: ageGroup,
                     groupSize: groupSize,
                     timeSlots: timeSlots,
-                    duration: durationHour + ':' + durationMinute,
-                    location: address,
+                    startingTime: startingHour + ':' + startingMinute,
+                    endingTime: endingHour + ':' + endingMinute,
+                    duration: durationMinute,
+                    capacity: capacity,
+                    address: address,
                     longitude: longitude,
                     latitude: latitude,
                     mapURL: mapURL,
@@ -298,7 +300,7 @@ export default function AddPaidTour ( { navigation }) {
                 useNativeAndroidPickerStyle={false}
                 placeholder={minutePlaceholder}
                 onValueChange={(value) => setStartingMinute(value)}
-                items = {[{label:'00', value:'00'}, {label:'30', value:'30'}]}
+                items = {[{label:'00', value:'00'}, {label:'15', value:'15'}, {label:'30', value:'30'}, {label:'45', value:'45'},]}
             />
             
             <Text style={styles.text}>Ending Time:</Text>
@@ -326,27 +328,10 @@ export default function AddPaidTour ( { navigation }) {
                 useNativeAndroidPickerStyle={false}
                 placeholder={minutePlaceholder}
                 onValueChange={(value) => setEndingMinute(value)}
-                items = {[{label:'00', value:'00'}, {label:'30', value:'30'}]}
+                items = {[{label:'00', value:'00'}, {label:'15', value:'15'}, {label:'30', value:'30'}, {label:'45', value:'45'},]}
             />
 
-            <Text style={styles.text}>Duration:</Text>
-            {/*Duration Hour */}
-            <RNPickerSelect
-                style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
-                placeholder={hourPlaceholder}
-                onValueChange={(value) => setDurationHour(value)}
-                items = {[
-                    {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
-                    {label:'03', value:'03'}, {label:'04', value:'04'}, {label:'05', value:'05'},
-                    {label:'06', value:'06'}, {label:'07', value:'07'}, {label:'08', value:'08'},
-                    {label:'09', value:'09'}, {label:'10', value:'10'}, {label:'11', value:'11'},
-                    {label:'12', value:'12'}, {label:'13', value:'13'}, {label:'14', value:'14'},
-                    {label:'15', value:'15'}, {label:'16', value:'16'}, {label:'17', value:'17'},
-                    {label:'18', value:'18'}, {label:'19', value:'19'}, {label:'20', value:'20'},
-                    {label:'21', value:'21'}, {label:'22', value:'22'}, {label:'23', value:'23'},
-                ]}
-            />
+            <Text style={styles.text}>Duration in minutes:</Text>
             
             <RNPickerSelect
                 style={pickerSelectStyles}
@@ -354,11 +339,29 @@ export default function AddPaidTour ( { navigation }) {
                 placeholder={minutePlaceholder}
                 onValueChange={(value) => setDurationMinute(value)}
                 items = {[
-                    {label:'00', value:'00'},
                     {label:'15', value:'15'}, 
                     {label:'30', value:'30'}, 
-                    {label:'45', value:'45'}
+                    {label:'45', value:'45'},
+                    {label:'60', value:'60'},
+                    {label:'75', value:'75'},
+                    {label:'90', value:'90'},
+                    {label:'105', value:'105'},
+                    {label:'120', value:'120'},
+                    {label:'150', value:'150'},
+                    {label:'180', value:'180'},
                 ]}
+            />
+
+            <Text style={styles.text}>Capacity:</Text>
+            <TextInput
+                style={styles.input}
+                placeholder='Enter Capacity'
+                placeholderTextColor="#aaaaaa"
+                onChangeText={(Text) => setCapacity(Text)}
+                value={capacity}
+                underlineColorAndroid="transparent"
+                autoCapitalize="sentences"
+                keyboardType="numeric"
             />
 
             <Text style={styles.text}>Description:</Text>

@@ -15,7 +15,8 @@ import WebView from 'react-native-webview';
 export default function Details({route, navigation}) {
     const {activityType, name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
         description, TNC, tourType, startingTime, endingTime, duration, hotelClass, roomTypes, priceRange, 
-        checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location, review} = route.params;
+        checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location, review, 
+        addedBy, timeSlots, mapURL, capacity, address} = route.params;
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
     //Restaurants only 
@@ -135,7 +136,11 @@ Download the App here: URL`})
     }
 
     const onReview = () => {
-        navigation.navigate('Review Screen', {name});
+        navigation.navigate('Review Screen', {name, activityType});
+    }
+
+    const openAddress = async () => {
+        await WebBrowser.openBrowserAsync(mapURL)
     }
 
     const handlePress = () => {
@@ -190,7 +195,7 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.textNB}>Address: </Text>
+            <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
             <Text style={styles.textNB}>Type of Cuisine: {JSON.stringify(typeOfCuisine).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
@@ -251,7 +256,7 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.textNB}>Address: </Text>
+            <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
             <Text style={styles.textNB}>Type: {JSON.stringify(tourType).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
@@ -267,7 +272,8 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking" >
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, timeSlots: timeSlots, 
+                        startingTime: startingTime, endingTime: endingTime, duration: duration, price: price, groupSize: groupSize})}} title="Booking" >
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>
@@ -310,7 +316,7 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Share</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.textNB}>Address: </Text>
+                <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
                 <Text style={styles.textNB}>Hotel Class: {JSON.stringify(hotelClass).replace(/"/g, "")}</Text>
                 <Text style={styles.textNB}>Room Type: {JSON.stringify(valueRoomTypes.join(', ')).replace(/"/g, "")}</Text>
                 <Text style={styles.textNB}>CheckIn Time: {JSON.stringify(checkInTime).replace(/"/g, "")}</Text>
@@ -370,7 +376,7 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Share</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.textNB}>Address: </Text>
+                <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
                 <Text style={styles.textNB}>Type: {JSON.stringify(attractionType).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>

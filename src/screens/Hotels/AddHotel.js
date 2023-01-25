@@ -221,7 +221,7 @@ export default function AddHotel({ navigation }) {
                     roomFeatures: docRoomFeaturesData,
                     language: language,
                     capacity: capacity,
-                    location: address,
+                    address: address,
                     longitude: longitude,
                     latitude: latitude,
                     mapURL: mapURL,

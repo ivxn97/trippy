@@ -25,6 +25,7 @@ export default function Itinerary ( {navigation} ) {
 
     const [shouldRun, setShouldRun] = useState(true);
 
+    //Get email from storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -40,6 +41,7 @@ export default function Itinerary ( {navigation} ) {
         }
     }
 
+    // Get Itinerary from User
     async function getItinerary (email) {
         var loginRef = doc(db, "users", email);
         const docSnap = await getDoc(loginRef);
@@ -48,6 +50,7 @@ export default function Itinerary ( {navigation} ) {
             //console.log("Document data: ", docSnap.data());
             const itineraryData = docSnap.data().itinerary
             console.log("Itinerary Data:", itineraryData);
+            //Ensure every item in the array has a position number
             let finalArray = itineraryData.map((element, index) => {
                 if(element.hasOwnProperty('position') && element.hasOwnProperty('name')) {
                     return element;
@@ -70,6 +73,7 @@ export default function Itinerary ( {navigation} ) {
         }
     }
 
+    //Get activities from Firestore where it matches the user's itinerary array
     const getRestaurants = async () => {
         const collectionRef = collection(db, "restaurants")
         const q = query(collectionRef, where('name', 'in', itineraryArr));
@@ -146,6 +150,7 @@ export default function Itinerary ( {navigation} ) {
         })
     }
 
+    //Merge activities arrays
     const getMergeArr = () => {
         mergedArr.push(...restaurants);
         mergedArr.push(...hotels);
@@ -155,6 +160,7 @@ export default function Itinerary ( {navigation} ) {
         mergedArr.push(...walkingTours);
         console.log("merged arr:", mergedArr)
         console.log("Final arr in merged arr:", finalArr)
+        //Merge the merged activity array with the itinerary array from the user
         if (finalArr) {
         const completedArr = finalArr.map((item) => {
             const correspondingItem = mergedArr.find((i) => i.name === item.name);
@@ -232,6 +238,7 @@ export default function Itinerary ( {navigation} ) {
                     price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
                     closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
                     startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
+                    addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address
                 })
                 }}
             >

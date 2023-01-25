@@ -4,30 +4,48 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BODeals( { navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [deals, setDeals] = useState([]); // Initial empty array of deals
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(deals);
+  const [email, setEmail] = useState('');
 
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
+  const getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null) {
+            setEmail(email);
+        }
+        else {
+            console.log("No Email Selected at Login")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "deals"));
-        querySnapshot.forEach(documentSnapshot => {
-          deals.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
+  const getDeals = async () => {
+    const collectionRef = collection(db, "deals")
+    const q = query(collectionRef, where('addedBy', '==', email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        deals.push({
+            ...doc.data(),
+            key: doc.id
+        })
+    })
+    setLoading(false);
+  }
 
-        setDeals(deals);
-        setLoading(false);
-      },[]);
+  useEffect(() => {
+    getEmail();
+    if (email) {
+      getDeals();
+    }
+  },[email]);
   
   if (loading) {
     return <ActivityIndicator />;

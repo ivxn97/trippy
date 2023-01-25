@@ -32,10 +32,6 @@ export default function Deals( { navigation }) {
     setInnerDropdownVisible(false);
   }
 
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
 
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(db, "deals"));
@@ -144,7 +140,8 @@ export default function Deals( { navigation }) {
         <TouchableHighlight
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Deal detail', {name: item.dealname, dealType: item.type, 
-        code: item.code, description: item.description, discount: item.discount, quantity: item.quantity, TNC: item.TNC})}}>
+        code: item.code, description: item.description, discount: item.discount, quantity: item.quantity, TNC: item.TNC,
+        businessName: item.businessName, expiry: item.expiry})}}>
         <View style={styles.list}>
           <Text>{item.dealname}</Text>
           <Text>{item.discount}% off</Text>

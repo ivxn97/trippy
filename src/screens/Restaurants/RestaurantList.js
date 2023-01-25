@@ -252,7 +252,8 @@ export default function RestaurantList( {navigation}) {
         onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
         price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
         closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
-        , activityType: item.activityType, review: item.review})}}>
+        , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
+        capacity: item.capacity, address: item.address})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>{item.typeOfCuisine}</Text>
@@ -260,10 +261,6 @@ export default function RestaurantList( {navigation}) {
         </TouchableHighlight>
       )}
     />
-
-
-
-
 
       <Modal
         animationType="slide"

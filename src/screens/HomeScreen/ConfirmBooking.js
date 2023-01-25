@@ -140,36 +140,3 @@ export default function Booking ({route, navigation}) {
     </View>
   )
 };
-
-  const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
-        height: 48,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        paddingLeft: 16
-    },
-    inputAndroid: {
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        borderBottomRightRadius: 15,
-        borderBottomLeftRadius: 15,
-        height: 48,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        paddingLeft: 16
-      }
-})

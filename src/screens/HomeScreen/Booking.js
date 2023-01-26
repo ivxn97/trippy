@@ -11,7 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import Moment from 'moment';
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from '../../../config';
+import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import uuid from 'react-native-uuid';
 
 //Check capacity for paid tour has reached
@@ -28,7 +29,9 @@ export default function Booking ({route, navigation}) {
   const [time, setTime] = useState('');
   const [size, setGroupSize] = useState('');
   const [date, setDate] = useState(new Date());
+  const [confirmed, setConfirmed] = useState(true);
 
+  
   const groupSizePicker = Array.from({length: groupSize}, (_, i) => i + 1).map(n => ({label: `${n}`, value: `${n}`}));
   console.log(groupSizePicker);
   console.log(timeSlots)
@@ -70,30 +73,35 @@ export default function Booking ({route, navigation}) {
   }
 
   const onConfirmPress = async () => {
-    
+    const currentCapacity = capacity;
+    const collectionRef = collection(db, "bookings")
+        const q = query(collectionRef, where('name', '==', name));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          if (activityType == 'restaurants' || activityType == 'attractions' || activityType == 'paidtours') {
+            if (Moment(date).format('DD-MM-YYYY') == Moment(doc.data().date.toDate()).format('DD-MM-YYYY')) {
+              if (time == doc.data().time) {
+                currentCapacity = currentCapacity - doc.data().groupSize
+              }
+            }
+          }
+          else if (activityType == 'hotels') {
+            if (Moment(date).format('DD-MM-YYYY') == Moment(doc.data().date.toDate()).format('DD-MM-YYYY')) {
+              currentCapacity = currentCapacity - doc.data().groupSize
+            }
+          }
+        })
+        if (currentCapacity > (0 + size)) {
+          alert("Booking Details Is Valid");
+          setConfirmed(false)
+        }
+        else {
+          alert("The activity is unavailable on the chosen date and time")
+        }
   }
-/*
-  const onPaymentPress = async () => {
-    try {
-      await setDoc(doc(db, "bookings", id), {
-        bookedBy: email,
-        name: name,
-        activityType: activityType,
-        groupSize: size,
-        time: time,
-        date: date
-      })
-      navigation.navigate('Payment', {id: id, time: time, date: date, groupSize: groupSize, 
-        name: name, email: email, price: price})
-    }
-    catch (e) {
-      console.log("Error adding document: ", e);
-    }
-  }
-*/
 
   const onPaymentPress = async () => {
-      navigation.navigate('Payment', {time: time, date: date, groupSize: groupSize, 
+      navigation.navigate('Payment', {time: time, date: date, groupSize: size, 
         name: name, email: email, price: price})
   }
 
@@ -129,7 +137,7 @@ export default function Booking ({route, navigation}) {
     hideDatePicker();
   };
 
-  if (activityType == 'restaurants' || activityType == 'attractions' || activityType == 'paidtours') {
+  if (activityType == 'attractions' || activityType == 'paidtours') {
     return (
       <View>
         <Text style={styles.Heading}>You are making a booking for {name}</Text>
@@ -164,8 +172,9 @@ export default function Booking ({route, navigation}) {
           <Text style={styles.buttonTitle}>Confirm Details</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => onPaymentPress()}>
+          style={[styles.button, {opacity: confirmed ? 0.2 : 1}]}
+          onPress={() => onPaymentPress()}
+          disabled={confirmed}>
           <Text style={styles.buttonTitle}>Proceed To Payment</Text>
         </TouchableOpacity>
       </View>
@@ -174,17 +183,80 @@ export default function Booking ({route, navigation}) {
   else if (activityType == 'hotels') {
     return (
       <View>
+        <Text style={styles.Heading}>You are making a booking for {name}</Text>
+        <Text style={[styles.Heading, {fontSize:23}]}>Selected Date: {Moment(date).format('DD MMM YYYY')}</Text>
         <TouchableOpacity style={styles.button} onPress={showDatePicker}>
           <Text style={styles.buttonTitle}>Select Date</Text>
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
+          minimumDate={new Date()}
           onConfirm={handleConfirmDate}
           onCancel={hideDatePicker}
         />
+        <RNPickerSelect
+          style={pickerSelectStyles}
+          useNativeAndroidPickerStyle={false}
+          placeholder={groupSizePlaceholder}
+          onValueChange={(value) => setGroupSize(value)}
+          items = {groupSizePicker}
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => onConfirmPress()}>
+          <Text style={styles.buttonTitle}>Confirm Details</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, {opacity: confirmed ? 0.2 : 1}]}
+          onPress={() => onPaymentPress()}
+          disabled={confirmed}>
+          <Text style={styles.buttonTitle}>Proceed To Payment</Text>
+        </TouchableOpacity>
       </View>
     )
+  }
+  else if (activityType == 'restaurants') {
+    <View>
+    <Text style={styles.Heading}>You are making a booking for {name}</Text>
+    <Text style={[styles.Heading, {fontSize:23}]}>Selected Date: {Moment(date).format('DD MMM YYYY')}</Text>
+    <TouchableOpacity style={styles.button} onPress={showDatePicker}>
+      <Text style={styles.buttonTitle}>Select Date</Text>
+    </TouchableOpacity>
+    <DateTimePickerModal
+      isVisible={isDatePickerVisible}
+      mode="date"
+      minimumDate={new Date()}
+      onConfirm={handleConfirmDate}
+      onCancel={hideDatePicker}
+    />
+    <RNPickerSelect
+      style={pickerSelectStyles}
+      useNativeAndroidPickerStyle={false}
+      placeholder={timeSlotPlaceholder}
+      onValueChange={(value) => setTime(value)}
+      items = {timeSlotsPicker}
+    />
+    <RNPickerSelect
+      style={pickerSelectStyles}
+      useNativeAndroidPickerStyle={false}
+      placeholder={groupSizePlaceholder}
+      onValueChange={(value) => setGroupSize(value)}
+      items = {groupSizePicker}
+    />
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => onConfirmPress()}>
+      <Text style={styles.buttonTitle}>Confirm Details</Text>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={[styles.button, {opacity: confirmed ? 0.2 : 1}]}
+      onPress={() => navigation.navigate('Confirm Booking', { time: time, date: date, groupSize: groupSize, 
+        name: name, email: email, price: price})}
+      disabled={confirmed}>
+      <Text style={styles.buttonTitle}>Go to Confirmation Screen</Text>
+    </TouchableOpacity>
+    </View>
   }
 };
 

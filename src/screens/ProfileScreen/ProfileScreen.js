@@ -110,7 +110,12 @@ export default function ProfileScreen ( {navigation} ) {
             <View>
                 <ScrollView>
                 <Text style={styles.Heading}>Welcome, LOL!</Text>
-                <TouchableOpacity style={styles.buttonList}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Profile', {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    role: user.role,
+                    country: user.country,})}
                     title="View Profile"
                 >
                     <Text style={styles.textList}>View Profile</Text>
@@ -132,6 +137,31 @@ export default function ProfileScreen ( {navigation} ) {
                     title="Active Threads"
                 >
                     <Text style={styles.textList}>My Active Threads</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Bookmarks')}
+                    title="Saved"
+                >
+                    <Text style={styles.textList}>Bookmarks</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Itinerary')}
+                    title="Itinerary"
+                >
+                    <Text style={styles.textList}>Itinerary</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Active Thread')}
+                    title="Active Threads"
+                >
+                <Text style={styles.textList}>Active Threads</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('User Bookings')}
+                    title="My Bookings"
+                >
+                <Text style={styles.textList}>My Bookings</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('User Deals')}
+                    title="My Deals"
+                >
+                    <Text style={styles.textList}>My Deals</Text> 
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonList}
                     title="Settings"
@@ -177,12 +207,12 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                 <Text style={styles.textList}>Active Threads</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('User Bookings')}
                     title="My Bookings"
                 >
                 <Text style={styles.textList}>My Bookings</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('User Deals')}
                     title="My Deals"
                 >
                     <Text style={styles.textList}>My Deals</Text>

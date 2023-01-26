@@ -19,7 +19,8 @@ import {
   EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
-  ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking
+  ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
+  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -68,7 +69,12 @@ function ProfileStackScreen() {
       <Stack.Screen name="Edit Thread List" component={ActiveThreadEditList} />
       <Stack.Screen name="Delete Thread" component={ActiveThreadDelete} />
       <Stack.Screen name="Profile" component={ProfilePage} />
-
+      <Stack.Screen name="User Bookings" component={UserBookings} />
+      <Stack.Screen name="Booking Details" component={BookingDetails} />
+      <Stack.Screen name="User Previous Bookings" component={UserPreviousBookings} />
+      <Stack.Screen name="Previous Booking Details" component={PreviousBookingDetails} />
+      <Stack.Screen name="User Deals" component={UserDealsList} />
+      <Stack.Screen name="Deal detail" component={DealsScreen} />
     </ProfileStack.Navigator>
   )
 }

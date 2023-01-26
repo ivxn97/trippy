@@ -1,20 +1,21 @@
-//Login Screen
+//Login Screens
 export { default as LoginScreen } from './LoginScreen/LoginScreen'
 export {default as OTPScreen} from './LoginScreen/OTPScreen'
 export {default as ResetPassword} from './LoginScreen/ResetPassword'
-export { default as HomeScreen } from './HomeScreen/HomeScreen'
 
+//Registration Screens
 export { default as RegistrationRegisteredUser } from './RegistrationScreen/RegistrationRegisteredUser'
 export { default as RegistrationLOL } from './RegistrationScreen/RegistrationLOL'
 export { default as RegistrationBO } from './RegistrationScreen/RegistrationBO'
 export {default as RegistrationSelector} from './RegistrationScreen/RegistrationSelector'
 
+//Guide Screens
 export {default as GuideWTList} from './GuideScreen/GuideWTList'
 export {default as AddGuide} from './GuideScreen/AddGuide'
 export {default as GuideScreen} from './GuideScreen/GuideScreen'
 export {default as GuideSection} from './GuideScreen/GuideSection'
 
-export {default as ProfileScreen} from './ProfileScreen/ProfileScreen'
+//Deal Screens
 export {default as DealsScreen} from './DealsScreen/DealsScreen'
 export {default as DealsList} from './DealsScreen/DealsList'
 export {default as AddDeal} from './DealsScreen/AddDeal'
@@ -29,16 +30,19 @@ export {default as RestaurantScreen} from './Restaurants/RestaurantScreen'
 export {default as PaidTourList} from './PaidTour/PaidTourList'
 export {default as PaidTourScreen} from './PaidTour/PaidTourScreen'
 
+//Activity Add Screens
 export {default as AddHotel} from './Hotels/AddHotel'
 export {default as AddAttraction} from './Attractions/AddAttraction'
 export {default as AddPaidTour} from './PaidTour/AddPaidTour'
 export {default as AddRestaurant} from './Restaurants/AddRestaurant'
 
+//Activity Delete Screens
 export {default as DeleteHotel} from './Hotels/DeleteHotel'
 export { default as DeleteAttraction } from './Attractions/DeleteAttraction'
 export { default as DeletePaidTour } from './PaidTour/DeletePaidTour'
 export { default as DeleteRestaurant } from './Restaurants/DeleteRestaurant'
 
+//Business Owner Screens
 export {default as BOScreen} from './BOScreen/BOScreen'
 export {default as BOAttractionsList} from './BOScreen/BOAttractionsList'
 export {default as BODealsList} from './BOScreen/BODealsList'
@@ -46,9 +50,10 @@ export {default as BOHotelsList} from './BOScreen/BOHotelsList'
 export {default as BOPaidToursList} from './BOScreen/BOPaidToursList'
 export {default as BORestaurantsList} from './BOScreen/BORestaurantsList'
 
+//LOL Guide List
 export {default as LOLGuideList} from './LOLScreen/LOLGuideList'
 
-//Edit
+//Activity Edit Screens
 export {default as RestaurantEditList} from './Restaurants/RestaurantEditList'
 export {default as EditRestaurant} from './Restaurants/EditRestaurant'
 export {default as PaidTourEditList} from './PaidTour/PaidTourEditList'
@@ -60,6 +65,8 @@ export {default as EditHotel} from './Hotels/EditHotel'
 export {default as DealsEditList} from './DealsScreen/EditDealsList'
 export {default as EditDeal} from './DealsScreen/EditDeal'
 
+//Profile Screens
+export {default as ProfileScreen} from './ProfileScreen/ProfileScreen'
 export {default as Bookmarks} from './ProfileScreen/Bookmarks'
 export {default as DeleteBookmark} from './ProfileScreen/DeleteBookmark'
 export {default as Itinerary} from './ProfileScreen/Itinerary'
@@ -70,7 +77,14 @@ export { default as ActiveThreadDelete } from './ProfileScreen/ActiveThreadDelet
 export { default as PageContent } from './ProfileScreen/PageContent'
 export { default as PageContentChoice } from './ProfileScreen/PageContentChoice'
 export { default as ProfilePage } from './ProfileScreen/ProfilePage'
+export { default as UserBookings } from './ProfileScreen/UserBookings'
+export { default as BookingDetails } from './ProfileScreen/BookingDetails'
+export { default as UserPreviousBookings } from './ProfileScreen/UserPreviousBookings'
+export { default as PreviousBookingDetails } from './ProfileScreen/PreviousBookingDetails'
+export { default as UserDealsList} from './ProfileScreen/UserDealsList'
 
+//Home Screens
+export { default as HomeScreen } from './HomeScreen/HomeScreen'
 export {default as Details} from './HomeScreen/Details'
 export {default as Booking} from './HomeScreen/Booking'
 export {default as Payment} from './HomeScreen/Payment'

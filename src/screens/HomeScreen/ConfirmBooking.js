@@ -15,7 +15,7 @@ import Moment from 'moment';
 import { doc, setDoc, getDoc, getDocs, collection, DocumentSnapshot } from "firebase/firestore";
 import uuid from 'react-native-uuid';
 
-export default function Booking ({route, navigation}) {
+export default function ConfirmBooking ({route, navigation}) {
   const {time, date, groupSize, name, email, price, lastFourDigits} = route.params;
   const id = uuid.v4();
   const [loading, setLoading] = useState(true)
@@ -99,7 +99,7 @@ export default function Booking ({route, navigation}) {
   return (
     <View style={[styles.detailsContainer]}>
     <View style={{alignItems: 'flex-end'}}>
-    <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
+    <Text style={styles.Heading}>Booking For {JSON.stringify(name).replace(/"/g,"")}</Text>
     <Text style={styles.textBooking}>Payment using Card ending in {JSON.stringify(lastFourDigits).replace(/"/g,"")}</Text>
     <Text style={styles.textBooking}>Chosen Date: {Moment(date).format('DD MMM YYYY')}</Text>
     <Text style={styles.textBooking}>Chosen Time: {JSON.stringify(time).replace(/"/g,"")}</Text>

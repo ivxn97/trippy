@@ -11,7 +11,6 @@ import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 
-
 export default function AddGuide({ navigation }) {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');

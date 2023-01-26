@@ -59,6 +59,16 @@ export default StyleSheet.create({
         borderRadius: 5,
         paddingLeft: 16,
     },
+    textBooking: {
+        borderRadius: 5,
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
+        marginRight:30,
+        paddingLeft: 16,
+        fontWeight: 'bold',
+        fontSize:16
+    },
     carouselStyle: {
         width: 410,
         height: 250,

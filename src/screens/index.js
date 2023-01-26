@@ -15,6 +15,9 @@ export {default as AddGuide} from './GuideScreen/AddGuide'
 export {default as GuideScreen} from './GuideScreen/GuideScreen'
 export {default as GuideSection} from './GuideScreen/GuideSection'
 
+//Walking Tour Screens
+export {default as AddWalkingTour} from './WalkingTours/AddWalkingTour'
+
 //Deal Screens
 export {default as DealsScreen} from './DealsScreen/DealsScreen'
 export {default as DealsList} from './DealsScreen/DealsList'
@@ -52,6 +55,7 @@ export {default as BORestaurantsList} from './BOScreen/BORestaurantsList'
 
 //LOL Guide List
 export {default as LOLGuideList} from './LOLScreen/LOLGuideList'
+export {default as LOLWalkingToursList} from './LOLScreen/LOLWalkingToursList'
 
 //Activity Edit Screens
 export {default as RestaurantEditList} from './Restaurants/RestaurantEditList'

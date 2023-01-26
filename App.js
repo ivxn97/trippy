@@ -20,7 +20,7 @@ import {
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
-  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList
+  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -53,7 +53,9 @@ function ProfileStackScreen() {
       <Stack.Screen name="Admin View User" component={AdminViewUser} />
       <Stack.Screen name="Add Deal" component={AddDeal} />
       <Stack.Screen name="Add Guide" component={AddGuide} />
+      <Stack.Screen name="Add Walking Tour" component={AddWalkingTour} />
       <Stack.Screen name="LOL Guides" component={LOLGuideList} />
+      <Stack.Screen name="LOL Walking Tours" component={LOLWalkingToursList} />
       <Stack.Screen name="Guide Screen" component={GuideScreen} />
       <Stack.Screen name="Bookmarks" component={Bookmarks} />
       <Stack.Screen name="Delete Bookmark" component={DeleteBookmark} />

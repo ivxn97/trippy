@@ -128,12 +128,12 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                     <Text style={styles.textList}>My Guides</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('LOL Walking Tours')}
                     title="Walking Tour"
                 >
                     <Text style={styles.textList}>My Walking Tours</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList}
+                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Active Thread')}
                     title="Active Threads"
                 >
                     <Text style={styles.textList}>My Active Threads</Text>
@@ -181,6 +181,7 @@ export default function ProfileScreen ( {navigation} ) {
     else if (role == 'Registered User') {
         return (
             <View>
+                <ScrollView>
                 <Text style={styles.Heading}>Welcome, User!</Text>
                 <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Profile', {
                     firstName: user.firstName,
@@ -228,6 +229,7 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                     <Text style={styles.textList}>Sign Out</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         )
     }

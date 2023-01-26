@@ -4,12 +4,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
-import { db } from '../../../config';
+import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 
 export default function AddGuide({ navigation }) {
@@ -19,6 +20,10 @@ export default function AddGuide({ navigation }) {
     const [mrt, setMRT] = useState('');
     const [tips, setTips] = useState('');
     const [description, setDescription] = useState('');
+    const [address, setAddress] = useState();
+    const [mapURL, setMapURL] = useState();
+    const [latitude, setLat] = useState();
+    const [longitude, setLong] = useState();
 
     const getEmail = async () => {
         try {
@@ -71,7 +76,8 @@ export default function AddGuide({ navigation }) {
                 await setDoc(doc(db, "guides", name), {
                     addedBy: email,
                     name: name,
-                    location: location,
+                    location: address,
+                    expired: false,
                     mrt: mrt,
                     tips: tips,
                     description: description,
@@ -107,17 +113,23 @@ export default function AddGuide({ navigation }) {
                 </TouchableOpacity>
                 
                 <Text style={styles.text}>Location:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Location Name'
-                    placeholderTextColor="#aaaaaa"
-                    underlineColorAndroid="transparent"
-                    onChangeText={(Text) => setLocation(Text)}
-                    value={location}
-                    autoCapitalize="sentences"
-                />
-                {/* insert google maps API and mapview here
-            https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
+                <GooglePlacesAutocomplete 
+                    placeholder='Enter Location'
+                    fetchDetails
+                    GooglePlacesDetailsQuery={{fields: 'geometry,url'}}
+                    onPress={(data, details = null) => {
+                        console.log('Data address:', data.description,'Location Details: ', details)
+                        const lat = details.geometry.location.lat
+                        const long = details.geometry.location.lng
+                        const mapURL = details.url
+                        const address = data.description
+                        setLat(lat);
+                        setLong(long);
+                        setMapURL(mapURL);
+                        setAddress(address);
+                    }}
+                    query={mapSearch}
+                    styles={{textInput:styles.input}}/>
 
                 <Text style={styles.text}>Nearest MRT:</Text>
                 <TextInput

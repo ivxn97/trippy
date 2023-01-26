@@ -4,12 +4,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc } from "firebase/firestore";
-import { db } from '../../../config';
+import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function AddGuide({ navigation }) {
     const [email, setEmail] = useState('');
@@ -18,13 +19,18 @@ export default function AddGuide({ navigation }) {
     const [mrt, setMRT] = useState('');
     const [tips, setTips] = useState('');
     const [description, setDescription] = useState('');
+    const [address, setAddress] = useState();
+    const [mapURL, setMapURL] = useState();
+    const [latitude, setLat] = useState();
+    const [longitude, setLong] = useState();
+    const [locationCount, setLocationCount] = useState(1);
+    const [locationArr, setLocationArr] = useState([])
 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
                 setEmail(email);
-                console.log(email)
             }
             else {
                 console.log("No Email Selected at Login")
@@ -55,7 +61,7 @@ export default function AddGuide({ navigation }) {
         const storage = getStorage();
         if (!result.canceled) {
           setImage(result.uri);
-          const storageRef = ref(storage, `guides/${name}/images/${fileName}`)
+          const storageRef = ref(storage, `walkingtours/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
@@ -65,16 +71,42 @@ export default function AddGuide({ navigation }) {
         };
     };
 
+    const addLocation = () => {
+        if (locationCount < 5) {
+            setLocationCount(locationCount + 1)
+        }
+        else {
+            alert("you have reached the location limit")
+        }
+    }
+
+    const locationArray = Array.from({length: locationCount}, (_, i) => 
+    <GooglePlacesAutocomplete 
+        placeholder='Enter Location'
+        fetchDetails
+        GooglePlacesDetailsQuery={{fields: 'geometry,url'}}
+        onPress={(data, details = null) => {
+            console.log('Data address:', data.description,'Location Details: ', details)
+            const lat = details.geometry.location.lat
+            const long = details.geometry.location.lng
+            const mapURL = details.url
+            const address = data.description
+            const createdArr = {address: address, mapURL: mapURL, lat: lat, long: long}
+            setLocationArr(current=> [...current, createdArr])
+        }}
+        query={mapSearch}
+        styles={{textInput:styles.input}}
+    />);
+
     const onSubmitPress = async () => {
             try {
-                await setDoc(doc(db, "guides", name), {
+                await setDoc(doc(db, "walkingtours", name), {
                     addedBy: email,
                     name: name,
-                    location: location,
-                    mrt: mrt,
+                    location: locationArr,
                     tips: tips,
                     description: description,
-                    activityType: 'guides'
+                    activityType: 'walkingtours'
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')
@@ -89,10 +121,10 @@ export default function AddGuide({ navigation }) {
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
     
-                <Text style={styles.text}>Guide Name:</Text>
+                <Text style={styles.text}>Walking Tour Name:</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder='Guide Name'
+                    placeholder='Walking Tour Name'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(Text) => setName(Text)}
                     value={name}
@@ -105,29 +137,13 @@ export default function AddGuide({ navigation }) {
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
                 
-                <Text style={styles.text}>Location:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Location Name'
-                    placeholderTextColor="#aaaaaa"
-                    underlineColorAndroid="transparent"
-                    onChangeText={(Text) => setLocation(Text)}
-                    value={location}
-                    autoCapitalize="sentences"
-                />
-                {/* insert google maps API and mapview here
-            https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
-
-                <Text style={styles.text}>Nearest MRT:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='MRT'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(Text) => setMRT(Text)}
-                    value={mrt}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
+                <Text style={styles.text}>Add Locations:</Text>
+                {locationArray}
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => addLocation()}>
+                    <Text style={styles.buttonName}>Add another location</Text>
+                </TouchableOpacity>
 
                 <Text style={styles.text}>Tips:</Text>
                 <FilteredTextInput
@@ -153,7 +169,7 @@ export default function AddGuide({ navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onSubmitPress()}>
-                    <Text style={styles.buttonName}>Add Guide</Text>
+                    <Text style={styles.buttonName}>Add Walking Tour</Text>
                 </TouchableOpacity>
             </KeyboardAwareScrollView>
         </View>

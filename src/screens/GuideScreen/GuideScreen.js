@@ -96,7 +96,17 @@ export default function GuideScreen({ route, navigation }) {
                 </TouchableOpacity>
             </View>
             <Text style={styles.textNB}>Nearest MRT: {JSON.stringify(mrt).replace(/"/g, "")}</Text>
-            <Text style={styles.textNB}>Locations: {JSON.stringify(location).replace(/"/g, "")}</Text>
+            <Text style={styles.textNB}>Locations:</Text>
+            {location.map((item, index) => (
+                <Text key={index} style={styles.textNB}>
+                        <Text 
+                        style={[styles.textNB, {color:'blue'}]} 
+                        onPress={() => openAddress(item.mapURL)}>
+                            {item.address.replace(/"/g,"")}
+                        </Text>
+                    </Text>
+                ))}
+            <Text>{'\n'}</Text>
             <Text style={styles.textNB}>tips: {JSON.stringify(tips).replace(/"/g, "")}</Text>
             <Carousel width={width}
                 height={width / 2}

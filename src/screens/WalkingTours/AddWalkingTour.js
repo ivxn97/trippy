@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
@@ -25,6 +25,15 @@ export default function AddWalkingTour({ navigation }) {
     const [longitude, setLong] = useState();
     const [locationCount, setLocationCount] = useState(1);
     const [locationArr, setLocationArr] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [sections, setSections] = useState([]);
+    const [section, setSection] = useState();
+
+    const typePlaceholder = {
+        label: 'Section Category',
+        value: null,
+        color: 'black',
+    };
 
     const getEmail = async () => {
         try {
@@ -40,6 +49,20 @@ export default function AddWalkingTour({ navigation }) {
         }
     }
     getEmail();
+
+    const getTypes = async ()  => {
+        const querySnapshot = await getDocs(collection(db, "walking tour sections"));
+        querySnapshot.forEach(documentSnapshot => {
+          sections.push({label: documentSnapshot.data().name, value: documentSnapshot.data().name});
+        });
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        if (loading) {
+        getTypes();
+        }
+    }) 
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -60,7 +83,6 @@ export default function AddWalkingTour({ navigation }) {
 
         const storage = getStorage();
         if (!result.canceled) {
-          setImage(result.uri);
           const storageRef = ref(storage, `walkingtours/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
@@ -106,7 +128,8 @@ export default function AddWalkingTour({ navigation }) {
                     location: locationArr,
                     tips: tips,
                     description: description,
-                    activityType: 'walkingtours'
+                    activityType: 'walkingtours',
+                    section: section
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')
@@ -136,6 +159,15 @@ export default function AddWalkingTour({ navigation }) {
                     disabled={name ? false : true} >
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
+
+                <Text style={styles.text}>Walking Tour Section:</Text>
+                <RNPickerSelect
+                    style={pickerSelectStyles}
+                    useNativeAndroidPickerStyle={false}
+                    placeholder={typePlaceholder}
+                    onValueChange={(value) => setSection(value)}
+                    items = {sections}
+                />
                 
                 <Text style={styles.text}>Add Locations:</Text>
                 {locationArray}
@@ -175,3 +207,36 @@ export default function AddWalkingTour({ navigation }) {
         </View>
     )
 }
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

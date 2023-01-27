@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-export default function AddGuide({ navigation }) {
+export default function AddWalkingTour({ navigation }) {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');

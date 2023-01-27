@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NestableDraggableFlatList, NestableScrollContainer, ScaleDecorator } from 'react-native-draggable-flatlist';
 
-export default function Itinerary ( {navigation} ) {
+export default function Itinerary({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [email, setEmail] = useState();
     const [itineraryArr, setItineraryArr] = useState();
@@ -22,6 +22,8 @@ export default function Itinerary ( {navigation} ) {
     const [mergedArr, setMergedArr] = useState([]);
     const [completedArr, setCompletedArr] = useState([]);
     const [status, setStatus] = useState('Loading Itinerary')
+    const [search, setSearch] = useState('');
+    const [filteredData, setfilteredData] = useState(completedArr);
 
     const [shouldRun, setShouldRun] = useState(true);
 
@@ -40,7 +42,7 @@ export default function Itinerary ( {navigation} ) {
         }
     }
 
-    async function getItinerary (email) {
+    async function getItinerary(email) {
         var loginRef = doc(db, "users", email);
         const docSnap = await getDoc(loginRef);
 
@@ -49,7 +51,7 @@ export default function Itinerary ( {navigation} ) {
             const itineraryData = docSnap.data().itinerary
             console.log("Itinerary Data:", itineraryData);
             let finalArray = itineraryData.map((element, index) => {
-                if(element.hasOwnProperty('position') && element.hasOwnProperty('name')) {
+                if (element.hasOwnProperty('position') && element.hasOwnProperty('name')) {
                     return element;
                 } else {
                     return {
@@ -131,7 +133,7 @@ export default function Itinerary ( {navigation} ) {
         /*if (itineraryArr) {
             setLoading(false);
         }*/
-    getMergeArr();
+        getMergeArr();
     }
 
     const getWalkingTours = async () => {
@@ -156,17 +158,17 @@ export default function Itinerary ( {navigation} ) {
         console.log("merged arr:", mergedArr)
         console.log("Final arr in merged arr:", finalArr)
         if (finalArr) {
-        const completedArr = finalArr.map((item) => {
-            const correspondingItem = mergedArr.find((i) => i.name === item.name);
-            return {
-                ...item,
-                ...correspondingItem
-            }
-        })
-        console.log("Completed Array:", completedArr)
-        setCompletedArr(completedArr)
+            const completedArr = finalArr.map((item) => {
+                const correspondingItem = mergedArr.find((i) => i.name === item.name);
+                return {
+                    ...item,
+                    ...correspondingItem
+                }
+            })
+            console.log("Completed Array:", completedArr)
+            setCompletedArr(completedArr)
         }
-        
+
         if (finalArr) {
             setLoading(false);
         }
@@ -178,12 +180,28 @@ export default function Itinerary ( {navigation} ) {
         try {
             await setDoc(doc(db, "users", email), {
                 itinerary: submitList
-            }, {merge:true});
+            }, { merge: true });
             //console.log("Document written with ID: ", docRef.id);
             navigation.navigate('Profile Page')
         }
         catch (e) {
             console.log("Error adding document: ", e);
+        }
+    }
+
+    const searchFilter = (text, type) => {
+        if (text) {
+            const newData = type.filter((item) => {
+                const itemData = item.name ? item.name.toUpperCase()
+                    : ''.toUpperCase()
+                const textData = text.toUpperCase()
+                return itemData.indexOf(textData) > -1;
+            });
+            setCompletedArr(newData);
+            setSearch(text);
+        } else {
+            setCompletedArr(type);
+            setSearch(text);
         }
     }
 
@@ -198,7 +216,7 @@ export default function Itinerary ( {navigation} ) {
             getGuides();
             //getWalkingTours();
         }
-    },[shouldRun, email, finalArr]))
+    }, [shouldRun, email, finalArr]))
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -214,52 +232,62 @@ export default function Itinerary ( {navigation} ) {
                 <Text style={styles.Heading}>{status}</Text>
             </View>);
     }
-    
+
     const renderItem = ({ item, drag, isActive }) => {
         return (
-          <ScaleDecorator>
-            <TouchableOpacity
-              activeOpacity={1}
-              onLongPress={drag}
-              disabled={isActive}
-              style={styles.list}
-              onPress={() => {
-                navigation.navigate('Details', {
-                    name: item.name, roomTypes: item.roomTypes,
-                    priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
-                    checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                    language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine, 
-                    price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
-                    closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
-                    startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
-                })
-                }}
-            >
-              <Text>{item.position}. {item.name}</Text>
-            </TouchableOpacity>
-          </ScaleDecorator>
+            <ScaleDecorator>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onLongPress={drag}
+                    disabled={isActive}
+                    style={styles.list}
+                    onPress={() => {
+                        navigation.navigate('Details', {
+                            name: item.name, roomTypes: item.roomTypes,
+                            priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
+                            checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures,
+                            language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine,
+                            price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                            closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType,
+                            startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
+                        })
+                    }}
+                >
+                    <Text>{item.position}. {item.name}</Text>
+                </TouchableOpacity>
+            </ScaleDecorator>
         )
     };
 
     return (
-    <NestableScrollContainer>
-        <Text style={styles.HeadingList}>Itinerary</Text>
-        <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-            <TouchableOpacity style={styles.buttonListRight}>
-            <Text style={styles.buttonSmallListText}>Remove</Text>
+        <NestableScrollContainer>
+            <Text style={styles.HeadingList}>Itinerary</Text>
+            <TextInput
+                style={styles.inputSearch}
+                placeholder='search'
+                placeholderTextColor="#aaaaaa"
+                underlineColorAndroid="transparent"
+                autoCapitalize="sentences"
+                value={search}
+                onChangeText={(text) => searchFilter(text, completedArr)}
+            />
+            <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
+                <TouchableOpacity style={styles.buttonListRight}>
+                    <Text style={styles.buttonSmallListText}>Remove</Text>
+                </TouchableOpacity>
+            </View>
+            <NestableDraggableFlatList
+                data={completedArr}
+                extraData={completedArr}
+                renderItem={renderItem}
+                onDragEnd={({ data }) => setCompletedArr(data)}
+                keyExtractor={(item) => item.position}
+            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => onSubmitPress()}>
+                <Text style={styles.buttonTitle}>Save Changes</Text>
             </TouchableOpacity>
-        </View>
-        <NestableDraggableFlatList
-            data={completedArr}
-            renderItem={renderItem}
-            onDragEnd={({data}) => setCompletedArr(data)}
-            keyExtractor={(item) => item.position}
-        />
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => onSubmitPress()}>
-            <Text style={styles.buttonTitle}>Save Changes</Text>
-        </TouchableOpacity>
-    </NestableScrollContainer>
+        </NestableScrollContainer>
     )
 }

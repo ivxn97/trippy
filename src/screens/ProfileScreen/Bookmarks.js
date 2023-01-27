@@ -45,6 +45,7 @@ export default function Bookmarks ( {navigation} ) {
             const bookmarksData = docSnap.data().bookmarks
             setBookmarksArr(bookmarksData);
             setShouldRun(false);
+            console.log("bookmark: " + bookmarksArr)
         }
         else {
             console.log("Error", error)
@@ -171,6 +172,9 @@ export default function Bookmarks ( {navigation} ) {
                 <ScrollView>
                 <Text style={styles.HeadingList}>Bookmarks</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Search Bookmarks', {bookmarksArr: bookmarksArr})}>
+                        <Text style={styles.buttonSmallListText}>Search</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonListRight}
                     onPress={() => {navigation.navigate('Delete Bookmark')}}>
                     <Text style={styles.buttonSmallListText}>Remove</Text>

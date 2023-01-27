@@ -18,7 +18,7 @@ const ratingPlaceholder = {
 };
 
 export default function AddReviewScreen ( { route, navigation }) {
-    const {name} = route.params;
+    const {name, activityType} = route.params;
     
 
     const [userName, setUserName] = useState('');
@@ -55,7 +55,7 @@ export default function AddReviewScreen ( { route, navigation }) {
     console.log(name);
     const onSubmitPress = async () => {
         try {
-            await updateDoc(doc(db, "restaurants", name), {
+            await updateDoc(doc(db, activityType, name), {
                 review: arrayUnion(...[{comment: comment,
                         rating: rating,
                         userName: userName,

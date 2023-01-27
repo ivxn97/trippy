@@ -19,7 +19,8 @@ import {
   EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
-  ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, SearchBookmarks
+  ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
+  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, SearchBookmarks
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -52,7 +53,9 @@ function ProfileStackScreen() {
       <Stack.Screen name="Admin View User" component={AdminViewUser} />
       <Stack.Screen name="Add Deal" component={AddDeal} />
       <Stack.Screen name="Add Guide" component={AddGuide} />
+      <Stack.Screen name="Add Walking Tour" component={AddWalkingTour} />
       <Stack.Screen name="LOL Guides" component={LOLGuideList} />
+      <Stack.Screen name="LOL Walking Tours" component={LOLWalkingToursList} />
       <Stack.Screen name="Guide Screen" component={GuideScreen} />
       <Stack.Screen name="Bookmarks" component={Bookmarks} />
       <Stack.Screen name="Delete Bookmark" component={DeleteBookmark} />
@@ -68,8 +71,13 @@ function ProfileStackScreen() {
       <Stack.Screen name="Edit Thread List" component={ActiveThreadEditList} />
       <Stack.Screen name="Delete Thread" component={ActiveThreadDelete} />
       <Stack.Screen name="Profile" component={ProfilePage} />
+      <Stack.Screen name="User Bookings" component={UserBookings} />
+      <Stack.Screen name="Booking Details" component={BookingDetails} />
+      <Stack.Screen name="User Previous Bookings" component={UserPreviousBookings} />
+      <Stack.Screen name="Previous Booking Details" component={PreviousBookingDetails} />
+      <Stack.Screen name="User Deals" component={UserDealsList} />
+      <Stack.Screen name="Deal detail" component={DealsScreen} />
       <Stack.Screen name="Search Bookmarks" component={SearchBookmarks} />
-
     </ProfileStack.Navigator>
   )
 }
@@ -117,6 +125,8 @@ function HomeStackScreen() {
       <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen} />
       <Stack.Screen name="Edit Review" component={EditReview} />
       <Stack.Screen name="Booking" component={Booking}/>
+      <Stack.Screen name="Payment" component={Payment}/>
+      <Stack.Screen name="Confirm Booking" component={ConfirmBooking}/>
     </HomeStack.Navigator>
   )
 }

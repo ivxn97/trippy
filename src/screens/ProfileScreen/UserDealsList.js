@@ -5,16 +5,22 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Deals( { navigation }) {
+export default function UserDealsList( { navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [deals, setDeals] = useState([]); // Initial empty array of deals
   const [search, setSearch] = useState('');
-  const [filteredData, setfilteredData] = useState(deals);
+  const [filteredData, setfilteredData] = useState();
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+  const [email, setEmail] = useState();
+  const [dealInfo, setDealInfo] = useState([]);
+  const [redeemableDeals, setRedeemableDeals] = useState([]);
+  const [claimedDeals, setClaimedDeals] = useState();
+  const [shouldRun, setShouldRun] = useState(true);
 
   function openDropdown() {
     setDropdownVisible(true);
@@ -32,19 +38,61 @@ export default function Deals( { navigation }) {
     setInnerDropdownVisible(false);
   }
 
+  //Get email from storage
+  const getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null) {
+            setEmail(email);
+            console.log(email)
+        }
+        else {
+            console.log("No Email Selected at Login")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "deals"));
-        querySnapshot.forEach(documentSnapshot => {
-          deals.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
+  const getClaimedDeals = async () => {
+    const docRef = doc(db, "users", email)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      setClaimedDeals(docSnap.data().claimedDeals)
+    }
+    setShouldRun(false)
+  }
 
-        setDeals(deals);
-        setLoading(false);
-      },[]);
+  const getDealInfo = async () => {
+    const querySnapshot = await getDocs(collection(db, "deals"))
+    querySnapshot.forEach(documentSnapshot => {
+      dealInfo.push({
+        ...documentSnapshot.data(),
+        key: documentSnapshot.id,
+      });
+    })
+
+    //Filter the deals to only the ones that the user has redeemed
+    console.log(dealInfo,"SPlit",  claimedDeals)
+    const firstFilter = dealInfo.filter(item => claimedDeals.includes(item.code))
+    setRedeemableDeals(firstFilter);
+    setfilteredData(firstFilter)
+    console.log(firstFilter)
+    setLoading(false)
+  }
+
+
+  useEffect(() => {
+    if (shouldRun) {
+      getEmail();
+      if (email) {
+        getClaimedDeals();
+        if (claimedDeals) {
+          getDealInfo();
+        }
+      }
+    }
+  },[email, claimedDeals])
   
   async function handleSortChange(sort) {
     if (sort === 'asc' || sort === 'desc') {
@@ -67,7 +115,7 @@ export default function Deals( { navigation }) {
   const searchFilter = (text, type) => {
     if (text) {
         const newData = type.filter((item) => {
-            const itemData = item.name ? item.name.toUpperCase()
+            const itemData = item.dealname ? item.dealname.toUpperCase()
                 : ''.toUpperCase()
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1;
@@ -89,7 +137,7 @@ export default function Deals( { navigation }) {
         underlineColorAndroid="transparent"
         autoCapitalize="sentences"
         value={search}
-        onChangeText={(text) => searchFilter(text, deals)}
+        onChangeText={(text) => searchFilter(text, redeemableDeals)}
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
         {!sortBy && (

@@ -1,29 +1,43 @@
-import React, { useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, ActivityIndicator, FlatList, TouchableHighlight } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs, QuerySnapshot, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Moment from 'moment';
 
-const businessPlaceholder = {
-    label: 'Business',
+
+const businessTypePlaceholder = {
+    label: 'Business Type',
     value: null,
     color: 'black',
 };
 
 
 export default function AddDeal ( {navigation} ) {
+    const [shouldRun, setShouldRun] = useState(true);
+    const [loading, setLoading] = useState(true)
     const [email, setEmail] = useState('');
     const [dealname, setName] = useState('');
-    const [business, setBusiness] = useState('');
+    const [businessType, setBusinessType] = useState('');
+    const [businessName, setBusinessName] = useState('');
     const [code, setCode] = useState('');
     const [discount, setDiscount] = useState('');
     const [quantity, setQuantity] = useState('');
     const [description, setDescription] = useState('');
     const [TNC, setTNC] = useState('');
+    const [expiryDT, setExpiryDT] = useState()
+    const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
+    const [hotels, setHotels] = useState([]);
+    const [paidTours, setPaidTours] = useState([]);
+    const [attractions, setAttractions] = useState([]);
+    const [mergedArr, setMergedArr] = useState([]);
+    const [shouldShow, setShouldShow] = useState(false)
+    const [isDateTimePickerVisible, setDateTimePickerVisiblity] = useState(false);
 
     const getEmail = async () => {
         try {
@@ -38,14 +52,88 @@ export default function AddDeal ( {navigation} ) {
             console.log(error)
         }
     }
-    getEmail();
+
+    const getRestaurants = async () => {
+        const collectionRef = collection(db, "restaurants")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            restaurants.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
+    }
+
+    const getHotels = async () => {
+        const collectionRef = collection(db, "hotels")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            hotels.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
+    }
+
+    const getPaidTours = async () => {
+        const collectionRef = collection(db, "paidtours")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            paidTours.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
+    }
+
+    const getAttractions = async () => {
+        const collectionRef = collection(db, "attractions")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            attractions.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
+        getMergeArr();
+    }
+
+    const getMergeArr = () => {
+        mergedArr.push(...restaurants);
+        mergedArr.push(...hotels);
+        mergedArr.push(...paidTours);
+        mergedArr.push(...attractions);
+
+        if (mergedArr) {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (shouldRun) {
+            getEmail();
+            if (email) {
+                getRestaurants();
+                getHotels();
+                getPaidTours();
+                getAttractions();
+                setShouldRun(false);
+            }
+        }
+    }, [shouldRun, email, mergedArr])
 
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "deals", dealname), {
                 addedBy: email,
                 dealname: dealname,
-                type: business,
+                type: businessType,
+                businessName: businessName,
+                expiry: expiryDT,
                 code: code,
                 discount: discount,
                 quantity: quantity,
@@ -60,15 +148,47 @@ export default function AddDeal ( {navigation} ) {
         }
     }
 
+    const selectBusiness = (name, type) => {
+        setBusinessName(name);
+        if (type == "attractions") {
+            setBusinessType("Attraction")
+        }
+        else if (type == "restaurants") {
+            setBusinessType("Restaurant")
+        }
+        else if (type == "hotels") {
+            setBusinessType("Hotel")
+        }
+        else if (type == "paidtours") {
+            setBusinessType("Paid Tour")
+        }
+        setShouldShow(!shouldShow);
+    }
+
+    const showDateTimePicker = () => {
+        setDateTimePickerVisiblity(true);
+      };
+    
+    const hideDateTimePicker = () => {
+        setDateTimePickerVisiblity(false);
+    };
+    
+
+    const handleConfirmDateTime = (date) => {
+        setExpiryDT(date)
+        hideDateTimePicker();
+    };
+
+    if (loading) {
+        return <ActivityIndicator />
+    }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
+
             <Text style={styles.text}>Deal Name:</Text>
             <TextInput
                 style={styles.input}
@@ -79,20 +199,27 @@ export default function AddDeal ( {navigation} ) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
-            <Text style={styles.text}>Business Type:</Text>
-                <RNPickerSelect
-                    style={pickerSelectStyles}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder={businessPlaceholder}
-                    placeholderTextColor="#aaaaaa"
-                    onValueChange={(value) => setBusiness(value)}
-                    items={[
-                        { label: 'Attraction', value: 'Attraction'},
-                        { label: 'Hotel', value: 'Hotel' },
-                        { label: 'Restaurant', value: 'Restaurant' },
-                        { label: 'Paid Tour', value: 'Paid Tour' },
-                    ]}
-            />
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => setShouldShow(!shouldShow)}>
+                <Text style={styles.buttonTitle}>Select Activity</Text>
+            </TouchableOpacity>
+            {shouldShow ? (
+                <FlatList
+                data={mergedArr}
+                extraData={mergedArr}
+                renderItem={({ item }) => (
+                    <TouchableHighlight
+                    underlayColor="#C8c9c9"
+                    onPress={() => selectBusiness(item.name, item.activityType)}>
+                    <View style={styles.list}>
+                    <Text>{item.name}</Text>
+                    </View>
+                    </TouchableHighlight>
+                )}
+                />
+            ) : null}
+
             <Text style={styles.text}>Discount:</Text>
             <TextInput
                 style={styles.input}
@@ -125,7 +252,18 @@ export default function AddDeal ( {navigation} ) {
                 autoCapitalize="none"
                 keyboardType="numeric"
             />
-           <Text style={styles.text}>Description:</Text>
+            <TouchableOpacity style={styles.button} onPress={showDateTimePicker}>
+                <Text style={styles.buttonTitle}>Select expiry Date and Time</Text>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                isVisible={isDateTimePickerVisible}
+                mode="datetime"
+                minimumDate={new Date()}
+                onConfirm={handleConfirmDateTime}
+                onCancel={hideDateTimePicker}
+            />
+            <Text style={styles.text}>Selected Date: {Moment(expiryDT).format('DD MMM YYYY hh:mm A')}</Text>
+            <Text style={styles.text}>Description:</Text>
             <FilteredTextInput
                 style={styles.desc}
                 placeholder='Description'

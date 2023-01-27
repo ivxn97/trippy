@@ -100,6 +100,12 @@ export default StyleSheet.create({
         marginLeft: 8,
         marginRight: 30
     },
+    textList: {
+        borderRadius: 5,
+        color: 'black',
+        marginLeft:20,
+        fontSize:18,
+    },
     text: {
         borderRadius: 5,
         marginTop: 7,
@@ -111,6 +117,16 @@ export default StyleSheet.create({
     textNB: {
         borderRadius: 5,
         paddingLeft: 16,
+    },
+    textBooking: {
+        borderRadius: 5,
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
+        marginRight:30,
+        paddingLeft: 16,
+        fontWeight: 'bold',
+        fontSize:16
     },
     carouselStyle: {
         width: 410,
@@ -124,6 +140,14 @@ export default StyleSheet.create({
         marginTop: 7,
         marginBottom: 7,
         marginLeft: 8,
+    },
+    HeadingList: {
+        fontSize: 30,
+        textAlign: 'right',
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 8,
+        marginRight: 30
     },
     list: {
         borderTopLeftRadius: 15,
@@ -222,6 +246,20 @@ export default StyleSheet.create({
         marginRight: 20,
         marginTop: 20,
         marginBottom: 20,
+        height: 48,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    buttonList: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        backgroundColor: '#acacab',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 10,
         height: 48,
         borderRadius: 5,
         alignItems: "center",

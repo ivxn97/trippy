@@ -4,30 +4,48 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function BOAttractionList( {navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
   const [attractions, setAttractions] = useState([]); // Initial empty array of attractions
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(attractions);
+  const [email, setEmail] = useState('');
 
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
+  const getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null) {
+            setEmail(email);
+        }
+        else {
+            console.log("No Email Selected at Login")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "attractions"));
-        querySnapshot.forEach(documentSnapshot => {
-          attractions.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
+  const getAttractions = async () => {
+    const collectionRef = collection(db, "attractions")
+    const q = query(collectionRef, where('addedBy', '==', email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        attractions.push({
+            ...doc.data(),
+            key: doc.id
+        })
+    })
+    setLoading(false);
+  }
 
-        setAttractions(attractions);
-        setLoading(false);
-      },[]);
+  useEffect(() => {
+    getEmail();
+    if (email) {
+      getAttractions();
+    }
+  },[email]);
   
   if (loading) {
     return <ActivityIndicator />;

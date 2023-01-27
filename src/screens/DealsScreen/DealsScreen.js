@@ -5,10 +5,11 @@ import {claimDeals} from '../commonFunctions';
 import styles from './styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Moment from 'moment';
 
 export default function DealsScreen ( {route, navigation} ) {
 
-    const {name, dealType, discount, code, description, quantity, TNC} = route.params;
+    const {name, dealType, discount, code, description, quantity, TNC, businessName, expiry} = route.params;
     const [email, setEmail] = useState('');
     const onShare = async () => {
         try {
@@ -43,19 +44,18 @@ Download the App here: URL`})
         {
             claimDeals(email, code)
             Alert.alert
-            (`${name}`,`Deal Redeemed. Here is your code : ${code}`)
+            (`${name}`,`Deal Redeemed.`)
         }
     }
 
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
+            <Text style={[styles.Heading, {fontSize:21}]}>Applicable for: {JSON.stringify(businessName).replace(/"/g,"")}</Text>
+            <Text style={[styles.Heading, {fontSize:21}]}>Expires {Moment(expiry.toDate()).fromNow()}</Text>
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={() => onShare()}>
                         <Text style={styles.buttonSmallText}>Share</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall} onPress={() => onClaim()}>
-                        <Text style={styles.buttonSmallText}>Claim</Text>
                 </TouchableOpacity>
             </View>
             <Text style={styles.textNB}>Discount: {JSON.stringify(discount).replace(/"/g,"")}% off</Text>
@@ -63,8 +63,9 @@ Download the App here: URL`})
             <Text style={styles.textNB}>Type: {JSON.stringify(dealType).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
-            <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-            </View>
+            <TouchableOpacity style={styles.button} onPress={() => onClaim()}>
+                        <Text style={styles.buttonTitle}>Claim</Text>
+            </TouchableOpacity>
         </View>
     )
 }

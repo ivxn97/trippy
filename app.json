@@ -24,6 +24,9 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "softwareKeyboardLayoutMode": "resize"
+    },
     "description": "TripAID Project",
     "githubUrl": "https://github.com/ivxn97/trippy"
   }

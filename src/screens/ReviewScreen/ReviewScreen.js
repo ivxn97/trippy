@@ -8,11 +8,11 @@ import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, Button } fro
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 export default function ReviewScreen({route, navigation}) {
-    const {name} = route.params;
+    const {name, activityType} = route.params;
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [email, setEmail] = useState('');
     const [review, setReview] = useState([]);
-    const [restaurants, setRestaurants] = useState([]);
+    const [activity, setActivity] = useState([]);
     const [reviewButton, setReviewButton] = useState(true);
 
     useFocusEffect(React.useCallback(async ()=> {
@@ -20,21 +20,21 @@ export default function ReviewScreen({route, navigation}) {
     }, []));
 
     useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "restaurants"));
+        const querySnapshot = await getDocs(collection(db, activityType));
         querySnapshot.forEach(documentSnapshot => {
-            restaurants.push({
+            activity.push({
                 ...documentSnapshot.data(),
                 key: documentSnapshot.id,
             });
         });
         
-        restaurants.map((item) => {
+        activity.map((item) => {
             if (item.name === name) {
                 setReview(item.review);
             }
         });
 
-        setRestaurants(restaurants);
+        setActivity(activity);
         
         setLoading(false);
     },[]);
@@ -75,7 +75,7 @@ export default function ReviewScreen({route, navigation}) {
             )}
             />
             <View>
-                <TouchableOpacity style={[styles.buttonSmall, {opacity: reviewButton ? 0.3 : 1}]} onPress={() => navigation.replace('Add Review Screen', {name})}
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: reviewButton ? 0.3 : 1}]} onPress={() => navigation.replace('Add Review Screen', {name, activityType})}
                     disabled={reviewButton}>
                             <Text style={styles.buttonSmallText}>Add Review</Text>
                 </TouchableOpacity>

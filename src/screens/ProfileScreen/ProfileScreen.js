@@ -2,7 +2,6 @@ import React, { useState, useEffect} from 'react'
 import { View, Text, button, TouchableOpacity, Image } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import Parse from 'parse/react-native';
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -36,8 +35,6 @@ export default function ProfileScreen ( {navigation} ) {
         }
     }
 
-
-    
     const getUser = async () => {
         const q = query(collection(db, "users"), where("email", "==", email));
         const querySnapshot = await getDocs(q);

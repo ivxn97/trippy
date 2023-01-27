@@ -21,12 +21,9 @@ import {
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
-  GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView,
-  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, SearchBookmarks
+  GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks
 } from './src/screens'
 import { decode, encode } from 'base-64'
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 if (!global.btoa) { global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 

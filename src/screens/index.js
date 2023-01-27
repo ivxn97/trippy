@@ -10,13 +10,18 @@ export { default as RegistrationBO } from './RegistrationScreen/RegistrationBO'
 export {default as RegistrationSelector} from './RegistrationScreen/RegistrationSelector'
 
 //Guide Screens
-export {default as GuideWTList} from './GuideScreen/GuideWTList'
+export {default as GuideWTLanding} from './GuideScreen/GuideWTLanding'
+export {default as GuideList} from './GuideScreen/GuideList'
 export {default as AddGuide} from './GuideScreen/AddGuide'
 export {default as GuideScreen} from './GuideScreen/GuideScreen'
 export {default as GuideSection} from './GuideScreen/GuideSection'
 
 //Walking Tour Screens
 export {default as AddWalkingTour} from './WalkingTours/AddWalkingTour'
+export {default as WalkingToursList} from './WalkingTours/WalkingToursList'
+export {default as WalkingTourSection} from './WalkingTours/WalkingTourSection'
+export {default as WalkingTourScreen} from './WalkingTours/WalkingTourScreen'
+export {default as WTMapView} from './WalkingTours/WTMapView'
 
 //Deal Screens
 export {default as DealsScreen} from './DealsScreen/DealsScreen'

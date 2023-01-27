@@ -6,9 +6,9 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
 
-export default function GuideWTList ({ navigation }) {
+export default function GuideList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [guides, setGuides] = useState([]); // Initial empty array of hotels
+    const [guides, setGuides] = useState([]); // Initial empty array of guides
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(guides);
     const [sortBy, setSortBy] = useState(null);
@@ -121,8 +121,6 @@ export default function GuideWTList ({ navigation }) {
     return (
         <View>
         <Text style={styles.HeadingList}>Guides</Text>
-        <Text style={styles.HeadingList}>And</Text>
-        <Text style={styles.HeadingList}>Walking Tours</Text>
 
         {/* Searchbar */}
         <TextInput

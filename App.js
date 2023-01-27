@@ -8,7 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import {
   LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
-  GuideWTList, ProfileScreen, DealsScreen, AttractionList, AttractionView,
+  GuideList, ProfileScreen, DealsScreen, AttractionList, AttractionView,
   RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
   RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers,
   AdminScreen, AdminViewUser, DealsList, AddHotel, AddDeal, AddRestaurant, AddAttraction, AddPaidTour, AddGuide,
@@ -20,7 +20,8 @@ import {
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
-  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour
+  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
+  GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -97,9 +98,20 @@ const GuideStack = createStackNavigator();
 function GuideStackScreen() {
   return (
     <GuideStack.Navigator>
-      <Stack.Screen name="Guide List" component={GuideWTList} />
+      <Stack.Screen name="Guide WT Landing" component={GuideWTLanding} />
+      <Stack.Screen name="Guide List" component={GuideList} />
       <Stack.Screen name="Guide Screen" component={GuideScreen} />
       <Stack.Screen name="Guide Section" component={GuideSection} />
+      <Stack.Screen name="Walking Tours List" component={WalkingToursList} />
+      <Stack.Screen name="Walking Tour Section" component={WalkingTourSection} />
+      <Stack.Screen name="Walking Tour Screen" component={WalkingTourScreen} />
+      <Stack.Screen name="Add Guide" component={AddGuide} />
+      <Stack.Screen name="Add Walking Tour" component={AddWalkingTour} />
+      <Stack.Screen name="WT Map View" component={WTMapView} />
+      <Stack.Screen name="Review Screen" component={ReviewScreen} />
+      <Stack.Screen name="Add Review Screen" component={AddReviewScreen} />
+      <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen} />
+      <Stack.Screen name="Edit Review" component={EditReview} />
     </GuideStack.Navigator>
   )
 }

@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function GuideScreen({ route, navigation }) {
-    const { name, location, mrt, tips, description } = route.params;
+    const { name, location, mrt, tips, description, activityType } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
     const [images, setImages] = useState([]);
@@ -32,6 +32,10 @@ export default function GuideScreen({ route, navigation }) {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const onReview = () => {
+        navigation.navigate('Review Screen', {name, activityType});
     }
 
     useFocusEffect(React.useCallback(async ()=> {
@@ -115,7 +119,7 @@ export default function GuideScreen({ route, navigation }) {
             />
             <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
             </View>

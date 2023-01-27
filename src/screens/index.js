@@ -91,6 +91,7 @@ export { default as BookingDetails } from './ProfileScreen/BookingDetails'
 export { default as UserPreviousBookings } from './ProfileScreen/UserPreviousBookings'
 export { default as PreviousBookingDetails } from './ProfileScreen/PreviousBookingDetails'
 export { default as UserDealsList} from './ProfileScreen/UserDealsList'
+export { default as SearchBookmarks } from './ProfileScreen/SearchBookmarks'
 
 //Home Screens
 export { default as HomeScreen } from './HomeScreen/HomeScreen'

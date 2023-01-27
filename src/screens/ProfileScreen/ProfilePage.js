@@ -1,24 +1,29 @@
 import React, { useState, Component } from 'react';
 import { View, ScrollView, TouchableHighLight, TouchableOpacity, Image, Text, TextInput, StyleSheet } from 'react-native';
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
+import { db } from '../../../config';
+
 import profileImage from './profile.jpeg';
 
 export default function ProfilePage({ navigation, route }) {
-    const { firstName, lastName, email, role, country } = route.params;
+    const { firstName, lastName, username, bio, email, role} = route.params;
 
-    const [username] = email.split("@");
+    
     const [name, setName] = useState(firstName + " " + lastName);
     const [newName, setNewName] = useState("");
     const [first, last] = newName.split(" ");
-    const [newFirstName, setNewFirstName] = useState(first);
-    const [newLastName, setNewLastName] = useState(last);
     const [newUsername, setNewUsername] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [newBio, setNewBio] = useState("");
 
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "users", email), {
-                firstName: newFirstName,
-                lastName: newLastName,
+                username: newUsername,
+                email: newEmail,
+                bio: newBio,
+
             }, { merge: true });
             //console.log("Document written with ID: ", docRef.id);
             navigation.navigate('Profile Page')
@@ -67,10 +72,16 @@ export default function ProfilePage({ navigation, route }) {
                 <View>
                     <Text style={styles.normalText}>Email Address</Text>
                 </View>
-                <View style={styles.roleContainer}>
-                    <Text>{email}</Text>
-                </View>
-
+                <TextInput
+                    placeholder='email'
+                    placeholderTextColor="#aaaaaa"
+                    style={styles.roleContainer}
+                    onChangeText={(Text) => setNewEmail(Text)}
+                    value={email}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                >
+                </TextInput>
                 <View>
                     <Text style={styles.normalText}>Roles</Text>
                 </View>
@@ -79,15 +90,21 @@ export default function ProfilePage({ navigation, route }) {
                 </View>
 
                 <View>
-                    <Text style={styles.normalText}>Password</Text>
+                    <Text style={styles.normalText}>Bio</Text>
                 </View>
-                <TextInput secureTextEntry={true} style={styles.roleContainer}>
-                    <Text>{role}</Text>
-                </TextInput>
+                <TextInput
+                    placeholder='bio'
+                    placeholderTextColor="#aaaaaa"
+                    style={styles.bioContainer}
+                    onChangeText={(Text) => setNewBio(Text)}
+                    value={bio}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                ></TextInput>
 
                 <View>
-                    <TouchableOpacity style={styles.backButton} onPress={() => onSubmitPress()}>
-                        <Text style={styles.backButtonText}>Update</Text>
+                    <TouchableOpacity style={styles.updateButton} onPress={() => onSubmitPress()}>
+                        <Text style={styles.updateButtonText}>Update</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -97,6 +114,20 @@ export default function ProfilePage({ navigation, route }) {
 
 
 const styles = StyleSheet.create({
+    bioContainer:{
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        backgroundColor: '#fff',
+        width: '90%',
+        padding: 20,
+        borderRadius: 10,
+        shadowOpacity: 80,
+        elevation: 15,
+        marginTop: -30,
+        height: 110,
+        alignItems: 'flex-start',
+    },
     normalText: {
         fontSize : 15,
         fontWeight: 'bold',
@@ -135,7 +166,7 @@ const styles = StyleSheet.create({
         elevation: 15,
         marginTop: -30
     },
-    backButton: {
+    updateButton: {
         alignSelf: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -150,7 +181,7 @@ const styles = StyleSheet.create({
         marginBottom: 40,
         backgroundColor: '#000'
     },
-    backButtonText: {
+    updateButtonText: {
         fontSize: 15,
         color: '#fff',
         fontWeight: 'bold',

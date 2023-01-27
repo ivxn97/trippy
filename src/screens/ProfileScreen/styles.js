@@ -1,6 +1,65 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    profileButton:{ 
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: '#8f8f8f',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 345,
+        marginBottom: -325,
+        height: 48,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    infoText: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        paddingVertical: 20,
+    },
+    profileContainer: {
+        padding: 10,
+        width: '100%',
+        height: 150
+    },
+    profileImage: {
+        resizeMode: 'cover',
+        width: 150,
+        marginLeft: 20,
+        marginTop: -10,
+        height: 150,
+        borderRadius: 100,
+    },
+    informationBox: {
+        boxSizing: 'border-box',
+        width: 530,
+        height: 260,
+        marginLeft: 10,
+        top: -3,
+        background: '#E3E3E3',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderStyle: 'solid',
+    },
+    userBox: {
+        boxSizing: 'border-box',
+        position: 'absolute',
+        width: 550,
+        height: 320,
+        marginLeft: 25,
+        top: 10,
+        background: '#E3E3E3',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderStyle: 'solid',
+    },
     containerProfile: {
         flex: 1,
         padding: 20,

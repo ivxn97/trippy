@@ -21,7 +21,8 @@ import {
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
-  GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView
+  GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView,
+  BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, SearchBookmarks
 } from './src/screens'
 import { decode, encode } from 'base-64'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -78,6 +79,7 @@ function ProfileStackScreen() {
       <Stack.Screen name="Previous Booking Details" component={PreviousBookingDetails} />
       <Stack.Screen name="User Deals" component={UserDealsList} />
       <Stack.Screen name="Deal detail" component={DealsScreen} />
+      <Stack.Screen name="Search Bookmarks" component={SearchBookmarks} />
     </ProfileStack.Navigator>
   )
 }

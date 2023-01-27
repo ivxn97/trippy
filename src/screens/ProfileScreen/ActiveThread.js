@@ -71,7 +71,7 @@ export default function ActiveThread({ navigation }) {
     const searchFilter = (text, type) => {
         if (text) {
             const newData = type.filter((item) => {
-                const itemData = item.name ? item.name.toUpperCase()
+                const itemData = item.title ? item.title.toUpperCase()
                     : ''.toUpperCase()
                 const textData = text.toUpperCase()
                 return itemData.indexOf(textData) > -1;
@@ -122,7 +122,8 @@ export default function ActiveThread({ navigation }) {
             {/* FlatList */}
 
             <FlatList
-                data={items}
+                data={filteredData}
+                extraData = {filteredData}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={ItemView}
             />

@@ -2,18 +2,24 @@ import React, { useState, useEffect} from 'react'
 import { View, Text, button, TouchableOpacity, Image } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import Parse from 'parse/react-native';
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
+import profileImage from './profile.jpeg';
 
 export default function ProfileScreen ( {navigation} ) {
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
     const [items, setItems] = useState([]); 
     const auth = getAuth();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null); 
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [bio, setBio] = useState('');
 
     const getEmail = async () => {
         try {
@@ -29,28 +35,39 @@ export default function ProfileScreen ( {navigation} ) {
             console.log(error)
         }
     }
-    
 
+
+    
     const getUser = async () => {
         const q = query(collection(db, "users"), where("email", "==", email));
-        
-        const querySnapshot = await getDocs(q)
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach(documentSnapshot => {
             items.push({
                 ...documentSnapshot.data(),
                 key: documentSnapshot.id,
             });
+            
         });
-        setUser(items[0]);
+        setItems(items);
+        setUser(items);
+        setUsername(items[0].username);
+        setBio(items[0].bio);
+        setFirstName(items[0].firstName);
+        setLastName(items[0].lastName);
+        
+        console.log("user: ", user);
     }
-
+    
+    
     useEffect(() => {
         getEmail()
-        if(email){
+        if (email) {
             getUser()
+            
         }
-
+        
     }, [email]);
+
     const onSignout = () => {
         signOut(auth).then(() => {
             // Sign-out successful.
@@ -101,6 +118,7 @@ export default function ProfileScreen ( {navigation} ) {
 
     useFocusEffect(React.useCallback(() => 
     {
+        
         getRole();
         console.log("Current Role:", role)
     },[role]));
@@ -181,55 +199,108 @@ export default function ProfileScreen ( {navigation} ) {
     else if (role == 'Registered User') {
         return (
             <View>
-                <ScrollView>
-                <Text style={styles.Heading}>Welcome, User!</Text>
-                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Profile', {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    role: user.role,
-                    country: user.country,})}
+                
+                <View style={styles.userBox}>
+                    <Text style={{
+                        fontSize: 30,
+                        fontWeight: 'bold',
+                        marginTop: 7,
+                        marginBottom: 7,
+                        marginLeft: 25,
+                    }}>Welcome, User!
+                    </Text>
+                    <View style={styles.informationBox}>
+                        <View style={{ alignItems: 'center', flex: 1 }}>
+                            <View style={styles.infoText}>
+                                <View>
+                                    <Image source={profileImage} style={styles.profileImage} />
+                                    <Text
+                                        style={{
+                                            paddingVertical: 5,
+                                            fontWeight: 'bold',
+                                            marginLeft: 15,
+                                            fontSize: 20
+                                        }}>
+                                        {username}
+                                    </Text>
+                                </View>
+                                <View style={{ alignItems: 'center', flex: 1, marginTop: -50 }}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{"25"}</Text>
+                                    <Text>Posts</Text>
+                                </View>
+                                <View style={{ alignItems: 'center', flex: 1, marginTop: -50 }}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{"36M"}</Text>
+                                    <Text>Followers</Text>
+                                </View>
+                                <View style={{ alignItems: 'center', flex: 1, marginTop: -50 }}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{"35"}</Text>
+                                    <Text>Following</Text>
+                                </View>
+                            </View>
+                            <Text style={{ 
+                                alignSelf: 'center', 
+                                marginTop: -90, 
+                                fontSize: 30, 
+                                marginLeft: 50 
+                            }}>Role : {role}</Text>
+                            <Text style={{
+                                paddingVertical: 15,
+                                marginTop: 20,
+                                fontSize: 20,
+                                marginRight: 30,
+                            }}>{bio}</Text>
+                        </View>
+                    </View>
+
+                </View>
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Profile', {
+                    firstName: firstName,
+                    lastName: lastName,
+                    username: username,
+                    bio: bio,
+                    email: email,
+                    role: role,})}
                     title="View Profile"
                 >
-                    <Text style={styles.textList}>View Profile</Text>
+                        <Text style={styles.textList}>View Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Bookmarks')}
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Bookmarks')}
                     title="Saved"
                 >
-                    <Text style={styles.textList}>Bookmarks</Text>
+                        <Text style={styles.textList}>Bookmarks</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Itinerary')}
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Itinerary')}
                     title="Itinerary"
                 >
-                    <Text style={styles.textList}>Itinerary</Text>
+                        <Text style={styles.textList}>Itinerary</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Active Thread')}
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Active Thread')}
                     title="Active Threads"
                 >
-                <Text style={styles.textList}>Active Threads</Text>
+                        <Text style={styles.textList}>Active Threads</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('User Bookings')}
+                <TouchableOpacity style={styles.profileButton}
                     title="My Bookings"
                 >
-                <Text style={styles.textList}>My Bookings</Text>
+                        <Text style={styles.textList}>My Bookings</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('User Deals')}
+                <TouchableOpacity style={styles.profileButton}
                     title="My Deals"
                 >
-                    <Text style={styles.textList}>My Deals</Text>
+                        <Text style={styles.textList}>My Deals</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList}
+                <TouchableOpacity style={styles.profileButton}
                     title="Settings"
                 >
-                    <Text style={styles.textList}>Settings</Text>
+                        <Text style={styles.textList}>Settings</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList}
+                <TouchableOpacity style={styles.profileButton}
                     title ="Sign Out"
                     onPress={() => onSignout()}
                 >
-                    <Text style={styles.textList}>Sign Out</Text>
+                        <Text style={styles.textList}>Sign Out</Text>
                 </TouchableOpacity>
-                </ScrollView>
+                
             </View>
         )
     }

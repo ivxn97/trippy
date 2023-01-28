@@ -10,13 +10,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function WalkingTourScreen({ route, navigation }) {
-    const { addedBy, name, location, tips, description } = route.params;
+    const { addedBy, name, location, tips, description, activityType } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
     const [images, setImages] = useState([]);
     const [email, setEmail] = useState('');
     const [registeredButton, setRegisteredButton] = useState(true);
-
+    console.log(location)
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -32,6 +32,9 @@ export default function WalkingTourScreen({ route, navigation }) {
         } catch (error) {
             console.log(error)
         }
+    }
+    const onReview = () => {
+        navigation.navigate('Review Screen', {name, activityType});
     }
 
     useFocusEffect(React.useCallback(async ()=> {
@@ -55,6 +58,10 @@ export default function WalkingTourScreen({ route, navigation }) {
             setImages(fetchedImages);
           });
     }, [])
+
+    const openAddress = async (mapURL) => {
+        await WebBrowser.openBrowserAsync(mapURL)
+    }
 
     const onShare = async () => {
         try {
@@ -110,14 +117,24 @@ export default function WalkingTourScreen({ route, navigation }) {
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.textNB}>Locations: {JSON.stringify(location).replace(/"/g, "")}</Text>
+            <Text style={styles.textNB}>Locations:</Text>
+            {location.map((item, index) => (
+                <Text key={index} style={styles.textNB}>
+                        <Text 
+                        style={[styles.textNB, {color:'blue'}]} 
+                        onPress={() => openAddress(item.mapURL)}>
+                            {item.address.replace(/"/g,"")}
+                        </Text>
+                    </Text>
+                ))}
+            <Text>{'\n'}</Text>
             <Text style={styles.textNB}>tips: {JSON.stringify(tips).replace(/"/g, "")}</Text>
             <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmall}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('WT Map View', {location:location})}>
                         <Text style={styles.buttonSmallText}>Start Walk</Text>
                 </TouchableOpacity>
             </View>

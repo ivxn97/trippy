@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
@@ -21,9 +21,20 @@ export default function AddGuide({ navigation }) {
     const [tips, setTips] = useState('');
     const [description, setDescription] = useState('');
     const [address, setAddress] = useState();
+    const [section, setSection] = useState();
     const [mapURL, setMapURL] = useState();
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
+    const [loading, setLoading] = useState(true)
+    const [sections, setSections] = useState([]);
+    const [locationCount, setLocationCount] = useState(1);
+    const [locationArr, setLocationArr] = useState([])
+
+    const typePlaceholder = {
+        label: 'Section Category',
+        value: null,
+        color: 'black',
+    };
 
     const getEmail = async () => {
         try {
@@ -60,7 +71,6 @@ export default function AddGuide({ navigation }) {
 
         const storage = getStorage();
         if (!result.canceled) {
-          setImage(result.uri);
           const storageRef = ref(storage, `guides/${name}/images/${fileName}`)
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
@@ -71,17 +81,59 @@ export default function AddGuide({ navigation }) {
         };
     };
 
+    const getTypes = async ()  => {
+        const querySnapshot = await getDocs(collection(db, "guide sections"));
+        querySnapshot.forEach(documentSnapshot => {
+          sections.push({label: documentSnapshot.data().name, value: documentSnapshot.data().name});
+        });
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        if (loading) {
+        getTypes();
+        }
+    }) 
+
+    const addLocation = () => {
+        if (locationCount < 8) {
+            setLocationCount(locationCount + 1)
+        }
+        else {
+            alert("you have reached the location limit")
+        }
+    }
+
+    const locationArray = Array.from({length: locationCount}, (_, i) => 
+    <GooglePlacesAutocomplete 
+        placeholder='Enter Location'
+        fetchDetails
+        GooglePlacesDetailsQuery={{fields: 'geometry,url'}}
+        onPress={(data, details = null) => {
+            console.log('Data address:', data.description,'Location Details: ', details)
+            const lat = details.geometry.location.lat
+            const long = details.geometry.location.lng
+            const mapURL = details.url
+            const address = data.description
+            const createdArr = {address: address, mapURL: mapURL, lat: lat, long: long}
+            setLocationArr(current=> [...current, createdArr])
+        }}
+        query={mapSearch}
+        styles={{textInput:styles.input}}
+    />);
+
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "guides", name), {
                     addedBy: email,
                     name: name,
-                    location: address,
+                    location: locationArr,
                     expired: false,
                     mrt: mrt,
                     tips: tips,
                     description: description,
-                    activityType: 'guides'
+                    activityType: 'guides',
+                    section: section
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')
@@ -89,7 +141,12 @@ export default function AddGuide({ navigation }) {
             catch (e) {
                 console.log("Error adding document: ", e);
             }
-        }
+    }
+
+    if (loading) {
+        return <ActivityIndicator />;
+    }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -111,25 +168,23 @@ export default function AddGuide({ navigation }) {
                     disabled={name ? false : true} >
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
+
+                <Text style={styles.text}>Guide Section:</Text>
+                <RNPickerSelect
+                    style={pickerSelectStyles}
+                    useNativeAndroidPickerStyle={false}
+                    placeholder={typePlaceholder}
+                    onValueChange={(value) => setSection(value)}
+                    items = {sections}
+                />
                 
                 <Text style={styles.text}>Location:</Text>
-                <GooglePlacesAutocomplete 
-                    placeholder='Enter Location'
-                    fetchDetails
-                    GooglePlacesDetailsQuery={{fields: 'geometry,url'}}
-                    onPress={(data, details = null) => {
-                        console.log('Data address:', data.description,'Location Details: ', details)
-                        const lat = details.geometry.location.lat
-                        const long = details.geometry.location.lng
-                        const mapURL = details.url
-                        const address = data.description
-                        setLat(lat);
-                        setLong(long);
-                        setMapURL(mapURL);
-                        setAddress(address);
-                    }}
-                    query={mapSearch}
-                    styles={{textInput:styles.input}}/>
+                {locationArray}
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => addLocation()}>
+                    <Text style={styles.buttonName}>Add another location</Text>
+                </TouchableOpacity>
 
                 <Text style={styles.text}>Nearest MRT:</Text>
                 <TextInput
@@ -172,3 +227,36 @@ export default function AddGuide({ navigation }) {
         </View>
     )
 }
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+    },
+    inputAndroid: {
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        borderBottomLeftRadius: 15,
+        height: 48,
+        borderRadius: 5,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        paddingLeft: 16
+      }
+})

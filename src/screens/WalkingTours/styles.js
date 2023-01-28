@@ -25,6 +25,10 @@ export default StyleSheet.create({
         borderBottomRightRadius: 15,
         borderBottomLeftRadius: 15,
     },
+    map: {
+        width: '100%',
+        height: '85%',
+      },
     Heading: {
         fontSize: 30,
         fontWeight: 'bold',
@@ -85,6 +89,20 @@ export default StyleSheet.create({
         width: 90,
         alignSelf: "center",
         margin: 30
+    },
+    buttonSmallWrite: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 3,
+        marginTop: 5,
+        marginBottom:5,
+        height: 30,
+        width: 160,
+        borderRadius: 15,
     },
     imagePlaceholder: {
         flex: 1,

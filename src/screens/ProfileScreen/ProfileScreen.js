@@ -35,8 +35,6 @@ export default function ProfileScreen ( {navigation} ) {
         }
     }
 
-
-    
     const getUser = async () => {
         const q = query(collection(db, "users"), where("email", "==", email));
         const querySnapshot = await getDocs(q);

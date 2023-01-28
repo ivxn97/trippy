@@ -40,16 +40,15 @@ export default function GuideSection ({ route, navigation }) {
 
     })
 
-    const getEmail = async () => {
+    const getRole = async () => {
         try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
+            const role = await AsyncStorage.getItem('role');
+            if (role == "LOL") {
                 setPostButton(false);
-                console.log(email)
+                console.log(role)
             }
             else {
-                console.log("No Email Selected at Login")
-                setPostbutton(true);
+                console.log("Invalid role for posting")
             }
         } catch (error) {
             console.log(error)
@@ -57,7 +56,7 @@ export default function GuideSection ({ route, navigation }) {
     }
 
     useFocusEffect(React.useCallback(async ()=> {
-        getEmail();
+        getRole();
     }, []));
 
     const getGuidePosts = async () => {
@@ -98,7 +97,8 @@ export default function GuideSection ({ route, navigation }) {
         return (
             <TouchableHighlight
                 underlayColor="#C8c9c9"
-                onPress={() => {navigation.navigate('Guide Screen', {name : item.name, location: item.location, mrt: item.mrt, tips: item.tips, description: item.description})}}>
+                onPress={() => {navigation.navigate('Guide Screen', {name : item.name, location: item.location,
+                     mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType})}}>
                 <View style={styles.list}>
                 <Text>{item.name}</Text>
                 <Text>Posted By {item.addedBy}</Text>
@@ -145,7 +145,7 @@ export default function GuideSection ({ route, navigation }) {
 
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
              <TouchableOpacity style={[styles.buttonSmallWrite, {opacity: postButton ? 0.3 : 1}]}
-             onPress={() => {navigation.navigate('Create Post')}} disabled={postButton}>
+             onPress={() => {navigation.navigate('Add Guide')}} disabled={postButton}>
             <Text style={styles.buttonSmallListText}>Write a post...</Text>
             
             </TouchableOpacity>

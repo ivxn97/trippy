@@ -99,7 +99,8 @@ export default function ProfilePage({ navigation, route }) {
                     onChangeText={(Text) => setNewBio(Text)}
                     value={bio}
                     underlineColorAndroid="transparent"
-                    autoCapitalize="none"
+                    autoCapitalize="none"   
+                    maxLength={100}
                 ></TextInput>
 
                 <View>

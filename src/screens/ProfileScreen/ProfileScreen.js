@@ -2,7 +2,6 @@ import React, { useState, useEffect} from 'react'
 import { View, Text, button, TouchableOpacity, Image } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
-import Parse from 'parse/react-native';
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -218,8 +217,8 @@ export default function ProfileScreen ( {navigation} ) {
                                         style={{
                                             paddingVertical: 5,
                                             fontWeight: 'bold',
-                                            marginLeft: 15,
-                                            fontSize: 20
+                                            marginLeft: 50,
+                                            fontSize: 15
                                         }}>
                                         {username}
                                     </Text>
@@ -239,16 +238,17 @@ export default function ProfileScreen ( {navigation} ) {
                             </View>
                             <Text style={{ 
                                 alignSelf: 'center', 
-                                marginTop: -90, 
-                                fontSize: 30, 
-                                marginLeft: 50 
+                                marginTop: -70, 
+                                fontSize: 15, 
+                                marginLeft: 115
                             }}>Role : {role}</Text>
                             <Text style={{
                                 paddingVertical: 15,
-                                marginTop: 20,
-                                fontSize: 20,
-                                marginRight: 30,
-                            }}>{bio}</Text>
+                                marginTop: 15,
+                                fontSize: 15,
+                                marginLeft: 5,
+                                marginRight: 5,
+                            }}>{bio + "i am a user, i like to book hotels"}</Text>
                         </View>
                     </View>
 

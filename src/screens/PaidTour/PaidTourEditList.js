@@ -5,6 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PaidTourEditList({navigation}) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -15,6 +16,7 @@ export default function PaidTourEditList({navigation}) {
   const [sortOrder, setSortOrder] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+  const [email, setEmail] = useState('');
 
   function openDropdown() {
     setDropdownVisible(true);
@@ -37,18 +39,39 @@ export default function PaidTourEditList({navigation}) {
     
   })
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "paidtours"));
-        querySnapshot.forEach(documentSnapshot => {
-            paidtours.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
+  const getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null) {
+            setEmail(email);
+        }
+        else {
+            console.log("No Email Selected at Login")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
-        setPaidtours(paidtours);
-        setLoading(false);
-      },[]);
+  const getPaidTours = async () => {
+    const collectionRef = collection(db, "paidtours")
+    const q = query(collectionRef, where('addedBy', '==', email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        paidtours.push({
+            ...doc.data(),
+            key: doc.id
+        })
+    })
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getEmail();
+    if (email) {
+      getPaidTours();
+    }
+  },[email]);
 
   async function handleSortChange(sort) {
     if (sort === 'asc' || sort === 'desc') {
@@ -144,9 +167,10 @@ export default function PaidTourEditList({navigation}) {
         <TouchableHighlight
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Edit Paid Tour', {name: item.name, tourType: item.tourType, 
-        price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
-        endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
-        TNC: item.TNC, activityType: item.activityType})}}>
+          price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
+          endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
+          TNC: item.TNC, activityType: item.activityType, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
+          capacity: item.capacity, address: item.address})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>${item.price}</Text>

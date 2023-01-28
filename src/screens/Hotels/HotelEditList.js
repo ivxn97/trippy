@@ -5,6 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HotelEditList({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -15,6 +16,7 @@ export default function HotelEditList({ navigation }) {
     const [sortOrder, setSortOrder] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+    const [email, setEmail] = useState('');
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -32,23 +34,43 @@ export default function HotelEditList({ navigation }) {
         setInnerDropdownVisible(false);
     }
 
-    //List
-    navigation.addListener('willFocus', () => {
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
-    })
-
-    useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "hotels"));
-        querySnapshot.forEach(documentSnapshot => {
+    const getHotels = async () => {
+        const collectionRef = collection(db, "hotels")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
             hotels.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-            });
-        });
-
-        setHotels(hotels);
+                ...doc.data(),
+                key: doc.id
+            })
+        })
         setLoading(false);
-    }, []);
+    }
+
+    useEffect(() => {
+        getEmail();
+        if (email) {
+          getHotels();
+        }
+    },[email]);
+
+    if (loading) {
+        return <ActivityIndicator />;
+    }
 
     async function handleSortChange(sort) {
         if (sort === 'asc' || sort === 'desc') {
@@ -148,7 +170,9 @@ export default function HotelEditList({ navigation }) {
                         name: item.name, roomTypes: item.roomTypes,
                         priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
                         checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                        language: item.language,description: item.description, TNC: item.TNC
+                        language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType,
+                        addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, 
+                        address: item.address 
                     })
                     }}>
                     <View style={styles.list}>

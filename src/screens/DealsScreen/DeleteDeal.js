@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
-import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, deleteDoc, query, where } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { getStorage, ref, deleteObject, listAll } from "firebase/storage";
 import firebase from 'firebase/app';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const storage = getStorage();
 
 
@@ -35,6 +36,7 @@ export default function DeleteDeal({ navigation }) {
     const [sortOrder, setSortOrder] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+    const [email, setEmail] = useState('');
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -52,18 +54,39 @@ export default function DeleteDeal({ navigation }) {
         setInnerDropdownVisible(false);
     }
 
-    useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "deals"));
-        querySnapshot.forEach(documentSnapshot => {
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+      }
+    
+      const getDeals = async () => {
+        const collectionRef = collection(db, "deals")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
             items.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-            });
-        });
-
-        setItems(items);
+                ...doc.data(),
+                key: doc.id
+            })
+        })
         setLoading(false);
-    }, []);
+      }
+    
+      useEffect(() => {
+        getEmail();
+        if (email) {
+          getDeals();
+        }
+      },[email]);
 
     const onDelete = (name) => {
         setSelectedName(name);
@@ -165,7 +188,7 @@ export default function DeleteDeal({ navigation }) {
                         onPress={() => onDelete(item.dealname)}>
                         <View style={styles.list}>
                             <Text>{item.dealname}</Text>
-                            <Text>{item.dealType}</Text>
+                            <Text>{item.discount}% off</Text>
                         </View>
                     </TouchableHighlight>
                 )}

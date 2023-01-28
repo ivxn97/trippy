@@ -4,18 +4,19 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from '../../../config';
+import { db, mapSearch } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
 import { FilteredTextInput } from '../commonFunctions';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import moment from 'moment';
 
-//TODO: add image uploading
+
 export default function EditPaidTour ( { route, navigation }) {
-    const {name, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, description, TNC} = route.params;
+    const {name, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, description, TNC, address, capacity} = route.params;
 
     const [startingHour, startingMinute] = startingTime.split(":");
     const [endingHour, endingMinute] = endingTime.split(":");
-    const [durationHour, durationMinute] = duration.split(":");
 
     const [newTourType, setType] = useState(tourType);
     const [newPrice, setPrice] = useState(price);
@@ -28,13 +29,17 @@ export default function EditPaidTour ( { route, navigation }) {
     const [newDescription, setDescription] = useState(description);
     const [newTNC, setTNC] = useState(TNC);
     const [newLanguage, setLanguage] = useState(language);
-    const [newDurationHour, setDurationHour] = useState(durationHour);
-    const [newDurationMinute, setDurationMinute] = useState(durationMinute);
+    const [newDurationMinute, setDurationMinute] = useState(duration);
     const [image, setImage] = useState(null);
     const storage = getStorage();
     const [languageData, setLanguageData] = useState();
     const [tourTypeData, setTourTypeData] = useState();
     const [ageGroupData, setAgeGroupData] = useState();
+    const [newCapacity, setCapacity] = useState(capacity);
+    const [newAddress, setAddress] = useState();
+    const [mapURL, setMapURL] = useState();
+    const [latitude, setLat] = useState();
+    const [longitude, setLong] = useState();
     const [loading, setLoading] = useState(true)
 
 
@@ -119,6 +124,23 @@ export default function EditPaidTour ( { route, navigation }) {
     }, [ageGroupData]);
 
     const onSubmitPress = async () => {
+        const timeSlots = [];
+
+        const startingTime = startingHour+startingMinute
+        const endingTime = endingHour+endingMinute
+        const interval = durationMinute
+
+        let currentTime = moment(startingTime, 'HHmm');
+
+        while (currentTime.isBefore(moment(endingTime, 'HHmm'))) {
+            timeSlots.push({
+                time: currentTime.format('HHmm'),
+                capacity: capacity
+            })
+            currentTime.add(interval, 'minutes');
+        }
+
+        console.log(timeSlots)
             try {
                 await setDoc(doc(db, "paidtours", name), {
                     tourType: tourType,
@@ -126,12 +148,17 @@ export default function EditPaidTour ( { route, navigation }) {
                     price: price,
                     ageGroup: ageGroup,
                     groupSize: groupSize,
+                    timeSlots: timeSlots,
                     startingTime: startingHour + ':' + startingMinute,
                     endingTime: endingHour + ':' + endingMinute,
-                    duration: durationHour + ':' + durationMinute,
-                    location: '',
+                    duration: durationMinute,
                     description: description,
                     TNC: TNC,
+                    capacity: newCapacity,
+                    address: newAddress,
+                    longitude: longitude,
+                    latitude: latitude,
+                    mapURL: mapURL,
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')
@@ -232,29 +259,8 @@ export default function EditPaidTour ( { route, navigation }) {
                 useNativeAndroidPickerStyle={false}
                 value={newStartingMinute}
                 onValueChange={(value) => setStartingMinute(value)}
-                items = {[
-                    {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
-                    {label:'03', value:'03'}, {label:'04', value:'04'}, {label:'05', value:'05'},
-                    {label:'06', value:'06'}, {label:'07', value:'07'}, {label:'08', value:'08'},
-                    {label:'09', value:'09'}, {label:'10', value:'10'}, {label:'11', value:'11'},
-                    {label:'12', value:'12'}, {label:'13', value:'13'}, {label:'14', value:'14'},
-                    {label:'15', value:'15'}, {label:'16', value:'16'}, {label:'17', value:'17'},
-                    {label:'18', value:'18'}, {label:'19', value:'19'}, {label:'20', value:'20'},
-                    {label:'21', value:'21'}, {label:'22', value:'22'}, {label:'23', value:'23'},
-                    {label:'24', value:'24'}, {label:'25', value:'25'}, {label:'26', value:'26'},
-                    {label:'27', value:'27'}, {label:'28', value:'28'}, {label:'29', value:'29'},
-                    {label:'30', value:'30'}, {label:'31', value:'31'}, {label:'32', value:'32'},
-                    {label:'33', value:'33'}, {label:'34', value:'34'}, {label:'35', value:'35'},
-                    {label:'36', value:'36'}, {label:'37', value:'37'}, {label:'38', value:'38'},
-                    {label:'39', value:'39'}, {label:'40', value:'40'}, {label:'41', value:'41'},
-                    {label:'42', value:'42'}, {label:'43', value:'43'}, {label:'44', value:'44'},
-                    {label:'45', value:'45'}, {label:'46', value:'46'}, {label:'47', value:'47'},
-                    {label:'48', value:'48'}, {label:'49', value:'49'}, {label:'50', value:'50'},
-                    {label:'51', value:'51'}, {label:'52', value:'52'}, {label:'53', value:'53'},
-                    {label:'54', value:'54'}, {label:'55', value:'55'}, {label:'56', value:'56'},
-                    {label:'57', value:'57'}, {label:'58', value:'58'}, {label:'59', value:'59'},
-                ]}
-            />
+                items = {[{label:'00', value:'00'}, {label:'15', value:'15'}, {label:'30', value:'30'}, {label:'45', value:'45'},]}
+                />
             
             <Text style={styles.text}>Ending Time:</Text>
             {/*Ending Hour */}
@@ -281,60 +287,38 @@ export default function EditPaidTour ( { route, navigation }) {
                 useNativeAndroidPickerStyle={false}
                 value={newEndingMinute}
                 onValueChange={(value) => setEndingMinute(value)}
+                items = {[{label:'00', value:'00'}, {label:'15', value:'15'}, {label:'30', value:'30'}, {label:'45', value:'45'},]}
+                />
+
+            <Text style={styles.text}>Duration in minutes:</Text>
+            <RNPickerSelect
+                style={pickerSelectStyles}
+                useNativeAndroidPickerStyle={false}
+                onValueChange={(value) => setDurationMinute(value)}
                 items = {[
-                    {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
-                    {label:'03', value:'03'}, {label:'04', value:'04'}, {label:'05', value:'05'},
-                    {label:'06', value:'06'}, {label:'07', value:'07'}, {label:'08', value:'08'},
-                    {label:'09', value:'09'}, {label:'10', value:'10'}, {label:'11', value:'11'},
-                    {label:'12', value:'12'}, {label:'13', value:'13'}, {label:'14', value:'14'},
-                    {label:'15', value:'15'}, {label:'16', value:'16'}, {label:'17', value:'17'},
-                    {label:'18', value:'18'}, {label:'19', value:'19'}, {label:'20', value:'20'},
-                    {label:'21', value:'21'}, {label:'22', value:'22'}, {label:'23', value:'23'},
-                    {label:'24', value:'24'}, {label:'25', value:'25'}, {label:'26', value:'26'},
-                    {label:'27', value:'27'}, {label:'28', value:'28'}, {label:'29', value:'29'},
-                    {label:'30', value:'30'}, {label:'31', value:'31'}, {label:'32', value:'32'},
-                    {label:'33', value:'33'}, {label:'34', value:'34'}, {label:'35', value:'35'},
-                    {label:'36', value:'36'}, {label:'37', value:'37'}, {label:'38', value:'38'},
-                    {label:'39', value:'39'}, {label:'40', value:'40'}, {label:'41', value:'41'},
-                    {label:'42', value:'42'}, {label:'43', value:'43'}, {label:'44', value:'44'},
-                    {label:'45', value:'45'}, {label:'46', value:'46'}, {label:'47', value:'47'},
-                    {label:'48', value:'48'}, {label:'49', value:'49'}, {label:'50', value:'50'},
-                    {label:'51', value:'51'}, {label:'52', value:'52'}, {label:'53', value:'53'},
-                    {label:'54', value:'54'}, {label:'55', value:'55'}, {label:'56', value:'56'},
-                    {label:'57', value:'57'}, {label:'58', value:'58'}, {label:'59', value:'59'},
+                    {label:'15', value:'15'}, 
+                    {label:'30', value:'30'}, 
+                    {label:'45', value:'45'},
+                    {label:'60', value:'60'},
+                    {label:'75', value:'75'},
+                    {label:'90', value:'90'},
+                    {label:'105', value:'105'},
+                    {label:'120', value:'120'},
+                    {label:'150', value:'150'},
+                    {label:'180', value:'180'},
                 ]}
             />
 
-            <Text style={styles.text}>Duration:</Text>
-            {/*Duration Hour */}
-            <RNPickerSelect
-                style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
-                value={newDurationHour}
-                onValueChange={(value) => setDurationHour(value)}
-                items = {[
-                    {label:'00', value:'00'}, {label:'01', value:'01'}, {label:'02', value:'02'},
-                    {label:'03', value:'03'}, {label:'04', value:'04'}, {label:'05', value:'05'},
-                    {label:'06', value:'06'}, {label:'07', value:'07'}, {label:'08', value:'08'},
-                    {label:'09', value:'09'}, {label:'10', value:'10'}, {label:'11', value:'11'},
-                    {label:'12', value:'12'}, {label:'13', value:'13'}, {label:'14', value:'14'},
-                    {label:'15', value:'15'}, {label:'16', value:'16'}, {label:'17', value:'17'},
-                    {label:'18', value:'18'}, {label:'19', value:'19'}, {label:'20', value:'20'},
-                    {label:'21', value:'21'}, {label:'22', value:'22'}, {label:'23', value:'23'},
-                ]}
-            />
-            
-            <RNPickerSelect
-                style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
-                value={newDurationMinute}
-                onValueChange={(value) => setDurationMinute(value)}
-                items = {[
-                    {label:'00', value:'00'},
-                    {label:'15', value:'15'}, 
-                    {label:'30', value:'30'}, 
-                    {label:'45', value:'45'}
-                ]}
+            <Text style={styles.text}>Capacity:</Text>
+            <TextInput
+                style={styles.input}
+                placeholder='Enter Capacity'
+                placeholderTextColor="#aaaaaa"
+                onChangeText={(Text) => setCapacity(Text)}
+                value={capacity}
+                underlineColorAndroid="transparent"
+                autoCapitalize="sentences"
+                keyboardType="numeric"
             />
 
             <Text style={styles.text}>Description:</Text>
@@ -349,15 +333,24 @@ export default function EditPaidTour ( { route, navigation }) {
                 multiline
             />
             <Text style={styles.text}>Location:</Text>
-            <TextInput
-                style={styles.input}
-                placeholder='Enter Location Name'
-                placeholderTextColor="#aaaaaa"
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-            />
-            {/* insert google maps API and mapview here
-            https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
+            <GooglePlacesAutocomplete 
+                placeholder={address}
+                fetchDetails
+                GooglePlacesDetailsQuery={{fields: 'geometry,url'}}
+                onPress={(data, details = null) => {
+                    console.log('Data address:', data.description,'Location Details: ', details)
+                    const lat = details.geometry.location.lat
+                    const long = details.geometry.location.lng
+                    const mapURL = details.url
+                    const address = data.description
+                    setLat(lat);
+                    setLong(long);
+                    setMapURL(mapURL);
+                    setAddress(address);
+                }}
+                query={mapSearch}
+                styles={{textInput:styles.input}}/>
+
             <Text style={styles.text}>Terms & Conditions:</Text>
             <FilteredTextInput
                 style={styles.desc}

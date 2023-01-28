@@ -8,8 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack'
 import {
   LoginScreen, HomeScreen, RegistrationRegisteredUser, ForumScreen,
-  GuideList, ProfileScreen, DealsScreen, AttractionList, AttractionView,
-  RestaurantList, RestaurantScreen, HotelList, HotelScreen, PaidTourList, PaidTourScreen,
+  GuideList, ProfileScreen, DealsScreen, AttractionList, RestaurantList, HotelList, PaidTourList,
   RegistrationSelector, RegistrationLOL, RegistrationBO, ListOfUsers,
   AdminScreen, AdminViewUser, DealsList, AddHotel, AddDeal, AddRestaurant, AddAttraction, AddPaidTour, AddGuide,
   DeleteHotel, DeleteDeal, DeleteRestaurant, DeleteAttraction, DeletePaidTour, GuideScreen, CreatePost, BOScreen,
@@ -59,10 +58,6 @@ function ProfileStackScreen() {
       <Stack.Screen name="Bookmarks" component={Bookmarks} />
       <Stack.Screen name="Delete Bookmark" component={DeleteBookmark} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
-      <Stack.Screen name="Paid tour details" component={PaidTourScreen} />
-      <Stack.Screen name="Restaurant Details" component={RestaurantScreen} />
-      <Stack.Screen name="Attraction Details" component={AttractionView} />
-      <Stack.Screen name="Hotel details" component={HotelScreen} />
       <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="Review Screen" component={ReviewScreen} />
       <Stack.Screen name="Active Thread" component={ActiveThread} />
@@ -122,13 +117,9 @@ function HomeStackScreen() {
     <HomeStack.Navigator>
       <Stack.Screen name="Home Page" component={HomeScreen} />
       <Stack.Screen name="List of attractions" component={AttractionList} />
-      <Stack.Screen name="Attraction Details" component={AttractionView} />
       <Stack.Screen name="List of hotels" component={HotelList} />
-      <Stack.Screen name="Hotel details" component={HotelScreen} />
       <Stack.Screen name="List of restaurants" component={RestaurantList} />
-      <Stack.Screen name="Restaurant Details" component={RestaurantScreen} />
       <Stack.Screen name="List of paid tours" component={PaidTourList} />
-      <Stack.Screen name="Paid tour details" component={PaidTourScreen} />
       <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="Review Screen" component={ReviewScreen} />
       <Stack.Screen name="Add Review Screen" component={AddReviewScreen} />
@@ -200,10 +191,6 @@ function BOStackScreen() {
       <Stack.Screen name="Delete Paid Tour" component={DeletePaidTour} />
       <Stack.Screen name="Delete Restaurant" component={DeleteRestaurant} />
       <Stack.Screen name="Delete Deal" component={DeleteDeal} />
-      <Stack.Screen name="Attraction Details" component={AttractionView} />
-      <Stack.Screen name="Hotel details" component={HotelScreen} />
-      <Stack.Screen name="Restaurant Details" component={RestaurantScreen} />
-      <Stack.Screen name="Paid tour details" component={PaidTourScreen} />
       <Stack.Screen name="Deal detail" component={DealsScreen} />
       <Stack.Screen name="Restaurant Edit List" component={RestaurantEditList} />
       <Stack.Screen name="Edit Restaurant" component={EditRestaurant} />

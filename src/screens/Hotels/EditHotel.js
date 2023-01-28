@@ -4,14 +4,15 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from '../../../config';
+import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
 import { FilteredTextInput } from '../commonFunctions';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function AddHotel({ route, navigation }) {
-    const { name, hotelClass, roomTypes, priceRange, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC } = route.params;
+    const { name, hotelClass, roomTypes, priceRange, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC, capacity, address } = route.params;
     const [checkInHour, checkInMinute] = checkInTime.split(":");
     const [checkOutHour, checkOutMinute] = checkOutTime.split(":");
 
@@ -31,6 +32,11 @@ export default function AddHotel({ route, navigation }) {
     const [docRoomTypesData, setRoomTypesData] = useState(roomTypes)
     const [loading, setLoading] = useState(true)
     const [languageData, setLanguageData] = useState();
+    const [newAddress, setAddress] = useState();
+    const [mapURL, setMapURL] = useState();
+    const [latitude, setLat] = useState();
+    const [longitude, setLong] = useState();
+    const [newCapacity, setCapacity] = useState(capacity);
 
     const deleteImages = () => {
         deleteFolder(`/hotels/${name}/images`)
@@ -171,9 +177,13 @@ export default function AddHotel({ route, navigation }) {
                     amenities: docAmenitiesData,
                     roomFeatures: docRoomFeaturesData,
                     language: newLanguage,
-                    location: '',
                     description: newDescription,
-                    TNC: newTNC
+                    TNC: newTNC,
+                    capacity: newCapacity,
+                    address: newAddress,
+                    longitude: longitude,
+                    latitude: latitude,
+                    mapURL: mapURL,
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')
@@ -235,6 +245,18 @@ export default function AddHotel({ route, navigation }) {
                         { label: '⭐⭐⭐⭐', value: '⭐⭐⭐⭐' },
                         { label: '⭐⭐⭐⭐⭐', value: '⭐⭐⭐⭐⭐' },
                     ]}
+                />
+
+                <Text style={styles.text}>Capacity:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Enter Capacity Per 30 minutes interval'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setCapacity(Text)}
+                    value={capacity}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="sentences"
+                    keyboardType="numeric"
                 />
                 <Text style={styles.text}>Check-In Hours:</Text>
                 {/*CheckIn Hour */}
@@ -356,15 +378,23 @@ export default function AddHotel({ route, navigation }) {
                     items={languageData}
                 />
                 <Text style={styles.text}>Location:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Enter Location Name'
-                    placeholderTextColor="#aaaaaa"
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="sentences"
-                />
-                {/* insert google maps API and mapview here
-            https://betterprogramming.pub/google-maps-and-places-in-a-real-world-react-native-app-100eff7474c6 */}
+                <GooglePlacesAutocomplete 
+                placeholder={address}
+                fetchDetails
+                GooglePlacesDetailsQuery={{fields: 'geometry,url'}}
+                onPress={(data, details = null) => {
+                    console.log('Data address:', data.description,'Location Details: ', details)
+                    const lat = details.geometry.location.lat
+                    const long = details.geometry.location.lng
+                    const mapURL = details.url
+                    const address = data.description
+                    setLat(lat);
+                    setLong(long);
+                    setMapURL(mapURL);
+                    setAddress(address);
+                }}
+                query={mapSearch}
+                styles={{textInput:styles.input}}/>
 
                 <Text style={styles.text}>Description:</Text>
                 <FilteredTextInput

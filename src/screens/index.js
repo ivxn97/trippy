@@ -29,14 +29,11 @@ export {default as DealsList} from './DealsScreen/DealsList'
 export {default as AddDeal} from './DealsScreen/AddDeal'
 export { default as DeleteDeal } from './DealsScreen/DeleteDeal'
 
+//Business List Screens
 export {default as AttractionList} from './Attractions/AttractionList'
-export {default as AttractionView} from './Attractions/AttractionView'
 export {default as HotelList} from './Hotels/HotelList'
-export {default as HotelScreen} from './Hotels/HotelScreen'
 export {default as RestaurantList} from './Restaurants/RestaurantList'
-export {default as RestaurantScreen} from './Restaurants/RestaurantScreen'
 export {default as PaidTourList} from './PaidTour/PaidTourList'
-export {default as PaidTourScreen} from './PaidTour/PaidTourScreen'
 
 //Activity Add Screens
 export {default as AddHotel} from './Hotels/AddHotel'

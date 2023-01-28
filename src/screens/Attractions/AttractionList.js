@@ -210,7 +210,9 @@ export default function AttractionList( {navigation }) {
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Details', {name: item.name, attractionType: item.attractionType, 
         price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
-        closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC, activityType: item.activityType})}}>
+        closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC, 
+        activityType: item.activityType, mapURL: item.mapURL, capacity: item.capacity, address: item.address,
+        addedBy: item.addedBy})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>${item.price}</Text>

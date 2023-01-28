@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, Modal, Button } from 'react-native';
-import { doc, getDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, deleteDoc, query, where } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { getStorage, ref, deleteObject, listAll } from "firebase/storage";
 import firebase from 'firebase/app';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const storage = getStorage();
 
 
@@ -22,8 +23,6 @@ function Item({ title, onPress }) {
     );
 }
 
-
-
 export default function DeleteHotel({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [items, setItems] = useState([]); // Initial empty array of hotels
@@ -33,6 +32,7 @@ export default function DeleteHotel({ navigation }) {
     const [sortOrder, setSortOrder] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+    const [email, setEmail] = useState('');
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -51,22 +51,39 @@ export default function DeleteHotel({ navigation }) {
     }
 
 
-    useEffect(() => {
-        async function fetchData() {
-            const querySnapshot = await getDocs(collection(db, "hotels"));
-            querySnapshot.forEach(documentSnapshot => {
-                items.push({
-                    ...documentSnapshot.data(),
-                    key: documentSnapshot.id,
-                });
-            });
-
-            setItems(items);
-            setLoading(false);
+    const getEmail = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            if (email !== null) {
+                setEmail(email);
+            }
+            else {
+                console.log("No Email Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
         }
+    }
 
-        fetchData();
-    }, []);
+    const getHotels = async () => {
+        const collectionRef = collection(db, "hotels")
+        const q = query(collectionRef, where('addedBy', '==', email));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            items.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        getEmail();
+        if (email) {
+          getHotels();
+        }
+    },[email]);
 
     const onDelete = (name) => {
         setSelectedName(name);

@@ -5,6 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function EditDealsDeals( { navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -15,6 +16,7 @@ export default function EditDealsDeals( { navigation }) {
   const [sortOrder, setSortOrder] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+  const [email, setEmail] = useState('');
 
   function openDropdown() {
     setDropdownVisible(true);
@@ -37,18 +39,40 @@ export default function EditDealsDeals( { navigation }) {
     
   })
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "deals"));
-        querySnapshot.forEach(documentSnapshot => {
-          deals.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
+  const getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null) {
+            setEmail(email);
+        }
+        else {
+            console.log("No Email Selected at Login")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
-        setDeals(deals);
-        setLoading(false);
-      },[]);
+  const getDeals = async () => {
+    const collectionRef = collection(db, "deals")
+    const q = query(collectionRef, where('addedBy', '==', email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        deals.push({
+            ...doc.data(),
+            key: doc.id
+        })
+    })
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getEmail();
+    if (email) {
+      getDeals();
+    }
+  },[email]);
+
   async function handleSortChange(sort) {
     if (sort === 'asc' || sort === 'desc') {
       setSortOrder(sort);
@@ -145,7 +169,8 @@ export default function EditDealsDeals( { navigation }) {
         <TouchableHighlight
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Edit Deal', {name: item.dealname, dealType: item.type, 
-        code: item.code, discount: item.discount, description: item.description, quantity: item.quantity, TNC: item.TNC})}}>
+          code: item.code, description: item.description, discount: item.discount, quantity: item.quantity, TNC: item.TNC,
+          businessName: item.businessName, expiry: item.expiry})}}>
         <View style={styles.list}>
           <Text>{item.dealname}</Text>
           <Text>{item.discount}% off</Text>

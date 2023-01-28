@@ -3,7 +3,7 @@ import { TextInput, View, StyleSheet, Text, TouchableOpacity, Image, ActivityInd
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import RNPickerSelect from 'react-native-picker-select';
-import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
@@ -42,7 +42,7 @@ const languagePlaceholder = {
     color: 'black',
 };
 
-//TODO: add image uploading
+
 export default function AddPaidTour ( { navigation }) {
     const [email, setEmail] = useState('')
     const [name, setName] = useState('');
@@ -57,7 +57,6 @@ export default function AddPaidTour ( { navigation }) {
     const [description, setDescription] = useState('');
     const [TNC, setTNC] = useState('');
     const [language, setLanguage] = useState('');
-    const [durationHour, setDurationHour] = useState('');
     const [durationMinute, setDurationMinute] = useState('');
     const [image, setImage] = useState(null);
     const [languageData, setLanguageData] = useState();

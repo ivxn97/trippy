@@ -103,7 +103,9 @@ export default function BOHotelList({ navigation }) {
                         name: item.name, roomTypes: item.roomTypes,
                         priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
                         checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                        language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType
+                        language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType,
+                        addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, 
+                        address: item.address 
                     })
                     }}>
                     <View style={styles.list}>

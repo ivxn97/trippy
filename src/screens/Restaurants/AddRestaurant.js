@@ -10,7 +10,6 @@ import * as DocumentPicker from 'expo-document-picker';
 import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
-import {MultipleSelectList }from 'react-native-dropdown-select-list'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 //Placeholders for SELECT lists

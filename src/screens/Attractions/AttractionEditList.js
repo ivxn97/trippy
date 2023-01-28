@@ -5,6 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AttractionEditList( {navigation }) {
   const [loading, setLoading] = useState(true); // Set loading to true on component mount
@@ -15,6 +16,8 @@ export default function AttractionEditList( {navigation }) {
   const [sortOrder, setSortOrder] = useState(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+  const [email, setEmail] = useState('');
+
 
   function openDropdown() {
     setDropdownVisible(true);
@@ -37,18 +40,39 @@ export default function AttractionEditList( {navigation }) {
     
   })
 
-  useEffect(async () => {
-    const querySnapshot = await getDocs(collection(db, "attractions"));
-        querySnapshot.forEach(documentSnapshot => {
-          attractions.push({
-            ...documentSnapshot.data(),
-            key: documentSnapshot.id,
-          });
-        });
+  const getEmail = async () => {
+    try {
+        const email = await AsyncStorage.getItem('email');
+        if (email !== null) {
+            setEmail(email);
+        }
+        else {
+            console.log("No Email Selected at Login")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
 
-        setAttractions(attractions);
-        setLoading(false);
-      },[]);
+  const getAttractions = async () => {
+    const collectionRef = collection(db, "attractions")
+    const q = query(collectionRef, where('addedBy', '==', email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        attractions.push({
+            ...doc.data(),
+            key: doc.id
+        })
+    })
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getEmail();
+    if (email) {
+      getAttractions();
+    }
+  },[email]);
   
   async function handleSortChange(sort) {
     if (sort === 'asc' || sort === 'desc') {
@@ -144,8 +168,10 @@ export default function AttractionEditList( {navigation }) {
         <TouchableHighlight
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Edit Attraction', {name: item.name, attractionType: item.attractionType, 
-        price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
-        closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC, activityType: item.activityType})}}>
+          price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
+          closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC, 
+          activityType: item.activityType, mapURL: item.mapURL, capacity: item.capacity, address: item.address,
+          addedBy: item.addedBy})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>${item.price}</Text>

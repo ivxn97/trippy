@@ -16,15 +16,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 export default function AddGuide({ navigation }) {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [location, setLocation] = useState('');
     const [mrt, setMRT] = useState('');
     const [tips, setTips] = useState('');
     const [description, setDescription] = useState('');
-    const [address, setAddress] = useState();
     const [section, setSection] = useState();
-    const [mapURL, setMapURL] = useState();
-    const [latitude, setLat] = useState();
-    const [longitude, setLong] = useState();
     const [loading, setLoading] = useState(true)
     const [sections, setSections] = useState([]);
     const [locationCount, setLocationCount] = useState(1);

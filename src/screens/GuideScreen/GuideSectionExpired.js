@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
-export default function GuideList ({ navigation }) {
+export default function GuideSectionExpired ({ route, navigation }) {
+    const {sectionName} = route.params;
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [guides, setGuides] = useState([]); // Initial empty array of guides
+    const [guide, setGuide] = useState([]); // Initial empty array
     const [search, setSearch] = useState('');
-    const [filteredData, setfilteredData] = useState(guides);
+    const [filteredData, setfilteredData] = useState(guide);
     const [sortBy, setSortBy] = useState(null);
     const [sortOrder, setSortOrder] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
-    const [isPressed, setIsPressed] = useState (false);
+    const [postButton, setPostButton] = useState(true)
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -37,22 +40,46 @@ export default function GuideList ({ navigation }) {
 
     })
 
-    useEffect(async () => {
-        const querySnapshot = await getDocs(collection(db, "guide sections"));
-        querySnapshot.forEach(documentSnapshot => {
-            guides.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-            });
-        });
+    const getRole = async () => {
+        try {
+            const role = await AsyncStorage.getItem('role');
+            if (role == "LOL") {
+                setPostButton(false);
+                console.log(role)
+            }
+            else {
+                console.log("Invalid role for posting")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
-        setGuides(guides);
+    useFocusEffect(React.useCallback(async ()=> {
+        getRole();
+    }, []));
+
+    const getGuidePosts = async () => {
+        const collectionRef = collection(db, "guides")
+        console.log("Section Name:", sectionName)
+        const q = query(collectionRef, where('section', '==', sectionName), where('expired', '==', true));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            guide.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
         setLoading(false);
-    }, []);
+    }
 
-    const searchFilter = (text, type) => {
+    useEffect(() => {
+        getGuidePosts();
+    }, [guide]);
+
+    const searchFilter = (text) => {
         if (text) {
-            const newData = type.filter((item) => {
+            const newData = guide.filter((item) => {
                 const itemData = item.name ? item.name.toUpperCase()
                     : ''.toUpperCase()
                 const textData = text.toUpperCase()
@@ -61,17 +88,31 @@ export default function GuideList ({ navigation }) {
             setfilteredData(newData);
             setSearch(text);
         } else {
-            setfilteredData(type);
+            setfilteredData(guide);
             setSearch(text);
         }
-    }
+       }
+
+       const ItemView = ({item}) => {
+        return (
+            <TouchableHighlight
+                underlayColor="#C8c9c9"
+                onPress={() => {navigation.navigate('Guide Screen', {name : item.name, location: item.location,
+                     mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType})}}>
+                <View style={styles.list}>
+                <Text>{item.name}</Text>
+                <Text>Posted By {item.addedBy}</Text>
+                </View>
+            </TouchableHighlight>
+        )
+       }
 
     async function handleSortChange(sort) {
         if (sort === 'asc' || sort === 'desc') {
             setSortOrder(sort);
             setInnerDropdownVisible(false);
-            const sortedArray = await sortFiles(guides, sortBy, sortOrder);
-            setGuides(sortedArray)
+            const sortedArray = await sortFiles(guide, sortBy, sortOrder);
+            setGuide(sortedArray)
 
         } else {
             setSortBy(sort);
@@ -79,18 +120,6 @@ export default function GuideList ({ navigation }) {
             openInnerDropdown();
         }
     }
-    
-    const ItemView = ({item}) => {
-        return (
-            <TouchableOpacity
-                underlayColor="#C8c9c9"
-                onPress={() => navigation.navigate('Guide Section', {sectionName: item.name})}>
-                <View style={styles.list}>
-                <Text>{item.name}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-       }
 
     if (loading) {
         return <ActivityIndicator />;
@@ -98,21 +127,28 @@ export default function GuideList ({ navigation }) {
 
     return (
         <View>
-        <Text style={styles.HeadingList}>Guides</Text>
+        <Text style={styles.HeadingList}>{sectionName} Guides (Expired)</Text>
 
-        {/* Searchbar */}
+        {/* Search Bar */}
+
         <TextInput
             style={styles.inputSearch}
-            placeholder='search'
-            placeholderTextColor="#aaaaaa"
-            underlineColorAndroid="transparent"
-            autoCapitalize="sentences"
             value={search}
-            onChangeText={(text) => searchFilter(text, guides)}
+            placeholder="Search Guide"
+            underlineColorAndroid="transparent"  
+            onChangeText={(text) => searchFilter(text)}              
         />
 
+
+
         {/* Buttons */}
+
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
+             <TouchableOpacity style={[styles.buttonSmallWrite, {opacity: postButton ? 0.3 : 1}]}
+             onPress={() => {navigation.navigate('Add Guide')}} disabled={postButton}>
+            <Text style={styles.buttonSmallListText}>Write a post...</Text>
+            
+            </TouchableOpacity>
                 {!sortBy && (
                     <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
                         <Text style={styles.buttonSmallListText}>Sort</Text>
@@ -130,7 +166,7 @@ export default function GuideList ({ navigation }) {
                 )}
                 {dropdownVisible && (
                     <FlatList
-                        data={['name', 'location']}
+                        data={['name', 'section']}
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => handleSortChange(item)}>
                                 <Text>Sort by {item}</Text>
@@ -150,17 +186,14 @@ export default function GuideList ({ navigation }) {
                         keyExtractor={item => item}
                     />
                 )}
-            <TouchableOpacity style={styles.buttonSmall}>
-            <Text style={styles.buttonSmallListText}>Filter</Text>
-            </TouchableOpacity>
         </View>
-        
-        {/* Flatlist */}
+
+        {/* FlatList */}
         <FlatList
             data={filteredData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={ItemView}
-    />
+        />
         </View>
     )
 }

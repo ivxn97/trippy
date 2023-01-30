@@ -19,15 +19,12 @@ export default function AddWalkingTour({ navigation }) {
     const [mrt, setMRT] = useState('');
     const [tips, setTips] = useState('');
     const [description, setDescription] = useState('');
-    const [address, setAddress] = useState();
-    const [mapURL, setMapURL] = useState();
-    const [latitude, setLat] = useState();
-    const [longitude, setLong] = useState();
     const [locationCount, setLocationCount] = useState(1);
     const [locationArr, setLocationArr] = useState([])
     const [loading, setLoading] = useState(true)
     const [sections, setSections] = useState([]);
     const [section, setSection] = useState();
+    const [imageCount, setImageCount] = useState(0)
 
     const typePlaceholder = {
         label: 'Section Category',
@@ -87,6 +84,8 @@ export default function AddWalkingTour({ navigation }) {
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
+            const count = imageCount + 1
+            setImageCount(count)
         })}
         else {
             console.log('No Image uploaded!')
@@ -129,7 +128,8 @@ export default function AddWalkingTour({ navigation }) {
                     tips: tips,
                     description: description,
                     activityType: 'walkingtours',
-                    section: section
+                    section: section,
+                    expired: false
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')
@@ -159,6 +159,7 @@ export default function AddWalkingTour({ navigation }) {
                     disabled={name ? false : true} >
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
+                <Text style={styles.text}>Current Image Count: {imageCount}</Text>
 
                 <Text style={styles.text}>Walking Tour Section:</Text>
                 <RNPickerSelect

@@ -15,13 +15,19 @@ export {default as GuideList} from './GuideScreen/GuideList'
 export {default as AddGuide} from './GuideScreen/AddGuide'
 export {default as GuideScreen} from './GuideScreen/GuideScreen'
 export {default as GuideSection} from './GuideScreen/GuideSection'
+export {default as GuideSectionExpired} from './GuideScreen/GuideSectionExpired'
+export {default as EditGuidesList} from './GuideScreen/EditGuidesList'
+export {default as EditGuide} from './GuideScreen/EditGuide'
 
 //Walking Tour Screens
 export {default as AddWalkingTour} from './WalkingTours/AddWalkingTour'
 export {default as WalkingToursList} from './WalkingTours/WalkingToursList'
 export {default as WalkingTourSection} from './WalkingTours/WalkingTourSection'
+export {default as WalkingToursExpired} from './WalkingTours/WalkingToursExpired'
 export {default as WalkingTourScreen} from './WalkingTours/WalkingTourScreen'
 export {default as WTMapView} from './WalkingTours/WTMapView'
+export {default as EditWalkingToursList} from './WalkingTours/EditWalkingToursList'
+export {default as EditWalkingTour} from './WalkingTours/EditWalkingTour'
 
 //Deal Screens
 export {default as DealsScreen} from './DealsScreen/DealsScreen'

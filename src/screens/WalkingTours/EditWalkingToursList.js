@@ -6,8 +6,7 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-export default function LOLWalkingToursList ({ navigation }) {
+export default function EditWalkingToursList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [walkingtours, setWalkingTours] = useState([]); // Initial empty array of hotels
     const [email, setEmail] = useState('');
@@ -52,7 +51,7 @@ export default function LOLWalkingToursList ({ navigation }) {
 
     return (
         <View>
-        <Text style={styles.HeadingList}>Walking Tours</Text>
+        <Text style={styles.HeadingList}>Edit Walking Tours</Text>
         <TextInput
             style={styles.inputSearch}
             placeholder='search'
@@ -60,26 +59,14 @@ export default function LOLWalkingToursList ({ navigation }) {
             underlineColorAndroid="transparent"
             autoCapitalize="sentences"
         />
-        <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-            <TouchableOpacity style={styles.buttonListLeft} onPress={() =>
-                            navigation.navigate('Add Walking Tour')
-                        }>
-            <Text style={styles.buttonSmallListText}>Add</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonListRight} onPress={() =>
-                            navigation.navigate('Edit Walking Tours List')
-                        }>
-            <Text style={styles.buttonSmallListText}>Edit</Text>
-            </TouchableOpacity>
-        </View>
         <FlatList
             data={walkingtours}
             extraData={walkingtours}
             renderItem={({ item }) => (
         <TouchableHighlight
             underlayColor="#C8c9c9"
-            onPress={() => {navigation.navigate('Walking Tour Screen', {name : item.name, location: item.location, 
-                tips: item.tips, description: item.description, activityType: item.activityType})}}>
+            onPress={() => {navigation.navigate('Edit Walking Tours', {name : item.name, location: item.location, 
+                tips: item.tips, description: item.description, activityType: item.activityType, expired: item.expired})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
         </View>

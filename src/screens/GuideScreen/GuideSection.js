@@ -62,7 +62,7 @@ export default function GuideSection ({ route, navigation }) {
     const getGuidePosts = async () => {
         const collectionRef = collection(db, "guides")
         console.log("Section Name:", sectionName)
-        const q = query(collectionRef, where('section', '==', sectionName));
+        const q = query(collectionRef, where('section', '==', sectionName), where('expired', '==', false));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             guide.push({
@@ -127,7 +127,7 @@ export default function GuideSection ({ route, navigation }) {
 
     return (
         <View>
-        <Text style={styles.HeadingList}>{sectionName}</Text>
+        <Text style={styles.HeadingList}>{sectionName} Guides</Text>
 
         {/* Search Bar */}
 
@@ -186,8 +186,12 @@ export default function GuideSection ({ route, navigation }) {
                         keyExtractor={item => item}
                     />
                 )}
+            <TouchableOpacity 
+                style={styles.buttonSmall}
+                onPress={() => navigation.navigate("Guide Section Expired", {sectionName: sectionName})}>
+                <Text style={styles.buttonSmallListText}>View Expired</Text>
+            </TouchableOpacity>
         </View>
-
 
         {/* FlatList */}
         <FlatList

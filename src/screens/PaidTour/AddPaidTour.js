@@ -68,6 +68,7 @@ export default function AddPaidTour ( { navigation }) {
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
     const [loading, setLoading] = useState(true)
+    const [imageCount, setImageCount] = useState(0)
 
     const getEmail = async () => {
         try {
@@ -109,6 +110,8 @@ export default function AddPaidTour ( { navigation }) {
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
+            const count = imageCount + 1
+            setImageCount(count)
         })}
         else {
             console.log('No Image uploaded!')
@@ -225,6 +228,7 @@ export default function AddPaidTour ( { navigation }) {
                     disabled={name ? false : true} >
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
+                <Text style={styles.text}>Current Image Count: {imageCount}</Text>
             <Text style={styles.text}>Paid Tour Type:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}

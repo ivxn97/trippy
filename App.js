@@ -20,7 +20,8 @@ import {
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
-  GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks
+  GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks, EditGuide,
+  EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -72,6 +73,10 @@ function ProfileStackScreen() {
       <Stack.Screen name="User Deals" component={UserDealsList} />
       <Stack.Screen name="Deal detail" component={DealsScreen} />
       <Stack.Screen name="Search Bookmarks" component={SearchBookmarks} />
+      <Stack.Screen name="Edit Guides List" component={EditGuidesList} />
+      <Stack.Screen name="Edit Guide" component={EditGuide} />
+      <Stack.Screen name="Edit Walking Tours List" component={EditWalkingToursList} />
+      <Stack.Screen name="Edit Walking Tours" component={EditWalkingTour} />
     </ProfileStack.Navigator>
   )
 }
@@ -96,8 +101,10 @@ function GuideStackScreen() {
       <Stack.Screen name="Guide List" component={GuideList} />
       <Stack.Screen name="Guide Screen" component={GuideScreen} />
       <Stack.Screen name="Guide Section" component={GuideSection} />
+      <Stack.Screen name="Guide Section Expired" component={GuideSectionExpired} />
       <Stack.Screen name="Walking Tours List" component={WalkingToursList} />
       <Stack.Screen name="Walking Tour Section" component={WalkingTourSection} />
+      <Stack.Screen name="Walking Tour Section Expired" component={WalkingToursExpired} />
       <Stack.Screen name="Walking Tour Screen" component={WalkingTourScreen} />
       <Stack.Screen name="Add Guide" component={AddGuide} />
       <Stack.Screen name="Add Walking Tour" component={AddWalkingTour} />

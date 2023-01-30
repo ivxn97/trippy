@@ -62,7 +62,7 @@ export default function WalkingTourSection ({ route, navigation }) {
     const getWalkingTourPosts = async () => {
         const collectionRef = collection(db, "walkingtours")
         console.log("Section Name:", sectionName)
-        const q = query(collectionRef, where('section', '==', sectionName));
+        const q = query(collectionRef, where('section', '==', sectionName), where('expired', '==', false));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             walkingTour.push({
@@ -127,7 +127,7 @@ export default function WalkingTourSection ({ route, navigation }) {
 
     return (
         <View>
-        <Text style={styles.HeadingList}>{sectionName}</Text>
+        <Text style={styles.HeadingList}>{sectionName} Walking Tours</Text>
 
         {/* Search Bar */}
 
@@ -184,6 +184,11 @@ export default function WalkingTourSection ({ route, navigation }) {
                         keyExtractor={item => item}
                     />
                 )}
+                <TouchableOpacity 
+                    style={styles.buttonSmall}
+                    onPress={() => navigation.navigate("Walking Tour Section Expired", {sectionName: sectionName})}>
+                    <Text style={styles.buttonSmallListText}>View Expired</Text>
+                </TouchableOpacity>
         </View>
 
 

@@ -33,9 +33,6 @@ export default function GuideList ({ navigation }) {
         setInnerDropdownVisible(false);
     }
 
-    navigation.addListener('willFocus', () => {
-
-    })
 
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "walking tour sections"));
@@ -80,27 +77,6 @@ export default function GuideList ({ navigation }) {
         }
     }
 
-    const onPressExpired = () => {
-        setIsPressed(!isPressed)
-        const pressed = !isPressed
-        const allIsFalse = filteredData.every(({ expired }) => !expired)
-        if (pressed) {
-            if(allIsFalse){
-                Alert.alert('Alert', 'No Expired Walking Tours', [
-                    {
-                    text: 'Cancel',
-                    style: 'cancel',
-                    },
-                    {text: 'OK'},
-                ]);
-            } else {
-                const newData = filteredData.filter(item => item.expired === true);
-                setfilteredData(newData);
-            }
-        } else {
-            setfilteredData(walkingTours);
-        }
-    }
     
     const ItemView = ({item}) => {
         return (
@@ -174,11 +150,6 @@ export default function GuideList ({ navigation }) {
                 )}
             <TouchableOpacity style={styles.buttonSmall}>
             <Text style={styles.buttonSmallListText}>Filter</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-            style={styles.buttonSmall}
-            onPress={() => onPressExpired()}>
-            <Text style={styles.buttonSmallListText}>View Expired</Text>
             </TouchableOpacity>
         </View>
         

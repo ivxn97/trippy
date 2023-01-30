@@ -3,13 +3,12 @@ import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } 
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import styles from './styles';
+import styles from '../LOLScreen/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-export default function LOLWalkingToursList ({ navigation }) {
+export default function EditGuideList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [walkingtours, setWalkingTours] = useState([]); // Initial empty array of hotels
+    const [guides, setGuides] = useState([]); // Initial empty array of hotels
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {
@@ -26,12 +25,12 @@ export default function LOLWalkingToursList ({ navigation }) {
         }
       }
     
-      const getWalkingTours = async () => {
-        const collectionRef = collection(db, "walkingtours")
+      const getGuides = async () => {
+        const collectionRef = collection(db, "guides")
         const q = query(collectionRef, where('addedBy', '==', email));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-            walkingtours.push({
+            guides.push({
                 ...doc.data(),
                 key: doc.id
             })
@@ -42,7 +41,7 @@ export default function LOLWalkingToursList ({ navigation }) {
       useEffect(() => {
         getEmail();
         if (email) {
-          getWalkingTours();
+          getGuides();
         }
       },[email]);
 
@@ -52,7 +51,7 @@ export default function LOLWalkingToursList ({ navigation }) {
 
     return (
         <View>
-        <Text style={styles.HeadingList}>Walking Tours</Text>
+        <Text style={styles.HeadingList}>Edit Guides</Text>
         <TextInput
             style={styles.inputSearch}
             placeholder='search'
@@ -60,26 +59,16 @@ export default function LOLWalkingToursList ({ navigation }) {
             underlineColorAndroid="transparent"
             autoCapitalize="sentences"
         />
-        <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-            <TouchableOpacity style={styles.buttonListLeft} onPress={() =>
-                            navigation.navigate('Add Walking Tour')
-                        }>
-            <Text style={styles.buttonSmallListText}>Add</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonListRight} onPress={() =>
-                            navigation.navigate('Edit Walking Tours List')
-                        }>
-            <Text style={styles.buttonSmallListText}>Edit</Text>
-            </TouchableOpacity>
-        </View>
+
         <FlatList
-            data={walkingtours}
-            extraData={walkingtours}
+            data={guides}
+            extraData={guides}
             renderItem={({ item }) => (
         <TouchableHighlight
             underlayColor="#C8c9c9"
-            onPress={() => {navigation.navigate('Walking Tour Screen', {name : item.name, location: item.location, 
-                tips: item.tips, description: item.description, activityType: item.activityType})}}>
+            onPress={() =>
+                navigation.navigate('Edit Guide', {name: item.name, location: item.location,
+        mrt: item.mrt, tips: item.tips, description: item.description, section:item.section, expired:item.expired})}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
         </View>

@@ -74,6 +74,7 @@ export default function AddRestaurant ( { navigation }) {
     const [mapURL, setMapURL] = useState();
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
+    const [imageCount, setImageCount] = useState(0)
 
     const getEmail = async () => {
         try {
@@ -124,6 +125,8 @@ export default function AddRestaurant ( { navigation }) {
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
+            const count = imageCount + 1
+            setImageCount(count)
         })}
         else {
             console.log('No Image uploaded!')
@@ -267,6 +270,7 @@ export default function AddRestaurant ( { navigation }) {
                 disabled={name ? false : true} >
                 <Text>Upload Image</Text>
             </TouchableOpacity>
+            <Text style={styles.text}>Current Image Count: {imageCount}</Text>
             <Text style={styles.text}>Type of Cuisine:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}

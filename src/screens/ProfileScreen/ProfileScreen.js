@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react'
-import { View, Text, button, TouchableOpacity, Image } from 'react-native';
+import { View, Text, button, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { db } from '../../../config';
@@ -8,6 +8,8 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import profileImage from './profile.jpeg';
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function ProfileScreen ( {navigation} ) {
     const [email, setEmail] = useState('');
@@ -19,6 +21,9 @@ export default function ProfileScreen ( {navigation} ) {
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
+    const storage = getStorage();
+    const [loading, setLoading] = useState(true);
+    const [images, setImages] = useState([]);
 
     const getEmail = async () => {
         try {
@@ -60,7 +65,23 @@ export default function ProfileScreen ( {navigation} ) {
         getEmail()
         if (email) {
             getUser()
-            
+            const listRef = ref(storage, `users/${email}/profile`);
+            Promise.all([
+                listAll(listRef).then((res) => {
+                  const promises = res.items.map((folderRef) => {
+                    return getDownloadURL(folderRef).then((link) =>  {
+                      return link;
+                    });
+                  });
+                  return Promise.all(promises);
+                })
+              ]).then((results) => {
+                const fetchedImages = results[0];
+                const fetchedString = fetchedImages[0]
+                console.log(fetchedImages);
+                setImages(fetchedString);
+                setLoading(false)
+              });
         }
         
     }, [email]);
@@ -119,6 +140,10 @@ export default function ProfileScreen ( {navigation} ) {
         getRole();
         console.log("Current Role:", role)
     },[role]));
+
+    if (loading) {
+        return <ActivityIndicator />;
+    }
     
     if (role == 'LOL') {
         return (
@@ -126,11 +151,12 @@ export default function ProfileScreen ( {navigation} ) {
                 <ScrollView>
                 <Text style={styles.Heading}>Welcome, LOL!</Text>
                 <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Profile', {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    role: user.role,
-                    country: user.country,})}
+                    firstName: firstName,
+                    lastName: lastName,
+                    username: username,
+                    bio: bio,
+                    email: email,
+                    role: role,})}
                     title="View Profile"
                 >
                     <Text style={styles.textList}>View Profile</Text>
@@ -210,7 +236,7 @@ export default function ProfileScreen ( {navigation} ) {
                         <View style={{ alignItems: 'center', flex: 1 }}>
                             <View style={styles.infoText}>
                                 <View>
-                                    <Image source={profileImage} style={styles.profileImage} />
+                                    <Image source={{uri: images}} style={styles.profileImage} />
                                     <Text
                                         style={{
                                             paddingVertical: 5,

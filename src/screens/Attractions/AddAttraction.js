@@ -66,6 +66,7 @@ export default function AddAttraction ( { navigation }) {
     const [longitude, setLong] = useState();
     const [capacity, setCapacity] = useState();
     const [loading, setLoading] = useState(true)
+    const [imageCount, setImageCount] = useState(0)
 
     const getEmail = async () => {
         try {
@@ -106,6 +107,8 @@ export default function AddAttraction ( { navigation }) {
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
+            const count = imageCount + 1
+            setImageCount(count)
         })}
         else {
             console.log('No Image uploaded!')
@@ -201,6 +204,7 @@ export default function AddAttraction ( { navigation }) {
                 disabled={name ? false : true} >
                 <Text>Upload Image</Text>
             </TouchableOpacity>
+            <Text style={styles.text}>Current Image Count: {imageCount}</Text>
             <Text style={styles.text}>Attraction Type:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}

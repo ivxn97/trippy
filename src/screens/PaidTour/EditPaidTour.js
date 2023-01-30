@@ -41,6 +41,7 @@ export default function EditPaidTour ( { route, navigation }) {
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
     const [loading, setLoading] = useState(true)
+    const [imageCount, setImageCount] = useState(0)
 
 
     const deleteImages = () => {
@@ -53,6 +54,7 @@ export default function EditPaidTour ( { route, navigation }) {
             .then(dir => {
             dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
             console.log("Files deleted successfully from Firebase Storage");
+            setImageCount(0)
             })
         .catch(error => console.log(error));
     }
@@ -81,6 +83,8 @@ export default function EditPaidTour ( { route, navigation }) {
           uploadBytes(storageRef, blobFile).then((snapshot) => {
             alert("Image uploaded!");
             console.log("Image uploaded!");
+            const count = imageCount + 1
+            setImageCount(count)
         })}
         else {
             console.log('No Image uploaded!')
@@ -182,6 +186,7 @@ export default function EditPaidTour ( { route, navigation }) {
                 <TouchableOpacity style={styles.button} onPress={pickImage}  >
                     <Text>Upload New Image</Text>
                 </TouchableOpacity>
+                <Text style={styles.text}>New Image Count: {imageCount}</Text>
                 <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
                 <Text>Delete All Uploaded Images</Text>
             </TouchableOpacity>

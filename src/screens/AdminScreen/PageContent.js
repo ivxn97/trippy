@@ -17,8 +17,6 @@ export default function PageContent ( {navigation, route} ) {
     const [hotels, setHotels] = useState([]);
     const [paidTours, setPaidTours] = useState([]);
     const [attractions, setAttractions] = useState([]);
-    const [guides, setGuides] = useState([]);
-    const [walkingTours, setWalkingTours] = useState([]);
     const [mergedArr, setMergedArr] = useState([]);
     const [completedArr, setCompletedArr] = useState([]);
     const [search, useSearch] = useState('')
@@ -81,6 +79,44 @@ export default function PageContent ( {navigation, route} ) {
         
     };
 
+    const getCurrentContent = async () => {
+        if (activityType == 'topPage') {
+            const docSnap = await getDoc(doc(db, "homepage", "topPage"))
+
+            if (docSnap.exists()) {
+                setListedTopPage(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'restaurants') {
+            const docSnap = await getDoc(doc(db, "homepage", "restaurants"))
+
+            if (docSnap.exists()) {
+                setListedRestaurants(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'hotels') {
+            const docSnap = await getDoc(doc(db, "homepage", "hotels"))
+
+            if (docSnap.exists()) {
+                setListedHotels(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'paidtours') {
+            const docSnap = await getDoc(doc(db, "homepage", "paidtours"))
+
+            if (docSnap.exists()) {
+                setListedPaidtours(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'attractions') {
+            const docSnap = await getDoc(doc(db, "homepage", "attractions"))
+
+            if (docSnap.exists()) {
+                setListedAttractions(docSnap.data().activities)
+            }
+        }
+    }
+
     const getRestaurants = async () => {
         const collectionRef = collection(db, "restaurants")
         const querySnapshot = await getDocs(collectionRef);
@@ -125,36 +161,11 @@ export default function PageContent ( {navigation, route} ) {
         })
     }
 
-    const getGuides = async () => {
-        const collectionRef = collection(db, "guides")
-        const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
-            guides.push({
-                ...doc.data(),
-                key: doc.id
-            })
-        })
-    getMergeArr();
-    }
-
-    const getWalkingTours = async () => {
-        const collectionRef = collection(db, "walkingtours")
-        const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
-            walkingTours.push({
-                ...doc.data(),
-                key: doc.id
-            })
-        })
-    }
-
     const getMergeArr = () => {
         mergedArr.push(...restaurants);
         mergedArr.push(...hotels);
         mergedArr.push(...paidTours);
         mergedArr.push(...attractions);
-        mergedArr.push(...guides);
-        mergedArr.push(...walkingTours);
         console.log("merged arr:", mergedArr)
         setCompletedArr(completedArr)
         setLoading(false);
@@ -224,8 +235,6 @@ export default function PageContent ( {navigation, route} ) {
             getHotels();
             getPaidTours();
             getAttractions();
-            getGuides();
-            //getWalkingTours();
         }
     },[shouldRun, finalArr]))
 

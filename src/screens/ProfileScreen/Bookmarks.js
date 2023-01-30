@@ -172,7 +172,7 @@ export default function Bookmarks ( {navigation} ) {
                 <ScrollView>
                 <Text style={styles.HeadingList}>Bookmarks</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Search Bookmarks', {bookmarksArr: bookmarksArr})}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Search Bookmarks')}>
                         <Text style={styles.buttonSmallListText}>Search</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonListRight}

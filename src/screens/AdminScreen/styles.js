@@ -35,6 +35,14 @@ export default StyleSheet.create({
         marginLeft:20,
         fontSize:18,
     },
+    HeadingList: {
+        fontSize: 30,
+        textAlign: 'right',
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 8,
+        marginRight: 30
+    },
     textNB: {
         borderRadius: 5,
         paddingLeft: 16,

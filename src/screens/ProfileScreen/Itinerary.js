@@ -133,7 +133,6 @@ export default function Itinerary({ navigation }) {
         /*if (itineraryArr) {
             setLoading(false);
         }*/
-        getMergeArr();
     }
 
     const getWalkingTours = async () => {
@@ -146,6 +145,7 @@ export default function Itinerary({ navigation }) {
                 key: doc.id
             })
         })
+        getMergeArr();
     }
 
     const getMergeArr = () => {
@@ -214,7 +214,7 @@ export default function Itinerary({ navigation }) {
             getPaidTours();
             getAttractions();
             getGuides();
-            //getWalkingTours();
+            getWalkingTours();
         }
     }, [shouldRun, email, finalArr]))
 

@@ -34,6 +34,7 @@ export default function ProfileScreen ( {navigation} ) {
             }
             else {
                 console.log("No Email Selected at Login")
+                setLoading(false)
             }
         } catch (error) {
             console.log(error)

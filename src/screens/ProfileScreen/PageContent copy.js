@@ -77,86 +77,169 @@ export default function PageContent ( {navigation, route} ) {
         }
         
     };
-
-    const getRestaurants = async () => {
-        const collectionRef = collection(db, "restaurants")
-        const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
-            restaurants.push({
-                ...doc.data(),
-                key: doc.id
+    if (activityType == 'topPage') {
+        const getRestaurants = async () => {
+            const collectionRef = collection(db, "restaurants")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                restaurants.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
             })
-        })
-    }
+        }
 
-    const getHotels = async () => {
-        const collectionRef = collection(db, "hotels")
-        const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
-            hotels.push({
-                ...doc.data(),
-                key: doc.id
+        const getHotels = async () => {
+            const collectionRef = collection(db, "hotels")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                hotels.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
             })
-        })
-    }
+        }
 
-    const getPaidTours = async () => {
-        const collectionRef = collection(db, "paidtours")
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            paidTours.push({
-                ...doc.data(),
-                key: doc.id
+        const getPaidTours = async () => {
+            const collectionRef = collection(db, "paidtours")
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                paidTours.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
             })
-        })
-    }
+        }
 
-    const getAttractions = async () => {
-        const collectionRef = collection(db, "attractions")
-        const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
-            attractions.push({
-                ...doc.data(),
-                key: doc.id
+        const getAttractions = async () => {
+            const collectionRef = collection(db, "attractions")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                attractions.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
             })
-        })
-    }
+        }
 
-    const getGuides = async () => {
-        const collectionRef = collection(db, "guides")
-        const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
-            guides.push({
-                ...doc.data(),
-                key: doc.id
+        const getGuides = async () => {
+            const collectionRef = collection(db, "guides")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                guides.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
             })
-        })
-    getMergeArr();
-    }
+        getMergeArr();
+        }
 
-    const getWalkingTours = async () => {
-        const collectionRef = collection(db, "walkingtours")
-        const querySnapshot = await getDocs(collectionRef);
-        querySnapshot.forEach((doc) => {
-            walkingTours.push({
-                ...doc.data(),
-                key: doc.id
+        const getWalkingTours = async () => {
+            const collectionRef = collection(db, "walkingtours")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                walkingTours.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
             })
-        })
-    }
+        }
 
-    const getMergeArr = () => {
-        mergedArr.push(...restaurants);
-        mergedArr.push(...hotels);
-        mergedArr.push(...paidTours);
-        mergedArr.push(...attractions);
-        mergedArr.push(...guides);
-        mergedArr.push(...walkingTours);
-        console.log("merged arr:", mergedArr)
-        setCompletedArr(completedArr)
-        setLoading(false);
+        const getMergeArr = () => {
+            mergedArr.push(...restaurants);
+            mergedArr.push(...hotels);
+            mergedArr.push(...paidTours);
+            mergedArr.push(...attractions);
+            mergedArr.push(...guides);
+            mergedArr.push(...walkingTours);
+            console.log("merged arr:", mergedArr)
+            setCompletedArr(mergedArr)
+            setLoading(false);
+            setShouldRun(false);
+        }
+        useFocusEffect(React.useCallback(() => {
+            if (shouldRun) {
+                getRestaurants();
+                getHotels();
+                getPaidTours();
+                getAttractions();
+                getGuides();
+                getWalkingTours();
+            }
+        },[shouldRun]))
     }
-
+    else if (activityType == 'restaurants') {
+        const getRestaurants = async () => {
+            const collectionRef = collection(db, "restaurants")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                mergedArr.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
+            })
+            setShouldRun(false);
+        }
+        useFocusEffect(React.useCallback(() => {
+            if (shouldRun) {
+                getRestaurants();
+            }
+        },[shouldRun]))
+    }
+    else if (activityType == 'paidtours') {
+        const getPaidTours = async () => {
+            const collectionRef = collection(db, "paidtours")
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                mergedArr.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
+            })
+            setShouldRun(false);
+        }
+        useFocusEffect(React.useCallback(() => {
+            if (shouldRun) {
+                getPaidTours();
+            }
+        },[shouldRun]))
+    }
+    else if (activityType == 'hotels') {
+        const getHotels = async () => {
+            const collectionRef = collection(db, "hotels")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                mergedArr.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
+            })
+            setShouldRun(false);
+        }
+        useFocusEffect(React.useCallback(() => {
+            if (shouldRun) {
+                getHotels();
+            }
+        },[shouldRun]))
+    }
+    else if (activityType == 'attractions') {
+        const getAttractions = async () => {
+            const collectionRef = collection(db, "attractions")
+            const querySnapshot = await getDocs(collectionRef);
+            querySnapshot.forEach((doc) => {
+                mergedArr.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
+            })
+            setShouldRun(false);
+        }
+        useFocusEffect(React.useCallback(() => {
+            if (shouldRun) {
+                getAttractions();
+            }
+        },[shouldRun]))
+    }
     const onSubmitPress = async () => {
         const submitList = completedArr.map(item => ({ name: item.name, position: item.position }))
         console.log("submitted list:", submitList)
@@ -172,16 +255,6 @@ export default function PageContent ( {navigation, route} ) {
         }
     }
 
-    useFocusEffect(React.useCallback(() => {
-        if (shouldRun) {
-            getRestaurants();
-            getHotels();
-            getPaidTours();
-            getAttractions();
-            getGuides();
-            //getWalkingTours();
-        }
-    },[shouldRun, finalArr]))
 
     if (loading) {
         return <ActivityIndicator />;

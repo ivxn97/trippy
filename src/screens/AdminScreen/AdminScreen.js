@@ -76,21 +76,14 @@ export default function AdminScreen ({navigation}) {
         <List.Accordion 
             title="Manage Activities"
             left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="Walking Tours" />
-                <List.Item title="Guides" />
-                <List.Item title="Services" />
+                <List.Item title="Walking Tours" onPress={() => navigation.navigate('Admin Edit Walking Tours List')}/>
+                <List.Item title="Guides" onPress={() => navigation.navigate('Admin Edit Guides List')}/>
+                <List.Item title="Attractions" />
+                <List.Item title="Hotels" />
+                <List.Item title="Restaurants" />
+                <List.Item title="Paid Tours" />
                 <List.Item title="Deals" />
         </List.Accordion>
-
-        <List.Accordion 
-            title="Review Pending"
-            left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="Walking Tours" />
-                <List.Item title="Guides" />
-                <List.Item title="Services" />
-                <List.Item title="Deals" />
-        </List.Accordion>
-
         <List.Accordion 
             title="Users/Accounts"
             left={props => <List.Icon{...props} icon="folder"/>}>

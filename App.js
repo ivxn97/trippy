@@ -21,7 +21,8 @@ import {
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
   GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks, EditGuide,
-  EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired
+  EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
+  AdminEditWalkingToursList
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -173,6 +174,10 @@ function AdminStackScreen() {
       <Stack.Screen name="Page Content" component={PageContent} />
       <Stack.Screen name="Page Content Choice" component={PageContentChoice} />
       <Stack.Screen name="Review Account" component={ReviewAccount} />
+      <Stack.Screen name="Admin Edit Walking Tours List" component={AdminEditWalkingToursList} />
+      <Stack.Screen name="Admin Edit Guides List" component={AdminEditGuidesList} />
+      <Stack.Screen name="Edit Walking Tours" component={EditWalkingTour} />
+      <Stack.Screen name="Edit Guide" component={EditGuide} />
     </AdminStack.Navigator>
   )
 }

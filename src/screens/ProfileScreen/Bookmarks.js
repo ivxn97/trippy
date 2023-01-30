@@ -110,9 +110,6 @@ export default function Bookmarks ( {navigation} ) {
                 key: doc.id
             })
         })
-        if (bookmarksArr) {
-            setLoading(false);
-        }
     }
 
     const getWalkingTours = async () => {
@@ -125,10 +122,9 @@ export default function Bookmarks ( {navigation} ) {
                 key: doc.id
             })
         })
-        //Move it to here in the future
-        /*if (bookmarksArr) {
+        if (bookmarksArr) {
             setLoading(false);
-        } */
+        } 
     }
 
     useFocusEffect(React.useCallback(() => {
@@ -140,7 +136,7 @@ export default function Bookmarks ( {navigation} ) {
             getPaidTours();
             getAttractions();
             getGuides();
-            //getWalkingTours();
+            getWalkingTours();
         }
     },[shouldRun, email, bookmarksArr]))
 

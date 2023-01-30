@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, TouchableHighlight, Modal, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, TouchableHighlight, Modal, StyleSheet, ScrollView } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import styles from './styles';
@@ -19,12 +19,14 @@ export default function HotelList({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [isPressed, setIsPressed] = useState(false);
     const [checkboxFilter, setCheckboxFilter] = useState([]);
-    const [typeOfRoomFilter, setTypeOfRoomFilter] = useState();
-    const [roomTypesFilter, setRoomTypesFilter] = useState([]);
 
     const [hotelClassFilter, setHotelClassFilter] = useState();
-    const [amenitiesFilter, setAmenitiesFilter] = useState();
-    const [roomFeaturesFilter, setRoomFeaturesFilter] = useState();
+    const [roomTypesFilter, setRoomTypesFilter] = useState([]);
+    const [roomTypesCheckbox, setRoomTypesCheckbox] = useState([]);
+    const [roomFeaturesFilter, setRoomFeaturesFilter] = useState([]);
+    const [roomFeaturesCheckbox, setRoomFeaturesCheckbox] = useState([]);
+    const [amenitiesFilter, setAmenitiesFilter] = useState([]);
+    const [amenitiesCheckbox, setAmenitiesCheckbox] = useState([]);
 
     function openDropdown() {
         setDropdownVisible(true);
@@ -56,18 +58,34 @@ export default function HotelList({ navigation }) {
             });
         });
 
-        const getRoomTypes = hotels.map(item => item.roomTypes);
-        //roomType.splice(0, (roomType.length - 1));
-        const allTypeOfRoom = getRoomTypes[0].map(item => ({
-            name: item.name,
-            value: item.name,
-            isChecked: false,
-
-        }));
         
-        const reducedTOR = allTypeOfRoom.filter((item, index) => {
-            return allTypeOfRoom.findIndex((otherItem) => otherItem.name === item.name) === index;
-        });
+
+        const roomType = hotels.map(item => item.roomTypes);
+        const allRoomType = roomType[0].map(item => ({
+          name: item.name,
+          isChecked: false,
+        }));
+        const reducedRoomType = allRoomType.filter((item, index) => {
+          return allRoomType.findIndex((otherItem) => otherItem.name === item.name) === index;
+        })
+
+        const roomFeature = hotels.map(item => item.roomFeatures);
+        const allRoomFeature = roomFeature[0].map(item => ({
+          name: item.name,
+          isChecked: false,
+        }));
+        const reducedRoomFeature = allRoomFeature.filter((item, index) => {
+          return allRoomFeature.findIndex((otherItem) => otherItem.name === item.name) === index;
+        })
+
+        const hotelAmenities = hotels.map(item => item.amenities);
+        const allHotelAmenities = hotelAmenities[0].map(item => ({
+          name: item.name,
+          isChecked: false,
+        }));
+        const reducedHotelAmenities = allHotelAmenities.filter((item, index) => {
+          return allHotelAmenities.findIndex((otherItem) => otherItem.name === item.name) === index;
+        })
 
         const allClass = hotels.map(item => ({
           name: item.hotelClass,
@@ -77,7 +95,9 @@ export default function HotelList({ navigation }) {
           return allClass.findIndex((otherItem) => otherItem.name === item.name) === index;
         })
 
-        setTypeOfRoomFilter(reducedTOR);
+        setAmenitiesFilter(reducedHotelAmenities);
+        setRoomFeaturesFilter(reducedRoomFeature);
+        setRoomTypesFilter(reducedRoomType);
         setHotelClassFilter(reducedClass);
 
         setHotels(hotels);
@@ -120,89 +140,56 @@ export default function HotelList({ navigation }) {
   }
 
     const onPressFilter =() => {
-        const allTypeOfRoomIsTrue = typeOfRoomFilter.every(({ isChecked }) => isChecked)
         const allClassIsTrue = hotelClassFilter.every(({ isChecked }) => isChecked)
-        if (allTypeOfRoomIsTrue) {typeOfRoomFilter.map(item => item.isChecked = false)}
         if (allClassIsTrue) {hotelClassFilter.map(item => item.isChecked = false)}
+
+        const allTypeOfRoomIsTrue = roomTypesFilter.every(({ isChecked }) => isChecked)
+        if (allTypeOfRoomIsTrue) {roomTypesFilter.map(item => item.isChecked = false)}
+
+        const allRoomFeatureIsTrue = roomFeaturesFilter.every(({ isChecked }) => isChecked)
+        if (allRoomFeatureIsTrue) {roomFeaturesFilter.map(item => item.isChecked = false)}
+
+        const allAmenitiesIsTrue = amenitiesFilter.every(({ isChecked }) => isChecked)
+        if (allAmenitiesIsTrue) {amenitiesFilter.map(item => item.isChecked = false)}
+        
         setIsPressed(!isPressed);
         setModalVisible(!modalVisible)
     }
 
     const toggleButton = (filters) => {
-        typeOfRoomFilter.map((item) => {
-          if (filters.name === item.name) {
-            item.isChecked = !item.isChecked;
-            setIsPressed(!isPressed);
-          }
-        })
         hotelClassFilter.map((item) => {
           if (filters.name === item.name) {
             item.isChecked = !item.isChecked;
             setIsPressed(!isPressed);
           }
         })
+        roomTypesFilter.map((item) => {
+          if (filters.name === item.name) {
+            item.isChecked = !item.isChecked;
+            setIsPressed(!isPressed);
+          }
+        })
+        roomFeaturesFilter.map((item) => {
+          if (filters.name === item.name) {
+            item.isChecked = !item.isChecked;
+            setIsPressed(!isPressed);
+          }
+        })
+        amenitiesFilter.map((item) => {
+          if (filters.name === item.name) {
+            item.isChecked = !item.isChecked;
+            setIsPressed(!isPressed);
+          }
+        })
     }
 
-    const onSubmitFilter = () => {
+    const onSubmitFilter = async() => {
         setModalVisible(!modalVisible)
-        const allTypeOfRoomIsFalse = typeOfRoomFilter.every(({ isChecked }) => !isChecked)
         const allClassIsFalse = hotelClassFilter.every(({ isChecked }) => !isChecked)
-        
-        if (allTypeOfRoomIsFalse) {
-            typeOfRoomFilter.map(item => item.isChecked = true);
-        }
-    
+
         if (allClassIsFalse) {
             hotelClassFilter.map(item => item.isChecked = true);
         }
-        //hotels.map (item => console.log(item.roomTypes));
-
-        typeOfRoomFilter.map ((item) => {
-            if (item.isChecked) {
-              if(!roomTypesFilter.includes(item.name)) {
-                roomTypesFilter.push(item.name);
-              }
-              //
-            } else if (item.isChecked === false) {
-              if(roomTypesFilter.includes(item.name)) {
-                const index = roomTypesFilter.indexOf(item.name);
-                roomTypesFilter.splice(index, 1);
-              }
-            } 
-          })
-
-          hotels.map (item => {
-            const rooms = item.roomTypes;
-            //const roomsInHotel = rooms.filter (filterItem => filterItem.isChecked === true);
-            //console.log(roomsInHotel);
-            var roomsInHotel = [];
-            rooms.map (room => {
-              if (room.isChecked) {
-                roomsInHotel.push(room.name);
-              }
-            })
-            if(roomTypesFilter.every(a=>roomsInHotel.includes(a))) {
-              if(!checkboxFilter.includes(item.name)) {
-                checkboxFilter.push(item.name);
-              }
-            } else {
-              if (checkboxFilter.includes(item.name)) {
-                const index = checkboxFilter.indexOf(item.name);
-                checkboxFilter.splice(index, 1);
-              }
-            }
-            roomsInHotel.map (room => {
-              if (checkboxFilter.includes(room.name)) {
-                console.log(item.name);
-                console.log(room);
-                
-              }
-            })
-              //console.log(roomTypesFilter);
-              //console.log(roomsInHotel);
-              //console.log(b);
-          })
-          //console.log(checker);
         
           hotelClassFilter.map ((item) => {
             if (item.isChecked) {
@@ -217,11 +204,113 @@ export default function HotelList({ navigation }) {
               }
             } 
           })
+
+          roomTypesFilter.map ((item) => {
+            if (item.isChecked) {
+              if(!roomTypesCheckbox.includes(item.name)) {
+                roomTypesCheckbox.push(item.name);
+              }
+              //
+            } else if (item.isChecked === false) {
+              if(roomTypesCheckbox.includes(item.name)) {
+                const index = roomTypesCheckbox.indexOf(item.name);
+                roomTypesCheckbox.splice(index, 1);
+              }
+            } 
+          })
+
+          roomFeaturesFilter.map ((item) => {
+            if (item.isChecked) {
+              if(!roomFeaturesCheckbox.includes(item.name)) {
+                roomFeaturesCheckbox.push(item.name);
+              }
+              //
+            } else if (item.isChecked === false) {
+              if(roomFeaturesCheckbox.includes(item.name)) {
+                const index = roomFeaturesCheckbox.indexOf(item.name);
+                roomFeaturesCheckbox.splice(index, 1);
+              }
+            } 
+          })
+
+          amenitiesFilter.map ((item) => {
+            if (item.isChecked) {
+              if(!amenitiesCheckbox.includes(item.name)) {
+                amenitiesCheckbox.push(item.name);
+              }
+              //
+            } else if (item.isChecked === false) {
+              if(amenitiesCheckbox.includes(item.name)) {
+                const index = amenitiesCheckbox.indexOf(item.name);
+                amenitiesCheckbox.splice(index, 1);
+              }
+            } 
+          })
+
+          hotels.map(item => {
+            const roomT = item.roomTypes;
+            const roomInHotel = [];
+            roomT.map (filterItem => {
+              if(filterItem.isChecked){
+                roomInHotel.push(filterItem.name);
+              }
+            })
+            if (roomTypesCheckbox.every(a => roomInHotel.includes(a))) {
+              if (!checkboxFilter.includes(roomT)) {
+                checkboxFilter.push(roomT)
+              }
+            } else if (!roomTypesCheckbox.every(a => roomInHotel.includes(a))) {
+              if (checkboxFilter.includes(roomT)) {
+                const index = checkboxFilter.indexOf(roomT);
+                checkboxFilter.splice(index, 1);
+              }
+            }
+
+
+            const roomF = item.roomFeatures;
+            const roomFeaturesInHotel = [];
+            roomF.map (filterItem => {
+              if(filterItem.isChecked){
+                roomFeaturesInHotel.push(filterItem.name);
+              }
+            })
+            if (roomFeaturesCheckbox.every(a => roomFeaturesInHotel.includes(a))) {
+              if (!checkboxFilter.includes(roomF)) {
+                checkboxFilter.push(roomF)
+              }
+            } else if (!roomFeaturesCheckbox.every(a => roomFeaturesInHotel.includes(a))) {
+              if (checkboxFilter.includes(roomF)) {
+                const index = checkboxFilter.indexOf(roomF);
+                checkboxFilter.splice(index, 1);
+              }
+            }
+
+            const hotelA = item.amenities;
+            const amenitiesInHotel = [];
+            hotelA.map (filterItem => {
+              if(filterItem.isChecked){
+                amenitiesInHotel.push(filterItem.name);
+              }
+            })
+            if (amenitiesCheckbox.every(a => amenitiesInHotel.includes(a))) {
+              if (!checkboxFilter.includes(hotelA)) {
+                checkboxFilter.push(hotelA)
+              }
+            } else if (!amenitiesCheckbox.every(a => amenitiesInHotel.includes(a))) {
+              if (checkboxFilter.includes(hotelA)) {
+                const index = checkboxFilter.indexOf(hotelA);
+                checkboxFilter.splice(index, 1);
+              }
+            }
+          });
         console.log(checkboxFilter);
         
     
         if(checkboxFilter?.length > 0) {
-        const newData = hotels.filter(item => checkboxFilter.includes(item.hotelClass) && checkboxFilter.includes(item.name));
+        const newData = hotels.filter(item => checkboxFilter.includes(item.hotelClass) 
+        && checkboxFilter.includes(item.roomTypes) 
+        && checkboxFilter.includes(item.roomFeatures)
+        && checkboxFilter.includes(item.amenities));
         
           setfilteredData(newData);
         } else {
@@ -314,11 +403,41 @@ export default function HotelList({ navigation }) {
           Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
-        <View style={modal.centeredView}>
+        <ScrollView >
           <View style={modal.modalView}>
             <Text style={modal.modalText}>Type Of Room</Text>
             <View style={modal.buttonView}>
-            {typeOfRoomFilter
+            {roomTypesFilter
+              //.filter((item) => !checked || item.checked)
+              .map((item, index) => (
+                <View style={styles.checklist} key={index}>
+                    <TouchableHighlight 
+                    onPress={() => toggleButton(item)}
+                    style={item.isChecked? modal.buttonPressed : modal.button}>
+                      <Text>{item.name}</Text>
+                    </TouchableHighlight>
+                </View>
+            ))}
+            </View>
+
+            <Text style={modal.modalText}>Room Features</Text>
+            <View style={modal.buttonView}>
+            {roomFeaturesFilter
+              //.filter((item) => !checked || item.checked)
+              .map((item, index) => (
+                <View style={styles.checklist} key={index}>
+                    <TouchableHighlight 
+                    onPress={() => toggleButton(item)}
+                    style={item.isChecked? modal.buttonPressed : modal.button}>
+                      <Text>{item.name}</Text>
+                    </TouchableHighlight>
+                </View>
+            ))}
+            </View>
+
+            <Text style={modal.modalText}>Amenities</Text>
+            <View style={modal.buttonView}>
+            {amenitiesFilter
               //.filter((item) => !checked || item.checked)
               .map((item, index) => (
                 <View style={styles.checklist} key={index}>
@@ -351,7 +470,7 @@ export default function HotelList({ navigation }) {
                       <Text>Submit</Text>
             </TouchableHighlight>
           </View>
-        </View>
+        </ScrollView>
       </Modal>
         </View>
     );

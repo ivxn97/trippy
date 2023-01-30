@@ -108,7 +108,7 @@ export default function HotelList({ navigation }) {
         if (sort === 'asc' || sort === 'desc') {
             setSortOrder(sort);
             setInnerDropdownVisible(false);
-            const sortedArray = await sortFiles(items, sortBy, sortOrder);
+            const sortedArray = await sortFiles(hotels, sortBy, sortOrder);
             setItems(sortedArray)
 
         } else {

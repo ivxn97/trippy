@@ -110,9 +110,6 @@ export default function Bookmarks ( {navigation} ) {
                 key: doc.id
             })
         })
-        if (bookmarksArr) {
-            setLoading(false);
-        }
     }
 
     const getWalkingTours = async () => {
@@ -125,10 +122,9 @@ export default function Bookmarks ( {navigation} ) {
                 key: doc.id
             })
         })
-        //Move it to here in the future
-        /*if (bookmarksArr) {
+        if (bookmarksArr) {
             setLoading(false);
-        } */
+        } 
     }
 
     useFocusEffect(React.useCallback(() => {
@@ -140,7 +136,7 @@ export default function Bookmarks ( {navigation} ) {
             getPaidTours();
             getAttractions();
             getGuides();
-            //getWalkingTours();
+            getWalkingTours();
         }
     },[shouldRun, email, bookmarksArr]))
 
@@ -172,7 +168,7 @@ export default function Bookmarks ( {navigation} ) {
                 <ScrollView>
                 <Text style={styles.HeadingList}>Bookmarks</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Search Bookmarks', {bookmarksArr: bookmarksArr})}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Search Bookmarks')}>
                         <Text style={styles.buttonSmallListText}>Search</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonListRight}

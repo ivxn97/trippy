@@ -17,7 +17,7 @@ export default function EditWalkingTour({ route, navigation }) {
     const [newTips, setTips] = useState(tips);
     const [newDescription, setDescription] = useState(description);
     const [locationCount, setLocationCount] = useState(1);
-    const [locationArr, setLocationArr] = useState([])
+    const [locationArr, setLocationArr] = useState(location)
     const [loading, setLoading] = useState(true)
     const [sections, setSections] = useState([]);
     const [newSection, setSection] = useState(section);

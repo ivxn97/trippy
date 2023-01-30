@@ -88,7 +88,7 @@ export default function HotelList({ navigation }) {
         if (sort === 'asc' || sort === 'desc') {
             setSortOrder(sort);
             setInnerDropdownVisible(false);
-            const sortedArray = await sortFiles(items, sortBy, sortOrder);
+            const sortedArray = await sortFiles(hotels, sortBy, sortOrder);
             setItems(sortedArray)
 
         } else {
@@ -143,10 +143,6 @@ export default function HotelList({ navigation }) {
         })
     }
 
-    const checker = (arr, target) => {
-      target.every(v => arr.includes(v))
-    }
-
     const onSubmitFilter = () => {
         setModalVisible(!modalVisible)
         const allTypeOfRoomIsFalse = typeOfRoomFilter.every(({ isChecked }) => !isChecked)
@@ -185,11 +181,16 @@ export default function HotelList({ navigation }) {
                 roomsInHotel.push(room.name);
               }
             })
-            console.log(item.name);
-            console.log(roomsInHotel);
-            //console.log(roomsInHotel.every(a=>roomTypesFilter.includes(a.name)));
-            console.log(roomsInHotel.includes(roomTypesFilter));
-            //roomsInHotel.map(a=>console.log(a.name));
+            if(roomTypesFilter.every(a=>roomsInHotel.includes(a))) {
+              if(!checkboxFilter.includes(item.name)) {
+                checkboxFilter.push(item.name);
+              }
+            } else {
+              if (checkboxFilter.includes(item.name)) {
+                const index = checkboxFilter.indexOf(item.name);
+                checkboxFilter.splice(index, 1);
+              }
+            }
             roomsInHotel.map (room => {
               if (checkboxFilter.includes(room.name)) {
                 console.log(item.name);
@@ -220,7 +221,7 @@ export default function HotelList({ navigation }) {
         
     
         if(checkboxFilter?.length > 0) {
-        const newData = hotels.filter(item => checkboxFilter.includes(item.hotelClass) && checkboxFilter.includes(item.roomTypes));
+        const newData = hotels.filter(item => checkboxFilter.includes(item.hotelClass) && checkboxFilter.includes(item.name));
         
           setfilteredData(newData);
         } else {

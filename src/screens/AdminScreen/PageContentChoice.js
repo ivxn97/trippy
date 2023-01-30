@@ -8,8 +8,8 @@ export default function PageContentChoice({ navigation, route }) {
 
     return (
         <View>
-            <View style={{ flexDirection: "row" }}>
-                <TouchableOpacity style={styles.buttonSmallHome}
+            <View >
+                <TouchableOpacity style={styles.buttonLanding}
                     title="topPage"
                     onPress={() =>
                         {navigation.navigate('Page Content', { activityType: 'topPage'})}
@@ -17,7 +17,7 @@ export default function PageContentChoice({ navigation, route }) {
                 >
                     <Text style={styles.buttonSmallText}>top page</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmallHome}
+                <TouchableOpacity style={styles.buttonLanding}
                     title="Restaurants"
                     onPress={() =>
                         {navigation.navigate('Page Content', { activityType: 'restaurants'})}
@@ -25,7 +25,7 @@ export default function PageContentChoice({ navigation, route }) {
                 >
                     <Text style={styles.buttonSmallText}>Restaurants</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmallHome}
+                <TouchableOpacity style={styles.buttonLanding}
                     title="Hotels"
                     onPress={() =>
                         {navigation.navigate('Page Content', {activityType: 'hotels'})}
@@ -34,8 +34,7 @@ export default function PageContentChoice({ navigation, route }) {
                     <Text style={styles.buttonSmallText}>Hotels</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: "row" }}>
-                <TouchableOpacity style={styles.buttonSmallHome}
+                <TouchableOpacity style={styles.buttonLanding}
                     title="Attractions"
                     onPress={() =>
                         {navigation.navigate('Page Content', { activityType: 'attractions' })}
@@ -43,7 +42,7 @@ export default function PageContentChoice({ navigation, route }) {
                 >
                     <Text style={styles.buttonSmallText}>Attractions</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonSmallHome}
+                <TouchableOpacity style={styles.buttonLanding}
                     title="Paid Tours"
                     onPress={() =>
                         {navigation.navigate('Page Content', { activityType: 'paidtours' })}
@@ -51,7 +50,6 @@ export default function PageContentChoice({ navigation, route }) {
                 >
                     <Text style={styles.buttonSmallText}>Paid Tours</Text>
                 </TouchableOpacity>
-            </View>
             
         </View>
     );

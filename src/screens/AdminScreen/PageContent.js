@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity, CheckBox } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs, QuerySnapshot, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
-import styles from './styles';
+import styles from '../ProfileScreen/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NestableDraggableFlatList, NestableScrollContainer, ScaleDecorator } from 'react-native-draggable-flatlist';
+import Checkbox from 'expo-checkbox';
 
 export default function PageContent ( {navigation, route} ) {
     const { activityType} = route.params;
@@ -20,6 +21,7 @@ export default function PageContent ( {navigation, route} ) {
     const [walkingTours, setWalkingTours] = useState([]);
     const [mergedArr, setMergedArr] = useState([]);
     const [completedArr, setCompletedArr] = useState([]);
+    const [search, useSearch] = useState('')
 
     const [shouldRun, setShouldRun] = useState(true);
     const [listedTopPage, setListedTopPage] = useState([]);
@@ -31,9 +33,10 @@ export default function PageContent ( {navigation, route} ) {
     // Function to handle checking or unchecking an item
     const handleCheck = (item) => {
         if (activityType == 'topPage') {
-            if (listedRestaurants.includes(item)) {
+            if (listedTopPage.includes(item)) {
                 // Remove item from list if already checked
                 setListedTopPage(listedTopPage.filter(i => i !== item));
+                console.log(listedTopPage)
             } else {
                 // Add item to list if not already checked
                 setListedTopPage([...listedTopPage, item]);
@@ -102,7 +105,7 @@ export default function PageContent ( {navigation, route} ) {
 
     const getPaidTours = async () => {
         const collectionRef = collection(db, "paidtours")
-        const querySnapshot = await getDocs(q);
+        const querySnapshot = await getDocs(collectionRef);
         querySnapshot.forEach((doc) => {
             paidTours.push({
                 ...doc.data(),
@@ -158,17 +161,60 @@ export default function PageContent ( {navigation, route} ) {
     }
 
     const onSubmitPress = async () => {
-        const submitList = completedArr.map(item => ({ name: item.name, position: item.position }))
-        console.log("submitted list:", submitList)
-        try {
-            await setDoc(doc(db, "users", email), {
-                itinerary: submitList
-            }, {merge:true});
-            //console.log("Document written with ID: ", docRef.id);
-            navigation.navigate('Profile Page')
+        if (activityType == 'topPage') {
+            try {
+                await setDoc(doc(db, "homepage", "topPage"), {
+                    activities: listedTopPage
+                })
+                navigation.navigate('Page Content Choice')
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
-        catch (e) {
-            console.log("Error adding document: ", e);
+        else if (activityType == 'restaurants') {
+            try {
+                await setDoc(doc(db, "homepage", "restaurants"), {
+                    activities: listedRestaurants
+                })
+                navigation.navigate('Page Content Choice')
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        else if (activityType == 'paidtours') {
+            try {
+                await setDoc(doc(db, "homepage", "paidtours"), {
+                    activities: listedPaidtours
+                })
+                navigation.navigate('Page Content Choice')
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        else if (activityType == 'hotels') {
+            try {
+                await setDoc(doc(db, "homepage", "hotels"), {
+                    activities: listedHotels
+                })
+                navigation.navigate('Page Content Choice')
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+        else if (activityType == 'attractions') {
+            try {
+                await setDoc(doc(db, "homepage", "attractions"), {
+                    activities: listedAttractions
+                })
+                navigation.navigate('Page Content Choice')
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
     }
 
@@ -201,11 +247,11 @@ export default function PageContent ( {navigation, route} ) {
                 />
                 <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                     <FlatList
-                        data={completedArr}
+                        data={mergedArr}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ marginRight: 10 }}>{item.name}</Text>
-                                <CheckBox
+                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Checkbox
                                     value={listedTopPage.includes(item)}
                                     onValueChange={() => handleCheck(item)}
                                 />
@@ -214,6 +260,11 @@ export default function PageContent ( {navigation, route} ) {
                         keyExtractor={item => item.name}
                     />
                 </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => onSubmitPress()}>
+                    <Text style={styles.buttonTitle}>Modify Page Content</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -235,8 +286,8 @@ export default function PageContent ( {navigation, route} ) {
                         data={restaurants}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ marginRight: 10 }}>{item.name}</Text>
-                                <CheckBox
+                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Checkbox
                                     value={listedRestaurants.includes(item)}
                                     onValueChange={() => handleCheck(item)}
                                 />
@@ -245,6 +296,11 @@ export default function PageContent ( {navigation, route} ) {
                         keyExtractor={item => item.name}
                     />
                 </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => onSubmitPress()}>
+                    <Text style={styles.buttonTitle}>Modify Page Content</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -262,11 +318,11 @@ export default function PageContent ( {navigation, route} ) {
                 />
                 <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                     <FlatList
-                        data={paidtours}
+                        data={paidTours}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ marginRight: 10 }}>{item.name}</Text>
-                                <CheckBox
+                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Checkbox
                                     value={listedPaidtours.includes(item)}
                                     onValueChange={() => handleCheck(item)}
                                 />
@@ -275,6 +331,11 @@ export default function PageContent ( {navigation, route} ) {
                         keyExtractor={item => item.name}
                     />
                 </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => onSubmitPress()}>
+                    <Text style={styles.buttonTitle}>Modify Page Content</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -295,8 +356,8 @@ export default function PageContent ( {navigation, route} ) {
                         data={hotels}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ marginRight: 10 }}>{item.name}</Text>
-                                <CheckBox
+                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Checkbox
                                     value={listedHotels.includes(item)}
                                     onValueChange={() => handleCheck(item)}
                                 />
@@ -305,6 +366,11 @@ export default function PageContent ( {navigation, route} ) {
                         keyExtractor={item => item.name}
                     />
                 </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => onSubmitPress()}>
+                    <Text style={styles.buttonTitle}>Modify Page Content</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -325,8 +391,8 @@ export default function PageContent ( {navigation, route} ) {
                         data={attractions}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ marginRight: 10 }}>{item.name}</Text>
-                                <CheckBox
+                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Checkbox
                                     value={listedAttractions.includes(item)}
                                     onValueChange={() => handleCheck(item)}
                                 />
@@ -335,6 +401,11 @@ export default function PageContent ( {navigation, route} ) {
                         keyExtractor={item => item.name}
                     />
                 </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => onSubmitPress()}>
+                    <Text style={styles.buttonTitle}>Modify Page Content</Text>
+                </TouchableOpacity>
             </View>
         );
     }

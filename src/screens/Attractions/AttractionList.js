@@ -10,32 +10,20 @@ export default function AttractionList( {navigation }) {
   const [attractions, setAttractions] = useState([]); // Initial empty array of attractions
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(attractions);
-  const [sortBy, setSortBy] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
+
+  const [sortModalVisible, setSortModalVisible] = useState(false);
+  const [sortIsPressed, setSortIsPressed] = useState(false);
+  const [sortByData, setSortByData] = useState();
+  const [sortOrderData, setSortOrderData] = useState();
+  const [sortBy, setSortBy] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [checkboxFilter, setCheckboxFilter] = useState([]);
   const [typesOfAttraction, setTypesOfAttraction] = useState();
 
-  function openDropdown() {
-    setDropdownVisible(true);
-  }
-
-  function closeDropdown() {
-    setDropdownVisible(false);
-  }
-
-  function openInnerDropdown() {
-    setInnerDropdownVisible(true);
-  }
-
-  function closeInnerDropdown() {
-    setInnerDropdownVisible(false);
-  }
-
+  
   //List
   navigation.addListener('willFocus', () => {
     
@@ -58,25 +46,86 @@ export default function AttractionList( {navigation }) {
     const reducedType = allTypeOfAttraction.filter((item, index) => {
       return allTypeOfAttraction.findIndex((otherItem) => otherItem.name === item.name) === index;
     })
+
+    const sortByChoice = ["name", "attractionType"];
+    const sortByResult = sortByChoice.map(attributeName => ({
+      name: attributeName,
+      value: attributeName,
+      isChecked: false
+    }));
+    const sortOrderChoice = ["asc", "desc"];
+    const sortOrderResult = sortOrderChoice.map(attributeName => ({
+      name: attributeName,
+      value: attributeName,
+      isChecked: false
+    }));
+
+    setSortByData(sortByResult);
+    setSortOrderData(sortOrderResult);
+
     console.log(reducedType);
 
-        setTypesOfAttraction(reducedType);
-        setAttractions(attractions);
-        setLoading(false);
-      },[]);
+    setTypesOfAttraction(reducedType);
+    setAttractions(attractions);
+    setLoading(false);
+  },[]);
   
-  async function handleSortChange(sort) {
-    if (sort === 'asc' || sort === 'desc') {
-      setSortOrder(sort);
-      setInnerDropdownVisible(false);
-      const sortedArray = await sortFiles(attractions, sortBy, sortOrder);
-      setAttractions(sortedArray)
+  const onPressSort = () => {
+    const sortByDataIsTrue = sortByData.every(({ isChecked }) => isChecked)
+    const sortOrderIsTrue = sortOrderData.every(({ isChecked }) => isChecked)
+    if (sortByDataIsTrue) { sortByData.map(item => item.isChecked = false) }
+    if (sortOrderIsTrue) { sortOrderData.map(item => item.isChecked = false) }
+    setSortIsPressed(!sortIsPressed);
+    setSortModalVisible(!sortModalVisible)
+  }
 
-    } else {
-      setSortBy(sort);
-      setDropdownVisible(false);
-      openInnerDropdown();
+
+
+  const sortToggleButton = (sort) => {
+    sortByData.map((item) => {
+      if (sort.name === item.name) {
+        if (item.isChecked) {
+          item.isChecked = false;
+        } else {
+          sortByData.map(item => item.isChecked = false);
+          item.isChecked = true;
+        }
+        setSortIsPressed(!sortIsPressed);
+        setSortBy(item.name)
+      }
+    })
+    sortOrderData.map((item) => {
+      if (sort.name === item.name) {
+        if (item.isChecked) {
+          item.isChecked = false;
+        } else {
+          sortOrderData.map(item => item.isChecked = false);
+          item.isChecked = true;
+        }
+        setSortIsPressed(!sortIsPressed);
+        setSortOrder(item.name)
+      }
+    })
+  }
+
+  async function onSubmitSort() {
+    const sortByDataIsFalse = sortByData.every(({ isChecked }) => !isChecked)
+    const sortOrderDataIsFalse = sortOrderData.every(({ isChecked }) => !isChecked)
+
+    if (sortByDataIsFalse) {
+      sortByData.map(item => item.isChecked = true);
     }
+
+    if (sortOrderDataIsFalse) {
+      sortOrderData.map(item => item.isChecked = true);
+    }
+    setSortModalVisible(!sortModalVisible)
+    const sortedArray = await sortFiles(filteredData, sortBy, sortOrder);
+    setfilteredData(sortedArray);
+    setSortBy("");
+    setSortOrder("");
+    sortByData.map(item => item.isChecked = false); // set all to false
+    sortOrderData.map(item => item.isChecked = false); // set all to false
   }
 
   if (loading) {
@@ -161,43 +210,9 @@ export default function AttractionList( {navigation }) {
         onChangeText={(text) => searchFilter(text, attractions)}
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-        {!sortBy && (
-          <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
-            <Text style={styles.buttonSmallListText}>Sort</Text>
-          </TouchableOpacity>
-        )}
-        {sortBy && !sortOrder && (
-          <TouchableOpacity style={styles.buttonListLeft} onPress={openInnerDropdown}>
-            <Text style={styles.buttonSmallListText} >Sort by {sortBy}</Text>
-          </TouchableOpacity>
-        )}
-        {sortBy && sortOrder && (
-          <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
-            <Text style={styles.buttonSmallListText}>Sort</Text>
-          </TouchableOpacity>
-        )}
-        {dropdownVisible && (
-          <FlatList
-            data={['name', 'attractionType']}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleSortChange(item)}>
-                <Text>Sort by {item}</Text>
-              </TouchableOpacity>
-            )}
-            keyExtractor={item => item}
-          />
-        )}
-        {innerDropdownVisible && (
-          <FlatList
-            data={['asc', 'desc']}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleSortChange(item)}>
-                <Text>{item}ending</Text>
-              </TouchableOpacity>
-            )}
-            keyExtractor={item => item}
-          />
-        )}
+        <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
+          <Text style={styles.buttonSmallListText}>Sort</Text>
+        </TouchableOpacity> 
         <TouchableOpacity style={styles.buttonListRight} onPress={()=>onPressFilter()}>
           <Text style={styles.buttonSmallListText}>Filter</Text>
         </TouchableOpacity>
@@ -215,45 +230,95 @@ export default function AttractionList( {navigation }) {
         addedBy: item.addedBy})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
-          <Text>${item.price}</Text>
+            <Text>{item.attractionType}</Text>
         </View>
         </TouchableHighlight>
       )}
     />
+      {modalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={modal.centeredView}>
+            <View style={modal.modalView}>
+              <Text style={modal.modalText}>Type Of Attraction</Text>
+              <View style={modal.buttonView}>
+              {typesOfAttraction
+                //.filter((item) => !checked || item.checked)
+                .map((item, index) => (
+                  <View style={styles.checklist} key={index}>
+                      <TouchableHighlight 
+                      onPress={() => toggleButton(item)}
+                      style={item.isChecked? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                  </View>
+              ))}
+              </View>
 
-    <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={modal.centeredView}>
-          <View style={modal.modalView}>
-            <Text style={modal.modalText}>Type Of Attraction</Text>
-            <View style={modal.buttonView}>
-            {typesOfAttraction
-              //.filter((item) => !checked || item.checked)
-              .map((item, index) => (
-                <View style={styles.checklist} key={index}>
-                    <TouchableHighlight 
-                    onPress={() => toggleButton(item)}
-                    style={item.isChecked? modal.buttonPressed : modal.button}>
-                      <Text>{item.name}</Text>
-                    </TouchableHighlight>
-                </View>
-            ))}
+              <TouchableHighlight 
+                      onPress={() => onSubmitFilter()}
+                      style={modal.button}>
+                        <Text>Submit</Text>
+              </TouchableHighlight>
             </View>
-
-            <TouchableHighlight 
-                    onPress={() => onSubmitFilter()}
-                    style={modal.button}>
-                      <Text>Submit</Text>
-            </TouchableHighlight>
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      )}
+      {sortModalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={sortModalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setSortModalVisible(!sortModalVisible);
+          }}>
+          <View style={modal.centeredView}>
+            <View style={modal.modalView}>
+              <Text style={modal.modalText}>Sort By</Text>
+              <View style={modal.buttonView}>
+                {sortByData
+                  //.filter((item) => !checked || item.checked)
+                  .map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                      <TouchableHighlight
+                        onPress={() => sortToggleButton(item)}
+                        style={item.isChecked ? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                    </View>
+                  ))}
+              </View>
+
+              <Text style={modal.modalText}>Sort Order</Text>
+              <View style={modal.buttonView}>
+                {sortOrderData
+                  //.filter((item) => !checked || item.checked)
+                  .map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                      <TouchableHighlight
+                        onPress={() => sortToggleButton(item)}
+                        style={item.isChecked ? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                    </View>
+                  ))}
+              </View>
+              <TouchableHighlight
+                onPress={() => onSubmitSort()}
+                style={modal.button}>
+                <Text>Submit</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 }

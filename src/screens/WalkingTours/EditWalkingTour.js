@@ -7,7 +7,7 @@ import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -23,6 +23,7 @@ export default function EditWalkingTour({ route, navigation }) {
     const [newSection, setSection] = useState(section);
     const [isExpired, setIsExpired] = useState(expired)
     const [imageCount, setImageCount] = useState(0)
+    const [images, setImages] = useState([]);
     const typePlaceholder = {
         label: 'Section Category',
         value: null,
@@ -49,6 +50,24 @@ export default function EditWalkingTour({ route, navigation }) {
             setImageCount(0)
             })
         .catch(error => console.log(error));
+    }
+
+    const getImages = async () => {
+        const listRef = ref(storage, `restaurants/${name}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then((results) => {
+            const fetchedImages = results[0];
+            console.log(fetchedImages);
+            setImages(fetchedImages);
+          });
     }
 
     const getTypes = async ()  => {
@@ -90,6 +109,7 @@ export default function EditWalkingTour({ route, navigation }) {
             console.log("Image uploaded!");
             const count = imageCount + 1
             setImageCount(count)
+            getImages()
         })}
         else {
             console.log('No Image uploaded!')
@@ -131,7 +151,8 @@ export default function EditWalkingTour({ route, navigation }) {
                     description: newDescription,
                     activityType: 'walkingtours',
                     section: section,
-                    expired: isExpired
+                    expired: isExpired,
+                    images: images
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')

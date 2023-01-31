@@ -66,7 +66,7 @@ export default function AdminEditGuideList ({ navigation }) {
             underlayColor="#C8c9c9"
             onPress={() =>
                 navigation.navigate('Edit Guide', {name: item.name, location: item.location,
-        mrt: item.mrt, tips: item.tips, description: item.description, section:item.section, expired:item.expired})}>
+        mrt: item.mrt, tips: item.tips, description: item.description, section:item.section, expired:item.expired, images: item.images})}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
         </View>

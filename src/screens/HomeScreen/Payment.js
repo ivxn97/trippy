@@ -20,7 +20,7 @@ import CreditCardForm, { Button } from 'rn-credit-card'
 
 
 export default function Payment ({route, navigation}) {
-  const {time, date, groupSize, name, email, price} = route.params;
+  const {time, date, groupSize, name, email, price, roomType, activityType, checkInTime, checkOutTime, startDate, endDate} = route.params;
 
   const formMethods = useForm({
     mode: 'onBlur',
@@ -37,7 +37,8 @@ export default function Payment ({route, navigation}) {
     const lastFourDigits = model.cardNumber.slice(-4)
     console.log(lastFourDigits)
     navigation.navigate('Confirm Booking', { time: time, date: date, groupSize: groupSize, 
-      name: name, email: email, price: price, lastFourDigits: lastFourDigits})
+      name: name, email: email, price: price, lastFourDigits: lastFourDigits, roomType: roomType, activityType: activityType,
+    checkInTime: checkInTime, checkOutTime: checkOutTime, startDate: startDate, endDate: endDate})
   }
 
 return (
@@ -50,6 +51,7 @@ return (
         <CreditCardForm
           LottieView={LottieView}
           horizontalStart
+          formOnly
           overrides={{
             labelText: {
               marginTop: 16,

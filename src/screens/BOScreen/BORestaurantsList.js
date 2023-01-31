@@ -101,7 +101,7 @@ return (
         price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
         closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
         , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
-        capacity: item.capacity, address: item.address})}}>
+        capacity: item.capacity, address: item.address, images: item.images})}}>
       <View style={styles.list}>
         <Text>{item.name}</Text>
         <Text>{item.price}</Text>

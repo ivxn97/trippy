@@ -15,7 +15,7 @@ export default function PageContentChoice({ navigation, route }) {
                         {navigation.navigate('Page Content', { activityType: 'topPage'})}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>top page</Text>
+                    <Text style={styles.textNB}>Top Page</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="Restaurants"
@@ -23,7 +23,7 @@ export default function PageContentChoice({ navigation, route }) {
                         {navigation.navigate('Page Content', { activityType: 'restaurants'})}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>Restaurants</Text>
+                    <Text style={styles.textNB}>Restaurants</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="Hotels"
@@ -31,7 +31,7 @@ export default function PageContentChoice({ navigation, route }) {
                         {navigation.navigate('Page Content', {activityType: 'hotels'})}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>Hotels</Text>
+                    <Text style={styles.textNB}>Hotels</Text>
                 </TouchableOpacity>
             </View>
                 <TouchableOpacity style={styles.buttonLanding}
@@ -40,7 +40,7 @@ export default function PageContentChoice({ navigation, route }) {
                         {navigation.navigate('Page Content', { activityType: 'attractions' })}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>Attractions</Text>
+                    <Text style={styles.textNB}>Attractions</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="Paid Tours"
@@ -48,7 +48,7 @@ export default function PageContentChoice({ navigation, route }) {
                         {navigation.navigate('Page Content', { activityType: 'paidtours' })}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>Paid Tours</Text>
+                    <Text style={styles.textNB}>Paid Tours</Text>
                 </TouchableOpacity>
             
         </View>

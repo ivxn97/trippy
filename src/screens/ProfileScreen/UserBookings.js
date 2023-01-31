@@ -38,7 +38,7 @@ export default function UserBookings ({ navigation }) {
 
     const getBookings = async () => {
         const collectionRef = collection(db, "bookings")
-        const q = query(collectionRef, where('bookedBy', '==', email));
+        const q = query(collectionRef, where('bookedBy', '==', email), where('expired', '==', false));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             bookings.push({

@@ -6,7 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -67,6 +67,7 @@ export default function AddAttraction ( { navigation }) {
     const [capacity, setCapacity] = useState();
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
+    const [images, setImages] = useState([]);
 
     const getEmail = async () => {
         try {
@@ -82,6 +83,25 @@ export default function AddAttraction ( { navigation }) {
         }
     }
     getEmail();
+
+    const getImages = async () => {
+        const listRef = ref(storage, `restaurants/${name}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then((results) => {
+            const fetchedImages = results[0];
+            console.log(fetchedImages);
+            setImages(fetchedImages);
+            getImages()
+          });
+    }
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -152,6 +172,10 @@ export default function AddAttraction ( { navigation }) {
     }, [ageGroupData]);
       
     const onSubmitPress = async () => {
+         if (email !== '' && name !== '' && tourType !== '' && price !== '' && ageGroup !== '' 
+            && groupSize !== '' && openingHour !== '' && openingMinute !== '' && closingHour !== '' 
+            && closingMinute !== ''  && capacity !== '' && address !== '' && language !== '' 
+            && description !== '' && TNC !== '' && images !== '') {
             try {
                 await setDoc(doc(db, "attractions", name), {
                     addedBy: email,
@@ -170,7 +194,8 @@ export default function AddAttraction ( { navigation }) {
                     description: description,
                     language: language,
                     TNC: TNC,
-                    activityType: 'attractions'
+                    activityType: 'attractions',
+                    images: images
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')
@@ -178,6 +203,10 @@ export default function AddAttraction ( { navigation }) {
             catch (e) {
                 console.log("Error adding document: ", e);
             }
+        }
+        else {
+            alert('Please fill up all required information (incl images)')
+        }
     }
     
     if (loading) {

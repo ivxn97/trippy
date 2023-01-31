@@ -7,7 +7,7 @@ import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -25,12 +25,31 @@ export default function AddWalkingTour({ navigation }) {
     const [sections, setSections] = useState([]);
     const [section, setSection] = useState();
     const [imageCount, setImageCount] = useState(0)
+    const [images, setImages] = useState([]);
 
     const typePlaceholder = {
         label: 'Section Category',
         value: null,
         color: 'black',
     };
+
+    const getImages = async () => {
+        const listRef = ref(storage, `restaurants/${name}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then((results) => {
+            const fetchedImages = results[0];
+            console.log(fetchedImages);
+            setImages(fetchedImages);
+          });
+    }
 
     const getEmail = async () => {
         try {
@@ -86,6 +105,7 @@ export default function AddWalkingTour({ navigation }) {
             console.log("Image uploaded!");
             const count = imageCount + 1
             setImageCount(count)
+            getImages()
         })}
         else {
             console.log('No Image uploaded!')
@@ -120,6 +140,8 @@ export default function AddWalkingTour({ navigation }) {
     />);
 
     const onSubmitPress = async () => {
+        if (email !== '' && name !== '' && location !== '' && tips !== '' && description !== '' 
+            && section !== '' && images !== '') {
             try {
                 await setDoc(doc(db, "walkingtours", name), {
                     addedBy: email,
@@ -129,7 +151,8 @@ export default function AddWalkingTour({ navigation }) {
                     description: description,
                     activityType: 'walkingtours',
                     section: section,
-                    expired: false
+                    expired: false,
+                    images: images
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')
@@ -138,6 +161,10 @@ export default function AddWalkingTour({ navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+        else {
+            alert('Please fill up all required information (incl images)')
+        }
+    }
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView

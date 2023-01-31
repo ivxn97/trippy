@@ -7,7 +7,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -53,20 +53,24 @@ export default function AddHotel({ navigation }) {
     const [image, setImage] = useState(null);
     const [docAmenitiesData, setAmenitiesData] = useState([])
     const [docRoomFeaturesData, setRoomFeaturesData] = useState([])
-    const [docRoomTypesData, setRoomTypesData] = useState([])
     const [address, setAddress] = useState();
     const [mapURL, setMapURL] = useState();
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
     const [capacity, setCapacity] = useState();
     const [imageCount, setImageCount] = useState(0)
+    const [images, setImages] = useState([]);
+    const [hotelRooms, setHotelRooms] = useState(1)
+    const [price, setPrice] = useState()
+    const [type, setType] = useState()
+    const [roomTypes, setRoomTypes] = useState([]);
+    const [currentRooms, setCurrentRooms] = useState([]);
 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
                 setEmail(email);
-                console.log(email);
             }
             else {
                 console.log("No Email Selected at Login")
@@ -76,6 +80,24 @@ export default function AddHotel({ navigation }) {
         }
     }
     getEmail();
+
+    const getImages = async () => {
+        const listRef = ref(storage, `restaurants/${name}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then((results) => {
+            const fetchedImages = results[0];
+            console.log(fetchedImages);
+            setImages(fetchedImages);
+          });
+    }
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -103,6 +125,7 @@ export default function AddHotel({ navigation }) {
             console.log("Image uploaded!");
             const count = imageCount + 1
             setImageCount(count)
+            getImages()
         })}
         else {
             console.log('No Image uploaded!')
@@ -119,7 +142,6 @@ export default function AddHotel({ navigation }) {
             const roomTypesData = docSnap.data().roomTypesData
             setAmenitiesData(amenitiesData);
             setRoomFeaturesData(roomFeaturesData);
-            setRoomTypesData(roomTypesData);
         }
         else {
             console.log("No data found")
@@ -190,47 +212,47 @@ export default function AddHotel({ navigation }) {
         console.log(docRoomFeaturesData);
     }
 
-    const setRoomTypes = (item) => {
-        setRoomTypesData(
-            docRoomTypesData.map(curr => {
-                if (item.name === curr.name) {
-                    if (curr.isChecked == false) {
-                        return {...curr, isChecked: true};
-                        
-                    }
-                    else if (curr.isChecked == true) {
-                        return {...curr, isChecked: false};
-                    }
-                } else {
-                    return curr;
-                }
-            })
-        )
-        //setUserRoomTypes(current => [...current, item.name]);
-        console.log(docRoomTypesData);
+    const submitRoomType = () => {
+        const roomType = {type: type, price: price, capacity: capacity}
+        currentRooms.push(...currentRooms, type)
+        roomTypes.push(...roomTypes, roomType)
+        console.log(roomTypes)
+        alert("Room Type Submitted")
+        setHotelRooms(hotelRooms + 1)
+        setType('')
+        setPrice('')
+        setCapacity('')
+    }
+
+    const deleteRooms = () => {
+        setRoomTypes([])
+        alert("Room Types Deleted")
     }
     
     const onSubmitPress = async () => {
+        if (email !== '' && name !== '' && roomTypes !== '' && hotelClass !== '' && 
+            checkInHour !== '' && checkInMinute !== '' && checkOutHour !== '' && checkOutMinute !== '' && 
+            docAmenitiesData !== '' && docRoomFeaturesData !== '' && language !== '' &&  address !== '' && 
+            description !== '' && TNC !== '' && images !== '') {
             try {
                 await setDoc(doc(db, "hotels", name), {
                     addedBy: email,
                     name: name,
-                    roomTypes: docRoomTypesData,
-                    priceRange: priceRange,
+                    roomTypes: roomTypes,
                     hotelClass: hotelClass,
                     checkInTime: checkInHour + ':' + checkInMinute,
                     checkOutTime: checkOutHour + ':' + checkOutMinute,
                     amenities: docAmenitiesData,
                     roomFeatures: docRoomFeaturesData,
                     language: language,
-                    capacity: capacity,
                     address: address,
                     longitude: longitude,
                     latitude: latitude,
                     mapURL: mapURL,
                     description: description,
                     TNC: TNC,
-                    activityType: 'hotels'
+                    activityType: 'hotels',
+                    images:images
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')
@@ -239,6 +261,10 @@ export default function AddHotel({ navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+        else {
+            alert('Please fill up all required information (incl images)')
+        }
+    }
 
         if (loading) {
             return <ActivityIndicator />;
@@ -266,25 +292,49 @@ export default function AddHotel({ navigation }) {
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Current Image Count: {imageCount}</Text>
-                <Text style={styles.text}>Room Type:</Text>
-                {docRoomTypesData.map((item, index) => (
-                    <View style={styles.checklist} key={index}>
-                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setRoomTypes(item)} />
-                        <Text>{item.name}</Text>
-                    </View>
-                ))}
-
-                <Text style={styles.text}>Price Range:</Text>
+                <Text style={[styles.text, {fontSize:18}]}>Current Rooms: {JSON.stringify(currentRooms).replace(/[\[\]"]/g, "")}</Text>
+                <Text style={[styles.text, {fontSize:18}]}>Room Type No: {hotelRooms}</Text>
+                <Text style={styles.text}>Name of Room Type:</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder='Price Range'
+                    placeholder='Room Type'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(Text) => setPriceRange(Text)}
-                    value={priceRange}
+                    onChangeText={(Text) => setType(Text)}
+                    value={type}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <Text style={styles.text}>Price:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Price'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setPrice(Text)}
+                    value={price}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                     keyboardType="numeric"
                 />
+                <Text style={styles.text}>Amount of Rooms:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Amount of Rooms'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setCapacity(Text)}
+                    value={capacity}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                    keyboardType="numeric"
+                />
+
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => submitRoomType()}>
+                    <Text style={styles.buttonTitle}>Submit Room Type</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={() => deleteRooms()} >
+                    <Text>Delete All Room Types</Text>
+                </TouchableOpacity>
                 <Text style={styles.text}>Hotel Class:</Text>
                 <RNPickerSelect
                     style={pickerSelectStyles}
@@ -299,17 +349,7 @@ export default function AddHotel({ navigation }) {
                         { label: '⭐⭐⭐⭐⭐', value: '⭐⭐⭐⭐⭐' },
                     ]}
                 />
-                <Text style={styles.text}>Capacity:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Enter Capacity Per 30 minutes interval'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(Text) => setCapacity(Text)}
-                    value={capacity}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="sentences"
-                    keyboardType="numeric"
-                />
+
                 <Text style={styles.text}>Check-In Hours:</Text>
                 {/*CheckIn Hour */}
                 <RNPickerSelect

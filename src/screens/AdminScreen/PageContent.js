@@ -159,7 +159,9 @@ export default function PageContent ( {navigation, route} ) {
                 key: doc.id
             })
         })
+        getMergeArr();
     }
+
 
     const getMergeArr = () => {
         mergedArr.push(...restaurants);
@@ -175,7 +177,8 @@ export default function PageContent ( {navigation, route} ) {
         if (activityType == 'topPage') {
             try {
                 await setDoc(doc(db, "homepage", "topPage"), {
-                    activities: listedTopPage
+                    activities: listedTopPage,
+                    name: "topPage"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -186,7 +189,8 @@ export default function PageContent ( {navigation, route} ) {
         else if (activityType == 'restaurants') {
             try {
                 await setDoc(doc(db, "homepage", "restaurants"), {
-                    activities: listedRestaurants
+                    activities: listedRestaurants,
+                    name: "restaurants"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -197,7 +201,8 @@ export default function PageContent ( {navigation, route} ) {
         else if (activityType == 'paidtours') {
             try {
                 await setDoc(doc(db, "homepage", "paidtours"), {
-                    activities: listedPaidtours
+                    activities: listedPaidtours,
+                    name: "paidtours"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -208,7 +213,8 @@ export default function PageContent ( {navigation, route} ) {
         else if (activityType == 'hotels') {
             try {
                 await setDoc(doc(db, "homepage", "hotels"), {
-                    activities: listedHotels
+                    activities: listedHotels,
+                    name: "hotels"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -219,7 +225,8 @@ export default function PageContent ( {navigation, route} ) {
         else if (activityType == 'attractions') {
             try {
                 await setDoc(doc(db, "homepage", "attractions"), {
-                    activities: listedAttractions
+                    activities: listedAttractions,
+                    name: "attractions"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -235,6 +242,7 @@ export default function PageContent ( {navigation, route} ) {
             getHotels();
             getPaidTours();
             getAttractions();
+            getCurrentContent();
         }
     },[shouldRun, finalArr]))
 
@@ -259,7 +267,7 @@ export default function PageContent ( {navigation, route} ) {
                         data={mergedArr}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
                                 <Checkbox
                                     value={listedTopPage.includes(item)}
                                     onValueChange={() => handleCheck(item)}
@@ -295,7 +303,7 @@ export default function PageContent ( {navigation, route} ) {
                         data={restaurants}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
                                 <Checkbox
                                     value={listedRestaurants.includes(item)}
                                     onValueChange={() => handleCheck(item)}
@@ -330,7 +338,7 @@ export default function PageContent ( {navigation, route} ) {
                         data={paidTours}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
                                 <Checkbox
                                     value={listedPaidtours.includes(item)}
                                     onValueChange={() => handleCheck(item)}
@@ -365,7 +373,7 @@ export default function PageContent ( {navigation, route} ) {
                         data={hotels}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
                                 <Checkbox
                                     value={listedHotels.includes(item)}
                                     onValueChange={() => handleCheck(item)}
@@ -400,7 +408,7 @@ export default function PageContent ( {navigation, route} ) {
                         data={attractions}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={[styles.text, { marginLeft: 20 }]}>{item.name}</Text>
+                                <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
                                 <Checkbox
                                     value={listedAttractions.includes(item)}
                                     onValueChange={() => handleCheck(item)}

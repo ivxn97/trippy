@@ -3,7 +3,7 @@ import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity, C
 import { doc, getDoc, collection, query, where, getDocs, QuerySnapshot, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
-import styles from './styles';
+import styles from '../ProfileScreen/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NestableDraggableFlatList, NestableScrollContainer, ScaleDecorator } from 'react-native-draggable-flatlist';
@@ -412,3 +412,42 @@ export default function PageContent ( {navigation, route} ) {
         );
     }
 }
+
+/*
+    const getCurrentContent = async () => {
+        if (activityType == 'topPage') {
+            const docSnap = await getDoc(doc(db, "homepage", "topPage"))
+
+            if (docSnap.exists()) {
+                setListedTopPage(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'restaurants') {
+            const docSnap = await getDoc(doc(db, "homepage", "restaurants"))
+
+            if (docSnap.exists()) {
+                setListedRestaurants(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'hotels') {
+            const docSnap = await getDoc(doc(db, "homepage", "hotels"))
+
+            if (docSnap.exists()) {
+                setListedHotels(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'paidtours') {
+            const docSnap = await getDoc(doc(db, "homepage", "paidtours"))
+
+            if (docSnap.exists()) {
+                setListedPaidtours(docSnap.data().activities)
+            }
+        }
+        else if (activityType == 'attractions') {
+            const docSnap = await getDoc(doc(db, "homepage", "attractions"))
+
+            if (docSnap.exists()) {
+                setListedAttractions(docSnap.data().activities)
+            }
+        }
+    }*/

@@ -96,7 +96,7 @@ export default function GuideList ({ navigation }) {
 
     return (
         <View>
-        <Text style={styles.HeadingList}>WalkingTours</Text>
+        <Text style={styles.HeadingList}>Walking Tours</Text>
 
         {/* Searchbar */}
         <TextInput

@@ -14,9 +14,11 @@ import RNPickerSelect from 'react-native-picker-select';
 import Moment from 'moment';
 import { doc, setDoc, getDoc, getDocs, collection, DocumentSnapshot } from "firebase/firestore";
 import uuid from 'react-native-uuid';
+import moment from "moment";
 
 export default function ConfirmBooking ({route, navigation}) {
-  const {time, date, groupSize, name, email, price, lastFourDigits} = route.params;
+  const {time, date, groupSize, name, email, price, lastFourDigits, roomType, activityType, 
+    checkInTime, checkOutTime, startDate, endDate} = route.params;
   const id = uuid.v4();
   const [loading, setLoading] = useState(true)
   const [claimedDeals, setClaimedDeals] = useState();
@@ -25,7 +27,18 @@ export default function ConfirmBooking ({route, navigation}) {
   const [shouldRun, setShouldRun] = useState(true);
   const [shouldShow, setShouldShow] = useState(false)
   const [currentPrice, setCurrentPrice] = useState((price * groupSize))
+  const [HcurrentPrice, setHCurrentPrice] = useState()
   const [selectedDiscount, setSelectedDiscount] = useState(0)
+  const [dealName, setDealName] = useState()
+  const [dealQuantity, setDealQuantity] = useState()
+  const [difference, setDifference] = useState()
+
+  if (activityType == 'hotels') {
+    const diff = moment(startDate).startOf('day').diff(moment(endDate).startOf('day'), 'days')
+    console.log(diff)
+    setDifference(diff)
+    setHCurrentPrice(price * diff)
+  }
 
   const getClaimedDeals = async () => {
     const docRef = doc(db, "users", email)
@@ -54,6 +67,17 @@ export default function ConfirmBooking ({route, navigation}) {
     setLoading(false)
   }
 
+  const DealCount = async () => {
+    try {
+      await setDoc(doc(db, "deals", dealName), {
+        quantity: dealQuantity
+      }, {merge:true})
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
     if (shouldRun) {
       getClaimedDeals();
@@ -63,7 +87,7 @@ export default function ConfirmBooking ({route, navigation}) {
     }
   },[claimedDeals])
 
-  const onPaymentPress = async () => {
+  const onPTPaymentPress = async () => {
     try {
       await setDoc(doc(db, "bookings", id), {
         id: id,
@@ -74,9 +98,11 @@ export default function ConfirmBooking ({route, navigation}) {
         finalPrice: currentPrice,
         groupSize: groupSize,
         time: time,
-        date: date
+        date: date,
+        expired: false
       })
       alert("Booking Successful!")
+      DealCount();
       navigation.navigate('Home Page')
     }
     catch (e) {
@@ -84,10 +110,69 @@ export default function ConfirmBooking ({route, navigation}) {
     }
   }
 
-  const paymentCalculation = (price, discount) => {
+  const onATPaymentPress = async () => {
+    try {
+      await setDoc(doc(db, "bookings", id), {
+        id: id,
+        bookedBy: email,
+        name: name,
+        orgPrice: (price * groupSize),
+        discount: selectedDiscount,
+        finalPrice: currentPrice,
+        groupSize: groupSize,
+        date: date,
+        expired: false
+      })
+      alert("Booking Successful!")
+      DealCount();
+      navigation.navigate('Home Page')
+    }
+    catch (e) {
+      console.log("Error adding document: ", e);
+    }
+  }
+
+  const onHotelPaymentPress = async () => {
+    try {
+      await setDoc(doc(db, "bookings", id), {
+        id: id,
+        bookedBy: email,
+        name: name,
+        orgPrice: price,
+        discount: selectedDiscount,
+        finalPrice: HcurrentPrice,
+        time: time,
+        roomType: roomType,
+        startDate: startDate,
+        endDate: endDate,
+        expired: false
+      })
+      alert("Booking Successful!")
+      DealCount();
+      navigation.navigate('Home Page')
+    }
+    catch (e) {
+      console.log("Error adding document: ", e);
+    }
+  }
+
+  const paymentCalculation = (price, discount, dealName, quantity) => {
+    setDealName(dealName)
+    console.log("Deal Q: ", quantity-1)
+    setDealQuantity(quantity-1)
     setSelectedDiscount(((price * groupSize) * (discount/100)))
     const finalPrice = (price * groupSize) - ((price * groupSize) * (discount/100))
     setCurrentPrice(finalPrice)
+    setShouldShow(!shouldShow);
+  }
+
+  const HpaymentCalculation = (price, discount, dealName, quantity) => {
+    setDealName(dealName)
+    console.log("Deal Q: ", quantity-1)
+    setDealQuantity(quantity-1)
+    setSelectedDiscount(((price * difference) * (discount/100)))
+    const finalPrice = (price * difference) - ((price * difference) * (discount/100))
+    setHCurrentPrice(finalPrice)
     setShouldShow(!shouldShow);
   }
 
@@ -95,48 +180,140 @@ export default function ConfirmBooking ({route, navigation}) {
     return <ActivityIndicator />;
   }
 
-  //Implement removal of deal once timer is up, removal of deal if redemption amt hits 0
-  return (
-    <View style={[styles.detailsContainer]}>
-    <View style={{alignItems: 'flex-end'}}>
-    <Text style={styles.Heading}>Booking For {JSON.stringify(name).replace(/"/g,"")}</Text>
-    <Text style={styles.textBooking}>Payment using Card ending in {JSON.stringify(lastFourDigits).replace(/"/g,"")}</Text>
-    <Text style={styles.textBooking}>Chosen Date: {Moment(date).format('DD MMM YYYY')}</Text>
-    <Text style={styles.textBooking}>Chosen Time: {JSON.stringify(time).replace(/"/g,"")}</Text>
-    <Text style={styles.textBooking}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
-    </View>
-    <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-    <TouchableOpacity
-      style={styles.buttonDeal}
-      onPress={() => setShouldShow(!shouldShow)}>
-      <Text style={styles.buttonTitle}>Redeem a Deal</Text>
-    </TouchableOpacity>
-    </View>
-      {shouldShow ? (
-          <FlatList
-          data={redeemableDeals}
-          extraData={redeemableDeals}
-          renderItem={({ item }) => (
-              <TouchableHighlight
-              underlayColor="#C8c9c9"
-              onPress={() => paymentCalculation(price, item.discount)}>
-              <View style={styles.list}>
-              <Text>{item.discount}% OFF</Text>
-              <Text>Expires {Moment(item.expiry.toDate()).fromNow()}</Text>
-              </View>
-              </TouchableHighlight>
-        )}
-      />
-      ) : null}
-    <Text style={[styles.price, {fontSize:21}]}>Price: ${price}</Text>
-    <Text style={[styles.price, {fontSize:21}]}>Price x {groupSize}: ${(price * groupSize)}</Text>
-    <Text style={[styles.price, {fontSize:21}]}>Discount from Deal: ${selectedDiscount}</Text>
-    <Text style={styles.price}>Final Price: ${currentPrice}</Text>
-    <TouchableOpacity
-      style={styles.button}
-      onPress={() => onPaymentPress()}>
-      <Text style={styles.buttonTitle}>Complete Booking</Text>
-    </TouchableOpacity>
-    </View>
-  )
+  if (activityType == "paidtours" || activityType == "restaurants") {
+    return (
+      <View style={[styles.detailsContainer]}>
+      <View style={{alignItems: 'flex-end'}}>
+      <Text style={styles.Heading}>Booking For {JSON.stringify(name).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Payment using Card ending in {JSON.stringify(lastFourDigits).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Chosen Date: {Moment(date).format('DD MMM YYYY')}</Text>
+      <Text style={styles.textBooking}>Chosen Time: {JSON.stringify(time).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+      <TouchableOpacity
+        style={styles.buttonDeal}
+        onPress={() => setShouldShow(!shouldShow)}>
+        <Text style={styles.buttonTitle}>Redeem a Deal</Text>
+      </TouchableOpacity>
+      </View>
+        {shouldShow ? (
+            <FlatList
+            data={redeemableDeals}
+            extraData={redeemableDeals}
+            renderItem={({ item }) => (
+                <TouchableHighlight
+                underlayColor="#C8c9c9"
+                onPress={() => paymentCalculation(price, item.discount, item.dealname, item.quantity)}>
+                <View style={styles.list}>
+                <Text>{item.discount}% OFF</Text>
+                <Text>Expires {Moment(item.expiry.toDate()).fromNow()}</Text>
+                </View>
+                </TouchableHighlight>
+          )}
+        />
+        ) : null}
+      <Text style={[styles.price, {fontSize:21}]}>Price: ${price}</Text>
+      <Text style={[styles.price, {fontSize:21}]}>Price x {groupSize}: ${(price * groupSize)}</Text>
+      <Text style={[styles.price, {fontSize:21}]}>Discount from Deal: ${selectedDiscount}</Text>
+      <Text style={styles.price}>Final Price: ${currentPrice}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => onPTPaymentPress()}>
+        <Text style={styles.buttonTitle}>Complete Booking</Text>
+      </TouchableOpacity>
+      </View>
+    )
+  }
+  else if (activityType == "hotels") {
+    return (
+      <View style={[styles.detailsContainer]}>
+      <View style={{alignItems: 'flex-end'}}>
+      <Text style={styles.Heading}>Booking For {JSON.stringify(name).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Room Type: {JSON.stringify(roomType).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Payment using Card ending in {JSON.stringify(lastFourDigits).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Check In Date: {Moment(startDate).format('DD MMM YYYY')}</Text>
+      <Text style={styles.textBooking}>Check Out Date: {Moment(endDate).format('DD MMM YYYY')}</Text>
+      <Text style={styles.textBooking}>Check In Time: {JSON.stringify(checkInTime).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Check Out Time: {JSON.stringify(checkOutTime).replace(/"/g,"")}</Text>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+      <TouchableOpacity
+        style={styles.buttonDeal}
+        onPress={() => setShouldShow(!shouldShow)}>
+        <Text style={styles.buttonTitle}>Redeem a Deal</Text>
+      </TouchableOpacity>
+      </View>
+        {shouldShow ? (
+            <FlatList
+            data={redeemableDeals}
+            extraData={redeemableDeals}
+            renderItem={({ item }) => (
+                <TouchableHighlight
+                underlayColor="#C8c9c9"
+                onPress={() => paymentCalculation(price, item.discount, item.dealname, item.quantity)}>
+                <View style={styles.list}>
+                <Text>{item.discount}% OFF</Text>
+                <Text>Expires {Moment(item.expiry.toDate()).fromNow()}</Text>
+                </View>
+                </TouchableHighlight>
+          )}
+        />
+        ) : null}
+      <Text style={[styles.price, {fontSize:21}]}>Price: ${price}</Text>
+      <Text style={[styles.price, {fontSize:21}]}>Price X {difference}: ${price * difference}</Text>
+      <Text style={[styles.price, {fontSize:21}]}>Discount from Deal: ${selectedDiscount}</Text>
+      <Text style={styles.price}>Final Price: ${HcurrentPrice}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => onHotelPaymentPress()}>
+        <Text style={styles.buttonTitle}>Complete Booking</Text>
+      </TouchableOpacity>
+      </View>
+    )
+  }
+  else if (activityType == "attractions") {
+    return (
+      <View style={[styles.detailsContainer]}>
+      <View style={{alignItems: 'flex-end'}}>
+      <Text style={styles.Heading}>Booking For {JSON.stringify(name).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Payment using Card ending in {JSON.stringify(lastFourDigits).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Chosen Date: {Moment(date).format('DD MMM YYYY')}</Text>
+      <Text style={styles.textBooking}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+      <TouchableOpacity
+        style={styles.buttonDeal}
+        onPress={() => setShouldShow(!shouldShow)}>
+        <Text style={styles.buttonTitle}>Redeem a Deal</Text>
+      </TouchableOpacity>
+      </View>
+        {shouldShow ? (
+            <FlatList
+            data={redeemableDeals}
+            extraData={redeemableDeals}
+            renderItem={({ item }) => (
+                <TouchableHighlight
+                underlayColor="#C8c9c9"
+                onPress={() => paymentCalculation(price, item.discount, item.dealname, item.quantity)}>
+                <View style={styles.list}>
+                <Text>{item.discount}% OFF</Text>
+                <Text>Expires {Moment(item.expiry.toDate()).fromNow()}</Text>
+                </View>
+                </TouchableHighlight>
+          )}
+        />
+        ) : null}
+      <Text style={[styles.price, {fontSize:21}]}>Price: ${price}</Text>
+      <Text style={[styles.price, {fontSize:21}]}>Price x {groupSize}: ${(price * groupSize)}</Text>
+      <Text style={[styles.price, {fontSize:21}]}>Discount from Deal: ${selectedDiscount}</Text>
+      <Text style={styles.price}>Final Price: ${currentPrice}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => onATPaymentPress()}>
+        <Text style={styles.buttonTitle}>Complete Booking</Text>
+      </TouchableOpacity>
+      </View>
+    )
+  }
 };

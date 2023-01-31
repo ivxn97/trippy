@@ -101,7 +101,7 @@ export default function BOPaidTourList({navigation}) {
           price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
           endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
           TNC: item.TNC, activityType: item.activityType, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
-          capacity: item.capacity, address: item.address})}}>
+          capacity: item.capacity, address: item.address, images: item.images})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>${item.price}</Text>

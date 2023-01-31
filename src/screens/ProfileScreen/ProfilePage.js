@@ -4,7 +4,6 @@ import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from '../../../config';
 import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
-import profileImage from './profile.jpeg';
 
 export default function ProfilePage({ navigation, route }) {
     const { firstName, lastName, username, bio, email, role} = route.params;

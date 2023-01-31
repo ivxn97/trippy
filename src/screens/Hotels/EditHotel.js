@@ -7,16 +7,15 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function AddHotel({ route, navigation }) {
-    const { name, hotelClass, roomTypes, priceRange, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC, capacity, address } = route.params;
+    const { name, hotelClass, roomTypes, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC, address } = route.params;
     const [checkInHour, checkInMinute] = checkInTime.split(":");
     const [checkOutHour, checkOutMinute] = checkOutTime.split(":");
 
-    const [newPriceRange, setPriceRange] = useState(priceRange);
     const [newHotelClass, setHotelClass] = useState(hotelClass);
     const [newCheckInHour, setCheckInHour] = useState(checkInHour);
     const [newCheckInMinute, setCheckInMinute] = useState(checkInMinute);
@@ -29,15 +28,20 @@ export default function AddHotel({ route, navigation }) {
     const storage = getStorage();
     const [docAmenitiesData, setAmenitiesData] = useState(amenities)
     const [docRoomFeaturesData, setRoomFeaturesData] = useState(roomFeatures)
-    const [docRoomTypesData, setRoomTypesData] = useState(roomTypes)
     const [loading, setLoading] = useState(true)
     const [languageData, setLanguageData] = useState();
     const [newAddress, setAddress] = useState();
     const [mapURL, setMapURL] = useState();
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
-    const [newCapacity, setCapacity] = useState(capacity);
     const [imageCount, setImageCount] = useState(0)
+    const [images, setImages] = useState([]);
+    const [hotelRooms, setHotelRooms] = useState(1)
+    const [price, setPrice] = useState()
+    const [type, setType] = useState()
+    const [newRoomTypes, setRoomTypes] = useState(roomTypes);
+    const [currentRooms, setCurrentRooms] = useState(roomTypes);
+    const [capacity, setCapacity] = useState()
 
     const deleteImages = () => {
         deleteFolder(`/hotels/${name}/images`)
@@ -52,6 +56,24 @@ export default function AddHotel({ route, navigation }) {
             setImageCount(0)
             })
         .catch(error => console.log(error));
+    }
+
+    const getImages = async () => {
+        const listRef = ref(storage, `restaurants/${name}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then((results) => {
+            const fetchedImages = results[0];
+            console.log(fetchedImages);
+            setImages(fetchedImages);
+          });
     }
 
     const pickImage = async () => {
@@ -79,6 +101,7 @@ export default function AddHotel({ route, navigation }) {
             console.log("Image uploaded!");
             const count = imageCount + 1
             setImageCount(count)
+            getImages();
         })}
         else {
             console.log('No Image uploaded!')
@@ -149,32 +172,27 @@ export default function AddHotel({ route, navigation }) {
         console.log(docRoomFeaturesData);
     }
 
-    const setRoomTypes = (item) => {
+    const submitRoomType = () => {
+        const roomType = {type: type, price: price, capacity: capacity}
+        currentRooms.push(...currentRooms, type)
+        newRoomTypes.push(...roomTypes, roomType)
+        console.log(roomTypes)
+        alert("Room Type Submitted")
+        setHotelRooms(hotelRooms + 1)
+        setType('')
+        setPrice('')
+        setCapacity('')
+    }
 
-        setRoomTypesData(
-            docRoomTypesData.map(curr => {
-                if (item.name === curr.name) {
-                    if (curr.isChecked == false) {
-                        return {...curr, isChecked: true};
-                        
-                    }
-                    else if (curr.isChecked == true) {
-                        return {...curr, isChecked: false};
-                    }
-                } else {
-                    return curr;
-                }
-            })
-        )
-        //setUserRoomTypes(current => [...current, item.name]);
-        console.log(docRoomTypesData);
+    const deleteRooms = () => {
+        setRoomTypes([])
+        alert("Room Types Deleted")
     }
 
     const onSubmitPress = async () => {
             try {
                 await setDoc(doc(db, "hotels", name), {
-                    roomTypes: docRoomTypesData,
-                    priceRange: newPriceRange,
+                    roomTypes: newRoomTypes,
                     hotelClass: newHotelClass,
                     checkInTime: newCheckInHour + ':' + newCheckInMinute,
                     checkOutTime: newCheckOutHour + ':' + newCheckOutMinute,
@@ -183,11 +201,11 @@ export default function AddHotel({ route, navigation }) {
                     language: newLanguage,
                     description: newDescription,
                     TNC: newTNC,
-                    capacity: newCapacity,
                     address: newAddress,
                     longitude: longitude,
                     latitude: latitude,
                     mapURL: mapURL,
+                    images: images
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')
@@ -217,26 +235,49 @@ export default function AddHotel({ route, navigation }) {
                 <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
                     <Text>Delete All Uploaded Images</Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Room Type:</Text>
-
-                {docRoomTypesData.map((item, index) => (
-                    <View style={styles.checklist} key={index}>
-                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setRoomTypes(item)} />
-                        <Text>{item.name}</Text>
-                    </View>
-                ))}
-
-                <Text style={styles.text}>Price Range:</Text>
+                <Text style={[styles.text, {fontSize:18}]}>Current Rooms: {JSON.stringify(currentRooms).replace(/[\[\]"]/g, "")}</Text>
+                <Text style={[styles.text, {fontSize:18}]}>Room Type No: {hotelRooms}</Text>
+                <Text style={styles.text}>Name of Room Type:</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder='Price Range'
+                    placeholder='Room Type'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(Text) => setPriceRange(Text)}
-                    value={newPriceRange}
+                    onChangeText={(Text) => setType(Text)}
+                    value={type}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <Text style={styles.text}>Price:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Price'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setPrice(Text)}
+                    value={price}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                     keyboardType="numeric"
                 />
+                <Text style={styles.text}>Amount of Rooms:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Amount of Rooms'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(Text) => setCapacity(Text)}
+                    value={capacity}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                    keyboardType="numeric"
+                />
+
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => submitRoomType()}>
+                    <Text style={styles.buttonTitle}>Submit Room Type</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={() => deleteRooms()} >
+                    <Text>Delete All Room Types</Text>
+                </TouchableOpacity>
                 <Text style={styles.text}>Hotel Class:</Text>
                 <RNPickerSelect
                     style={pickerSelectStyles}
@@ -252,17 +293,6 @@ export default function AddHotel({ route, navigation }) {
                     ]}
                 />
 
-                <Text style={styles.text}>Capacity:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder='Enter Capacity Per 30 minutes interval'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(Text) => setCapacity(Text)}
-                    value={capacity}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="sentences"
-                    keyboardType="numeric"
-                />
                 <Text style={styles.text}>Check-In Hours:</Text>
                 {/*CheckIn Hour */}
                 <RNPickerSelect

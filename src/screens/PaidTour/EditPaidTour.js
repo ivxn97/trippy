@@ -6,7 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, deleteObject, listAll } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import moment from 'moment';
@@ -42,7 +42,7 @@ export default function EditPaidTour ( { route, navigation }) {
     const [longitude, setLong] = useState();
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
-
+    const [images, setImages] = useState([]);
 
     const deleteImages = () => {
         deleteFolder(`/paidtours/${name}/images`)
@@ -57,6 +57,24 @@ export default function EditPaidTour ( { route, navigation }) {
             setImageCount(0)
             })
         .catch(error => console.log(error));
+    }
+
+    const getImages = async () => {
+        const listRef = ref(storage, `restaurants/${name}/images`);
+        Promise.all([
+            listAll(listRef).then((res) => {
+              const promises = res.items.map((folderRef) => {
+                return getDownloadURL(folderRef).then((link) =>  {
+                  return link;
+                });
+              });
+              return Promise.all(promises);
+            })
+          ]).then((results) => {
+            const fetchedImages = results[0];
+            console.log(fetchedImages);
+            setImages(fetchedImages);
+          });
     }
 
     const pickImage = async () => {
@@ -85,6 +103,7 @@ export default function EditPaidTour ( { route, navigation }) {
             console.log("Image uploaded!");
             const count = imageCount + 1
             setImageCount(count)
+            getImages();
         })}
         else {
             console.log('No Image uploaded!')
@@ -163,6 +182,7 @@ export default function EditPaidTour ( { route, navigation }) {
                     longitude: longitude,
                     latitude: latitude,
                     mapURL: mapURL,
+                    images: images
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

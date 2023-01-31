@@ -16,8 +16,8 @@ export default function UserPreviousBookings ({ route, navigation }) {
     const [bookings, setBookings] = useState([]);
 
     const getBookings = async () => {
-        const collectionRef = collection(db, "previous bookings")
-        const q = query(collectionRef, where('bookedBy', '==', email));
+        const collectionRef = collection(db, "bookings")
+        const q = query(collectionRef, where('bookedBy', '==', email), where('expired', '==', true));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             bookings.push({
@@ -47,8 +47,10 @@ export default function UserPreviousBookings ({ route, navigation }) {
     }
 
     useEffect(() => {
+        if (loading) {
         getBookings();
-    });
+        }
+    }, [bookings]);
     
     const ItemView = ({item}) => {
         return (

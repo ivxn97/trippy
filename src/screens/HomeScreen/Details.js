@@ -11,10 +11,11 @@ import ReviewScreen from '../ReviewScreen/ReviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import WebView from 'react-native-webview';
+import { set } from 'react-native-reanimated';
 
 export default function Details({route, navigation}) {
     const {activityType, name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
-        description, TNC, tourType, startingTime, endingTime, duration, hotelClass, roomTypes, priceRange, 
+        description, TNC, tourType, startingTime, endingTime, duration, hotelClass, roomTypes, 
         checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location, review, 
         addedBy, timeSlots, mapURL, capacity, address} = route.params;
     const [images, setImages] = useState([]);
@@ -57,7 +58,6 @@ export default function Details({route, navigation}) {
         try {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
-                setRegisteredButton(false);
                 setEmail(email);
                 console.log(email)
             }
@@ -70,8 +70,24 @@ export default function Details({route, navigation}) {
         }
     }
 
+    const getRole = async () => {
+        try {
+            const role = await AsyncStorage.getItem('role');
+            if (role == "Business Owner" || role == "Admin" || role == null) {
+                setRegisteredButton(true)
+                console.log(role)
+            }
+            else if (role == "Registered User" || role == "LOL") {
+                setRegisteredButton(false)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useFocusEffect(React.useCallback(async ()=> {
         getEmail();
+        getRole();
     }, []));
 
     useEffect(() => {
@@ -114,6 +130,21 @@ export default function Details({route, navigation}) {
             setMenu(fetchedMenu);
             await WebBrowser.openBrowserAsync(processedURL);
         });
+    }
+
+    const roomList = () => {
+        return ( 
+            <View>
+                {
+                roomTypes.map(item => {
+                    <View key={item.type}>
+                        <Text style={styles.text}>Room Type: {JSON.stringify(item.type).replace(/"/g, "")}</Text>
+                        <Text style={styles.textNB}>Room Price: ${JSON.stringify(item.price).replace(/"/g, "")}</Text>
+                    </View>
+                })
+                }
+            </View>
+        )
     }
 
     const onShare = async () => {
@@ -283,6 +314,7 @@ Download the App here: URL`})
     else if (activityType == 'hotels') {
         return (
             <View style={styles.detailsContainer}>
+                <ScrollView>
                 <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
                <Carousel width={width}
                     height={width / 2}
@@ -318,7 +350,6 @@ Download the App here: URL`})
                 </View>
                 <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
                 <Text style={styles.textNB}>Hotel Class: {JSON.stringify(hotelClass).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>Room Type: {JSON.stringify(valueRoomTypes.join(', ')).replace(/"/g, "")}</Text>
                 <Text style={styles.textNB}>CheckIn Time: {JSON.stringify(checkInTime).replace(/"/g, "")}</Text>
                 <Text style={styles.textNB}>CheckOut Time: {JSON.stringify(checkOutTime).replace(/"/g, "")}</Text>
                 <Text style={styles.textNB}>Amenities: {JSON.stringify(valueAmenities.join(', ')).replace(/"/g, "")}</Text>
@@ -326,16 +357,28 @@ Download the App here: URL`})
                 <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g, "")}{"\n"}</Text>
                 <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
                 <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g, "")}</Text>
-                <Text style={styles.price}>${JSON.stringify(priceRange).replace(/"/g, "")}</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                     <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
+                    disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, 
+                    roomTypes: roomTypes, checkInTime: checkInTime, checkOutTime: checkOutTime})}} title="Booking">
                             <Text style={styles.buttonSmallText}>Book</Text>
                     </TouchableOpacity>
                 </View>
+                <Text style={styles.HeadingList}>Room Types:</Text>
+                {
+                roomTypes.map(item => {
+                    return(
+                    <View key={item.type}>
+                        <Text style={styles.text}>Room Type: {JSON.stringify(item.type).replace(/"/g, "")}</Text>
+                        <Text style={styles.textNB}>Room Price: ${JSON.stringify(item.price).replace(/"/g, "")}</Text>
+                    </View>
+                    )
+                })
+                }
+                </ScrollView>
             </View>
         )
     }
@@ -399,53 +442,4 @@ Download the App here: URL`})
             </View>
         )
     }
-    else if (activityType == "guides") {
-        return (
-            <View style={styles.detailsContainer}>
-                <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
-                <View style={{ flexDirection:"row" }}>
-                    <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton} onPress={() => onSave()}>
-                            <Text style={styles.buttonSmallText}>Save</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]} 
-                    disabled ={registeredButton} onPress={() => onItinerary()}>
-                            <Text style={styles.buttonSmallText}>Add To Itinerary</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSmall}  onPress={() => onShare()}>
-                            <Text style={styles.buttonSmallText}>Share</Text>
-                    </TouchableOpacity>
-                </View>
-                <Text style={styles.textNB}>Nearest MRT: {JSON.stringify(mrt).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>Locations: {JSON.stringify(location).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>tips: {JSON.stringify(tips).replace(/"/g, "")}</Text>
-                <Carousel width={width}
-                    height={width / 2}
-                    mode="horizontal"
-                    data={images}
-                    renderItem={({ item }, index) => (
-                        <View
-                            style={{
-                                flex: 1,
-                                borderWidth: 1,
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <Image style={styles.carouselStyle} source={{uri: item}}/>
-                            <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                                {index}
-                            </Text>
-                        </View>
-                    )}
-                />
-                <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
-                <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
-                            <Text style={styles.buttonSmallText}>Read Reviews</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
-    }
-
 }

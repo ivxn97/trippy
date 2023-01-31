@@ -1,13 +1,12 @@
 import React, { useState, useEffect} from 'react'
 import { View, Text, button, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs, setDoc } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import profileImage from './profile.jpeg';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
 
@@ -60,10 +59,27 @@ export default function ProfileScreen ( {navigation} ) {
         
         console.log("user: ", user);
     }
+
+    const changeExpiry = async (id) => {
+        await setDoc(doc(db, "bookings", id), {
+            expired: true
+        }, {merge:true})
+    }
+
+    const checkExpiry = async () => {
+        const date = new Date()
+        const querySnapshot = await getDocs(collection(db, "bookings"));
+        querySnapshot.forEach(documentSnapshot => {
+            if (date > documentSnapshot.data().date.toDate()) {
+                changeExpiry(documentSnapshot.data().id)
+            }
+         })
+    }
     
     
     useEffect(() => {
         getEmail()
+        checkExpiry();
         if (email) {
             getUser()
             const listRef = ref(storage, `users/${email}/profile`);
@@ -304,15 +320,15 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                         <Text style={styles.textList}>Active Threads</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.profileButton}
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('User Bookings')}
                     title="My Bookings"
                 >
-                        <Text style={styles.textList}>My Bookings</Text>
+                <Text style={styles.textList}>My Bookings</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.profileButton}
+                <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('User Deals')}
                     title="My Deals"
                 >
-                        <Text style={styles.textList}>My Deals</Text>
+                    <Text style={styles.textList}>My Deals</Text> 
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profileButton}
                     title="Settings"

@@ -13,7 +13,8 @@ import moment from 'moment';
 
 
 export default function EditPaidTour ( { route, navigation }) {
-    const {name, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, description, TNC, address, capacity} = route.params;
+    const {name, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, 
+        description, TNC, address, capacity, images} = route.params;
 
     const [startingHour, startingMinute] = startingTime.split(":");
     const [endingHour, endingMinute] = endingTime.split(":");
@@ -42,7 +43,7 @@ export default function EditPaidTour ( { route, navigation }) {
     const [longitude, setLong] = useState();
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
-    const [images, setImages] = useState([]);
+    const [newImages, setImages] = useState(images);
 
     const deleteImages = () => {
         deleteFolder(`/paidtours/${name}/images`)
@@ -60,7 +61,7 @@ export default function EditPaidTour ( { route, navigation }) {
     }
 
     const getImages = async () => {
-        const listRef = ref(storage, `restaurants/${name}/images`);
+        const listRef = ref(storage, `paidtours/${name}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {
@@ -182,7 +183,7 @@ export default function EditPaidTour ( { route, navigation }) {
                     longitude: longitude,
                     latitude: latitude,
                     mapURL: mapURL,
-                    images: images
+                    images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

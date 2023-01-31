@@ -17,8 +17,8 @@ export default function Details({route, navigation}) {
     const {activityType, name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
         description, TNC, tourType, startingTime, endingTime, duration, hotelClass, roomTypes, 
         checkInTime, checkOutTime, amenities, roomFeatures, mrt, tips, attractionType, location, review, 
-        addedBy, timeSlots, mapURL, capacity, address} = route.params;
-    const [images, setImages] = useState([]);
+        addedBy, timeSlots, mapURL, capacity, address, images} = route.params;
+        
     const [loading, setLoading] = useState(true);
     //Restaurants only 
     const [menu, setMenu] = useState([]);
@@ -92,22 +92,6 @@ export default function Details({route, navigation}) {
 
     useEffect(() => {
         filterHotel();
-        const listRef = ref(storage, `${activityType}/${name.trimEnd()}/images`);
-        Promise.all([
-            listAll(listRef).then((res) => {
-              const promises = res.items.map((folderRef) => {
-                return getDownloadURL(folderRef).then((link) =>  {
-                  return link;
-                });
-              });
-              return Promise.all(promises);
-            })
-          ]).then((results) => {
-            const fetchedImages = results[0];
-            console.log(fetchedImages);
-            setImages(fetchedImages);
-          });
-        
     }, [])
 
     //Restaurants only

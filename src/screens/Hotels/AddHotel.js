@@ -82,7 +82,7 @@ export default function AddHotel({ navigation }) {
     getEmail();
 
     const getImages = async () => {
-        const listRef = ref(storage, `restaurants/${name}/images`);
+        const listRef = ref(storage, `hotels/${name}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {

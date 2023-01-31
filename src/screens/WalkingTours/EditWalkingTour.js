@@ -13,7 +13,7 @@ import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function EditWalkingTour({ route, navigation }) {
-    const {name, location, tips, description, section, expired} = route.params;
+    const {name, location, tips, description, section, expired, images} = route.params;
     const [newTips, setTips] = useState(tips);
     const [newDescription, setDescription] = useState(description);
     const [locationCount, setLocationCount] = useState(1);
@@ -23,7 +23,7 @@ export default function EditWalkingTour({ route, navigation }) {
     const [newSection, setSection] = useState(section);
     const [isExpired, setIsExpired] = useState(expired)
     const [imageCount, setImageCount] = useState(0)
-    const [images, setImages] = useState([]);
+    const [newImages, setImages] = useState(images);
     const typePlaceholder = {
         label: 'Section Category',
         value: null,
@@ -53,7 +53,7 @@ export default function EditWalkingTour({ route, navigation }) {
     }
 
     const getImages = async () => {
-        const listRef = ref(storage, `restaurants/${name}/images`);
+        const listRef = ref(storage, `walkingtours/${name}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {
@@ -152,7 +152,7 @@ export default function EditWalkingTour({ route, navigation }) {
                     activityType: 'walkingtours',
                     section: section,
                     expired: isExpired,
-                    images: images
+                    images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')

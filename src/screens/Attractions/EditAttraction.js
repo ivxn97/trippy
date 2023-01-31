@@ -12,7 +12,8 @@ import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function EditAttraction ( { route, navigation }) {
-    const {name, attractionType, price, ageGroup, groupSize, openingTime, closingTime, description,language, TNC, capacity, address} = route.params;
+    const {name, attractionType, price, ageGroup, groupSize, openingTime, closingTime, description,
+        language, TNC, capacity, address, images} = route.params;
     const [openingHour, openingMinute] = openingTime.split(":");
     const [closingHour, closingMinute] = closingTime.split(":");
 
@@ -39,10 +40,10 @@ export default function EditAttraction ( { route, navigation }) {
     const [newCapacity, setCapacity] = useState(capacity);
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
-    const [images, setImages] = useState([]);
+    const [newImages, setImages] = useState(images);
 
     const getImages = async () => {
-        const listRef = ref(storage, `restaurants/${name}/images`);
+        const listRef = ref(storage, `attractions/${name}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {
@@ -161,7 +162,7 @@ export default function EditAttraction ( { route, navigation }) {
                     description: newDescription,
                     language: newLanguage,
                     TNC: newTNC,
-                    images: images
+                    images: newImages
                 });
                 navigation.navigate('BO Page')
             }

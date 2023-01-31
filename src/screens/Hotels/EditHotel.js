@@ -12,7 +12,8 @@ import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function AddHotel({ route, navigation }) {
-    const { name, hotelClass, roomTypes, checkInTime, checkOutTime, amenities, roomFeatures, language, description, TNC, address } = route.params;
+    const { name, hotelClass, roomTypes, checkInTime, checkOutTime, amenities, roomFeatures, language, 
+        description, TNC, address, images } = route.params;
     const [checkInHour, checkInMinute] = checkInTime.split(":");
     const [checkOutHour, checkOutMinute] = checkOutTime.split(":");
 
@@ -35,7 +36,7 @@ export default function AddHotel({ route, navigation }) {
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
     const [imageCount, setImageCount] = useState(0)
-    const [images, setImages] = useState([]);
+    const [newImages, setImages] = useState(images);
     const [hotelRooms, setHotelRooms] = useState(1)
     const [price, setPrice] = useState()
     const [type, setType] = useState()
@@ -59,7 +60,7 @@ export default function AddHotel({ route, navigation }) {
     }
 
     const getImages = async () => {
-        const listRef = ref(storage, `restaurants/${name}/images`);
+        const listRef = ref(storage, `hotels/${name}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {
@@ -205,7 +206,7 @@ export default function AddHotel({ route, navigation }) {
                     longitude: longitude,
                     latitude: latitude,
                     mapURL: mapURL,
-                    images: images
+                    images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

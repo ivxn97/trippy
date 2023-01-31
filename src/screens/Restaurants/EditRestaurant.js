@@ -12,7 +12,8 @@ import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function EditRestaurant ( { route, navigation }) {
-    const {name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, description, TNC, capacity, address} = route.params;
+    const {name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
+        description, TNC, capacity, address, images} = route.params;
 
     const [openingHour, openingMinute] = openingTime.split(":");
     const [closingHour, closingMinute] = closingTime.split(":");
@@ -40,7 +41,7 @@ export default function EditRestaurant ( { route, navigation }) {
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
     const [imageCount, setImageCount] = useState(0)
-    const [images, setImages] = useState([]);
+    const [newImages, setImages] = useState(images);
 
     const deleteImages = () => {
         deleteFolder(`/restaurants/${name}/images`)
@@ -206,7 +207,7 @@ export default function EditRestaurant ( { route, navigation }) {
                     language: newLanguage,
                     description: newDescription,
                     TNC: newTNC,
-                    images: images
+                    images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

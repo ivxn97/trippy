@@ -13,7 +13,7 @@ import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function EditGuide({ route, navigation }) {
-    const {name, mrt, tips, description, section, location, expired} = route.params;
+    const {name, mrt, tips, description, section, location, expired, images} = route.params;
     const [email, setEmail] = useState('');
     const [newMrt, setMRT] = useState(mrt);
     const [newTips, setTips] = useState(tips);
@@ -25,7 +25,7 @@ export default function EditGuide({ route, navigation }) {
     const [locationArr, setLocationArr] = useState([])
     const [isExpired, setIsExpired] = useState(expired)
     const [imageCount, setImageCount] = useState(0)
-    const [images, setImages] = useState([]);
+    const [newImages, setImages] = useState(images);
 
     const typePlaceholder = {
         label: 'Section Category',
@@ -56,7 +56,7 @@ export default function EditGuide({ route, navigation }) {
     }
 
     const getImages = async () => {
-        const listRef = ref(storage, `restaurants/${name}/images`);
+        const listRef = ref(storage, `guides/${name}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {
@@ -156,7 +156,7 @@ export default function EditGuide({ route, navigation }) {
                     description: newDescription,
                     activityType: 'guides',
                     section: newSection,
-                    images: images
+                    images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')

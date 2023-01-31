@@ -88,7 +88,7 @@ export default function AddPaidTour ( { navigation }) {
     getEmail();
 
     const getImages = async () => {
-        const listRef = ref(storage, `restaurants/${name}/images`);
+        const listRef = ref(storage, `paidtours/${name}/images`);
         Promise.all([
             listAll(listRef).then((res) => {
               const promises = res.items.map((folderRef) => {

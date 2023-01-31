@@ -11,26 +11,6 @@ export default function ManageForumSections ({ navigation }) {
     const [forum, setForum] = useState([]); // Initial empty array of hotels
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(forum);
-    const [sortBy, setSortBy] = useState(null);
-    const [sortOrder, setSortOrder] = useState(null);
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
-
-    function openDropdown() {
-        setDropdownVisible(true);
-    }
-
-    function closeDropdown() {
-        setDropdownVisible(false);
-    }
-
-    function openInnerDropdown() {
-        setInnerDropdownVisible(true);
-    }
-
-    function closeInnerDropdown() {
-        setInnerDropdownVisible(false);
-    }
 
     navigation.addListener('willFocus', () => {
 
@@ -75,20 +55,6 @@ export default function ManageForumSections ({ navigation }) {
             </TouchableHighlight>
         )
        }
-
-    async function handleSortChange(sort) {
-        if (sort === 'asc' || sort === 'desc') {
-            setSortOrder(sort);
-            setInnerDropdownVisible(false);
-            const sortedArray = await sortFiles(forum, sortBy, sortOrder);
-            setForum(sortedArray)
-
-        } else {
-            setSortBy(sort);
-            setDropdownVisible(false);
-            openInnerDropdown();
-        }
-    }
 
     if (loading) {
         return <ActivityIndicator />;

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TouchableHighlight, TextInput, Modal, StyleSheet } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,29 +9,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function HotelEditList({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [hotels, setHotels] = useState([]); // Initial empty array of hotels
+    const [filteredData, setfilteredData] = useState(hotels); // Initial empty array of hotels
     const [search, setSearch] = useState('');
-    const [filteredData, setfilteredData] = useState(hotels);
-    const [sortBy, setSortBy] = useState(null);
-    const [sortOrder, setSortOrder] = useState(null);
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [innerDropdownVisible, setInnerDropdownVisible] = useState(false);
     const [email, setEmail] = useState('');
+    
+    const [sortModalVisible, setSortModalVisible] = useState(false);
+    const [sortIsPressed, setSortIsPressed] = useState(false);
+    const [sortByData, setSortByData] = useState();
+    const [sortOrderData, setSortOrderData] = useState();
+    const [sortBy, setSortBy] = useState("");
+    const [sortOrder, setSortOrder] = useState("");
 
-    function openDropdown() {
-        setDropdownVisible(true);
-    }
-
-    function closeDropdown() {
-        setDropdownVisible(false);
-    }
-
-    function openInnerDropdown() {
-        setInnerDropdownVisible(true);
-    }
-
-    function closeInnerDropdown() {
-        setInnerDropdownVisible(false);
-    }
+    
 
     const getEmail = async () => {
         try {
@@ -68,24 +56,85 @@ export default function HotelEditList({ navigation }) {
         }
     },[email]);
 
+    useEffect(async () => {
+        const sortByChoice = ["name", "hotelClass"];
+        const sortByResult = sortByChoice.map(attributeName => ({
+            name: attributeName,
+            value: attributeName,
+            isChecked: false
+        }));
+        const sortOrderChoice = ["asc", "desc"];
+        const sortOrderResult = sortOrderChoice.map(attributeName => ({
+            name: attributeName,
+            value: attributeName,
+            isChecked: false
+        }));
+
+        setSortByData(sortByResult);
+        setSortOrderData(sortOrderResult);
+    }, []);
+
     if (loading) {
         return <ActivityIndicator />;
     }
 
-    async function handleSortChange(sort) {
-        if (sort === 'asc' || sort === 'desc') {
-            setSortOrder(sort);
-            setInnerDropdownVisible(false);
-            const sortedArray = await sortFiles(items, sortBy, sortOrder);
-            setItems(sortedArray)
-
-        } else {
-            setSortBy(sort);
-            setDropdownVisible(false);
-            openInnerDropdown();
-        }
+    const onPressSort = () => {
+        const sortByDataIsTrue = sortByData.every(({ isChecked }) => isChecked)
+        const sortOrderIsTrue = sortOrderData.every(({ isChecked }) => isChecked)
+        if (sortByDataIsTrue) { sortByData.map(item => item.isChecked = false) }
+        if (sortOrderIsTrue) { sortOrderData.map(item => item.isChecked = false) }
+        setSortIsPressed(!sortIsPressed);
+        setSortModalVisible(!sortModalVisible)
     }
 
+
+
+    const sortToggleButton = (sort) => {
+        sortByData.map((item) => {
+            if (sort.name === item.name) {
+                if (item.isChecked) {
+                    item.isChecked = false;
+                } else {
+                    sortByData.map(item => item.isChecked = false);
+                    item.isChecked = true;
+                }
+                setSortIsPressed(!sortIsPressed);
+                setSortBy(item.name)
+            }
+        })
+        sortOrderData.map((item) => {
+            if (sort.name === item.name) {
+                if (item.isChecked) {
+                    item.isChecked = false;
+                } else {
+                    sortOrderData.map(item => item.isChecked = false);
+                    item.isChecked = true;
+                }
+                setSortIsPressed(!sortIsPressed);
+                setSortOrder(item.name)
+            }
+        })
+    }
+
+    async function onSubmitSort() {
+        const sortByDataIsFalse = sortByData.every(({ isChecked }) => !isChecked)
+        const sortOrderDataIsFalse = sortOrderData.every(({ isChecked }) => !isChecked)
+
+        if (sortByDataIsFalse) {
+            sortByData.map(item => item.isChecked = true);
+        }
+
+        if (sortOrderDataIsFalse) {
+            sortOrderData.map(item => item.isChecked = true);
+        }
+        setSortModalVisible(!sortModalVisible)
+        const sortedArray = await sortFiles(filteredData, sortBy, sortOrder);
+        setfilteredData(sortedArray);
+        setSortBy("");
+        setSortOrder("");
+        sortByData.map(item => item.isChecked = false); // set all to false
+        sortOrderData.map(item => item.isChecked = false); // set all to false
+    }
     if (loading) {
         return <ActivityIndicator />;
     }
@@ -118,43 +167,9 @@ export default function HotelEditList({ navigation }) {
         onChangeText={(text) => searchFilter(text, hotels)}
     />
     <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                {!sortBy && (
-                    <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
-                        <Text style={styles.buttonSmallListText}>Sort</Text>
-                    </TouchableOpacity>
-                )}
-                {sortBy && !sortOrder && (
-                    <TouchableOpacity style={styles.buttonListLeft} onPress={openInnerDropdown}>
-                        <Text style={styles.buttonSmallListText} >Sort by {sortBy}</Text>
-                    </TouchableOpacity>
-                )}
-                {sortBy && sortOrder && (
-                    <TouchableOpacity style={styles.buttonListLeft} onPress={openDropdown}>
-                        <Text style={styles.buttonSmallListText}>Sort</Text>
-                    </TouchableOpacity>
-                )}
-                {dropdownVisible && (
-                    <FlatList
-                        data={['name', 'hotelClass']}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => handleSortChange(item)}>
-                                <Text>Sort by {item}</Text>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item}
-                    />
-                )}
-                {innerDropdownVisible && (
-                    <FlatList
-                        data={['asc', 'desc']}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => handleSortChange(item)}>
-                                <Text>{item}ending</Text>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item}
-                    />
-                )}
+        <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
+            <Text style={styles.buttonSmallListText}>Sort</Text>
+        </TouchableOpacity>  
         <TouchableOpacity style={styles.buttonListRight}>
           <Text style={styles.buttonSmallListText}>Filter</Text>
         </TouchableOpacity>
@@ -181,6 +196,112 @@ export default function HotelEditList({ navigation }) {
                 </TouchableHighlight>
             )}
         />
+
+            {sortModalVisible && (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={sortModalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setSortModalVisible(!sortModalVisible);
+                    }}>
+                    <View style={modal.centeredView}>
+                        <View style={modal.modalView}>
+                            <Text style={modal.modalText}>Sort By</Text>
+                            <View style={modal.buttonView}>
+                                {sortByData
+                                    //.filter((item) => !checked || item.checked)
+                                    .map((item, index) => (
+                                        <View style={styles.checklist} key={index}>
+                                            <TouchableHighlight
+                                                onPress={() => sortToggleButton(item)}
+                                                style={item.isChecked ? modal.buttonPressed : modal.button}>
+                                                <Text>{item.name}</Text>
+                                            </TouchableHighlight>
+                                        </View>
+                                    ))}
+                            </View>
+
+                            <Text style={modal.modalText}>Sort Order</Text>
+                            <View style={modal.buttonView}>
+                                {sortOrderData
+                                    //.filter((item) => !checked || item.checked)
+                                    .map((item, index) => (
+                                        <View style={styles.checklist} key={index}>
+                                            <TouchableHighlight
+                                                onPress={() => sortToggleButton(item)}
+                                                style={item.isChecked ? modal.buttonPressed : modal.button}>
+                                                <Text>{item.name}</Text>
+                                            </TouchableHighlight>
+                                        </View>
+                                    ))}
+                            </View>
+                            <TouchableHighlight
+                                onPress={() => onSubmitSort()}
+                                style={modal.button}>
+                                <Text>Submit</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </Modal>
+            )}
         </View>
     );
 }
+const modal = StyleSheet.create({
+    centeredView: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'flex-start',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        borderColor: 'grey',
+        borderWidth: 2,
+        marginRight: 10,
+        marginBottom: 10,
+    },
+    buttonPressed: {
+        borderRadius: 20,
+        padding: 10,
+        borderColor: 'grey',
+        backgroundColor: 'lightgrey',
+        borderWidth: 2,
+        marginRight: 10,
+        marginBottom: 10,
+    },
+    buttonView: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+});
+

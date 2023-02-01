@@ -1175,7 +1175,7 @@ export default function ManageTypes({ navigation, route }) {
                         </TouchableOpacity>
                     </View>
                     <FlatList
-                        data={countries}
+                        data={languages}
                         renderItem={({ item }) => (
                             <TouchableHighlight
                                 underlayColor="#C8c9c9"

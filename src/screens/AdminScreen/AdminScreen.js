@@ -107,13 +107,7 @@ export default function AdminScreen ({navigation}) {
             <Text style={styles.text}>Page Contents</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Manage Types Choice')}
-            title="Manage Types"
-        >
-            <Text style={styles.text}>Manage Types</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Manage Types Choice')}
             title ="Edit Select Options"
         >
             <Text style={styles.text}>Edit Select Options</Text>

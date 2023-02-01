@@ -98,7 +98,7 @@ export default function ProfilePage({ navigation, route }) {
 
     return (
         <View>
-            <ScrollView>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <View style={styles.profileContainer}>
                     <TouchableOpacity onPress={() => pickImage()}>
                         <Image source={{uri: images}} style={styles.profileImage} />

@@ -21,7 +21,7 @@ export default function ResetPassword({navigation}) {
     }
      return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 <Image

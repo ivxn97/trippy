@@ -43,6 +43,7 @@ export default function AddHotel({ route, navigation }) {
     const [newRoomTypes, setRoomTypes] = useState(roomTypes);
     const [currentRooms, setCurrentRooms] = useState(roomTypes);
     const [capacity, setCapacity] = useState()
+    
 
     const deleteImages = () => {
         deleteFolder(`/hotels/${name}/images`)
@@ -222,7 +223,7 @@ export default function AddHotel({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 

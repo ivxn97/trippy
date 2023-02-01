@@ -163,7 +163,7 @@ export default function DeleteBookmark ( {navigation} ) {
     else {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.HeadingList}>Bookmarks</Text>
                 <Text style={styles.title}>Restaurants</Text>
                 <FlatList

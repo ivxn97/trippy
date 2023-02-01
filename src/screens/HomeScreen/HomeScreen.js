@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet } from 'react-native';
+import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
@@ -14,6 +14,7 @@ export default function HomeScreen( {navigation} ) {
     const [paidTours, setPaidTours] = useState([]);
     const [attractions, setAttractions] = useState([]);
     const [topPage, setTopPage] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const getRole = async () => {
         try {
@@ -40,30 +41,40 @@ export default function HomeScreen( {navigation} ) {
         querySnapshot.forEach(documentSnapshot => {
             if (documentSnapshot.data().name == "topPage") {
                 topPage.push({
-                    ...documentSnapshot.data().activities
+                    ...documentSnapshot.data().activities,
+                    key: documentSnapshot.id
                 });
             }
-            else if (documentSnapshot.data().name == "restaurants") {
+            else if (documentSnapshot.id == "restaurants") {
                 restaurants.push({
                     ...documentSnapshot.data().activities
                 });
+                console.log(restaurants)
             }
             else if (documentSnapshot.data().name == "hotels") {
                 hotels.push({
-                    ...documentSnapshot.data().activities
+                    ...documentSnapshot.data().activities,
+                    key: documentSnapshot.id
                 });
             }
             else if (documentSnapshot.data().name == "paidtours") {
                 paidTours.push({
-                    ...documentSnapshot.data().activities
+                    ...documentSnapshot.data().activities,
+                    key: documentSnapshot.id
                 });
             }
             else if (documentSnapshot.data().name == "attractions") {
                 attractions.push({
-                    ...documentSnapshot.data().activities
+                    ...documentSnapshot.data().activities,
+                    key: documentSnapshot.id
                 });
             }
         });
+
+        const newResArr = restaurants.flatMap((item) => Object.values(item))
+        setRestaurants(newResArr)
+        console.log(newResArr)
+        setLoading(false)
     }
     
     const changeExpiry = async (id) => {
@@ -101,16 +112,22 @@ export default function HomeScreen( {navigation} ) {
 
     useFocusEffect(React.useCallback(() => 
     {
+        if (loading) {
         getRole();
         checkExpiry();
         checkDealExpiry();
         getActivities();
+        }
     },[]));
+
+    if (loading) {
+        return <ActivityIndicator />;
+    }
 
     const width = Dimensions.get('window').width;
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
             <Carousel
@@ -119,12 +136,12 @@ export default function HomeScreen( {navigation} ) {
                 height={width / 2}
                 autoPlay={true}
                 mode="parallax"
-                data={[...new Array(6).keys()]}
+                data={restaurants}
                 scrollAnimationDuration={6000}
                 pagingEnabled={true}
                 snapEnabled={true}
                 //onSnapToItem={(index) => console.log('current index:', index)}
-                renderItem={({ index }) => (
+                renderItem={({ item, index }) => (
                     <View
                         style={{
                             flex: 1,
@@ -132,9 +149,15 @@ export default function HomeScreen( {navigation} ) {
                             justifyContent: 'center',
                         }}
                     >
-                        <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                            {index}
-                        </Text>
+                    <TouchableOpacity key={index} style={styles.buttonCarousel} onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
+                price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
+                , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
+                capacity: item.capacity, address: item.address, images: item.images})}}>
+                <View style={{position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
+                    <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayCarousel} />
+            </TouchableOpacity>
                     </View>
                 )}
             />
@@ -175,12 +198,17 @@ export default function HomeScreen( {navigation} ) {
             </TouchableOpacity>
         </View>
         <Text style={styles.HeadingList}>Restaurants:</Text>
-            {restaurants.map((item, index) => (
-                <TouchableOpacity style={styles.displayBox}>
-                    <Image source={{uri: item.images}} style={styles.profileImage} />
-                    <Text style={styles.HeadingDisplay}>{item.name}</Text>
-                </TouchableOpacity>
-            ))}
+        {restaurants.map((item, index) => (
+            <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
+                price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
+                , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
+                capacity: item.capacity, address: item.address, images: item.images})}}>
+                <View style={{position: 'absolute', top: 95, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
+                    <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayBox} />
+            </TouchableOpacity>
+        ))}
         <Text style={styles.HeadingList}>Attractions:</Text>
         <TouchableOpacity style={styles.displayBox}>
             <Text style={styles.HeadingDisplay}>Attraction 1</Text>
@@ -215,3 +243,4 @@ export default function HomeScreen( {navigation} ) {
         </View>
     )
 }
+//<Image source={profileImage} style={styles.imageDisplayBox} />

@@ -298,7 +298,7 @@ Download the App here: URL`})
     else if (activityType == 'hotels') {
         return (
             <View style={styles.detailsContainer}>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
                <Carousel width={width}
                     height={width / 2}
@@ -369,7 +369,7 @@ Download the App here: URL`})
     else if (activityType == 'attractions') {
         return (
             <View style={styles.detailsContainer}>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
                 <Carousel width={width}
                     height={width / 2}

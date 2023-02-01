@@ -37,7 +37,7 @@ export default function RegistrationSelector({navigation}) {
 
     return (
         <View style={PStyles.container}>
-        <ScrollView
+        <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
           style={PStyles.scrollContainer}
           contentContainerStyle={PStyles.scrollContentContainer}>
             <Image

@@ -421,7 +421,7 @@ export default function HotelList({ navigation }) {
               Alert.alert('Modal has been closed.');
               setModalVisible(!modalVisible);
             }}>
-            <ScrollView >
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
               <View style={modal.modalView}>
                 <Text style={modal.modalText}>Type Of Room</Text>
                 <View style={modal.buttonView}>

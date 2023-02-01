@@ -86,7 +86,7 @@ export default function ActiveThread({ navigation }) {
 
     return (
         <View>
-            <ScrollView>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
             <Text style={styles.HeadingList}>TripAid</Text>
             <Text style={styles.HeadingList}>Forum</Text>
 

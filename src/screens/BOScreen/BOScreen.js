@@ -102,7 +102,7 @@ export default function BOScreen ({navigation}) {
 
     return (
         <View>
-            <ScrollView>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>Welcome, Business Owner!</Text>
                 <TouchableOpacity style={styles.button}
                     title="View Profile"

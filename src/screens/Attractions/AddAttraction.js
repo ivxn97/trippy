@@ -68,6 +68,7 @@ export default function AddAttraction ( { navigation }) {
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
+    const storage = getStorage();
 
     const getEmail = async () => {
         try {
@@ -99,7 +100,6 @@ export default function AddAttraction ( { navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
-            getImages()
           });
     }
 
@@ -129,6 +129,7 @@ export default function AddAttraction ( { navigation }) {
             console.log("Image uploaded!");
             const count = imageCount + 1
             setImageCount(count)
+            getImages()
         })}
         else {
             console.log('No Image uploaded!')
@@ -215,7 +216,7 @@ export default function AddAttraction ( { navigation }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
             <Text style={styles.text}>Name:</Text>

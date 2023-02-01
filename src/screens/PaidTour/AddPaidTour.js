@@ -70,6 +70,7 @@ export default function AddPaidTour ( { navigation }) {
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
+    const storage = getStorage();
 
     const getEmail = async () => {
         try {
@@ -237,7 +238,7 @@ export default function AddPaidTour ( { navigation }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
 

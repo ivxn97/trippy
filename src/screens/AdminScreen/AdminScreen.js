@@ -70,7 +70,7 @@ export default function AdminScreen ({navigation}) {
     
     return (
         <View>
-            <ScrollView>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
             <Text style={styles.Heading}>Welcome, Admin!</Text>
         <List.Section >
         <List.Accordion 

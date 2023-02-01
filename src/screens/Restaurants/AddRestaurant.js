@@ -116,6 +116,7 @@ export default function AddRestaurant ( { navigation }) {
           ]).then((results) => {
             const fetchedImages = results[0];
             console.log(fetchedImages);
+            console.log("Cover Image:", fetchedImages[0])
             setImages(fetchedImages);
           });
     }
@@ -280,7 +281,7 @@ export default function AddRestaurant ( { navigation }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
             <Text style={styles.text}>Name:</Text>

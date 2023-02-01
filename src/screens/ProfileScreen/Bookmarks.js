@@ -165,7 +165,7 @@ export default function Bookmarks ( {navigation} ) {
     else {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.HeadingList}>Bookmarks</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                     <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Search Bookmarks')}>

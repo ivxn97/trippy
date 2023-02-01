@@ -182,7 +182,7 @@ export default function ProfileScreen ( {navigation} ) {
     if (role == 'LOL') {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>Welcome, LOL!</Text>
                 <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Profile', {
                     firstName: firstName,
@@ -365,7 +365,7 @@ export default function ProfileScreen ( {navigation} ) {
     else {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>Join Us Today!</Text>
                 <Image
                 style={styles.imageBanner}

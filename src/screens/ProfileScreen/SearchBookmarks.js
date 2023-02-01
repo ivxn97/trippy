@@ -206,7 +206,7 @@ export default function SearchBookmarks({ navigation, route}) {
 
     return (
         <View>
-            <ScrollView>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
             <TextInput
                 style={styles.inputSearch}
                 placeholder='search'

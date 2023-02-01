@@ -177,7 +177,6 @@ export default function PageContent ( {navigation, route} ) {
             try {
                 await setDoc(doc(db, "homepage", "topPage"), {
                     activities: listedTopPage,
-                    name: "topPage"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -188,8 +187,7 @@ export default function PageContent ( {navigation, route} ) {
         else if (activityType == 'restaurants') {
             try {
                 await setDoc(doc(db, "homepage", "restaurants"), {
-                    activities: listedRestaurants,
-                    name: "restaurants"
+                    activities: listedRestaurants
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -201,7 +199,6 @@ export default function PageContent ( {navigation, route} ) {
             try {
                 await setDoc(doc(db, "homepage", "paidtours"), {
                     activities: listedPaidtours,
-                    name: "paidtours"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -213,7 +210,6 @@ export default function PageContent ( {navigation, route} ) {
             try {
                 await setDoc(doc(db, "homepage", "hotels"), {
                     activities: listedHotels,
-                    name: "hotels"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -225,7 +221,6 @@ export default function PageContent ( {navigation, route} ) {
             try {
                 await setDoc(doc(db, "homepage", "attractions"), {
                     activities: listedAttractions,
-                    name: "attractions"
                 })
                 navigation.navigate('Page Content Choice')
             }
@@ -252,7 +247,7 @@ export default function PageContent ( {navigation, route} ) {
     if (activityType == 'topPage'){
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -290,7 +285,7 @@ export default function PageContent ( {navigation, route} ) {
     else if (activityType == 'restaurants') {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -327,7 +322,7 @@ export default function PageContent ( {navigation, route} ) {
     else if (activityType == 'paidtours') {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -364,7 +359,7 @@ export default function PageContent ( {navigation, route} ) {
     else if (activityType == 'hotels') {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -401,7 +396,7 @@ export default function PageContent ( {navigation, route} ) {
     else if (activityType == 'attractions') {
         return (
             <View>
-                <ScrollView>
+                <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'

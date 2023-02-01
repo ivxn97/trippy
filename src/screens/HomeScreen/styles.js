@@ -303,6 +303,20 @@ export default StyleSheet.create({
         marginRight: 8,
         paddingLeft: 16
     },
+    buttonCarousel: {
+        backgroundColor: "#c4c4c4",
+        borderWidth: 1,
+        borderColor: "transparent",
+        borderStyle: "solid",
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderLeftWidth: 1,
+        width: 408,
+        height: 200,
+        marginTop: 5,
+        marginBottom: 5
+    },
     displayBox: {
         backgroundColor: "#c4c4c4",
         borderTopLeftRadius: 16,
@@ -321,6 +335,32 @@ export default StyleSheet.create({
         marginLeft: 15,
         marginTop: 5,
         marginBottom: 5
+    },
+    imageDisplayBox: {
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+        borderBottomRightRadius: 16,
+        borderBottomLeftRadius: 16,
+        borderWidth: 1,
+        borderColor: "transparent",
+        borderStyle: "solid",
+        borderTopWidth: 1,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderLeftWidth: 1,
+        width: 350,
+        height: 100,
+        marginLeft: 15,
+        marginTop: 5,
+        marginBottom: 5,
+        overflow: "hidden",
+    },
+    imageDisplayCarousel: {
+        width: 406,
+        height: 130,
+        marginLeft: 0,
+        marginBottom: 10,
+        overflow: "hidden",
     },
     price: {
         fontSize: 24,

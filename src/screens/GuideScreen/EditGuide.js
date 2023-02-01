@@ -26,6 +26,7 @@ export default function EditGuide({ route, navigation }) {
     const [isExpired, setIsExpired] = useState(expired)
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
+    const storage = getStorage();
 
     const typePlaceholder = {
         label: 'Section Category',
@@ -172,7 +173,7 @@ export default function EditGuide({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
     

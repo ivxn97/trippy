@@ -79,7 +79,7 @@ export default function Thread({route, navigation}) {
 
     return(
         <View style={styles.threadContainer}>
-            <ScrollView>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
             <Text style={styles.Heading}>{JSON.stringify(title).replace(/"/g,"")}</Text>
 
             {/* details */}

@@ -256,7 +256,7 @@ export default function Itinerary({ navigation }) {
                     price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
                     closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
                     startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
-                    addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address
+                    addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address, images: item.images
                 })
                 }}
             >

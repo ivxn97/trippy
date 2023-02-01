@@ -26,6 +26,7 @@ export default function AddWalkingTour({ navigation }) {
     const [section, setSection] = useState();
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
+    const storage = getStorage();
 
     const typePlaceholder = {
         label: 'Section Category',
@@ -167,7 +168,7 @@ export default function AddWalkingTour({ navigation }) {
     }
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
+            <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
     

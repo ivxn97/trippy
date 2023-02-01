@@ -216,7 +216,7 @@ export default function Booking ({route, navigation}) {
   else if (activityType == 'hotels') {
     return (
       <View>
-        <ScrollView>
+        <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
         <Text style={styles.Heading}>You are making a booking for {name}</Text>
         <Text style={[styles.Heading, {fontSize:20}]}>Selected Check-In Date: {Moment(startDate).format('DD MMM YYYY')}</Text>
         <TouchableOpacity style={styles.button} onPress={showStartDatePicker}>

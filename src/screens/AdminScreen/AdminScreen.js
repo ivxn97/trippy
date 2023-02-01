@@ -101,10 +101,16 @@ export default function AdminScreen ({navigation}) {
         </List.Accordion>
         </List.Section>
 
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Page Content Choice')}
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Page Content Choice')}
             title ="Page Contents"
         >
             <Text style={styles.text}>Page Contents</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Manage Types Choice')}
+            title="Manage Types"
+        >
+            <Text style={styles.text}>Manage Types</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}

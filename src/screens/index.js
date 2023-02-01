@@ -132,3 +132,5 @@ export {default as ReviewPendingAccounts} from './AdminScreen/ReviewPendingAccou
 export {default as ReviewAccount} from './AdminScreen/ReviewAccount'
 export {default as AdminEditGuidesList} from './AdminScreen/AdminEditGuidesList'
 export {default as AdminEditWalkingToursList} from './AdminScreen/AdminEditWalkingToursList'
+export { default as ManageTypes } from './AdminScreen/ManageTypes'
+export { default as ManageTypesChoice } from './AdminScreen/ManageTypesChoice'

@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import { View, Text, button, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { doc, getDoc, collection, query, where, getDocs, setDoc } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs, setDoc, deleteDoc } from "firebase/firestore";
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { db } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -66,6 +66,10 @@ export default function ProfileScreen ( {navigation} ) {
         }, {merge:true})
     }
 
+    const changeDealExpiry = async (id) => {
+        deleteDoc(doc(db, "deals", id))
+    }
+
     const checkExpiry = async () => {
         const date = new Date()
         const querySnapshot = await getDocs(collection(db, "bookings"));
@@ -73,13 +77,26 @@ export default function ProfileScreen ( {navigation} ) {
             if (date > documentSnapshot.data().date.toDate()) {
                 changeExpiry(documentSnapshot.data().id)
             }
+            else if (date > documentSnapshot.data().endDate.toDate()) {
+                changeExpiry(documentSnapshot.data().id)
+            }
          })
     }
-    
+
+    const checkDealExpiry = async () => {
+        const date = new Date()
+        const querySnapshot = await getDocs(collection(db, "deals"));
+        querySnapshot.forEach(documentSnapshot => {
+            if (date > documentSnapshot.data().expiry.toDate()) {
+                changeDealExpiry(documentSnapshot.data().dealname)
+            }
+         })
+    }
     
     useEffect(() => {
         getEmail()
         checkExpiry();
+        checkDealExpiry();
         if (email) {
             getUser()
             const listRef = ref(storage, `users/${email}/profile`);

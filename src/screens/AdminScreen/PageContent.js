@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs, QuerySnapshot, setDoc } from "firebase/firestore";
 import { db } from '../../../config';
-import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import styles from '../ProfileScreen/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -78,7 +77,7 @@ export default function PageContent ( {navigation, route} ) {
         }
         
     };
-
+/*
     const getCurrentContent = async () => {
         if (activityType == 'topPage') {
             const docSnap = await getDoc(doc(db, "homepage", "topPage"))
@@ -115,7 +114,7 @@ export default function PageContent ( {navigation, route} ) {
                 setListedAttractions(docSnap.data().activities)
             }
         }
-    }
+    }*/
 
     const getRestaurants = async () => {
         const collectionRef = collection(db, "restaurants")
@@ -242,7 +241,7 @@ export default function PageContent ( {navigation, route} ) {
             getHotels();
             getPaidTours();
             getAttractions();
-            getCurrentContent();
+            //getCurrentContent();
         }
     },[shouldRun, finalArr]))
 
@@ -253,6 +252,7 @@ export default function PageContent ( {navigation, route} ) {
     if (activityType == 'topPage'){
         return (
             <View>
+                <ScrollView>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -282,6 +282,7 @@ export default function PageContent ( {navigation, route} ) {
                     onPress={() => onSubmitPress()}>
                     <Text style={styles.buttonTitle}>Modify Page Content</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         );
     }
@@ -289,6 +290,7 @@ export default function PageContent ( {navigation, route} ) {
     else if (activityType == 'restaurants') {
         return (
             <View>
+                <ScrollView>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -318,12 +320,14 @@ export default function PageContent ( {navigation, route} ) {
                     onPress={() => onSubmitPress()}>
                     <Text style={styles.buttonTitle}>Modify Page Content</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         );
     }
     else if (activityType == 'paidtours') {
         return (
             <View>
+                <ScrollView>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -353,12 +357,14 @@ export default function PageContent ( {navigation, route} ) {
                     onPress={() => onSubmitPress()}>
                     <Text style={styles.buttonTitle}>Modify Page Content</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         );
     }
     else if (activityType == 'hotels') {
         return (
             <View>
+                <ScrollView>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -388,12 +394,14 @@ export default function PageContent ( {navigation, route} ) {
                     onPress={() => onSubmitPress()}>
                     <Text style={styles.buttonTitle}>Modify Page Content</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         );
     }
     else if (activityType == 'attractions') {
         return (
             <View>
+                <ScrollView>
                 <TextInput
                     style={styles.inputSearch}
                     placeholder='search'
@@ -423,6 +431,7 @@ export default function PageContent ( {navigation, route} ) {
                     onPress={() => onSubmitPress()}>
                     <Text style={styles.buttonTitle}>Modify Page Content</Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         );
     }

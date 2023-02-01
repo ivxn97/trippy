@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
-import { collection, getDocs, setDoc, doc } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
 import { db } from '../../../config';
 import Carousel from 'react-native-reanimated-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -72,12 +72,29 @@ export default function HomeScreen( {navigation} ) {
         }, {merge:true})
     }
 
+    const changeDealExpiry = async (id) => {
+        deleteDoc(doc(db, "deals", id))
+    }
+
     const checkExpiry = async () => {
         const date = new Date()
         const querySnapshot = await getDocs(collection(db, "bookings"));
         querySnapshot.forEach(documentSnapshot => {
             if (date > documentSnapshot.data().date.toDate()) {
                 changeExpiry(documentSnapshot.data().id)
+            }
+            else if (date > documentSnapshot.data().endDate.toDate()) {
+                changeExpiry(documentSnapshot.data().id)
+            }
+         })
+    }
+
+    const checkDealExpiry = async () => {
+        const date = new Date()
+        const querySnapshot = await getDocs(collection(db, "deals"));
+        querySnapshot.forEach(documentSnapshot => {
+            if (date > documentSnapshot.data().expiry.toDate()) {
+                changeDealExpiry(documentSnapshot.data().dealname)
             }
          })
     }
@@ -86,6 +103,8 @@ export default function HomeScreen( {navigation} ) {
     {
         getRole();
         checkExpiry();
+        checkDealExpiry();
+        getActivities();
     },[]));
 
     const width = Dimensions.get('window').width;
@@ -158,6 +177,7 @@ export default function HomeScreen( {navigation} ) {
         <Text style={styles.HeadingList}>Restaurants:</Text>
             {restaurants.map((item, index) => (
                 <TouchableOpacity style={styles.displayBox}>
+                    <Image source={{uri: item.images}} style={styles.profileImage} />
                     <Text style={styles.HeadingDisplay}>{item.name}</Text>
                 </TouchableOpacity>
             ))}

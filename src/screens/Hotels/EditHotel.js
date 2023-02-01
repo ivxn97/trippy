@@ -13,7 +13,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 export default function AddHotel({ route, navigation }) {
     const { name, hotelClass, roomTypes, checkInTime, checkOutTime, amenities, roomFeatures, language, 
-        description, TNC, address, images } = route.params;
+        description, TNC, address, images, latitude, longitude, mapURL } = route.params;
     const [checkInHour, checkInMinute] = checkInTime.split(":");
     const [checkOutHour, checkOutMinute] = checkOutTime.split(":");
 
@@ -31,10 +31,10 @@ export default function AddHotel({ route, navigation }) {
     const [docRoomFeaturesData, setRoomFeaturesData] = useState(roomFeatures)
     const [loading, setLoading] = useState(true)
     const [languageData, setLanguageData] = useState();
-    const [newAddress, setAddress] = useState();
-    const [mapURL, setMapURL] = useState();
-    const [latitude, setLat] = useState();
-    const [longitude, setLong] = useState();
+    const [newAddress, setAddress] = useState(address);
+    const [newMapURL, setMapURL] = useState(mapURL);
+    const [newLatitude, setLat] = useState(latitude);
+    const [newLongitude, setLong] = useState(longitude);
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
     const [hotelRooms, setHotelRooms] = useState(1)
@@ -55,6 +55,7 @@ export default function AddHotel({ route, navigation }) {
             .then(dir => {
             dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
             console.log("Files deleted successfully from Firebase Storage");
+            alert("Images Deleted")
             setImageCount(0)
             })
         .catch(error => console.log(error));
@@ -204,9 +205,9 @@ export default function AddHotel({ route, navigation }) {
                     description: newDescription,
                     TNC: newTNC,
                     address: newAddress,
-                    longitude: longitude,
-                    latitude: latitude,
-                    mapURL: mapURL,
+                    longitude: newLongitude,
+                    latitude: newLatitude,
+                    mapURL: newMapURL,
                     images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);

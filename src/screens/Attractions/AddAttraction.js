@@ -173,7 +173,7 @@ export default function AddAttraction ( { navigation }) {
     }, [ageGroupData]);
       
     const onSubmitPress = async () => {
-         if (email !== '' && name !== '' && tourType !== '' && price !== '' && ageGroup !== '' 
+         if (email !== '' && name !== '' && attractionType !== '' && price !== '' && ageGroup !== '' 
             && groupSize !== '' && openingHour !== '' && openingMinute !== '' && closingHour !== '' 
             && closingMinute !== ''  && capacity !== '' && address !== '' && language !== '' 
             && description !== '' && TNC !== '' && images !== '') {
@@ -227,7 +227,7 @@ export default function AddAttraction ( { navigation }) {
                 onChangeText={(Text) => setName(Text)}
                 value={name}
                 underlineColorAndroid="transparent"
-                autoCapitalize="none"
+                autoCapitalize="words"
             />
             <Text style={styles.text}>Upload Images:</Text>
             <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
@@ -15,6 +15,7 @@ export default function HomeScreen( {navigation} ) {
     const [attractions, setAttractions] = useState([]);
     const [topPage, setTopPage] = useState([])
     const [loading, setLoading] = useState(true)
+    const isInitialMount = useRef(true);
 
     const getRole = async () => {
         try {
@@ -39,41 +40,49 @@ export default function HomeScreen( {navigation} ) {
     const getActivities = async () => {
         const querySnapshot = await getDocs(collection(db, "homepage"));
         querySnapshot.forEach(documentSnapshot => {
-            if (documentSnapshot.data().name == "topPage") {
+            if (documentSnapshot.id == "topPage") {
                 topPage.push({
-                    ...documentSnapshot.data().activities,
-                    key: documentSnapshot.id
+                    ...documentSnapshot.data().activities
                 });
             }
             else if (documentSnapshot.id == "restaurants") {
                 restaurants.push({
                     ...documentSnapshot.data().activities
                 });
-                console.log(restaurants)
+                //console.log(restaurants)
             }
-            else if (documentSnapshot.data().name == "hotels") {
+            else if (documentSnapshot.id == "hotels") {
                 hotels.push({
-                    ...documentSnapshot.data().activities,
-                    key: documentSnapshot.id
+                    ...documentSnapshot.data().activities
                 });
             }
-            else if (documentSnapshot.data().name == "paidtours") {
+            else if (documentSnapshot.id == "paidtours") {
                 paidTours.push({
-                    ...documentSnapshot.data().activities,
-                    key: documentSnapshot.id
+                    ...documentSnapshot.data().activities
                 });
             }
-            else if (documentSnapshot.data().name == "attractions") {
+            else if (documentSnapshot.id == "attractions") {
                 attractions.push({
-                    ...documentSnapshot.data().activities,
-                    key: documentSnapshot.id
+                    ...documentSnapshot.data().activities
                 });
             }
         });
 
         const newResArr = restaurants.flatMap((item) => Object.values(item))
         setRestaurants(newResArr)
-        console.log(newResArr)
+
+        const newTPArr = topPage.flatMap((item) => Object.values(item))
+        setTopPage(newTPArr)
+
+        const newHArr = hotels.flatMap((item) => Object.values(item))
+        setHotels(newHArr)
+
+        const newATArr = attractions.flatMap((item) => Object.values(item))
+        setAttractions(newATArr)
+
+        const newPTArr = paidTours.flatMap((item) => Object.values(item))
+        setPaidTours(newPTArr)
+
         setLoading(false)
     }
     
@@ -112,11 +121,12 @@ export default function HomeScreen( {navigation} ) {
 
     useFocusEffect(React.useCallback(() => 
     {
-        if (loading) {
+        if (isInitialMount.current) {
         getRole();
         checkExpiry();
         checkDealExpiry();
         getActivities();
+        isInitialMount.current = false;
         }
     },[]));
 
@@ -136,7 +146,7 @@ export default function HomeScreen( {navigation} ) {
                 height={width / 2}
                 autoPlay={true}
                 mode="parallax"
-                data={restaurants}
+                data={topPage}
                 scrollAnimationDuration={6000}
                 pagingEnabled={true}
                 snapEnabled={true}
@@ -149,11 +159,18 @@ export default function HomeScreen( {navigation} ) {
                             justifyContent: 'center',
                         }}
                     >
-                    <TouchableOpacity key={index} style={styles.buttonCarousel} onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
-                price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
-                closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
-                , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
-                capacity: item.capacity, address: item.address, images: item.images})}}>
+                    <TouchableOpacity key={index} style={styles.buttonCarousel}               
+                    onPress={() => {navigation.navigate('Details', {
+                    name: item.name, roomTypes: item.roomTypes,
+                    priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
+                    checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
+                    language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine, 
+                    price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                    closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
+                    startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
+                    addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address, images: item.images
+                })
+                }}>
                 <View style={{position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
                     <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayCarousel} />
@@ -210,35 +227,45 @@ export default function HomeScreen( {navigation} ) {
             </TouchableOpacity>
         ))}
         <Text style={styles.HeadingList}>Attractions:</Text>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Attraction 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Attraction 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Attraction 3</Text>
-        </TouchableOpacity>
+        {attractions.map((item, index) => (
+            <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details', 
+                {name: item.name, attractionType: item.attractionType, 
+                price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
+                closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC, 
+                activityType: item.activityType, mapURL: item.mapURL, capacity: item.capacity, address: item.address,
+                addedBy: item.addedBy, images: item.images})}}>
+                <View style={{position: 'absolute', top: 95, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
+                    <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayBox} />
+            </TouchableOpacity>
+        ))}
         <Text style={styles.HeadingList}>Hotels:</Text>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Hotel 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Hotel 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Hotel 3</Text>
-        </TouchableOpacity>
+        {hotels.map((item, index) => (
+            <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details',  {
+                name: item.name, roomTypes: item.roomTypes,
+                hotelClass: item.hotelClass, checkInTime: item.checkInTime,
+                checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
+                language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType,
+                addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, address: item.address, images: item.images 
+            })}}>
+                <View style={{position: 'absolute', top: 95, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
+                    <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayBox} />
+            </TouchableOpacity>
+        ))}
         <Text style={styles.HeadingList}>Tours:</Text>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Tour 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Tour 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.displayBox}>
-            <Text style={styles.HeadingDisplay}>Tour 3</Text>
-        </TouchableOpacity>
+        {paidTours.map((item, index) => (
+            <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details', 
+                {name: item.name, tourType: item.tourType, 
+                price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
+                endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
+                TNC: item.TNC, activityType: item.activityType, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
+                capacity: item.capacity, address: item.address, images: item.images})}}>
+                <View style={{position: 'absolute', top: 95, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
+                    <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayBox} />
+            </TouchableOpacity>
+        ))}
         </KeyboardAwareScrollView>
         </View>
     )

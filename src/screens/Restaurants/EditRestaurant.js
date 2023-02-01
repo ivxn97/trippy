@@ -13,8 +13,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 export default function EditRestaurant ( { route, navigation }) {
     const {name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
-        description, TNC, capacity, address, images} = route.params;
-
+        description, TNC, capacity, address, images, mapURL, longitude, latitude} = route.params;
     const [openingHour, openingMinute] = openingTime.split(":");
     const [closingHour, closingMinute] = closingTime.split(":");
 
@@ -36,10 +35,10 @@ export default function EditRestaurant ( { route, navigation }) {
     const [ageGroupData, setAgeGroupData] = useState();
     const [loading, setLoading] = useState(true)
     const [newCapacity, setCapacity] = useState(capacity);
-    const [newAddress, setAddress] = useState();
-    const [mapURL, setMapURL] = useState();
-    const [latitude, setLat] = useState();
-    const [longitude, setLong] = useState();
+    const [newAddress, setAddress] = useState(address);
+    const [newMapURL, setMapURL] = useState(mapURL);
+    const [newLatitude, setLat] = useState(latitude);
+    const [newLongitude, setLong] = useState(longitude);
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
 
@@ -53,6 +52,7 @@ export default function EditRestaurant ( { route, navigation }) {
             .then(dir => {
             dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
             console.log("Files deleted successfully from Firebase Storage");
+            alert("Images Deleted");
             setImageCount(0)
             })
         .catch(error => console.log(error));
@@ -201,9 +201,9 @@ export default function EditRestaurant ( { route, navigation }) {
                     closingTime: newClosingHour + ':' + newClosingMinute,
                     capacity: newCapacity,
                     address: newAddress,
-                    longitude: longitude,
-                    latitude: latitude,
-                    mapURL: mapURL,
+                    longitude: newLongitude,
+                    latitude: newLatitude,
+                    mapURL: newMapURL,
                     language: newLanguage,
                     description: newDescription,
                     TNC: newTNC,

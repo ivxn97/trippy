@@ -185,7 +185,7 @@ export default function AttractionEditList( {navigation }) {
           price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
           closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC, 
           activityType: item.activityType, mapURL: item.mapURL, capacity: item.capacity, address: item.address,
-          addedBy: item.addedBy, images: item.images})}}>
+          addedBy: item.addedBy, images: item.images, longitude: item.longitude, latitude: item.latitude})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
           <Text>${item.price}</Text>

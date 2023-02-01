@@ -285,7 +285,7 @@ export default function AddHotel({ navigation }) {
                     onChangeText={(Text) => setName(Text)}
                     value={name}
                     underlineColorAndroid="transparent"
-                    autoCapitalize="none"
+                    autoCapitalize="words"
                 />
                 <Text style={styles.text}>Upload Images:</Text>
                 <TouchableOpacity style={[styles.button, {opacity: name ? 1: 0.2}]} onPress={pickImage} 
@@ -303,7 +303,7 @@ export default function AddHotel({ navigation }) {
                     onChangeText={(Text) => setType(Text)}
                     value={type}
                     underlineColorAndroid="transparent"
-                    autoCapitalize="none"
+                    autoCapitalize="words"
                 />
                 <Text style={styles.text}>Price:</Text>
                 <TextInput

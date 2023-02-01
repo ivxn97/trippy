@@ -51,6 +51,7 @@ export default function EditGuide({ route, navigation }) {
             .then(dir => {
             dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
             console.log("Files deleted successfully from Firebase Storage");
+            alert("Images Deleted")
             setImageCount(0)
             })
         .catch(error => console.log(error));

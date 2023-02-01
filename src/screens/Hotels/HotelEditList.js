@@ -186,7 +186,8 @@ export default function HotelEditList({ navigation }) {
                         hotelClass: item.hotelClass, checkInTime: item.checkInTime,
                         checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
                         language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType,
-                        addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, address: item.address, images: item.images 
+                        addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, address: item.address, images: item.images,
+                        longitude: item.longitude, latitude: item.latitude
                     })
                     }}>
                     <View style={styles.list}>

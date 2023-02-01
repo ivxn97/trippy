@@ -13,7 +13,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 export default function EditAttraction ( { route, navigation }) {
     const {name, attractionType, price, ageGroup, groupSize, openingTime, closingTime, description,
-        language, TNC, capacity, address, images} = route.params;
+        language, TNC, capacity, address, images, latitude, longitude, mapURL} = route.params;
     const [openingHour, openingMinute] = openingTime.split(":");
     const [closingHour, closingMinute] = closingTime.split(":");
 
@@ -33,10 +33,10 @@ export default function EditAttraction ( { route, navigation }) {
     const [languageData, setLanguageData] = useState();
     const [attractionTypeData, setAttractionTypeData] = useState();
     const [ageGroupData, setAgeGroupData] = useState();
-    const [newAddress, setAddress] = useState();
-    const [mapURL, setMapURL] = useState();
-    const [latitude, setLat] = useState();
-    const [longitude, setLong] = useState();
+    const [newAddress, setAddress] = useState(address);
+    const [newMapURL, setMapURL] = useState(mapURL);
+    const [newLatitude, setLat] = useState(latitude);
+    const [newLongitude, setLong] = useState(longitude);
     const [newCapacity, setCapacity] = useState(capacity);
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
@@ -103,6 +103,7 @@ export default function EditAttraction ( { route, navigation }) {
             .then(dir => {
             dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
             console.log("Files deleted successfully from Firebase Storage");
+            alert("Images Deleted")
             setImageCount(0)
             })
         .catch(error => console.log(error));
@@ -156,9 +157,9 @@ export default function EditAttraction ( { route, navigation }) {
                     closingTime: newClosingHour + ':' + newClosingMinute,
                     capacity: newCapacity,
                     address: newAddress,
-                    longitude: longitude,
-                    latitude: latitude,
-                    mapURL: mapURL,
+                    longitude: newLongitude,
+                    latitude: newLatitude,
+                    mapURL: newMapURL,
                     description: newDescription,
                     language: newLanguage,
                     TNC: newTNC,

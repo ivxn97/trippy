@@ -14,7 +14,7 @@ import moment from 'moment';
 
 export default function EditPaidTour ( { route, navigation }) {
     const {name, tourType, price, ageGroup, groupSize, startingTime, endingTime, language, duration, 
-        description, TNC, address, capacity, images} = route.params;
+        description, TNC, address, capacity, images, latitude, longitude, mapURL} = route.params;
 
     const [startingHour, startingMinute] = startingTime.split(":");
     const [endingHour, endingMinute] = endingTime.split(":");
@@ -37,10 +37,10 @@ export default function EditPaidTour ( { route, navigation }) {
     const [tourTypeData, setTourTypeData] = useState();
     const [ageGroupData, setAgeGroupData] = useState();
     const [newCapacity, setCapacity] = useState(capacity);
-    const [newAddress, setAddress] = useState();
-    const [mapURL, setMapURL] = useState();
-    const [latitude, setLat] = useState();
-    const [longitude, setLong] = useState();
+    const [newAddress, setAddress] = useState(address);
+    const [newMapURL, setMapURL] = useState(mapURL);
+    const [newLatitude, setLat] = useState(latitude);
+    const [newLongitude, setLong] = useState(longitude);
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
@@ -180,9 +180,9 @@ export default function EditPaidTour ( { route, navigation }) {
                     TNC: TNC,
                     capacity: newCapacity,
                     address: newAddress,
-                    longitude: longitude,
-                    latitude: latitude,
-                    mapURL: mapURL,
+                    longitude: newLongitude,
+                    latitude: newLatitude,
+                    mapURL: newMapURL,
                     images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);

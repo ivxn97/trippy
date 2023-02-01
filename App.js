@@ -22,7 +22,7 @@ import {
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
   GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks, EditGuide,
   EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
-  AdminEditWalkingToursList
+  AdminEditWalkingToursList, ManageTypes, ManageTypesChoice
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -178,6 +178,8 @@ function AdminStackScreen() {
       <Stack.Screen name="Admin Edit Guides List" component={AdminEditGuidesList} />
       <Stack.Screen name="Edit Walking Tours" component={EditWalkingTour} />
       <Stack.Screen name="Edit Guide" component={EditGuide} />
+      <Stack.Screen name="Manage Types" component={ManageTypes} />
+      <Stack.Screen name="Manage Types Choice" component={ManageTypesChoice} />
     </AdminStack.Navigator>
   )
 }

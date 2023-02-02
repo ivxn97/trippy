@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import RNPickerSelect from 'react-native-picker-select';
 import styles from './styles';
-import { db, serviceID, accountApproval, publicKey } from '../../../config';
+import { db, serviceID, accountApproval, accountRejection, publicKey } from '../../../config';
 import * as WebBrowser from 'expo-web-browser';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import emailjs from '@emailjs/browser';
@@ -12,6 +12,7 @@ import emailjs from '@emailjs/browser';
 export default function ReviewAccount ({route, navigation}) {
     const {email, UEN, firstName, lastName, role, id, status, socialMediaHandle, socialMediaPlatform} = route.params;
     const [screenshot, setScreenshot] = useState();
+    const [reason, setReason] = useState('')
     const storage = getStorage();
 
     const getScreenshot = () => {
@@ -67,6 +68,37 @@ export default function ReviewAccount ({route, navigation}) {
             }
         }
 
+        const onReject = async () => {
+            deleteDoc(doc(db, "users", email))
+            deleteFolder(`/users/${email}`)
+
+            let templateParams = {
+                to_email: `${email}`,
+                role: `${role}`,
+                reason: `${reason}`
+            }
+            emailjs.send(serviceID, accountRejection, templateParams, publicKey).then(
+                function (response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                },
+                function (error) {
+                    console.log('FAILED...', error);
+                }
+            )
+            alert('Account Rejected and deleted')
+            navigation.replace('Review Pending Accounts')
+        }
+
+        function deleteFolder(path) {
+            const listRef = ref(storage, path)
+            listAll(listRef)
+                .then(dir => {
+                    dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+                    console.log("Files deleted successfully from Firebase Storage");
+                })
+                .catch(error => console.log(error));
+        }
+
         const generateOTP = async () => {
             const digits = '0123456789';
             let OTP = '';
@@ -88,6 +120,7 @@ export default function ReviewAccount ({route, navigation}) {
     
             let templateParams = {
                 to_email: `${email}`,
+                role: `${role}`,
                 OTP: `${OTP}`
             }
             emailjs.send(serviceID, accountApproval, templateParams, publicKey).then(
@@ -105,7 +138,22 @@ export default function ReviewAccount ({route, navigation}) {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => onApprove()}>
-                <Text style={styles.buttonTitle}>Approve Account</Text>
+                <Text style={styles.buttonTitle}>Approve Account Application</Text>
+            </TouchableOpacity>
+            <Text style={[styles.text, {fontWeight: 'bold'}]}>If Reject:</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Rejection Reason'
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={(text) => setReason(text)}
+                    value={reason}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="sentences"
+            />
+            <TouchableOpacity style={[styles.button, 
+                {opacity: reason ? 1: 0.2, backgroundColor: '#E4898b'}]} onPress={() => onReject()} 
+                disabled={reason ? false : true} >
+                <Text style={styles.buttonTitle}>Reject Account Application</Text>
             </TouchableOpacity>
             </View>
         )

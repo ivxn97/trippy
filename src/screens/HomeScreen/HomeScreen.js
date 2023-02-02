@@ -159,7 +159,7 @@ export default function HomeScreen( {navigation} ) {
                             justifyContent: 'center',
                         }}
                     >
-                    <TouchableOpacity key={index} style={styles.buttonCarousel}               
+                    <TouchableOpacity key={index} style={[styles.buttonCarousel, {width: '100%'}]}               
                     onPress={() => {navigation.navigate('Details', {
                     name: item.name, roomTypes: item.roomTypes,
                     priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
@@ -173,7 +173,7 @@ export default function HomeScreen( {navigation} ) {
                 }}>
                 <View style={{position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
-                    <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayCarousel} />
+                    <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={[styles.imageDisplayCarousel, {width: '100%'}]} />
             </TouchableOpacity>
                     </View>
                 )}
@@ -214,9 +214,9 @@ export default function HomeScreen( {navigation} ) {
             <Text style={styles.buttonSmallText}>Paid Tours</Text>
             </TouchableOpacity>
         </View>
-        <Text style={styles.HeadingList}>Restaurants:</Text>
+        <Text style={[styles.HeadingList, {fontWeight:'bold'}]}>Restaurants:</Text>
         {restaurants.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
+            <TouchableOpacity key={index} style={[styles.displayBox]} onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
                 price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
                 closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
                 , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
@@ -226,7 +226,7 @@ export default function HomeScreen( {navigation} ) {
                     <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayBox} />
             </TouchableOpacity>
         ))}
-        <Text style={styles.HeadingList}>Attractions:</Text>
+        <Text style={[styles.HeadingList, {fontWeight:'bold'}]}>Attractions:</Text>
         {attractions.map((item, index) => (
             <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details', 
                 {name: item.name, attractionType: item.attractionType, 
@@ -239,7 +239,7 @@ export default function HomeScreen( {navigation} ) {
                     <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayBox} />
             </TouchableOpacity>
         ))}
-        <Text style={styles.HeadingList}>Hotels:</Text>
+        <Text style={[styles.HeadingList, {fontWeight:'bold'}]}>Hotels:</Text>
         {hotels.map((item, index) => (
             <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details',  {
                 name: item.name, roomTypes: item.roomTypes,
@@ -253,7 +253,7 @@ export default function HomeScreen( {navigation} ) {
                     <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageDisplayBox} />
             </TouchableOpacity>
         ))}
-        <Text style={styles.HeadingList}>Tours:</Text>
+        <Text style={[styles.HeadingList, {fontWeight:'bold'}]}>Tours:</Text>
         {paidTours.map((item, index) => (
             <TouchableOpacity key={index} style={styles.displayBox} onPress={() => {navigation.navigate('Details', 
                 {name: item.name, tourType: item.tourType, 

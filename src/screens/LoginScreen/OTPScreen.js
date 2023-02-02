@@ -3,7 +3,7 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { doc, getDoc, collection, query, where, getDocs, setDoc, deleteDoc } from "firebase/firestore";
-import { db, serviceID, OTPID, publicKey } from '../../../config';
+import { db, serviceID, accountApproval, publicKey } from '../../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import emailjs from '@emailjs/browser';
@@ -81,9 +81,10 @@ export default function OTPScreen({route, navigation}) {
 
         let templateParams = {
             to_email: `${email}`,
+            role: `${role}`,
             OTP: `${OTP}`
         }
-        emailjs.send(serviceID, OTPID, templateParams, publicKey).then(
+        emailjs.send(serviceID, accountApproval, templateParams, publicKey).then(
             function (response) {
                 console.log('SUCCESS!', response.status, response.text);
             },

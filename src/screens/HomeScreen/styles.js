@@ -315,7 +315,7 @@ export default StyleSheet.create({
         width: 408,
         height: 200,
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
     },
     displayBox: {
         backgroundColor: "#c4c4c4",

@@ -180,6 +180,18 @@ function AdminStackScreen() {
       <Stack.Screen name="Edit Guide" component={EditGuide} />
       <Stack.Screen name="Manage Types" component={ManageTypes} />
       <Stack.Screen name="Manage Types Choice" component={ManageTypesChoice} />
+      <Stack.Screen name="Manage Guide Sections" component={ManageGuideSections} />
+      <Stack.Screen name="Add Guide Section" component={AddGuideSection} />
+      <Stack.Screen name="Edit Guide Section" component={EditGuideSection} />
+      <Stack.Screen name="Delete Guide Section" component={DeleteGuideSection} />
+      <Stack.Screen name="Guide Sections Edit List" component={GuideSectionsEditList} />
+      <Stack.Screen name="Guide Sections Delete List" component={GuideSectionsDeleteList} />
+      <Stack.Screen name="Manage Walking Tour Sections" component={ManageWTSections} />
+      <Stack.Screen name="Add Walking Tour Section" component={AddWTSection} />
+      <Stack.Screen name="Edit Walking Tour Section" component={EditWTSection} />
+      <Stack.Screen name="Delete Walking Tour Section" component={DeleteWTSection} />
+      <Stack.Screen name="Walking Tour Sections Edit List" component={WTSectionsEditList} />
+      <Stack.Screen name="Walking Tour Sections Delete List" component={WTSectionsDeleteList} />
     </AdminStack.Navigator>
   )
 }

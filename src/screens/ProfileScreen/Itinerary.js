@@ -279,7 +279,7 @@ export default function Itinerary({ navigation }) {
                 onChangeText={(text) => searchFilter(text, completedArr)}
             />
             <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.buttonListRight}>
+                <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Delete Itinerary')}>
                     <Text style={styles.buttonSmallListText}>Remove</Text>
                 </TouchableOpacity>
             </View>

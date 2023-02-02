@@ -24,7 +24,7 @@ import {
   EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
   AdminEditWalkingToursList, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
-  ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection
+  ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -62,6 +62,7 @@ function ProfileStackScreen() {
       <Stack.Screen name="Bookmarks" component={Bookmarks} />
       <Stack.Screen name="Delete Bookmark" component={DeleteBookmark} />
       <Stack.Screen name="Itinerary" component={Itinerary} />
+      <Stack.Screen name ="Delete Itinerary" component={DeleteItinerary} />
       <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="Review Screen" component={ReviewScreen} />
       <Stack.Screen name="Active Thread" component={ActiveThread} />

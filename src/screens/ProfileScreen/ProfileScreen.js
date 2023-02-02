@@ -22,7 +22,7 @@ export default function ProfileScreen ( {navigation} ) {
     const [bio, setBio] = useState('');
     const storage = getStorage();
     const [loading, setLoading] = useState(true);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState();
 
     const getEmail = async () => {
         try {

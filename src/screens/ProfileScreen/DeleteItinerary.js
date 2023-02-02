@@ -7,10 +7,10 @@ import styles from './styles';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function DeleteBookmark ( {navigation} ) {
+export default function DeleteItinerary ( {navigation} ) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [email, setEmail] = useState();
-    const [bookmarksArr, setBookmarksArr] = useState();
+    const [itineraryArr, setItineraryArr] = useState();
     const [shouldRun, setShouldRun] = useState(true);
 
     const getEmail = async () => {
@@ -28,14 +28,14 @@ export default function DeleteBookmark ( {navigation} ) {
         }
     }
 
-    async function getBookmarks (email) {
+    async function getItinerary (email) {
         var loginRef = doc(db, "users", email);
         const docSnap = await getDoc(loginRef);
 
         if (docSnap.exists()) {
             //console.log("Document data: ", docSnap.data());
-            const bookmarksData = docSnap.data().bookmarks
-            setBookmarksArr(bookmarksData);
+            const itineraryData = docSnap.data().itinerary
+            setItineraryArr(itineraryData);
             setShouldRun(false);
             setLoading(false)
         }
@@ -44,28 +44,28 @@ export default function DeleteBookmark ( {navigation} ) {
         }
     }
 
-    const delBookmark = async (activity) => {
+    const delItinerary = async (activity, position) => {
         const docRef = doc(db, "users", email);
-        await updateDoc(docRef, {bookmarks: arrayRemove(activity)})
-        alert(`${activity} removed from your Bookmarks!`)
-        navigation.replace('Bookmarks')
+        await updateDoc(docRef, {itinerary: arrayRemove({name: activity, position: position})})
+        alert(`${activity} removed from your Itinerary!`)
+        navigation.replace('Itinerary')
     }
 
     useFocusEffect(React.useCallback(() => {
         if (shouldRun) {
             getEmail();
-            getBookmarks(email);
+            getItinerary(email);
         }
-    },[shouldRun, email, bookmarksArr]))
+    },[shouldRun, email, itineraryArr]))
 
     if (loading) {
         return <ActivityIndicator />;
     }
 
-    if (bookmarksArr == null ) {
+    if (itineraryArr == null ) {
         return (
             <View>
-                <Text style={styles.Heading}>Bookmark is empty!</Text>
+                <Text style={styles.Heading}>Itinerary is empty!</Text>
             </View>
         )
     }
@@ -73,16 +73,16 @@ export default function DeleteBookmark ( {navigation} ) {
         return (
             <View>
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
-                <Text style={styles.HeadingList}>Remove From Bookmarks</Text>
+                <Text style={styles.HeadingList}>Remove From Itinerary</Text>
                 <FlatList
-                    data={bookmarksArr}
-                    extraData={bookmarksArr}
+                    data={itineraryArr}
+                    extraData={itineraryArr}
                     renderItem={({ item }) => (
                     <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => delBookmark(item)}>
+                    onPress={() => delItinerary(item.name, item.position)}>
                     <View style={styles.list}>
-                        <Text>{item}</Text>
+                        <Text>{item.name}</Text>
                     </View>
                     </TouchableHighlight>
                     )}

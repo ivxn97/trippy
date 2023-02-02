@@ -22,7 +22,9 @@ import {
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
   GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks, EditGuide,
   EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
-  AdminEditWalkingToursList, ManageTypes, ManageTypesChoice
+  AdminEditWalkingToursList, ManageTypes, ManageTypesChoice, 
+  ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
+  ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }

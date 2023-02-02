@@ -77,7 +77,9 @@ export default function AdminScreen ({navigation}) {
             title="Manage Activities"
             left={props => <List.Icon{...props} icon="folder"/>}>
                 <List.Item title="Walking Tours" onPress={() => navigation.navigate('Admin Edit Walking Tours List')}/>
+                <List.Item title="Manage Walking Tour Sections" onPress={() => navigation.navigate('Manage Walking Tour Sections')}/>
                 <List.Item title="Guides" onPress={() => navigation.navigate('Admin Edit Guides List')}/>
+                <List.Item title="Manage Guide Sections" onPress={() => navigation.navigate('Manage Guide Sections')}/>
                 <List.Item title="Attractions" />
                 <List.Item title="Hotels" />
                 <List.Item title="Restaurants" />

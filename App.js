@@ -24,7 +24,7 @@ import {
   EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
   AdminEditWalkingToursList, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
-  ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary
+  ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, ForumSectionsDeleteList
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -172,7 +172,9 @@ function AdminStackScreen() {
       <Stack.Screen name="Forum Sections Edit List" component={ForumSectionsEditList} />
       <Stack.Screen name="Review Pending Accounts" component={ReviewPendingAccounts} />
       <Stack.Screen name="Add Forum Section" component={AddForumSection} />
-      <Stack.Screen name="Edit Forum Section" component={EditForumSection} />
+      <Stack.Screen name="Edit Forum Section" component={EditForumSection} />      
+      <Stack.Screen name="Delete Forum Section" component={DeleteForumSection} />
+      <Stack.Screen name="Forum Sections Delete List" component={ForumSectionsDeleteList} />
       <Stack.Screen name="Create Post" component={CreatePost} />
       <Stack.Screen name="Page Content" component={PageContent} />
       <Stack.Screen name="Page Content Choice" component={PageContentChoice} />

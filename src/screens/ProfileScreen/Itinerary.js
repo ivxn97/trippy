@@ -173,6 +173,7 @@ export default function Itinerary({ navigation }) {
             })
             console.log("Completed Array:", completedArr)
             setCompletedArr(completedArr)
+            setfilteredData(completedArr)
         }
 
         if (finalArr) {
@@ -279,8 +280,11 @@ export default function Itinerary({ navigation }) {
                 onChangeText={(text) => searchFilter(text, completedArr)}
             />
             <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Delete Itinerary')}>
+                <TouchableOpacity style={styles.buttonListLeft} onPress={() => navigation.navigate('Delete Itinerary')}>
                     <Text style={styles.buttonSmallListText}>Remove</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Delete Itinerary')}>
+                    <Text style={styles.buttonSmallListText}>Map View</Text>
                 </TouchableOpacity>
             </View>
             <NestableDraggableFlatList

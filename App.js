@@ -22,7 +22,8 @@ import {
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
   GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks, EditGuide,
   EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
-  AdminEditWalkingToursList, ManageTypes, ManageTypesChoice, 
+  AdminEditWalkingToursList, AdminEditAttractionsList, AdminEditDealsList, AdminEditHotelsList, AdminEditPaidToursList, 
+  AdminEditRestaurantsList, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
   ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, 
   ForumSectionsDeleteList, ItineraryMapView
@@ -183,8 +184,18 @@ function AdminStackScreen() {
       <Stack.Screen name="Review Account" component={ReviewAccount} />
       <Stack.Screen name="Admin Edit Walking Tours List" component={AdminEditWalkingToursList} />
       <Stack.Screen name="Admin Edit Guides List" component={AdminEditGuidesList} />
+      <Stack.Screen name="Admin Edit Attractions List" component={AdminEditAttractionsList} />
+      <Stack.Screen name="Admin Edit Deals List" component={AdminEditDealsList} />
+      <Stack.Screen name="Admin Edit Hotels List" component={AdminEditHotelsList} />
+      <Stack.Screen name="Admin Edit PaidTours List" component={AdminEditPaidToursList} />
+      <Stack.Screen name="Admin Edit Restaurants List" component={AdminEditRestaurantsList} />
       <Stack.Screen name="Edit Walking Tours" component={EditWalkingTour} />
       <Stack.Screen name="Edit Guide" component={EditGuide} />
+      <Stack.Screen name="Edit Restaurant" component={EditRestaurant} />
+      <Stack.Screen name="Edit Paid Tour" component={EditPaidTour} />
+      <Stack.Screen name="Edit Attraction" component={EditAttraction} />
+      <Stack.Screen name="Edit Hotel" component={EditHotel} />
+      <Stack.Screen name="Edit Deal" component={EditDeal} />
       <Stack.Screen name="Manage Types" component={ManageTypes} />
       <Stack.Screen name="Manage Types Choice" component={ManageTypesChoice} />
       <Stack.Screen name="Manage Guide Sections" component={ManageGuideSections} />

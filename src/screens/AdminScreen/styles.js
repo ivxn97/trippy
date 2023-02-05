@@ -50,6 +50,10 @@ export default StyleSheet.create({
         marginLeft:20,
         fontSize:18,
     },
+    buttonSmallListText: {
+        alignSelf: "center",
+        marginTop: 5,
+    },
     HeadingList: {
         fontSize: 30,
         textAlign: 'right',

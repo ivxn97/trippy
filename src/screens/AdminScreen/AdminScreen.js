@@ -80,11 +80,11 @@ export default function AdminScreen ({navigation}) {
                 <List.Item title="Manage Walking Tour Sections" onPress={() => navigation.navigate('Manage Walking Tour Sections')}/>
                 <List.Item title="Guides" onPress={() => navigation.navigate('Admin Edit Guides List')}/>
                 <List.Item title="Manage Guide Sections" onPress={() => navigation.navigate('Manage Guide Sections')}/>
-                <List.Item title="Attractions" />
-                <List.Item title="Hotels" />
-                <List.Item title="Restaurants" />
-                <List.Item title="Paid Tours" />
-                <List.Item title="Deals" />
+                <List.Item title="Attractions" onPress={() => navigation.navigate('Admin Edit Attractions List')} />
+                <List.Item title="Hotels" onPress={() => navigation.navigate('Admin Edit Hotels List')} />
+                <List.Item title="Restaurants" onPress={() => navigation.navigate('Admin Edit Restaurants List')} />
+                <List.Item title="Paid Tours" onPress={() => navigation.navigate('Admin Edit PaidTours List')} />
+                <List.Item title="Deals" onPress={() => navigation.navigate('Admin Edit Deals List')} />
         </List.Accordion>
         <List.Accordion 
             title="Users/Accounts"

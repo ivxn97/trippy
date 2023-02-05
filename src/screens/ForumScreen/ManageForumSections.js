@@ -89,8 +89,7 @@ export default function ManageForumSections ({ navigation }) {
             <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Forum Sections Edit List')}>
             <Text style={styles.buttonSmallListText}>Edit</Text>
             </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={() =>
-                        navigation.navigate('Delete Forum Section') }>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Forum Sections Delete List')}>
             <Text style={styles.buttonSmallListText}>Delete</Text>
             </TouchableOpacity>
         </View>

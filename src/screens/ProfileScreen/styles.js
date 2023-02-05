@@ -22,6 +22,10 @@ export default StyleSheet.create({
         justifyContent: 'space-around',
         paddingVertical: 20,
     },
+    map: {
+        width: '100%',
+        height: '85%',
+      },
     buttonLanding: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,

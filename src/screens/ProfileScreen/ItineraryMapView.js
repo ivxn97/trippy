@@ -10,6 +10,7 @@ import styles from './styles';
 
 export default function ItineraryMapView({route, navigation}) {
     const {location} = route.params;
+    console.log("Location:" ,location)
     const [currLocation, setLocation] = useState(null);
     const [loading, setLoading] = useState(true);
     const [duration, setDuration] = useState('');

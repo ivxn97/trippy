@@ -24,6 +24,7 @@ export default function Itinerary({ navigation }) {
     const [status, setStatus] = useState('Loading Itinerary')
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(completedArr);
+    const [addresses, setAddresses] = useState()
 
     const [shouldRun, setShouldRun] = useState(true);
 
@@ -172,8 +173,16 @@ export default function Itinerary({ navigation }) {
                 }
             })
             console.log("Completed Array:", completedArr)
+            const extractedArray = completedArr.map(item => ({
+                address: item.address,
+                lat: item.latitude,
+                long: item.longitude,
+                mapURL: item.mapURL
+              }));
+            
             setCompletedArr(completedArr)
             setfilteredData(completedArr)
+            setAddresses(extractedArray)
         }
 
         if (finalArr) {
@@ -283,7 +292,7 @@ export default function Itinerary({ navigation }) {
                 <TouchableOpacity style={styles.buttonListLeft} onPress={() => navigation.navigate('Delete Itinerary')}>
                     <Text style={styles.buttonSmallListText}>Remove</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Delete Itinerary')}>
+                <TouchableOpacity style={styles.buttonListRight} onPress={() => navigation.navigate('Itinerary Map View', {location: addresses})}>
                     <Text style={styles.buttonSmallListText}>Map View</Text>
                 </TouchableOpacity>
             </View>

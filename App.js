@@ -24,7 +24,8 @@ import {
   EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
   AdminEditWalkingToursList, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
-  ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, ForumSectionsDeleteList
+  ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, 
+  ForumSectionsDeleteList, ItineraryMapView
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -81,6 +82,7 @@ function ProfileStackScreen() {
       <Stack.Screen name="Edit Guide" component={EditGuide} />
       <Stack.Screen name="Edit Walking Tours List" component={EditWalkingToursList} />
       <Stack.Screen name="Edit Walking Tours" component={EditWalkingTour} />
+      <Stack.Screen name="Itinerary Map View" component={ItineraryMapView} />
     </ProfileStack.Navigator>
   )
 }

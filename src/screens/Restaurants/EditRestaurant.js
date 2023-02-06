@@ -13,7 +13,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 export default function EditRestaurant ( { route, navigation }) {
     const {name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
-        description, TNC, capacity, address, images, mapURL, longitude, latitude} = route.params;
+        description, capacity, address, images, mapURL, longitude, latitude} = route.params;
     const [openingHour, openingMinute] = openingTime.split(":");
     const [closingHour, closingMinute] = closingTime.split(":");
 
@@ -27,7 +27,6 @@ export default function EditRestaurant ( { route, navigation }) {
     const [newClosingMinute, setClosingMinute] = useState(closingMinute);
     const [newLanguage, setLanguage] = useState(language);
     const [newDescription, setDescription] = useState(description);
-    const [newTNC, setTNC] = useState(TNC);
     const [image, setImage] = useState(null);
     const storage = getStorage();
     const [typeOfCuisineData, setTypeData] = useState('');
@@ -206,7 +205,6 @@ export default function EditRestaurant ( { route, navigation }) {
                     mapURL: newMapURL,
                     language: newLanguage,
                     description: newDescription,
-                    TNC: newTNC,
                     images: newImages
                 }, {merge:true});
                 //console.log("Document written with ID: ", docRef.id);
@@ -381,17 +379,6 @@ export default function EditRestaurant ( { route, navigation }) {
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setDescription(Text)}
                 value={newDescription}
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-                multiline
-            />
-            <Text style={styles.text}>Terms & Conditions:</Text>
-            <FilteredTextInput
-                style={styles.desc}
-                placeholder='Terms & Conditions'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setTNC(Text)}
-                value={newTNC}
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 multiline

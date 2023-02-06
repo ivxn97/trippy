@@ -211,14 +211,26 @@ Download the App here: URL`})
                 </TouchableOpacity>
             </View>
             <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
+            <Text style={styles.textNB}>Operating Hours: {JSON.stringify(openingTime).replace(/"/g,"")} - {JSON.stringify(closingTime).replace(/"/g,"")}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            <View>
+            <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Description</Text>
+            </View>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            </View>
+            <Text style={styles.textNB}>{JSON.stringify(description).replace(/"/g,"")}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            <View>
+            <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Details</Text>
+            </View>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            </View>
             <Text style={styles.textNB}>Type of Cuisine: {JSON.stringify(typeOfCuisine).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
-            <Text style={styles.textNB}>Opening Time: {JSON.stringify(openingTime).replace(/"/g,"")}</Text>
-            <Text style={styles.textNB}>Closing Time: {JSON.stringify(closingTime).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g,"")}</Text>
-            <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
-            <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
             <Text style={styles.price}>{JSON.stringify(price).replace(/"/g, "")}</Text>
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> getMenu()}>
@@ -272,15 +284,27 @@ Download the App here: URL`})
                 </TouchableOpacity>
             </View>
             <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
+            <Text style={styles.textNB}>Operating Hours: {JSON.stringify(startingTime).replace(/"/g,"")} - {JSON.stringify(endingTime).replace(/"/g,"")}</Text>
+            <Text style={styles.textNB}>Duration: {JSON.stringify(duration).replace(/"/g,"")}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            <View>
+            <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Description</Text>
+            </View>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            </View>
+            <Text style={styles.textNB}>{JSON.stringify(description).replace(/"/g,"")}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            <View>
+            <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Details</Text>
+            </View>
+            <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+            </View>
             <Text style={styles.textNB}>Type: {JSON.stringify(tourType).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
-            <Text style={styles.textNB}>Starting Time: {JSON.stringify(startingTime).replace(/"/g,"")}</Text>
-            <Text style={styles.textNB}>Ending Time: {JSON.stringify(endingTime).replace(/"/g,"")}</Text>
-            <Text style={styles.textNB}>Duration: {JSON.stringify(duration).replace(/"/g,"")}</Text>
-            <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g,"")}{"\n"}</Text>
-            <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
-            <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
+            <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g,"")}</Text>
             <Text style={styles.price}>${JSON.stringify(price).replace(/"/g,"")}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
@@ -292,6 +316,7 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>
+            <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
         </View>
         )
     }
@@ -334,34 +359,68 @@ Download the App here: URL`})
                 </View>
                 <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
                 <Text style={styles.textNB}>Hotel Class: {JSON.stringify(hotelClass).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>CheckIn Time: {JSON.stringify(checkInTime).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>CheckOut Time: {JSON.stringify(checkOutTime).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>Amenities: {JSON.stringify(valueAmenities.join(', ')).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>Room Features: {JSON.stringify(valueRoomFeatures.join(', ')).replace(/"/g, "")}</Text>
-                <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g, "")}{"\n"}</Text>
-                <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
-                <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g, "")}</Text>
-                <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
-                            <Text style={styles.buttonSmallText}>Read Reviews</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, 
-                    roomTypes: roomTypes, checkInTime: checkInTime, checkOutTime: checkOutTime})}} title="Booking">
-                            <Text style={styles.buttonSmallText}>Book</Text>
-                    </TouchableOpacity>
+                <Text style={styles.textNB}>Check-In Time: {JSON.stringify(checkInTime).replace(/"/g, "")}</Text>
+                <Text style={styles.textNB}>Check-Out Time: {JSON.stringify(checkOutTime).replace(/"/g, "")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Description</Text>
                 </View>
-                <Text style={styles.HeadingList}>Room Types:</Text>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>{JSON.stringify(description).replace(/"/g,"")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Amenities</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>{JSON.stringify(valueAmenities.join(' | ')).replace(/"/g, "")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Room Features</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>{JSON.stringify(valueRoomFeatures.join(' | ')).replace(/"/g, "")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Room Types</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
                 {
                 roomTypes.map(item => {
                     return(
-                    <View key={item.type}>
-                        <Text style={styles.text}>Room Type: {JSON.stringify(item.type).replace(/"/g, "")}</Text>
-                        <Text style={styles.textNB}>Room Price: ${JSON.stringify(item.price).replace(/"/g, "")}</Text>
+                    <View key={item.type} style={{flexDirection: "column", flex: 1}}>
+                        <Text style={[styles.text, {fontSize:18}]}>{JSON.stringify(item.type).replace(/"/g, "")}</Text>
+                        <Text style={[styles.textNB, {marginLeft: 8}]}>Room Price: ${JSON.stringify(item.price).replace(/"/g, "")}</Text>
                     </View>
                     )
                 })
                 }
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Additional Info</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g, "")}</Text>
+                <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g, "")}{"\n"}</Text>
+                <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
+                <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
+                        <Text style={styles.buttonSmallText}>Read Reviews</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, 
+                roomTypes: roomTypes, checkInTime: checkInTime, checkOutTime: checkOutTime})}} title="Booking">
+                        <Text style={styles.buttonSmallText}>Book</Text>
+                </TouchableOpacity>
+                </View>
                 </ScrollView>
             </View>
         )
@@ -404,11 +463,10 @@ Download the App here: URL`})
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
+                <Text style={styles.textNB}>Operating Hours: {JSON.stringify(openingTime).replace(/"/g,"")} - {JSON.stringify(closingTime).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Type: {JSON.stringify(attractionType).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
-                <Text style={styles.textNB}>Opening Time: {JSON.stringify(openingTime).replace(/"/g,"")}</Text>
-                <Text style={styles.textNB}>Closing Time: {JSON.stringify(closingTime).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g,"")}{"\n"}</Text>
                 <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
                 <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>

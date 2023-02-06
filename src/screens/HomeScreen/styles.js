@@ -20,6 +20,14 @@ export default StyleSheet.create({
         marginBottom: 7,
         marginLeft: 8,
     },
+    DetailsSection: {
+        fontSize: 23,
+        fontWeight: 'bold',
+        alignSelf: 'left',
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 15,
+    },
     HeadingDisplay: {
         flex: 1,
         fontSize: 30,

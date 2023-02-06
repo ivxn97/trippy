@@ -104,10 +104,11 @@ export default function GuideSection ({ route, navigation }) {
             <TouchableHighlight
                 underlayColor="#C8c9c9"
                 onPress={() => {navigation.navigate('Guide Screen', {name : item.name, location: item.location,
-                     mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType, images: item.images})}}>
+                     mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType, images: item.images
+                     , username: item.username})}}>
                 <View style={styles.list}>
                 <Text>{item.name}</Text>
-                <Text>Posted By {item.addedBy}</Text>
+                <Text>Posted By {item.username}</Text>
                 </View>
             </TouchableHighlight>
         )

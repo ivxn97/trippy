@@ -14,6 +14,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 export default function AddWalkingTour({ navigation }) {
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [mrt, setMRT] = useState('');
@@ -66,6 +67,21 @@ export default function AddWalkingTour({ navigation }) {
         }
     }
     getEmail();
+
+    const getUsername = async () => {
+        try {
+            const username = await AsyncStorage.getItem('username');
+            if (username !== null) {
+                setUsername(username);
+            }
+            else {
+                console.log("No username Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getUsername();
 
     const getTypes = async ()  => {
         const querySnapshot = await getDocs(collection(db, "walking tour sections"));
@@ -146,6 +162,7 @@ export default function AddWalkingTour({ navigation }) {
             try {
                 await setDoc(doc(db, "walkingtours", name), {
                     addedBy: email,
+                    username: username,
                     name: name,
                     location: locationArr,
                     tips: tips,

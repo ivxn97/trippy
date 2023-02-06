@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function WalkingTourScreen({ route, navigation }) {
-    const { addedBy, name, location, tips, description, activityType } = route.params;
+    const { addedBy, name, location, tips, description, activityType, username } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
     const [images, setImages] = useState([]);
@@ -117,8 +117,30 @@ export default function WalkingTourScreen({ route, navigation }) {
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.textNB}>Locations:</Text>
-            {location.map((item, index) => (
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Added By {username}</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>{JSON.stringify(description).replace(/"/g,"")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Tips</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>{JSON.stringify(tips).replace(/"/g, "")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Locations</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                {location.map((item, index) => (
                 <Text key={index} style={styles.textNB}>
                         <Text 
                         style={[styles.textNB, {color:'blue'}]} 
@@ -127,9 +149,7 @@ export default function WalkingTourScreen({ route, navigation }) {
                         </Text>
                     </Text>
                 ))}
-            <Text>{'\n'}</Text>
-            <Text style={styles.textNB}>tips: {JSON.stringify(tips).replace(/"/g, "")}</Text>
-            <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
+                <Text>{'\n'}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>

@@ -15,6 +15,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 export default function AddGuide({ navigation }) {
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [mrt, setMRT] = useState('');
     const [tips, setTips] = useState('');
@@ -49,6 +50,21 @@ export default function AddGuide({ navigation }) {
         }
     }
     getEmail();
+
+    const getUsername = async () => {
+        try {
+            const username = await AsyncStorage.getItem('username');
+            if (username !== null) {
+                setUsername(username);
+            }
+            else {
+                console.log("No username Selected at Login")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getUsername();
 
     const getImages = async () => {
         const listRef = ref(storage, `guides/${name}/images`);
@@ -147,6 +163,7 @@ export default function AddGuide({ navigation }) {
             try {
                 await setDoc(doc(db, "guides", name), {
                     addedBy: email,
+                    username: username,
                     name: name,
                     location: locationArr,
                     expired: false,

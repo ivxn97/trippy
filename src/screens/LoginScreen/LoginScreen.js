@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({navigation}) {
     const [email, setEmail] = useState('');
-    const [userName, setUserName] = useState('');
+    const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const [businesses, setBusinesses] = useState('');
@@ -56,10 +56,10 @@ export default function LoginScreen({navigation}) {
             console.log(e)
         }
     }
-    const storeUserName = async (userName) => {
+    const storeUserName = async (username) => {
         try {
-            await AsyncStorage.setItem('userName', userName)
-            console.log('Successfully added userName to ASync Storage with' , userName)
+            await AsyncStorage.setItem('username', username)
+            console.log('Successfully added userName to ASync Storage with' , username)
         } catch (e) {
             console.log(e)
         }
@@ -101,10 +101,10 @@ export default function LoginScreen({navigation}) {
             getDoc(loginRef).then( (docSnap) => {if (docSnap.exists()) {
                 const roleData = docSnap.data().role
                 const businessData = docSnap.data().businessesTypes
-                const fullName = docSnap.data().firstName + ' ' + docSnap.data().lastName;
+                const username = docSnap.data().username
                 const status = docSnap.data().status;
                 setStatus(status);
-                setUserName(fullName);
+                setUserName(username);
                 setRole(roleData);
                 setBusinesses(businessData);
             }
@@ -119,7 +119,7 @@ export default function LoginScreen({navigation}) {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log('Error Code: ', errorCode, 'Error Message: ', errorMessage)
-            alert('Wrong username or password entered')
+            alert('Wrong email or password entered')
         })
     }
 
@@ -133,13 +133,13 @@ export default function LoginScreen({navigation}) {
                 alert("Your registration has not yet been approved.")
             }
             else if (status == "Awaiting") {
-                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, username: username});
             }
             else if (status == "Approved") {
                 storeEmail(email);
                 storeRole(role);
                 storeBusinesses(businesses);
-                storeUserName(userName);
+                storeUserName(username);
                 navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
             }
             else if (status == "Suspended") {
@@ -151,13 +151,13 @@ export default function LoginScreen({navigation}) {
                 alert("Your registration has not yet been approved.")
             }
             else if (status == "Awaiting") {
-                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, username: username});
             }
             else if (status == "Approved") {
                 storeEmail(email);
                 storeRole(role);
                 storeBusinesses(businesses);
-                storeUserName(userName);
+                storeUserName(username);
                 navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
             }
             else if (status == "Suspended") {
@@ -166,12 +166,12 @@ export default function LoginScreen({navigation}) {
         }
         else if (role == "Registered User") {
             if (status == "Awaiting") {
-                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, username: username});
             }
             else if (status == "Approved") {
                 storeEmail(email);
                 storeRole(role);
-                storeUserName(userName);
+                storeUserName(username);
                 navigation.navigate('Profile Page');
             }
             else if (status == "Suspended") {
@@ -183,12 +183,12 @@ export default function LoginScreen({navigation}) {
                 alert("Your registration has not yet been approved.")
             }
             else if (status == "Awaiting") {
-                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, userName: userName});
+                navigation.navigate('OTP Screen', {email: email, role: role, businesses: businesses, username: username});
             }
             else if (status == "Approved") {
                 storeEmail(email);
                 storeRole(role);
-                storeUserName(userName);
+                storeUserName(username);
                 navigation.navigate('Profile Page');
             }
             else if (status == "Suspended") {

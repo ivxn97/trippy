@@ -22,7 +22,7 @@ export default function EditGuide({ route, navigation }) {
     const [loading, setLoading] = useState(true)
     const [sections, setSections] = useState([]);
     const [locationCount, setLocationCount] = useState(1);
-    const [locationArr, setLocationArr] = useState([])
+    const [locationArr, setLocationArr] = useState(location)
     const [isExpired, setIsExpired] = useState(expired)
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
@@ -35,7 +35,7 @@ export default function EditGuide({ route, navigation }) {
     };
 
     let locationString = '';
-    location.forEach((address) => {
+    locationArr.forEach((address) => {
         locationString += '[' + address.address + '],';
     })
     locationString = locationString.slice(0, -1);
@@ -119,7 +119,7 @@ export default function EditGuide({ route, navigation }) {
         if (loading) {
         getTypes();
         }
-    }) 
+    },[sections]) 
 
     const addLocation = () => {
         if (locationCount < 8) {
@@ -201,14 +201,16 @@ export default function EditGuide({ route, navigation }) {
                     items = {sections}
                 />
                 <Text style={styles.text}>Current Locations: {locationString}</Text>
-                <Text style={styles.text}>Change Locations:</Text>
+                <Text style={styles.text}>Add Locations:</Text>
                 {locationArray}
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => addLocation()}>
                     <Text style={styles.buttonName}>Add another location</Text>
                 </TouchableOpacity>
-
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={() => setLocationArr([])} >
+                <Text>Delete All Locations</Text>
+                </TouchableOpacity>
                 <Text style={styles.text}>Nearest MRT:</Text>
                 <TextInput
                     style={styles.input}

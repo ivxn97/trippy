@@ -32,7 +32,7 @@ export default function EditWalkingTour({ route, navigation }) {
     };
 
     let locationString = '';
-    location.forEach((address) => {
+    locationArr.forEach((address) => {
         locationString += '[' + address.address + '],';
     })
     locationString = locationString.slice(0, -1);
@@ -152,7 +152,7 @@ export default function EditWalkingTour({ route, navigation }) {
                     tips: newTips,
                     description: newDescription,
                     activityType: 'walkingtours',
-                    section: section,
+                    section: newSection,
                     expired: isExpired,
                     images: newImages
                 }, {merge:true});
@@ -199,7 +199,9 @@ export default function EditWalkingTour({ route, navigation }) {
                     onPress={() => addLocation()}>
                     <Text style={styles.buttonName}>Add another location</Text>
                 </TouchableOpacity>
-
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={() => setLocationArr([])} >
+                <Text>Delete All Locations</Text>
+                </TouchableOpacity>
                 <Text style={styles.text}>Tips:</Text>
                 <FilteredTextInput
                     style={styles.desc}

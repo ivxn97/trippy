@@ -40,7 +40,6 @@ export default function AddGuide({ navigation }) {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
                 setEmail(email);
-                console.log(email)
             }
             else {
                 console.log("No Email Selected at Login")
@@ -128,7 +127,7 @@ export default function AddGuide({ navigation }) {
         if (loading) {
         getTypes();
         }
-    }) 
+    }, [sections]) 
 
     const addLocation = () => {
         if (locationCount < 8) {

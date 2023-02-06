@@ -10,7 +10,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import Checkbox from 'expo-checkbox';
 import emailjs from '@emailjs/browser';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import { getStorage, ref, uploadBytes, listAll } from "firebase/storage";
 
 export default function RegistrationRegisteredUser({navigation}) {
     const [firstName, setFirstName] = useState('')
@@ -64,7 +64,6 @@ export default function RegistrationRegisteredUser({navigation}) {
         const docSnap = await getDoc(interestRef);
 
         if (docSnap.exists()) {
-            console.log("Document data: ", docSnap.data());
             docData = docSnap.data().interestTypes
         }
         else {
@@ -78,7 +77,6 @@ export default function RegistrationRegisteredUser({navigation}) {
         const docSnap = await getDoc(languageRef);
 
         if (docSnap.exists()) {
-            console.log("Document data: ", docSnap.data());
             const languageArr = docSnap.data().languages
             const countriesArr = docSnap.data().countries
             setLanguages(languageArr);
@@ -116,7 +114,7 @@ export default function RegistrationRegisteredUser({navigation}) {
         })
        )
     }
-    console.log(docTypeData);
+
 
     const setLanguage = (item) => {
         setLanguages(
@@ -135,7 +133,7 @@ export default function RegistrationRegisteredUser({navigation}) {
         })
         )
     }
-    console.log(languageData);
+
     
     const generateOTP = async () => {
         const digits = '0123456789';
@@ -188,6 +186,7 @@ export default function RegistrationRegisteredUser({navigation}) {
         const response = await fetch(result.uri)
         const blobFile = await response.blob()
 
+        const storage = getStorage();
         if (!result.canceled) {
             const listRef = ref(storage, `/users/${email}/profile`)
             listAll(listRef)
@@ -209,7 +208,7 @@ export default function RegistrationRegisteredUser({navigation}) {
     };
 
     const onRegisterPress = () => {
-        if (firstName !== '' && lastName !== '' && email !== '' && country !== '' && day !== '' && month !== '' && year !== '' && username !== '') {
+        if (firstName !== '' && lastName !== '' && email !== '' && country !== '' && day !== '' && month !== '' && year !== '' && username !== '' && imageUploaded == true) {
             if (password.length > 5) {
                 const auth = getAuth();
                 createUserWithEmailAndPassword(auth, email, password)
@@ -240,6 +239,8 @@ export default function RegistrationRegisteredUser({navigation}) {
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
+                    console.log(errorCode, errorMessage)
+                    alert("Email already in use")
                 });
             }
             else {

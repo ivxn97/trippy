@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TouchableHighlight, TextInput, Modal, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TouchableHighlight, TextInput, Modal, 
+  StyleSheet, ImageBackground } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import styles from './styles';
@@ -217,14 +218,19 @@ export default function PaidTourList({navigation}) {
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"
+        style={styles.listWithImg}
         onPress={() => {navigation.navigate('Details', {name: item.name, tourType: item.tourType, 
         price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
         endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
         TNC: item.TNC, activityType: item.activityType, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
         capacity: item.capacity, address: item.address, images: item.images})}}>
-        <View style={styles.list}>
-          <Text>{item.name}</Text>
-          <Text>${item.price}</Text>
+        <View style={{flexDirection: 'row', position: 'absolute'}}>
+        <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageList} />
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1, right: '70%'}}>
+        <Text style = {{ textAlignVertical: 'center', fontWeight: 'bold', fontSize: 14, marginBottom: 10}}>{item.name}</Text>
+        <Text style = {{ textAlignVertical: 'center', marginBottom: 10}}>{item.tourType}</Text>
+        <Text style = {{ textAlignVertical: 'center'}}>${item.price}</Text>
+        </View>
         </View>
         </TouchableHighlight>
       )}

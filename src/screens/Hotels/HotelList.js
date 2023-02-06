@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, TouchableHighlight, Modal, StyleSheet, ScrollView } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, TextInput, TouchableHighlight, 
+  Modal, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import styles from './styles';
@@ -390,6 +391,7 @@ export default function HotelList({ navigation }) {
             renderItem={({ item }) => (
                 <TouchableHighlight
                     underlayColor="#C8c9c9"
+                    style={styles.listWithImg}
                     onPress={() => {
                     navigation.navigate('Details',  {
                       name: item.name, roomTypes: item.roomTypes,
@@ -399,10 +401,13 @@ export default function HotelList({ navigation }) {
                       addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, address: item.address, images: item.images 
                   })
                     }}>
-                    <View style={styles.list}>
-                        <Text>{item.name}</Text>
-                        <Text>{item.hotelClass}</Text>
-                    </View>
+                        <View style={{flexDirection: 'row', position: 'absolute'}}>
+                        <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageList} />
+                        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1, right: '70%'}}>
+                        <Text style = {{ textAlignVertical: 'center', fontWeight: 'bold', fontSize: 14, marginBottom: 10}}>{item.name}</Text>
+                        <Text style = {{ textAlignVertical: 'center', marginBottom: 10}}>{item.hotelClass}</Text>
+                        </View>
+                        </View>
                 </TouchableHighlight>
             )}
         />

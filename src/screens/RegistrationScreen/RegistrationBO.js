@@ -20,18 +20,12 @@ export default function RegistrationBO({navigation}) {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [UEN, setUEN] = useState('')
     const [username, setUsername] = useState('')
-    const [imageUploaded, setImageUploaded] = useState(false)
     // Implement password length check, minimum length of 6
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
     }
 
-    const placeholder = {
-        label: 'Social Media Platform',
-        value: null,
-        color: 'black',
-    };
 
     let businessData = [{ name: 'Hotels', value: 'Hotels', isChecked: false },
         { name: 'Restaurants', value: 'Restaurants', isChecked: false },
@@ -62,47 +56,10 @@ export default function RegistrationBO({navigation}) {
             })
         )
     }
-
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-        });
-    
-        console.log(result);
-        const fileName = result.uri.split('/').pop();
-        const fileType = fileName.split('.').pop();
-        console.log(fileName, fileType);
-
-        const response = await fetch(result.uri)
-        const blobFile = await response.blob()
-
-        if (!result.canceled) {
-            const listRef = ref(storage, `/users/${email}/profile`)
-            listAll(listRef)
-                .then(dir => {
-                dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
-                console.log("Files deleted successfully from Firebase Storage");
-                })
-            .catch(error => console.log(error));
-            
-          const storageRef = ref(storage, `users/${email}/profile/${fileName}`)
-          uploadBytes(storageRef, blobFile).then((snapshot) => {
-            alert("Profile Photo Uploaded!");
-            setImageUploaded(true)
-            console.log("Image uploaded!");
-        })}
-        else {
-            console.log('No Image uploaded!')
-        };
-    };
     
     const onRegisterPress = () => {
         if (firstName !== '' && lastName !== '' && businessName !== '' && email !== '' && UEN !== '' && 
-            username !== '' && imageUploaded == true) {
+            username !== '') {
             if (password.length > 5) {
                 const auth = getAuth();
                 createUserWithEmailAndPassword(auth, email, password)
@@ -133,7 +90,7 @@ export default function RegistrationBO({navigation}) {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(error)
-                    alert(error);
+                    alert("Email already in use")
                 });
             }
             else {
@@ -141,7 +98,7 @@ export default function RegistrationBO({navigation}) {
             }
         }
         else {
-            alert('Please fill up all required information (incl profile photo)')
+            alert('Please fill up all required information')
         }
     }
 
@@ -202,11 +159,6 @@ export default function RegistrationBO({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <Text style={styles.text}>Upload Profile Picture:</Text>
-                <TouchableOpacity style={[styles.button, {opacity: email ? 1: 0.2}]} onPress={pickImage} 
-                    disabled={email ? false : true} >
-                    <Text>Upload Profile Picture</Text>
-                </TouchableOpacity>
 
                 <Text style={styles.text}>Username:</Text>
                 <TextInput

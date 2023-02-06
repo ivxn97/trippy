@@ -396,7 +396,7 @@ export default StyleSheet.create({
     },
     carouselStyle: {
         width: 410,
-        height: 250,
+        height: 320,
         alignSelf: "center"
     },
 })

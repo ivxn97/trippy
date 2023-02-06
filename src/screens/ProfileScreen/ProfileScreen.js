@@ -316,7 +316,7 @@ export default function ProfileScreen ( {navigation} ) {
                                 fontSize: 15,
                                 marginLeft: 5,
                                 marginRight: 5,
-                            }}>{bio + "i am a user, i like to book hotels"}</Text>
+                            }}>{bio}</Text>
                         </View>
                     </View>
 

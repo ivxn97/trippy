@@ -8,7 +8,7 @@ import { db } from '../../../config';
 import { render } from 'react-dom';
 import RNPickerSelect from 'react-native-picker-select';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
+import { getStorage, ref, uploadBytes, listAll } from "firebase/storage";
 
 export default function RegistrationLOL({navigation}) {
     const [firstName, setFirstName] = useState('')
@@ -155,7 +155,7 @@ export default function RegistrationLOL({navigation}) {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.log(error);
-                    alert(error);
+                    alert("Email already in use")
                 });
             }
             else {

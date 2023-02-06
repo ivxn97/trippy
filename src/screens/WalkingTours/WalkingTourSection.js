@@ -194,11 +194,11 @@ export default function WalkingTourSection ({ route, navigation }) {
             <Text style={styles.buttonSmallListText}>Write a post...</Text>
             
             </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
+                <TouchableOpacity style={[styles.buttonSmall, {marginTop:5, marginBottom:5, width: 90}]} onPress={() => onPressSort()}>
                     <Text style={styles.buttonSmallListText}>Sort</Text>
                 </TouchableOpacity> 
                 <TouchableOpacity 
-                    style={styles.buttonSmall}
+                    style={[styles.buttonSmall, {marginTop:5, marginBottom:5}]}
                     onPress={() => navigation.navigate("Walking Tour Section Expired", {sectionName: sectionName})}>
                     <Text style={styles.buttonSmallListText}>View Expired</Text>
                 </TouchableOpacity>

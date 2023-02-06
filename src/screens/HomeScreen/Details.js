@@ -10,7 +10,6 @@ import {bookmark, itinerary} from '../commonFunctions';
 import ReviewScreen from '../ReviewScreen/ReviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import WebView from 'react-native-webview';
 import { set } from 'react-native-reanimated';
 
 export default function Details({route, navigation}) {
@@ -157,17 +156,6 @@ Download the App here: URL`})
     const openAddress = async () => {
         await WebBrowser.openBrowserAsync(mapURL)
     }
-
-    const handlePress = () => {
-        const url = 'https://www.google.com'
-        Linking.canOpenURL(url).then(supported => {
-          if (supported) {
-            Linking.openURL(url);
-          } else {
-            console.log("Don't know how to open URI: " + url);
-          }
-        });
-    }
       
     if (loading) {
         return <ActivityIndicator />;
@@ -177,9 +165,10 @@ Download the App here: URL`})
         
         return (
             <View style={styles.detailsContainer}>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
             <Carousel width={width}
-                height={width / 2}
+                height={width / 1.5}
                 mode="horizontal"
                 data={images}
                 renderItem={({ item }, index) => (
@@ -244,15 +233,17 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         </View>
         )
     }
     else if (activityType == 'paidtours') {
         return (
             <View style={styles.detailsContainer}>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
             <Carousel width={width}
-                height={width / 2}
+                height={width / 1.5}
                 mode="horizontal"
                 data={images}
                 renderItem={({ item }, index) => (
@@ -317,6 +308,7 @@ Download the App here: URL`})
                 </TouchableOpacity>
             </View>
             <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
+            </ScrollView>
         </View>
         )
     }
@@ -326,7 +318,7 @@ Download the App here: URL`})
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
                <Carousel width={width}
-                    height={width / 2}
+                    height={width / 1.5}
                     mode="horizontal"
                     data={images}
                     renderItem={({ item }, index) => (
@@ -418,7 +410,7 @@ Download the App here: URL`})
                 </View>
                 <Text>{"\n"}{"\n"}</Text>
                 </ScrollView>
-                <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0.3 : 1, position: 'absolute', bottom:0}]}
+                <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0 : 1, position: 'absolute', bottom:0}]}
                 disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, 
                 roomTypes: roomTypes, checkInTime: checkInTime, checkOutTime: checkOutTime})}} title="Booking">
                         <Text style={[styles.textNB, {fontWeight:'bold'}]}>Book</Text>
@@ -432,7 +424,7 @@ Download the App here: URL`})
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
                 <Carousel width={width}
-                    height={width / 2}
+                    height={width / 1.5}
                     mode="horizontal"
                     data={images}
                     renderItem={({ item }, index) => (

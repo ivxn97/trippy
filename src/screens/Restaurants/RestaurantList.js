@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity, Modal, TouchableHighlight, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TextInput, TouchableOpacity, Modal, 
+  TouchableHighlight, StyleSheet, ImageBackground } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import styles from './styles';
@@ -261,14 +262,21 @@ export default function RestaurantList( {navigation}) {
       renderItem={({ item }) => (
         <TouchableHighlight
         underlayColor="#C8c9c9"
+        style={styles.listWithImg}
         onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
         price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
         closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
         , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
         capacity: item.capacity, address: item.address, images: item.images})}}>
-        <View style={styles.list}>
-          <Text>{item.name}</Text>
-          <Text>{item.typeOfCuisine}</Text>
+
+        <View style={{flexDirection: 'row', position: 'absolute'}}>
+        <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageList} />
+
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1, right: '70%'}}>
+          <Text style = {{ textAlignVertical: 'center', fontWeight: 'bold', fontSize: 14, marginBottom: 10}}>{item.name}</Text>
+          <Text style = {{ textAlignVertical: 'center', marginBottom: 10}}>{item.typeOfCuisine}</Text>
+          <Text style = {{ textAlignVertical: 'center'}}>{item.price}</Text>
+        </View>
         </View>
         </TouchableHighlight>
       )}

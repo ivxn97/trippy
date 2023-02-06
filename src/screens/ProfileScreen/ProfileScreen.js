@@ -125,6 +125,7 @@ export default function ProfileScreen ( {navigation} ) {
             // Sign-out successful.
             removeRole();
             removeEmail();
+            removeUsername();
             navigation.navigate('Profile Page');
             alert("Successfully Logged out")
         }).catch((error) => {
@@ -147,6 +148,15 @@ export default function ProfileScreen ( {navigation} ) {
     const removeEmail = async () => {
         try {
             const email = await AsyncStorage.removeItem('email');
+            return true;
+        } catch (error) {
+            return false
+        }
+    }
+
+    const removeUsername = async () => {
+        try {
+            const username = await AsyncStorage.removeItem('username');
             return true;
         } catch (error) {
             return false

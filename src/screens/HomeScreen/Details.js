@@ -416,11 +416,12 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 </View>
+                <Text>{"\n"}{"\n"}</Text>
                 </ScrollView>
                 <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0.3 : 1, position: 'absolute', bottom:0}]}
                 disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, 
                 roomTypes: roomTypes, checkInTime: checkInTime, checkOutTime: checkOutTime})}} title="Booking">
-                        <Text style={styles.buttonSmallText}>Book</Text>
+                        <Text style={[styles.textNB, {fontWeight:'bold'}]}>Book</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -464,12 +465,25 @@ Download the App here: URL`})
                 </View>
                 <Text style={styles.textNB}>Address: <Text style={[styles.textNB, {color:'blue'}]} onPress={() => openAddress()}>{JSON.stringify(address).replace(/"/g,"")}</Text></Text>
                 <Text style={styles.textNB}>Operating Hours: {JSON.stringify(openingTime).replace(/"/g,"")} - {JSON.stringify(closingTime).replace(/"/g,"")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Description</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>{JSON.stringify(description).replace(/"/g,"")}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Details</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
                 <Text style={styles.textNB}>Type: {JSON.stringify(attractionType).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Age Group: {JSON.stringify(ageGroup).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
-                <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g,"")}{"\n"}</Text>
-                <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
-                <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
+                <Text style={styles.textNB}>Language: {JSON.stringify(language).replace(/"/g,"")}</Text>
                 <Text style={styles.price}>${JSON.stringify(price).replace(/"/g,"")}</Text>
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                     <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
@@ -480,6 +494,7 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Book</Text>
                     </TouchableOpacity>
                 </View>
+                <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
                 </ScrollView>
             </View>
         )

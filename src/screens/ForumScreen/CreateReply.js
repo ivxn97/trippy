@@ -22,21 +22,20 @@ export default function CreateReply ( {route, navigation} ) {
     const datetime = new Date();
     const id = uuid.v4();
 
-    const getEmail = async () => {
+    const getUsername = async () => {
         try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                const [username, website] = email.split("@")
+            const username = await AsyncStorage.getItem('username');
+            if (username !== null) {
                 setUsername(username);
             }
             else {
-                console.log("No Email Selected at Login")
+                console.log("No username Selected at Login")
             }
         } catch (error) {
             console.log(error)
         }
     }
-    getEmail();
+    getUsername();
 
     const onSubmitPress = async () => {
         try {

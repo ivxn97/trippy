@@ -279,8 +279,9 @@ export default StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         marginTop: 20,
+        marginBottom:10,
         height: 48,
-        width: 370,
+        width: '90%',
         borderRadius: 5,
         alignItems: "center",
         justifyContent: 'center'

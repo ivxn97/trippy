@@ -23,11 +23,10 @@ export default function EditReply ( {route, navigation} ) {
     const [disabledButton, setDisabledButton] = useState(true)
     const datetime = new Date();
 
-    const getEmail = async () => {
+    const getUsername = async () => {
         try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                const [username, website] = email.split("@")
+            const username = await AsyncStorage.getItem('username');
+            if (username !== null) {
                 setUsername(username);
                 if (addedBy == username) {
                     setDisabledButton(false)
@@ -42,7 +41,7 @@ export default function EditReply ( {route, navigation} ) {
         }
     }
     useFocusEffect(React.useCallback(async ()=> {
-        getEmail();
+        getUsername();
     }, []));    
 
     // edit reply

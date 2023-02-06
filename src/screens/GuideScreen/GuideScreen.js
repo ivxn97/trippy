@@ -127,7 +127,14 @@ export default function GuideScreen({ route, navigation }) {
                     </View>
                 )}
             />
-            <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                <View>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Description</Text>
+                </View>
+                <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
+                </View>
+                <Text style={styles.textNB}>{JSON.stringify(description).replace(/"/g,"")}{"\n"}</Text>
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>

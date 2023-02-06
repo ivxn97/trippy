@@ -15,16 +15,14 @@ export default function ActiveThread({ navigation }) {
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(items);
     
-    const getEmail = async() => {
+    const getUsername = async () => {
         try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                const [username, website] = email.split("@")
+            const username = await AsyncStorage.getItem('username');
+            if (username !== null) {
                 setUsername(username);
-                console.log("username is " + username)
             }
             else {
-                console.log("No Email Selected at Login")
+                console.log("No username Selected at Login")
             }
         } catch (error) {
             console.log(error)
@@ -45,7 +43,7 @@ export default function ActiveThread({ navigation }) {
     }
 
     useEffect(() => {
-        getEmail()
+        getUsername()
         if (username) {
             getThreads();
         }

@@ -9,7 +9,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 import emailjs from '@emailjs/browser';
 
 export default function OTPScreen({route, navigation}) {
-    const {email, status, role, businesses, userName} = route.params;
+    const {email, status, role, businesses, username} = route.params;
     const [OTP, setOTP] = useState()
     const [OTPSent, setOTPSent] = useState(false)
     const [result, setResult] = useState();
@@ -32,10 +32,10 @@ export default function OTPScreen({route, navigation}) {
             console.log(e)
         }
     }
-    const storeUserName = async (userName) => {
+    const storeUserName = async (username) => {
         try {
-            await AsyncStorage.setItem('userName', userName)
-            console.log('Successfully added userName to ASync Storage with' , userName)
+            await AsyncStorage.setItem('username', username)
+            console.log('Successfully added userName to ASync Storage with' , username)
         } catch (e) {
             console.log(e)
         }
@@ -115,7 +115,7 @@ export default function OTPScreen({route, navigation}) {
             storeEmail(email);
             storeRole(role);
             storeBusinesses(businesses);
-            storeUserName(userName);
+            storeUserName(username);
             if (role == "Admin") {
                 navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
             }

@@ -27,22 +27,19 @@ export default function ActiveThreadEditList({ navigation }) {
 
     })
 
-    const getEmail = async () => {
+    const getUsername = async () => {
         try {
-            const email = await AsyncStorage.getItem('email');
-            if (email !== null) {
-                const [username, website] = email.split("@")
+            const username = await AsyncStorage.getItem('username');
+            if (username !== null) {
                 setUsername(username);
-                console.log("username is " + username)
             }
             else {
-                console.log("No Email Selected at Login")
+                console.log("No username Selected at Login")
             }
         } catch (error) {
             console.log(error)
         }
     }
-
     const getThreads = async () => {
         const q = query(collection(db, "forum"), where("addedBy", "==", username));
         const querySnapshot = await getDocs(q)
@@ -57,7 +54,7 @@ export default function ActiveThreadEditList({ navigation }) {
     }
 
     useEffect(() => {
-        getEmail()
+        getUsername()
         if (username) {
             getThreads();
         }

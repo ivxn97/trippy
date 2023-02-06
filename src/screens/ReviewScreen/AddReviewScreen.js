@@ -29,8 +29,8 @@ export default function AddReviewScreen ( { route, navigation }) {
 
     const getUserInfo = async () => {
         try {
-            const fullName = await AsyncStorage.getItem('userName');
-            if (fullName !== null) {
+            const username = await AsyncStorage.getItem('username');
+            if (username !== null) {
                 setUserName(fullName);
                 //console.log(fullName);
             }

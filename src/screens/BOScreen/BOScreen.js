@@ -24,6 +24,7 @@ export default function BOScreen ({navigation}) {
             // Sign-out successful.
             removeRole();
             removeEmail();
+            removeUsername();
             navigation.reset({index: 0, routes: [{name: 'Home'}]})
             alert("Successfully Logged out")
         }).catch((error) => {
@@ -46,6 +47,15 @@ export default function BOScreen ({navigation}) {
     const removeEmail = async () => {
         try {
             const email = await AsyncStorage.removeItem('email');
+            return true;
+        } catch (error) {
+            return false
+        }
+    }
+
+    const removeUsername = async () => {
+        try {
+            const username = await AsyncStorage.removeItem('username');
             return true;
         } catch (error) {
             return false

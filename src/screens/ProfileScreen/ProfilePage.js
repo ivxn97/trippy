@@ -9,12 +9,12 @@ export default function ProfilePage({ navigation, route }) {
     const { firstName, lastName, username, bio, email, role} = route.params;
 
     const [name, setName] = useState(firstName + " " + lastName);
-    const [newName, setNewName] = useState("");
+    const [newName, setNewName] = useState(name);
     const [first, last] = newName.split(" ");
-    const [newUsername, setNewUsername] = useState("");
+    const [newUsername, setNewUsername] = useState(username);
     const [newPassword, setNewPassword] = useState("");
-    const [newEmail, setNewEmail] = useState("");
-    const [newBio, setNewBio] = useState("");
+    const [newEmail, setNewEmail] = useState(email);
+    const [newBio, setNewBio] = useState(bio);
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
     const storage = getStorage();
@@ -22,6 +22,8 @@ export default function ProfilePage({ navigation, route }) {
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "users", email), {
+                firstName: first,
+                lastName: last,
                 username: newUsername,
                 email: newEmail,
                 bio: newBio,
@@ -112,7 +114,7 @@ export default function ProfilePage({ navigation, route }) {
                     placeholderTextColor="#aaaaaa"
                     style={styles.roleContainer}
                     onChangeText={(Text) => setNewName(Text)}
-                    value={name}
+                    value={newName}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 >
@@ -126,7 +128,7 @@ export default function ProfilePage({ navigation, route }) {
                     placeholderTextColor="#aaaaaa"
                     style={styles.roleContainer}
                     onChangeText={(Text) => setNewUsername(Text)}
-                    value={username}
+                    value={newUsername}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 >
@@ -140,7 +142,7 @@ export default function ProfilePage({ navigation, route }) {
                     placeholderTextColor="#aaaaaa"
                     style={styles.roleContainer}
                     onChangeText={(Text) => setNewEmail(Text)}
-                    value={email}
+                    value={newEmail}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 >
@@ -160,7 +162,7 @@ export default function ProfilePage({ navigation, route }) {
                     placeholderTextColor="#aaaaaa"
                     style={styles.bioContainer}
                     onChangeText={(Text) => setNewBio(Text)}
-                    value={bio}
+                    value={newBio}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"   
                     maxLength={100}

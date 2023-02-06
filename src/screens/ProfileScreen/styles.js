@@ -1,38 +1,42 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
-    profileButton:{ 
+    profileButton: {
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         borderBottomRightRadius: 25,
         borderBottomLeftRadius: 25,
-        backgroundColor: '#8f8f8f',
         marginLeft: 20,
         marginRight: 20,
-        marginTop: 290,
-        marginBottom: -280,
+        marginTop: 300,
+        marginBottom: -290,
+        backgroundColor: "#8f8f8f",
         height: 38,
-        borderRadius: 5,
+        display: "flex",
         alignItems: "center",
-        justifyContent: 'center'
+        justifyContent: "center",
     },
     infoText: {
+        display: "flex",
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
         paddingVertical: 20,
+        
     },
     map: {
         width: '100%',
         height: '85%',
-      },
+    },
     buttonLanding: {
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         borderBottomRightRadius: 15,
         borderBottomLeftRadius: 15,
-        height: 70, 
-        alignItems: 'center', 
+        height: 70,
+        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
         marginVertical: 4,
@@ -47,37 +51,44 @@ export default StyleSheet.create({
         height: 150
     },
     profileImage: {
-        resizeMode: 'cover',
+        display: "flex",
+        resizeMode: "cover",
         width: 100,
-        marginLeft: 20,
-        marginTop: -10,
         height: 100,
         borderRadius: 100,
+        marginLeft: 20,
+        marginTop: -10
     },
     informationBox: {
-        boxSizing: 'border-box',
-        width: 325,
-        height: 210,
-        marginLeft: 10,
+        display: "flex",
+        boxSizing: "border-box",
+        width: "95%",
+        height: 215,
+        marginLeft: "auto",
+        marginRight: "auto",
         top: -3,
-        background: '#E3E3E3',
+        background: "#E3E3E3",
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: 'grey',
-        borderStyle: 'solid',
+        borderColor: "grey",
+        borderStyle: "solid",
     },
     userBox: {
-        boxSizing: 'border-box',
-        position: 'absolute',
-        width: 345,
-        height: 270,
-        marginLeft: 25,
+        display: "flex",
+        boxSizing: "border-box",
+        position: "absolute",
         top: 10,
-        background: '#E3E3E3',
+        left: 22,
+        right: 0,
+        marginLeft: "auto",
+        marginRight: "auto",
+        width: "90%",
+        height: "72%",
+        background: "#E3E3E3",
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: 'grey',
-        borderStyle: 'solid',
+        borderColor: "grey",
+        borderStyle: "solid",
     },
     containerProfile: {
         flex: 1,
@@ -113,17 +124,18 @@ export default StyleSheet.create({
     price: {
         fontSize: 24,
         fontWeight: 'bold',
-        textAlign:'right',
+        textAlign: 'right',
         marginTop: 7,
         marginBottom: 7,
         marginLeft: 8,
         marginRight: 30
     },
     textList: {
+        display: "flex",
         borderRadius: 5,
         color: 'black',
-        marginLeft:20,
-        fontSize:18,
+        marginLeft: 20,
+        fontSize: 18,
     },
     text: {
         borderRadius: 5,
@@ -142,10 +154,10 @@ export default StyleSheet.create({
         marginTop: 7,
         marginBottom: 7,
         marginLeft: 8,
-        marginRight:30,
+        marginRight: 30,
         paddingLeft: 16,
         fontWeight: 'bold',
-        fontSize:16
+        fontSize: 16
     },
     carouselStyle: {
         width: 410,
@@ -173,9 +185,9 @@ export default StyleSheet.create({
         borderTopRightRadius: 15,
         borderBottomRightRadius: 15,
         borderBottomLeftRadius: 15,
-        height: 70, 
-        flex: 1, 
-        alignItems: 'center', 
+        height: 70,
+        flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
         marginVertical: 4,
@@ -208,7 +220,7 @@ export default StyleSheet.create({
         height: 350,
         width: 385,
         margin: 0,
-        marginLeft:14
+        marginLeft: 14
     },
     input: {
         borderTopLeftRadius: 15,
@@ -293,7 +305,7 @@ export default StyleSheet.create({
         marginLeft: 8,
         marginRight: 8,
         marginTop: 10,
-        marginBottom:10,
+        marginBottom: 10,
         height: 30,
         width: 120,
         borderRadius: 15,
@@ -307,7 +319,7 @@ export default StyleSheet.create({
         marginLeft: 2,
         marginRight: 3,
         marginTop: 5,
-        marginBottom:5,
+        marginBottom: 5,
         height: 30,
         width: 90,
         borderRadius: 15,
@@ -321,18 +333,18 @@ export default StyleSheet.create({
         marginLeft: 2,
         marginRight: 15,
         marginTop: 5,
-        marginBottom:5,
+        marginBottom: 5,
         height: 30,
         width: 90,
         borderRadius: 15,
     },
     buttonSmallListText: {
-        alignSelf:"center", 
-        marginTop:5,
+        alignSelf: "center",
+        marginTop: 5,
     },
     buttonSmallText: {
-        alignSelf:"center", 
-        marginTop:5,
+        alignSelf: "center",
+        marginTop: 5,
         fontWeight: 'bold'
     },
     buttonTitle: {
@@ -369,10 +381,10 @@ export default StyleSheet.create({
         fontSize: 14
     },
     checklist: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         alignItems: 'center'
 
-      },
+    },
     checkbox: {
         marginTop: 10,
         marginBottom: 10,

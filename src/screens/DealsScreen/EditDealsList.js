@@ -20,13 +20,6 @@ export default function EditDealsDeals( { navigation }) {
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
-  
-
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
-
   const getEmail = async () => {
     try {
         const email = await AsyncStorage.getItem('email');

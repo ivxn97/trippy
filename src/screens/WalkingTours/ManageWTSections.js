@@ -12,10 +12,6 @@ export default function ManageWTSections ({ navigation }) {
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(walkingTour);
 
-    navigation.addListener('willFocus', () => {
-
-    })
-
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "walking tour sections"));
         querySnapshot.forEach(documentSnapshot => {

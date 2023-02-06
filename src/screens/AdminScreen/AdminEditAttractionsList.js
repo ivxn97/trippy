@@ -13,12 +13,6 @@ export default function AdminEditAttractionsList({ navigation }) {
     const [filteredData, setfilteredData] = useState(attractions);
     const [email, setEmail] = useState('');
 
-
-    //List
-    navigation.addListener('willFocus', () => {
-
-    })
-
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');

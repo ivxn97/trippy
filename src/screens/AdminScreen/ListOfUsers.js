@@ -11,10 +11,6 @@ export default function ListOfUsers( {navigation} ) {
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(users);
 
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
 
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(db, "users"));

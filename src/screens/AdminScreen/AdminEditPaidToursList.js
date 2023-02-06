@@ -13,11 +13,6 @@ export default function AdminEditPaidToursList({ navigation }) {
     const [filteredData, setfilteredData] = useState(paidtours);
     const [email, setEmail] = useState('');
 
-    //List
-    navigation.addListener('willFocus', () => {
-
-    })
-
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');

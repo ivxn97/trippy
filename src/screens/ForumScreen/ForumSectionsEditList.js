@@ -18,11 +18,6 @@ export default function ForumSectionsEditList ({ navigation }) {
     const [sortBy, setSortBy] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
-
-    navigation.addListener('willFocus', () => {
-
-    })
-
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "forum sections"));
         querySnapshot.forEach(documentSnapshot => {

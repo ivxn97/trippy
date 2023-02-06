@@ -11,11 +11,6 @@ export default function ReviewPendingAccounts( {navigation} ) {
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(users);
 
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
-
   useEffect(async () => {
     const collectionRef = collection(db, "users")
     const q = query(collectionRef, where('status', '==', 'Pending'))

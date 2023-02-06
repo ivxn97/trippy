@@ -32,11 +32,6 @@ export default function HotelList({ navigation }) {
     const [amenitiesFilter, setAmenitiesFilter] = useState([]);
     const [amenitiesCheckbox, setAmenitiesCheckbox] = useState([]);
 
-    //List
-    navigation.addListener('willFocus', () => {
-
-    })
-
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "hotels"));
         querySnapshot.forEach(documentSnapshot => {

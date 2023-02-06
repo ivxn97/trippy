@@ -20,12 +20,6 @@ export default function ActiveThreadEditList({ navigation }) {
     const [sortBy, setSortBy] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
-    
-
-    //List
-    navigation.addListener('willFocus', () => {
-
-    })
 
     const getUsername = async () => {
         try {

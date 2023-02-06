@@ -12,10 +12,6 @@ export default function ManageForumSections ({ navigation }) {
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(forum);
 
-    navigation.addListener('willFocus', () => {
-
-    })
-
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "forum sections"));
         querySnapshot.forEach(documentSnapshot => {

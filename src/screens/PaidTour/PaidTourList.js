@@ -24,11 +24,6 @@ export default function PaidTourList({navigation}) {
   const [typesOfAttraction, setTypesOfAttraction] = useState();
 
 
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
-
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(db, "paidtours"));
         querySnapshot.forEach(documentSnapshot => {

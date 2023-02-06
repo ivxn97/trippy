@@ -26,11 +26,6 @@ export default function RestaurantList( {navigation}) {
   const [typesOfCuisineFilter, setTypesOfCuisineFilter] = useState();
   const [typesOfPriceFilter, setTypesOfPriceFilter] = useState();
 
-  
-   //List
-   navigation.addListener('willFocus', () => {
-    
-})
 
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(db, "restaurants"));

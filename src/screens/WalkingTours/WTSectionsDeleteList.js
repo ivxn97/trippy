@@ -19,10 +19,6 @@ export default function WTSectionsEditList ({ navigation }) {
     const [sortOrder, setSortOrder] = useState("");
 
 
-    navigation.addListener('willFocus', () => {
-
-    })
-
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "walking tour sections"));
         querySnapshot.forEach(documentSnapshot => {

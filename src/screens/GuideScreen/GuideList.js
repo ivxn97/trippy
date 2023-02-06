@@ -19,11 +19,6 @@ export default function GuideList ({ navigation }) {
     const [sortBy, setSortBy] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
-
-    navigation.addListener('willFocus', () => {
-
-    })
-
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "guide sections"));
         querySnapshot.forEach(documentSnapshot => {

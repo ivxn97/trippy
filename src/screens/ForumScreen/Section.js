@@ -24,10 +24,6 @@ export default function Section ({ route, navigation }) {
     const [sortOrder, setSortOrder] = useState("");
 
 
-    navigation.addListener('willFocus', () => {
-
-    })
-
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');

@@ -23,12 +23,6 @@ export default function AttractionList( {navigation }) {
   const [checkboxFilter, setCheckboxFilter] = useState([]);
   const [typesOfAttraction, setTypesOfAttraction] = useState();
 
-  
-  //List
-  navigation.addListener('willFocus', () => {
-    
-  })
-
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(db, "attractions"));
         querySnapshot.forEach(documentSnapshot => {

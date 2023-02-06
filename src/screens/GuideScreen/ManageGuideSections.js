@@ -11,11 +11,7 @@ export default function ManageGuideSections ({ navigation }) {
     const [forum, setForum] = useState([]); // Initial empty array of hotels
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(forum);
-
-    navigation.addListener('willFocus', () => {
-
-    })
-
+    
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "guide sections"));
         querySnapshot.forEach(documentSnapshot => {

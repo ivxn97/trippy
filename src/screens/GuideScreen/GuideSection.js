@@ -23,11 +23,6 @@ export default function GuideSection ({ route, navigation }) {
     const [sortBy, setSortBy] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
-
-    navigation.addListener('willFocus', () => {
-
-    })
-
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');

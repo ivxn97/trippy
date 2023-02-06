@@ -24,10 +24,6 @@ export default function WalkingToursExpired ({ route, navigation }) {
     const [sortOrder, setSortOrder] = useState("");
     
 
-    navigation.addListener('willFocus', () => {
-
-    })
-
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');

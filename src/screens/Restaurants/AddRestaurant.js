@@ -257,7 +257,6 @@ export default function AddRestaurant ( { navigation }) {
                     mapURL: mapURL,
                     language: language,
                     description: description,
-                    TNC: TNC,
                     activityType: 'restaurants',
                     images: images
                 });
@@ -447,17 +446,6 @@ export default function AddRestaurant ( { navigation }) {
                 placeholderTextColor="#aaaaaa"
                 onChangeText={(Text) => setDescription(Text)}
                 value={description}
-                underlineColorAndroid="transparent"
-                autoCapitalize="sentences"
-                multiline
-            />
-            <Text style={styles.text}>Terms & Conditions:</Text>
-            <FilteredTextInput
-                style={styles.desc}
-                placeholder='Terms & Conditions'
-                placeholderTextColor="#aaaaaa"
-                onChangeText={(Text) => setTNC(Text)}
-                value={TNC}
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 multiline

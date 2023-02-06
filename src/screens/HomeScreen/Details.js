@@ -415,13 +415,13 @@ Download the App here: URL`})
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                </View>
+                </ScrollView>
+                <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0.3 : 1, position: 'absolute', bottom:0}]}
                 disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, 
                 roomTypes: roomTypes, checkInTime: checkInTime, checkOutTime: checkOutTime})}} title="Booking">
                         <Text style={styles.buttonSmallText}>Book</Text>
                 </TouchableOpacity>
-                </View>
-                </ScrollView>
             </View>
         )
     }

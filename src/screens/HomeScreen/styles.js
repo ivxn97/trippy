@@ -271,6 +271,21 @@ export default StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold"
     },
+    buttonBook: {
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 25,
+        backgroundColor: '#8f8f8f',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 20,
+        height: 48,
+        width: 370,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
     footerView: {
         flex: 1,
         alignItems: "center",

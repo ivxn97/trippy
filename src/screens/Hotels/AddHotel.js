@@ -235,8 +235,8 @@ export default function AddHotel({ navigation }) {
 
     const submitRoomType = () => {
         const roomType = {type: type, price: price, capacity: capacity}
-        currentRooms.push(...currentRooms, type)
-        roomTypes.push(...roomTypes, roomType)
+        currentRooms.push(type)
+        roomTypes.push(roomType)
         console.log(roomTypes)
         alert("Room Type Submitted")
         setHotelRooms(hotelRooms + 1)
@@ -247,6 +247,8 @@ export default function AddHotel({ navigation }) {
 
     const deleteRooms = () => {
         setRoomTypes([])
+        setCurrentRooms([])
+        setHotelRooms(1)
         alert("Room Types Deleted")
     }
     

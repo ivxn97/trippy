@@ -100,7 +100,7 @@ export default function Section ({ route, navigation }) {
         return (
             <TouchableHighlight
                 underlayColor="#C8c9c9"
-                onPress={() => {navigation.navigate('Thread', {title : item.title, description: item.description, section: item.section})}}>
+                onPress={() => {navigation.navigate('Thread', {title : item.title, description: item.description, section: item.section, addedBy: item.addedBy})}}>
                 <View style={styles.list}>
                 <Text>{item.title}</Text>
                 <Text>Posted By {item.addedBy}</Text>
@@ -191,7 +191,7 @@ export default function Section ({ route, navigation }) {
 
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
              <TouchableOpacity style={[styles.buttonSmallWrite, {opacity: postButton ? 0.3 : 1}]}
-             onPress={() => {navigation.navigate('Create Post')}} disabled={postButton}>
+             onPress={() => {navigation.navigate('Create Post', {sectionName: sectionName})}} disabled={postButton}>
             <Text style={styles.buttonSmallListText}>Write a post...</Text>
             
             </TouchableOpacity>

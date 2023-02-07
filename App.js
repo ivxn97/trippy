@@ -15,7 +15,7 @@ import {
   BOAttractionsList, BODealsList, BOHotelsList, BOPaidToursList, BORestaurantsList, LOLGuideList, EditRestaurant,
   RestaurantEditList, PaidTourEditList, EditPaidTour, AttractionEditList, EditAttraction, HotelEditList,
   EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection,
-  EditForumSection, ForumSectionsEditList, ForumSections, Section, ReviewScreen, AddReviewScreen, Thread, 
+  EditForumSection, ForumSectionsEditList, Section, ReviewScreen, AddReviewScreen, Thread, 
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
   ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
@@ -153,7 +153,6 @@ function ForumStackScreen() {
     <ForumStack.Navigator>
       <Stack.Screen name="Forum Page" component={ForumScreen} />
       <Stack.Screen name="Create Post" component={CreatePost} />
-      <Stack.Screen name="Forum Sections" component={ForumSections} />
       <Stack.Screen name="Section" component={Section} />
       <Stack.Screen name="Create Reply" component={CreateReply} />
       <Stack.Screen name="Thread" component={Thread} />

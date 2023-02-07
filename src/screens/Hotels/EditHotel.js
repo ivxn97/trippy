@@ -43,10 +43,12 @@ export default function AddHotel({ route, navigation }) {
     const [newRoomTypes, setRoomTypes] = useState(roomTypes);
     const [currentRooms, setCurrentRooms] = useState(roomTypes);
     const [capacity, setCapacity] = useState()
+    const [imageUploaded, setImageUploaded] = useState(true)
     
 
     const deleteImages = () => {
         deleteFolder(`/hotels/${name}/images`)
+        setImageUploaded(false)
     }
 
     function deleteFolder(path) {
@@ -76,6 +78,7 @@ export default function AddHotel({ route, navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -193,6 +196,7 @@ export default function AddHotel({ route, navigation }) {
     }
 
     const onSubmitPress = async () => {
+        if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "hotels", name), {
                     roomTypes: newRoomTypes,
@@ -217,6 +221,10 @@ export default function AddHotel({ route, navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+        else {
+            alert('Please Upload images');
+        }
+    }
 
     if (loading) {
         return <ActivityIndicator />;

@@ -7,7 +7,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -65,6 +65,8 @@ export default function AddHotel({ navigation }) {
     const [type, setType] = useState()
     const [roomTypes, setRoomTypes] = useState([]);
     const [currentRooms, setCurrentRooms] = useState([]);
+    const [imageUploaded, setImageUploaded] = useState(false)
+
     const storage = getStorage();
 
     const getEmail = async () => {
@@ -82,6 +84,23 @@ export default function AddHotel({ navigation }) {
     }
     getEmail();
 
+    const deleteImages = () => {
+        deleteFolder(`/hotels/${name}/images`)
+        setImageUploaded(false)
+    }
+
+    function deleteFolder(path) {
+        const listRef = ref(storage, path)
+        listAll(listRef)
+            .then(dir => {
+            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+            console.log("Files deleted successfully from Firebase Storage");
+            alert("Images Deleted")
+            setImageCount(0)
+            })
+        .catch(error => console.log(error));
+    }
+
     const getImages = async () => {
         const listRef = ref(storage, `hotels/${name}/images`);
         Promise.all([
@@ -97,6 +116,7 @@ export default function AddHotel({ navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -234,7 +254,7 @@ export default function AddHotel({ navigation }) {
         if (email !== '' && name !== '' && roomTypes !== '' && hotelClass !== '' && 
             checkInHour !== '' && checkInMinute !== '' && checkOutHour !== '' && checkOutMinute !== '' && 
             docAmenitiesData !== '' && docRoomFeaturesData !== '' && language !== '' &&  address !== '' && 
-            description !== '' && TNC !== '' && images !== '') {
+            description !== '' && TNC !== '' && imageUploaded == true) {
             try {
                 await setDoc(doc(db, "hotels", name), {
                     addedBy: email,
@@ -293,6 +313,9 @@ export default function AddHotel({ navigation }) {
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Current Image Count: {imageCount}</Text>
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
+                    <Text>Delete All Uploaded Images</Text>
+                </TouchableOpacity>
                 <Text style={[styles.text, {fontSize:18}]}>Current Rooms: {JSON.stringify(currentRooms).replace(/[\[\]"]/g, "")}</Text>
                 <Text style={[styles.text, {fontSize:18}]}>Room Type No: {hotelRooms}</Text>
                 <Text style={styles.text}>Name of Room Type:</Text>

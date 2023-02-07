@@ -40,9 +40,11 @@ export default function EditRestaurant ( { route, navigation }) {
     const [newLongitude, setLong] = useState(longitude);
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
+    const [imageUploaded, setImageUploaded] = useState(true)
 
     const deleteImages = () => {
         deleteFolder(`/restaurants/${name}/images`)
+        setImageUploaded(false)
     }
 
     function deleteFolder(path) {
@@ -189,6 +191,7 @@ export default function EditRestaurant ( { route, navigation }) {
             }
         }
         console.log(timeSlots)
+        if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "restaurants", name), {
                     typeOfCuisine: newTypeOfCuisine,
@@ -214,6 +217,10 @@ export default function EditRestaurant ( { route, navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+        else {
+            alert('Please Upload images');
+        }
+    }
 
     if (loading) {
         return <ActivityIndicator />;

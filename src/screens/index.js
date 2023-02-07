@@ -124,7 +124,6 @@ export {default as EditReview} from './ReviewScreen/EditReview'
 // Forum Screens
 export {default as ForumScreen} from './ForumScreen/ForumScreen'
 export {default as CreatePost} from './ForumScreen/CreatePost'
-export {default as ForumSections} from './ForumScreen/ForumSections'
 export {default as Section} from './ForumScreen/Section'
 export {default as Thread} from './ForumScreen/Thread'
 export {default as CreateReply} from './ForumScreen/CreateReply'

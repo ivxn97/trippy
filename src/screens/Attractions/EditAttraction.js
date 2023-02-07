@@ -41,6 +41,7 @@ export default function EditAttraction ( { route, navigation }) {
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
+    const [imageUploaded, setImageUploaded] = useState(true)
 
     const getImages = async () => {
         const listRef = ref(storage, `attractions/${name}/images`);
@@ -57,6 +58,7 @@ export default function EditAttraction ( { route, navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -95,6 +97,7 @@ export default function EditAttraction ( { route, navigation }) {
 
     const deleteImages = () => {
         deleteFolder(`/attractions/${name}/images`)
+        setImageUploaded(false)
     }
 
     function deleteFolder(path) {
@@ -147,6 +150,7 @@ export default function EditAttraction ( { route, navigation }) {
 
       
     const onSubmitPress = async () => {
+        if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "attractions", name), {
                     attractionType: newAttractionType,
@@ -171,6 +175,10 @@ export default function EditAttraction ( { route, navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+        else {
+            alert('Please Upload images');
+        }
+    }
 
     if (loading) {
         return <ActivityIndicator />;

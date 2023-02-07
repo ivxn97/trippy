@@ -6,7 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -70,6 +70,8 @@ export default function AddPaidTour ( { navigation }) {
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
+    const [imageUploaded, setImageUploaded] = useState(false)
+
     const storage = getStorage();
 
     const getEmail = async () => {
@@ -88,6 +90,22 @@ export default function AddPaidTour ( { navigation }) {
     }
     getEmail();
 
+    const deleteImages = () => {
+        deleteFolder(`/paidtours/${name}/images`)
+        setImageUploaded(false)
+    }
+
+    function deleteFolder(path) {
+        const listRef = ref(storage, path)
+        listAll(listRef)
+            .then(dir => {
+            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+            console.log("Files deleted successfully from Firebase Storage");
+            setImageCount(0)
+            })
+        .catch(error => console.log(error));
+    }
+
     const getImages = async () => {
         const listRef = ref(storage, `paidtours/${name}/images`);
         Promise.all([
@@ -103,6 +121,7 @@ export default function AddPaidTour ( { navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -196,7 +215,7 @@ export default function AddPaidTour ( { navigation }) {
         if (email !== '' && name !== '' && tourType !== '' && price !== '' && ageGroup !== '' 
             && groupSize !== '' && startingHour !== '' && startingMinute !== '' && endingHour !== '' 
             && endingMinute !== '' && durationMinute !== '' && capacity !== '' && address !== '' && language !== '' 
-            && description !== '' && TNC !== '' && images !== '') {
+            && description !== '' && TNC !== '' && imageUploaded == true) {
             try {
                 await setDoc(doc(db, "paidtours", name), {
                     addedBy: email,
@@ -258,6 +277,9 @@ export default function AddPaidTour ( { navigation }) {
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Current Image Count: {imageCount}</Text>
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
+                <Text>Delete All Uploaded Images</Text>
+            </TouchableOpacity>
             <Text style={styles.text}>Paid Tour Type:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}

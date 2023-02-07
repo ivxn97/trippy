@@ -76,6 +76,7 @@ export default function AddRestaurant ( { navigation }) {
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
     const [imageCount, setImageCount] = useState(0)
+    const [imageUploaded, setImageUploaded] = useState(false)
 
     const getEmail = async () => {
         try {
@@ -91,6 +92,11 @@ export default function AddRestaurant ( { navigation }) {
         }
     }
     getEmail();
+
+    const deleteImages = () => {
+        deleteFolder(`/restaurants/${name}/images`)
+        setImageUploaded(false)
+    }
 
     function deleteFolder(path) {
         const listRef = ref(storage, path)
@@ -118,6 +124,7 @@ export default function AddRestaurant ( { navigation }) {
             console.log(fetchedImages);
             console.log("Cover Image:", fetchedImages[0])
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -238,7 +245,7 @@ export default function AddRestaurant ( { navigation }) {
         if (email !== '' && name !== '' && typeOfCuisine !== '' && price !== '' && ageGroup !== '' 
             && groupSize !== '' && openingHour !== '' && openingMinute !== '' && closingHour !== '' 
             && closingMinute !== '' && capacity !== '' && address !== '' && language !== '' 
-            && description !== '' && TNC !== '' && images !== '') {
+            && description !== '' && TNC !== '' && imageUploaded == true) {
             try {
                 await setDoc(doc(db, "restaurants", name), {
                     addedBy: email,
@@ -299,6 +306,9 @@ export default function AddRestaurant ( { navigation }) {
                 <Text>Upload Image</Text>
             </TouchableOpacity>
             <Text style={styles.text}>Current Image Count: {imageCount}</Text>
+            <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
+                <Text>Delete All Uploaded Images</Text>
+            </TouchableOpacity>
             <Text style={styles.text}>Type of Cuisine:</Text>
             <RNPickerSelect
                 style={pickerSelectStyles}

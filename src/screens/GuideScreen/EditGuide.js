@@ -26,6 +26,8 @@ export default function EditGuide({ route, navigation }) {
     const [isExpired, setIsExpired] = useState(expired)
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
+    const [imageUploaded, setImageUploaded] = useState(true)
+
     const storage = getStorage();
 
     const typePlaceholder = {
@@ -43,6 +45,7 @@ export default function EditGuide({ route, navigation }) {
 
     const deleteImages = () => {
         deleteFolder(`/guides/${name}/images`)
+        setImageUploaded(false)
     }
 
     function deleteFolder(path) {
@@ -72,6 +75,7 @@ export default function EditGuide({ route, navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -149,6 +153,7 @@ export default function EditGuide({ route, navigation }) {
     />);
 
     const onSubmitPress = async () => {
+        if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "guides", name), {
                     location: locationArr,
@@ -166,6 +171,10 @@ export default function EditGuide({ route, navigation }) {
             catch (e) {
                 console.log("Error adding document: ", e);
             }
+        }
+        else {
+            alert('Please Upload images');
+        }
     }
 
     if (loading) {

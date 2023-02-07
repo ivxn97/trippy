@@ -44,9 +44,11 @@ export default function EditPaidTour ( { route, navigation }) {
     const [loading, setLoading] = useState(true)
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
+    const [imageUploaded, setImageUploaded] = useState(true)
 
     const deleteImages = () => {
         deleteFolder(`/paidtours/${name}/images`)
+        setImageUploaded(false)
     }
 
     function deleteFolder(path) {
@@ -75,6 +77,7 @@ export default function EditPaidTour ( { route, navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -165,6 +168,7 @@ export default function EditPaidTour ( { route, navigation }) {
         }
 
         console.log(timeSlots)
+        if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "paidtours", name), {
                     tourType: tourType,
@@ -192,6 +196,10 @@ export default function EditPaidTour ( { route, navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+        else {
+            alert('Please Upload images');
+        }
+    }
 
         if (loading) {
             return <ActivityIndicator />;

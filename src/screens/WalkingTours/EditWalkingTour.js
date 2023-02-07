@@ -24,7 +24,10 @@ export default function EditWalkingTour({ route, navigation }) {
     const [isExpired, setIsExpired] = useState(expired)
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
+    const [imageUploaded, setImageUploaded] = useState(true)
+
     const storage = getStorage();
+
     const typePlaceholder = {
         label: 'Section Category',
         value: null,
@@ -40,6 +43,7 @@ export default function EditWalkingTour({ route, navigation }) {
 
     const deleteImages = () => {
         deleteFolder(`/walkingtours/${name}/images`)
+        setImageUploaded(false)
     }
 
     function deleteFolder(path) {
@@ -69,6 +73,7 @@ export default function EditWalkingTour({ route, navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -146,6 +151,7 @@ export default function EditWalkingTour({ route, navigation }) {
     />);
 
     const onSubmitPress = async () => {
+        if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "walkingtours", name), {
                     location: locationArr,
@@ -163,6 +169,11 @@ export default function EditWalkingTour({ route, navigation }) {
                 console.log("Error adding document: ", e);
             }
         }
+        else {
+            alert('Please Upload images');
+        }
+    }
+
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}

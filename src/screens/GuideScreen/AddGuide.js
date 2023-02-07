@@ -7,7 +7,7 @@ import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { db, mapSearch } from '../../../config';
 import Checkbox from 'expo-checkbox';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -27,6 +27,8 @@ export default function AddGuide({ navigation }) {
     const [locationArr, setLocationArr] = useState([])
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
+    const [imageUploaded, setImageUploaded] = useState(false)
+
     const storage = getStorage();
 
     const typePlaceholder = {
@@ -49,6 +51,23 @@ export default function AddGuide({ navigation }) {
         }
     }
     getEmail();
+
+    const deleteImages = () => {
+        deleteFolder(`/guides/${name}/images`)
+        setImageUploaded(false)
+    }
+
+    function deleteFolder(path) {
+        const listRef = ref(storage, path)
+        listAll(listRef)
+            .then(dir => {
+            dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+            console.log("Files deleted successfully from Firebase Storage");
+            alert("Images Deleted")
+            setImageCount(0)
+            })
+        .catch(error => console.log(error));
+    }
 
     const getUsername = async () => {
         try {
@@ -80,6 +99,7 @@ export default function AddGuide({ navigation }) {
             const fetchedImages = results[0];
             console.log(fetchedImages);
             setImages(fetchedImages);
+            setImageUploaded(true)
           });
     }
 
@@ -158,7 +178,7 @@ export default function AddGuide({ navigation }) {
 
     const onSubmitPress = async () => {
         if (email !== '' && name !== '' && locationArr !== '' && tips !== '' && description !== '' 
-        && section !== '' && images !== '' && mrt !== '') {
+        && section !== '' && imageUploaded == true && mrt !== '') {
             try {
                 await setDoc(doc(db, "guides", name), {
                     addedBy: email,
@@ -211,7 +231,9 @@ export default function AddGuide({ navigation }) {
                     <Text>Upload Image</Text>
                 </TouchableOpacity>
                 <Text style={styles.text}>Current Image Count: {imageCount}</Text>
-
+                <TouchableOpacity style={[styles.button, {backgroundColor: '#E4898b'}]} onPress={deleteImages} >
+                <Text>Delete All Uploaded Images</Text>
+                </TouchableOpacity>
                 <Text style={styles.text}>Guide Section:</Text>
                 <RNPickerSelect
                     style={pickerSelectStyles}

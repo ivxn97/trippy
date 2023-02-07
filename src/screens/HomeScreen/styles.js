@@ -354,7 +354,7 @@ export default StyleSheet.create({
         borderBottomWidth: 1,
         borderLeftWidth: 1,
         width: "90%",
-        height: "9%",
+        height: 200,
         marginLeft: "5%",
         marginTop: 5,
         marginBottom: 5,

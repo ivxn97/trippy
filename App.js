@@ -26,7 +26,7 @@ import {
   AdminEditRestaurantsList, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
   ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, 
-  ForumSectionsDeleteList, ItineraryMapView
+  ForumSectionsDeleteList, ItineraryMapView, EditPost
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -157,6 +157,7 @@ function ForumStackScreen() {
       <Stack.Screen name="Create Reply" component={CreateReply} />
       <Stack.Screen name="Thread" component={Thread} />
       <Stack.Screen name="Edit Reply" component={EditReply} />
+      <Stack.Screen name="Edit Post" component={EditPost} />
     </ForumStack.Navigator>
 
   )

@@ -128,6 +128,7 @@ export {default as Section} from './ForumScreen/Section'
 export {default as Thread} from './ForumScreen/Thread'
 export {default as CreateReply} from './ForumScreen/CreateReply'
 export {default as EditReply} from './ForumScreen/EditReply'
+export {default as EditPost} from './ForumScreen/EditPost'
 
 //Admin Screens
 export {default as AdminScreen} from './AdminScreen/AdminScreen'

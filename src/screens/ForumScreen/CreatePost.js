@@ -14,7 +14,8 @@ const sectionPlaceholder = {
     color: 'black',
 };
 
-export default function CreatePost ( {navigation} ) {
+export default function CreatePost ( {route, navigation} ) {
+    const {sectionName} = route.params;
     const [username, setUsername] = useState('');
     const [title, setTitle] = useState('');
     const [section, setSection] = useState('');
@@ -55,7 +56,7 @@ export default function CreatePost ( {navigation} ) {
             await setDoc(doc(db, "forum", title), {
                 addedBy: username,
                 title: title,
-                section: section,
+                section: sectionName,
                 description: description,
                 datetime: datetime
             });
@@ -86,15 +87,7 @@ export default function CreatePost ( {navigation} ) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
             />
-            <Text style={styles.text}>Forum Section:</Text>
-                <RNPickerSelect
-                    style={pickerSelectStyles}
-                    useNativeAndroidPickerStyle={false}
-                    placeholder={sectionPlaceholder}
-                    placeholderTextColor="#aaaaaa"
-                    onValueChange={(value) => setSection(value)}
-                    items={forumSections}
-            />
+            <Text style={styles.text}>Forum Section: {JSON.stringify(sectionName).replace(/"/g,"")}</Text>
            <Text style={styles.text}>Description:</Text>
             <FilteredTextInput
                 style={styles.desc}

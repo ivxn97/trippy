@@ -46,7 +46,7 @@ export default function Thread({route, navigation}) {
             }
             else {
                 setDisabledButton(true)
-                console.log("No Email Selected at Login")
+                console.log("No Username Selected at Login")
             }
         } catch (error) {
             console.log(error)

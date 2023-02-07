@@ -101,6 +101,7 @@ export default function DeleteHotel({ navigation }) {
         deleteFolder(`/hotels/${selectedName}/images`)
         setItems((prevItems) => prevItems.filter((item) => item.name !== selectedName));
         setShowModal(false);
+        navigation.navigate('BO Page')
     }
 
     function deleteFolder(path) {

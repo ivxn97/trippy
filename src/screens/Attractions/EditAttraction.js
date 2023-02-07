@@ -176,7 +176,7 @@ export default function EditAttraction ( { route, navigation }) {
             }
         }
         else {
-            alert('Please Upload images');
+            alert('Please Upload an image');
         }
     }
 

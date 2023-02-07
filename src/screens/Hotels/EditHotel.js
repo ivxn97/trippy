@@ -13,7 +13,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 export default function AddHotel({ route, navigation }) {
     const { name, hotelClass, roomTypes, checkInTime, checkOutTime, amenities, roomFeatures, language, 
-        description, TNC, address, images, latitude, longitude, mapURL } = route.params;
+        description, TNC, address, images, latitude, longitude, mapURL, currRooms } = route.params;
     const [checkInHour, checkInMinute] = checkInTime.split(":");
     const [checkOutHour, checkOutMinute] = checkOutTime.split(":");
 
@@ -38,12 +38,13 @@ export default function AddHotel({ route, navigation }) {
     const [imageCount, setImageCount] = useState(0)
     const [newImages, setImages] = useState(images);
     const [hotelRooms, setHotelRooms] = useState(1)
-    const [price, setPrice] = useState()
-    const [type, setType] = useState()
+    const [price, setPrice] = useState('')
+    const [type, setType] = useState('')
     const [newRoomTypes, setRoomTypes] = useState(roomTypes);
-    const [currentRooms, setCurrentRooms] = useState(roomTypes);
-    const [capacity, setCapacity] = useState()
+    const [currentRooms, setCurrentRooms] = useState(currRooms);
+    const [capacity, setCapacity] = useState('')
     const [imageUploaded, setImageUploaded] = useState(true)
+    const [haveRooms, setHaveRooms] = useState(true)
     
 
     const deleteImages = () => {
@@ -179,52 +180,65 @@ export default function AddHotel({ route, navigation }) {
     }
 
     const submitRoomType = () => {
-        const roomType = {type: type, price: price, capacity: capacity}
-        currentRooms.push(type)
-        roomTypes.push(roomType)
-        console.log(roomTypes)
-        alert("Room Type Submitted")
-        setHotelRooms(hotelRooms + 1)
-        setType('')
-        setPrice('')
-        setCapacity('')
+        if (type !== '' && price !== '' && capacity !== '') {
+            const roomType = {type: type, price: price, capacity: capacity}
+            currentRooms.push(type)
+            newRoomTypes.push(roomType)
+            console.log(newRoomTypes)
+            alert("Room Type Submitted")
+            setHotelRooms(hotelRooms + 1)
+            setType('')
+            setPrice('')
+            setCapacity('')
+            setHaveRooms(true)
+        }
+        else {
+            alert("Room Type Fields cannot be blank")
+        }
     }
 
     const deleteRooms = () => {
         setRoomTypes([])
         setCurrentRooms([])
         setHotelRooms(1)
+        setHaveRooms(false)
         alert("Room Types Deleted")
     }
 
     const onSubmitPress = async () => {
         if (imageUploaded == true) {
-            try {
-                await setDoc(doc(db, "hotels", name), {
-                    roomTypes: newRoomTypes,
-                    hotelClass: newHotelClass,
-                    checkInTime: newCheckInHour + ':' + newCheckInMinute,
-                    checkOutTime: newCheckOutHour + ':' + newCheckOutMinute,
-                    amenities: docAmenitiesData,
-                    roomFeatures: docRoomFeaturesData,
-                    language: newLanguage,
-                    description: newDescription,
-                    TNC: newTNC,
-                    address: newAddress,
-                    longitude: newLongitude,
-                    latitude: newLatitude,
-                    mapURL: newMapURL,
-                    images: newImages
-                }, {merge:true});
-                //console.log("Document written with ID: ", docRef.id);
-                navigation.navigate('BO Page')
+            if (haveRooms == true) {
+                try {
+                    await setDoc(doc(db, "hotels", name), {
+                        roomTypes: newRoomTypes,
+                        hotelClass: newHotelClass,
+                        checkInTime: newCheckInHour + ':' + newCheckInMinute,
+                        checkOutTime: newCheckOutHour + ':' + newCheckOutMinute,
+                        amenities: docAmenitiesData,
+                        roomFeatures: docRoomFeaturesData,
+                        language: newLanguage,
+                        description: newDescription,
+                        TNC: newTNC,
+                        address: newAddress,
+                        longitude: newLongitude,
+                        latitude: newLatitude,
+                        mapURL: newMapURL,
+                        images: newImages,
+                        currentRooms: currentRooms
+                    }, {merge:true});
+                    //console.log("Document written with ID: ", docRef.id);
+                    navigation.navigate('BO Page')
+                }
+                catch (e) {
+                    console.log("Error adding document: ", e);
+                }
             }
-            catch (e) {
-                console.log("Error adding document: ", e);
+            else {
+                alert('Room Types cannot be empty');
             }
         }
         else {
-            alert('Please Upload images');
+            alert('Please Upload an image');
         }
     }
 

@@ -103,6 +103,7 @@ export default function DeletePaidTour({ navigation }) {
         deleteFolder(`/paidtours/${selectedName}/images`)
         setItems((prevItems) => prevItems.filter((item) => item.name !== selectedName));
         setShowModal(false);
+        navigation.navigate('BO Page')
     }
 
     function deleteFolder(path) {

@@ -218,7 +218,7 @@ export default function EditRestaurant ( { route, navigation }) {
             }
         }
         else {
-            alert('Please Upload images');
+            alert('Please Upload an image');
         }
     }
 

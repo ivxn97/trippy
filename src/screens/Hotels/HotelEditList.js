@@ -187,7 +187,7 @@ export default function HotelEditList({ navigation }) {
                         checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
                         language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType,
                         addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, address: item.address, images: item.images,
-                        longitude: item.longitude, latitude: item.latitude
+                        longitude: item.longitude, latitude: item.latitude, currRooms: item.currentRooms
                     })
                     }}>
                     <View style={styles.list}>

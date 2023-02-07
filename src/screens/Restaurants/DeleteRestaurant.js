@@ -100,6 +100,7 @@ export default function DeleteRestaurant({ navigation }) {
     deleteFolder(`/restaurants/${selectedName}/images`)
     setItems((prevItems) => prevItems.filter((item) => item.name !== selectedName));
     setShowModal(false);
+    navigation.navigate('BO Page')
   }
 
   function deleteFolder(path) {

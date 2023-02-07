@@ -57,15 +57,16 @@ export default function AddHotel({ navigation }) {
     const [mapURL, setMapURL] = useState();
     const [latitude, setLat] = useState();
     const [longitude, setLong] = useState();
-    const [capacity, setCapacity] = useState();
+    const [capacity, setCapacity] = useState('');
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
     const [hotelRooms, setHotelRooms] = useState(1)
-    const [price, setPrice] = useState()
-    const [type, setType] = useState()
+    const [price, setPrice] = useState('')
+    const [type, setType] = useState('')
     const [roomTypes, setRoomTypes] = useState([]);
     const [currentRooms, setCurrentRooms] = useState([]);
     const [imageUploaded, setImageUploaded] = useState(false)
+    const [haveRooms, setHaveRooms] = useState(true)
 
     const storage = getStorage();
 
@@ -234,21 +235,28 @@ export default function AddHotel({ navigation }) {
     }
 
     const submitRoomType = () => {
-        const roomType = {type: type, price: price, capacity: capacity}
-        currentRooms.push(type)
-        roomTypes.push(roomType)
-        console.log(roomTypes)
-        alert("Room Type Submitted")
-        setHotelRooms(hotelRooms + 1)
-        setType('')
-        setPrice('')
-        setCapacity('')
+        if (type !== '' && price !== '' && capacity !== '') {
+            const roomType = {type: type, price: price, capacity: capacity}
+            currentRooms.push(type)
+            roomTypes.push(roomType)
+            console.log(roomTypes)
+            alert("Room Type Submitted")
+            setHotelRooms(hotelRooms + 1)
+            setType('')
+            setPrice('')
+            setCapacity('')
+            setHaveRooms(true)
+        }
+        else {
+            alert("Room Type Fields cannot be blank")
+        }
     }
 
     const deleteRooms = () => {
         setRoomTypes([])
         setCurrentRooms([])
         setHotelRooms(1)
+        setHaveRooms(false)
         alert("Room Types Deleted")
     }
     
@@ -256,7 +264,7 @@ export default function AddHotel({ navigation }) {
         if (email !== '' && name !== '' && roomTypes !== '' && hotelClass !== '' && 
             checkInHour !== '' && checkInMinute !== '' && checkOutHour !== '' && checkOutMinute !== '' && 
             docAmenitiesData !== '' && docRoomFeaturesData !== '' && language !== '' &&  address !== '' && 
-            description !== '' && TNC !== '' && imageUploaded == true) {
+            description !== '' && TNC !== '' && imageUploaded == true && haveRooms == true) {
             try {
                 await setDoc(doc(db, "hotels", name), {
                     addedBy: email,
@@ -275,7 +283,8 @@ export default function AddHotel({ navigation }) {
                     description: description,
                     TNC: TNC,
                     activityType: 'hotels',
-                    images:images
+                    images:images,
+                    currentRooms: currentRooms
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('BO Page')

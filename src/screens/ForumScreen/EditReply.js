@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import uuid from 'react-native-uuid';
 import { useFocusEffect } from '@react-navigation/native';
+import { report } from '../commonFunctions';
 
 const sectionPlaceholder = {
     label: 'Forum Section',
@@ -17,7 +18,7 @@ const sectionPlaceholder = {
 };
 
 export default function EditReply ( {route, navigation} ) {
-    const {title, description, comment_id, addedBy} = route.params;
+    const {title, description, comment_id, addedBy, email} = route.params;
     const [username, setUsername] = useState('');
     const [newDescription, setDescription] = useState(description);
     const [disabledButton, setDisabledButton] = useState(true)
@@ -79,10 +80,6 @@ export default function EditReply ( {route, navigation} ) {
                 <KeyboardAwareScrollView
                     style={{ flex: 1, width: '100%' }}
                     keyboardShouldPersistTaps="always">
-                    {/*<Image
-                        style={styles.logo}
-                        source={require('../../../assets/icon.png')}
-                    />*/}
                 <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
                 <Text style={styles.text}>Description:</Text>
                 <FilteredTextInput
@@ -110,16 +107,30 @@ export default function EditReply ( {route, navigation} ) {
             </View>
         )
     }
+    else if (username !== null){
+        return (
+            <View style={styles.container}>
+                <KeyboardAwareScrollView
+                    style={{ flex: 1, width: '100%' }}
+                    keyboardShouldPersistTaps="always">
+                <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
+                <Text style={styles.text}>Description:</Text>
+                <Text style={styles.desc}>{newDescription}</Text>
+                <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => report("Forum Reply", addedBy, newDescription, email)}>
+                        <Text style={styles.buttonTitle}>Report</Text>
+                </TouchableOpacity>
+                </KeyboardAwareScrollView>
+            </View>
+        )
+    }
     else {
         return (
             <View style={styles.container}>
                 <KeyboardAwareScrollView
                     style={{ flex: 1, width: '100%' }}
                     keyboardShouldPersistTaps="always">
-                    {/*<Image
-                        style={styles.logo}
-                        source={require('../../../assets/icon.png')}
-                    />*/}
                 <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
                 <Text style={styles.text}>Description:</Text>
                 <Text style={styles.desc}>{newDescription}</Text>

@@ -76,6 +76,16 @@ export async function PageContent(document, name) {
 
 export async function report(activityType, addedBy, content, reportedBy) {
     const ref = doc(db, "reports", content);
-
-    await setDoc
+        try {
+        await setDoc (ref, {
+            activityType: activityType,
+            addedBy: addedBy,
+            content: content,
+            reportedBy: reportedBy
+        })
+        alert (`Report on ${content} sent.`)
+    }
+    catch (e) {
+        console.log(e)
+    }
 }

@@ -7,7 +7,8 @@ import { db } from '../../../config';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import moment from "moment";
+import Moment from "moment";
+import { report } from '../commonFunctions';
 
 export default function Thread({route, navigation}) {
     const {title, description, section, addedBy, likedBy, datetime} = route.params;
@@ -109,7 +110,7 @@ export default function Thread({route, navigation}) {
             <TouchableHighlight
                 underlayColor="#C8c9c9"
                 onPress={() => {navigation.navigate('Edit Reply', {title : item.title, description: item.description,
-                 section: item.section, comment_id: item.comment_id, addedBy: item.addedBy})}}>
+                 section: item.section, comment_id: item.comment_id, addedBy: item.addedBy, datetime: item.datetime, email: email})}}>
                 <View style={styles.list}>
                     <Text>{item.addedBy}</Text>
                     <Text>{item.description}</Text>
@@ -130,13 +131,13 @@ export default function Thread({route, navigation}) {
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonSmall}  onPress={() => {navigation.navigate('Edit Post', {title : title, description: description,
                             section: section, addedBy: addedBy})}}>
-                    <Text style={styles.buttonSmallListText}>Report</Text>
+                    <Text style={styles.buttonSmallListText}>Edit</Text>
                 </TouchableOpacity>
             </View>
 
                 {/* details */}
-                <Text style={styles.textNB}>Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
                 <Text style={styles.textNB}>Section: {JSON.stringify(section).replace(/"/g,"")}</Text>
+                <Text style={styles.textNB}>Posted: {Moment(datetime.toDate()).fromNow()} {"\n"}</Text>
                 <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}</Text>
                 
                 {/* buttons */}
@@ -175,16 +176,16 @@ export default function Thread({route, navigation}) {
             
                         {/* buttons */}
                         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-                        <TouchableOpacity style={styles.buttonSmall}  onPress={() => {navigation.navigate('Edit Post', {title : title, description: description,
-                                    section: section, addedBy: addedBy})}}>
-                            <Text style={styles.buttonSmallListText}>Edit</Text>
+                        <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}  
+                        disabled ={registeredButton} onPress={() => report("Forum Post", addedBy, title, email)}>
+                            <Text style={styles.buttonSmallListText}>Report</Text>
                         </TouchableOpacity>
                         </View>
             
                         {/* details */}
-                        <Text style={styles.textNB}>Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
                         <Text style={styles.textNB}>Section: {JSON.stringify(section).replace(/"/g,"")}</Text>
-                        <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}</Text>
+                        <Text style={styles.textNB}>Posted: {Moment(datetime.toDate()).fromNow()} {"\n"}</Text>
+                        <Text style={styles.textNB}>{JSON.stringify(description).replace(/"/g,"")}</Text>
                         
                         {/* buttons */}
                         <View style={{ flexDirection:"row" }}>

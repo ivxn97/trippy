@@ -80,6 +80,10 @@ export default function GuideScreen({ route, navigation }) {
         itinerary(email, name)
     }
 
+    const openAddress = async (mapURL) => {
+        await WebBrowser.openBrowserAsync(mapURL)
+    }
+
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>

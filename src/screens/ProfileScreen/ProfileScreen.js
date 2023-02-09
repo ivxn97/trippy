@@ -249,11 +249,6 @@ export default function ProfileScreen ( {navigation} ) {
                     <Text style={styles.textList}>My Deals</Text> 
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonList}
-                    title="Settings"
-                >
-                    <Text style={styles.textList}>Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList}
                     title ="Sign Out"
                     onPress={() => onSignout()}
                 >
@@ -356,11 +351,6 @@ export default function ProfileScreen ( {navigation} ) {
                     title="My Deals"
                 >
                     <Text style={styles.textList}>My Deals</Text> 
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.profileButton}
-                    title="Settings"
-                >
-                        <Text style={styles.textList}>Settings</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profileButton}
                     title ="Sign Out"

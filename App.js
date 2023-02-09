@@ -26,7 +26,7 @@ import {
   AdminEditRestaurantsList, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
   ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, 
-  ForumSectionsDeleteList, ItineraryMapView, EditPost
+  ForumSectionsDeleteList, ItineraryMapView, EditPost, DeleteForumPostList, DeletePost, DeleteReply, Report, ReportsList
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -210,6 +210,17 @@ function AdminStackScreen() {
       <Stack.Screen name="Delete Walking Tour Section" component={DeleteWTSection} />
       <Stack.Screen name="Walking Tour Sections Edit List" component={WTSectionsEditList} />
       <Stack.Screen name="Walking Tour Sections Delete List" component={WTSectionsDeleteList} />
+      <Stack.Screen name="Forum Page" component={ForumScreen} />
+      <Stack.Screen name="Section" component={Section} />
+      <Stack.Screen name="Create Reply" component={CreateReply} />
+      <Stack.Screen name="Thread" component={Thread} />
+      <Stack.Screen name="Edit Reply" component={EditReply} />
+      <Stack.Screen name="Edit Post" component={EditPost} />
+      <Stack.Screen name="Delete Forum Reply" component={DeleteReply} />
+      <Stack.Screen name="Delete Forum Post" component={DeletePost} />
+      <Stack.Screen name="Delete Forum Post List" component={DeleteForumPostList} />
+      <Stack.Screen name="Reports List" component={ReportsList} />
+      <Stack.Screen name="Report" component={Report} />
     </AdminStack.Navigator>
   )
 }

@@ -111,9 +111,6 @@ export default function LoginScreen({navigation}) {
             else {
                 console.log("Error", error)
             }})
-            //.then(storeEmail(user.email)).then(storeRole(role))
-
-            //navigation.navigate('Profile Page');
         })
         .catch((error) => {
             const errorCode = error.code;

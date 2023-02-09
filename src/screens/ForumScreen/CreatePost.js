@@ -20,8 +20,6 @@ export default function CreatePost ( {route, navigation} ) {
     const [title, setTitle] = useState('');
     const [section, setSection] = useState('');
     const [description, setDescription] = useState('');
-    const [forumSections, setForumSections] = useState([]);
-    const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const datetime = new Date();
 
     const getUsername = async () => {
@@ -39,17 +37,7 @@ export default function CreatePost ( {route, navigation} ) {
     }
     getUsername();
 
-    const getSections = async () => {
-        const querySnapshot = await getDocs(collection(db, "forum sections"));
-        querySnapshot.forEach(docSnap => {
-            forumSections.push({label: docSnap.data().name, value: docSnap.data().name})
-        })
-        setLoading(false)
-    }
 
-    useEffect(() => {
-        getSections();
-    }, [forumSections]);
 
     const onSubmitPress = async () => {
         try {
@@ -67,11 +55,6 @@ export default function CreatePost ( {route, navigation} ) {
             console.log("Error adding Post: ", e);
         }
     }
-
-    if (loading) {
-        return <ActivityIndicator />;
-    }
-
 
     return (
         <View style={styles.container}>

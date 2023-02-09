@@ -74,12 +74,13 @@ export async function PageContent(document, name) {
     console.log(`${name} Added to Page Content`)
 }
 
-export async function report(activityType, addedBy, content, reportedBy) {
-    const ref = doc(db, "reports", content);
+export async function report(activityType, addedBy, content, reportedBy, name) {
+    const ref = doc(db, "reports", name);
         try {
         await setDoc (ref, {
             activityType: activityType,
             addedBy: addedBy,
+            name: name,
             content: content,
             reportedBy: reportedBy
         })

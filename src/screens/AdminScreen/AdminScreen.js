@@ -106,10 +106,9 @@ export default function AdminScreen ({navigation}) {
             title="Forum"
             left={props => <List.Icon{...props} icon="folder"/>}>
                 <List.Item title="Manage Forum Sections" onPress={() => navigation.navigate('Manage Forum Sections')}/>
-                <List.Item title="Create thread" onPress={() => navigation.navigate('Create Post')}/>
-                <List.Item title="Delete thread" />
-                <List.Item title="View threads" />
-                <List.Item title="View reports" />
+                <List.Item title="Delete Post & replies" onPress={() => navigation.navigate('Delete Forum Post List')}/>
+                <List.Item title="View Forum" onPress={() => navigation.navigate('Forum Page')}/>
+                <List.Item title="View reports" onPress={() => navigation.navigate('Reports List')}/>
         </List.Accordion>
         </List.Section>
 
@@ -126,37 +125,12 @@ export default function AdminScreen ({navigation}) {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}
-            title ="Settings"
-        >
-            <Text style={styles.text}>Settings</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}
             title ="Sign Out"
             onPress={() => onSignout()}
         >
             <Text style={styles.text}>Sign Out</Text>
         </TouchableOpacity>
         </ScrollView>
-        </View>
-    )
-    
-    return (
-        <View>
-        <TouchableOpacity style={styles.button}
-            title ="List Of Users"
-            onPress={() =>
-                navigation.navigate('List Of Users')
-            }
-        >
-            <Text style={styles.text}>List Of Users</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}
-            title ="Sign Out"
-            onPress={() => onSignout()}
-        >
-            <Text style={styles.text}>Sign Out</Text>
-        </TouchableOpacity>
         </View>
     )
 }

@@ -168,7 +168,7 @@ export default function EditAttraction ( { route, navigation }) {
                     language: newLanguage,
                     TNC: newTNC,
                     images: newImages
-                });
+                }, {merge:true});
                 navigation.navigate('BO Page')
             }
             catch (e) {

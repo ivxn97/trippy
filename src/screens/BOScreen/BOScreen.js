@@ -114,12 +114,6 @@ export default function BOScreen ({navigation}) {
         <View>
             <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
                 <Text style={styles.Heading}>Welcome, Business Owner!</Text>
-                <TouchableOpacity style={styles.button}
-                    title="View Profile"
-                >
-                    <Text style={styles.text}>View Profile</Text>
-                </TouchableOpacity>
-
                 {paidTours ? (
                 <TouchableOpacity style={styles.button}
                     title="Tours"
@@ -157,11 +151,6 @@ export default function BOScreen ({navigation}) {
                     onPress={() =>navigation.navigate("BO Deals List")}
                 >
                     <Text style={styles.text}>My Deals</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}
-                    title="Settings"
-                >
-                    <Text style={styles.text}>Settings</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}
                     title ="Sign Out"

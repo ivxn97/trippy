@@ -538,7 +538,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -603,7 +603,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -668,7 +668,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -734,7 +734,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -800,7 +800,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -866,7 +866,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -931,7 +931,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -996,7 +996,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -1061,7 +1061,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -1126,7 +1126,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -1191,7 +1191,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >
@@ -1256,7 +1256,7 @@ export default function ManageTypes({ navigation, route }) {
                         transparent={false}
                         visible={isModalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            
                             setModalVisible(false);
                         }}
                     >

@@ -58,7 +58,8 @@ export default function CreatePost ( {route, navigation} ) {
                 title: title,
                 section: sectionName,
                 description: description,
-                datetime: datetime
+                datetime: datetime,
+                likedBy: ''
             });
             navigation.replace('Forum Page')
         }

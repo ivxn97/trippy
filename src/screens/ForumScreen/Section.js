@@ -100,7 +100,8 @@ export default function Section ({ route, navigation }) {
         return (
             <TouchableHighlight
                 underlayColor="#C8c9c9"
-                onPress={() => {navigation.navigate('Thread', {title : item.title, description: item.description, section: item.section, addedBy: item.addedBy})}}>
+                onPress={() => {navigation.navigate('Thread', {title : item.title, description: item.description, 
+                section: item.section, addedBy: item.addedBy, likedBy: item.likedBy, datetime: item.datetime})}}>
                 <View style={styles.list}>
                 <Text>{item.title}</Text>
                 <Text>Posted By {item.addedBy}</Text>

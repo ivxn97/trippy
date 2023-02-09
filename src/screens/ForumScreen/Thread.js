@@ -2,21 +2,24 @@ import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Dimensions, Image, Text, TextInput, TouchableOpacity, View, 
     StyleSheet, Share, FlatList, SafeAreaView } from 'react-native';    
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, query, where, getDocs, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import { db } from '../../../config';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import moment from "moment";
 
 export default function Thread({route, navigation}) {
-    const {title, description, section, addedBy} = route.params;
+    const {title, description, section, addedBy, likedBy, datetime} = route.params;
+    console.log(datetime)
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState('');
     const [registeredButton, setRegisteredButton] = useState(true);
     const [username, setUsername] = useState('');
     const [reply, setReply] = useState([]); // Initial empty array of replies
-
+    const [userLiked, setUserLiked] = useState(false)
+    const [likedArr, setLikedArr] = useState(likedBy)
 
     const getEmail = async () => {
         try {
@@ -40,18 +43,36 @@ export default function Thread({route, navigation}) {
             const username = await AsyncStorage.getItem('username');
             if (username !== null) {
                 setUsername(username);
-                if (addedBy == username) {
-                    setDisabledButton(false)
+                if (likedBy.includes(username)) {
+                    setUserLiked(true);
                 }
             }
             else {
-                setDisabledButton(true)
                 console.log("No Username Selected at Login")
             }
         } catch (error) {
             console.log(error)
         }
     }
+
+    const onLike = async () => {
+        if (!likedArr.includes(username)) {
+            await updateDoc (doc(db, "forum", title), {
+                likedBy: arrayUnion(username)
+            })
+            likedArr.push(username)
+            setUserLiked(true)
+        }
+        else if (likedArr.includes(username)) {
+            await updateDoc (doc(db, "forum", title), {
+                likedBy: arrayRemove(username)
+            })
+            const arrFilter = likedArr.filter(item => item !== username)
+            setLikedArr(arrFilter)
+            setUserLiked(false)
+        }
+    }
+
 
     useEffect(async () => {
         const q = query(collection(db, "forum reply"), where('title', '==', title))
@@ -109,7 +130,7 @@ export default function Thread({route, navigation}) {
                 <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonSmall}  onPress={() => {navigation.navigate('Edit Post', {title : title, description: description,
                             section: section, addedBy: addedBy})}}>
-                    <Text style={styles.buttonSmallListText}>Edit</Text>
+                    <Text style={styles.buttonSmallListText}>Report</Text>
                 </TouchableOpacity>
             </View>
 
@@ -122,7 +143,7 @@ export default function Thread({route, navigation}) {
                 <View style={{ flexDirection:"row" }}>
                         <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
                         disabled ={registeredButton} onPress={() => onLike()}>
-                                <Text style={styles.buttonSmallText}>Like</Text>
+                                <Text style={styles.buttonSmallText}>{userLiked ? 'Liked' : 'Like'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]} 
                         disabled ={registeredButton} onPress={() => {navigation.navigate('Create Reply', {title : title})}}>
@@ -131,7 +152,7 @@ export default function Thread({route, navigation}) {
                         <TouchableOpacity style={styles.buttonSmall} onPress={() => onShare()}>
                                 <Text style={styles.buttonSmallText}>Share</Text>
                         </TouchableOpacity>
-                    </View>
+                        </View>
 
                 {/* FlatList -- replies */}
                 
@@ -153,8 +174,12 @@ export default function Thread({route, navigation}) {
                         <Text style={styles.Heading}>{JSON.stringify(title).replace(/"/g,"")}</Text>
             
                         {/* buttons */}
-                        <View style={{ flexDirection:"row"}}>
-                    </View>
+                        <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
+                        <TouchableOpacity style={styles.buttonSmall}  onPress={() => {navigation.navigate('Edit Post', {title : title, description: description,
+                                    section: section, addedBy: addedBy})}}>
+                            <Text style={styles.buttonSmallListText}>Edit</Text>
+                        </TouchableOpacity>
+                        </View>
             
                         {/* details */}
                         <Text style={styles.textNB}>Title: {JSON.stringify(title).replace(/"/g,"")}</Text>

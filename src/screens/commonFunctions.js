@@ -1,4 +1,4 @@
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
 import { db } from '../../config';
 import React, { useState } from 'react';
 import { TextInput } from 'react-native';
@@ -72,4 +72,10 @@ export async function PageContent(document, name) {
     })
     alert(`${name} Added to Page Content`)
     console.log(`${name} Added to Page Content`)
+}
+
+export async function report(activityType, addedBy, content, reportedBy) {
+    const ref = doc(db, "reports", content);
+
+    await setDoc
 }

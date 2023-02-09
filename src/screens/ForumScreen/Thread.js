@@ -178,7 +178,7 @@ export default function Thread({route, navigation}) {
                         {/* buttons */}
                         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                         <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}  
-                        disabled ={registeredButton} onPress={() => report("Forum Post", addedBy, description, email, title)}>
+                        disabled ={registeredButton} onPress={() => report("forum", addedBy, description, email, title)}>
                             <Text style={styles.buttonSmallListText}>Report</Text>
                         </TouchableOpacity>
                         </View>

@@ -7,10 +7,9 @@ import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
 import * as WebBrowser from 'expo-web-browser';
 import {bookmark, itinerary} from '../commonFunctions';
-import ReviewScreen from '../ReviewScreen/ReviewScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-import { set } from 'react-native-reanimated';
+import { report } from '../commonFunctions';
 
 export default function Details({route, navigation}) {
     const {activityType, name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
@@ -229,11 +228,16 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
-                        <Text style={styles.buttonSmallText}>Book</Text>
+                disabled ={registeredButton} onPress={() => report("restaurants", addedBy, description, email, name)}>
+                        <Text style={styles.buttonSmallText}>Report</Text>
                 </TouchableOpacity>
             </View>
+            <Text>{"\n"}{"\n"}{"\n"}</Text>
             </ScrollView>
+            <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0 : 1, position: 'absolute', bottom:0}]}
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
+                        <Text style={[styles.textNB, {fontWeight:'bold'}]}>Book</Text>
+            </TouchableOpacity>
         </View>
         )
     }
@@ -302,13 +306,18 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, timeSlots: timeSlots, 
-                        startingTime: startingTime, endingTime: endingTime, duration: duration, price: price, groupSize: groupSize, capacity: capacity})}} title="Booking" >
-                        <Text style={styles.buttonSmallText}>Book</Text>
+                disabled ={registeredButton} onPress={() => report("paidtours", addedBy, description, email, name)}>
+                        <Text style={styles.buttonSmallText}>Report</Text>
                 </TouchableOpacity>
             </View>
             <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
+            <Text>{"\n"}{"\n"}{"\n"}</Text>
             </ScrollView>
+            <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0 : 1, position: 'absolute', bottom:0}]}
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, timeSlots: timeSlots, 
+                    startingTime: startingTime, endingTime: endingTime, duration: duration, price: price, groupSize: groupSize, capacity: capacity})}} title="Booking">
+                        <Text style={[styles.textNB, {fontWeight:'bold'}]}>Book</Text>
+            </TouchableOpacity>
         </View>
         )
     }
@@ -407,8 +416,12 @@ Download the App here: URL`})
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                disabled ={registeredButton} onPress={() => report("hotels", addedBy, description, email, name)}>
+                        <Text style={styles.buttonSmallText}>Report</Text>
+                </TouchableOpacity>
                 </View>
-                <Text>{"\n"}{"\n"}</Text>
+                <Text>{"\n"}{"\n"}{"\n"}</Text>
                 </ScrollView>
                 <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0 : 1, position: 'absolute', bottom:0}]}
                 disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, 
@@ -482,12 +495,17 @@ Download the App here: URL`})
                             <Text style={styles.buttonSmallText}>Read Reviews</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
-                    disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
-                            <Text style={styles.buttonSmallText}>Book</Text>
+                    disabled ={registeredButton} onPress={() => report("attractions", addedBy, description, email, name)}>
+                        <Text style={styles.buttonSmallText}>Report</Text>
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
+                <Text>{"\n"}{"\n"}{"\n"}</Text>
                 </ScrollView>
+                <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0 : 1, position: 'absolute', bottom:0}]}
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
+                        <Text style={[styles.textNB, {fontWeight:'bold'}]}>Book</Text>
+                </TouchableOpacity>
             </View>
         )
     }

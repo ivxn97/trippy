@@ -118,7 +118,7 @@ export default function EditReply ( {route, navigation} ) {
                 <Text style={styles.desc}>{newDescription}</Text>
                 <TouchableOpacity
                         style={styles.button}
-                        onPress={() => report("Forum Reply", addedBy, newDescription, email, comment_id)}>
+                        onPress={() => report("forum reply", addedBy, newDescription, email, comment_id)}>
                         <Text style={styles.buttonTitle}>Report</Text>
                 </TouchableOpacity>
                 </KeyboardAwareScrollView>

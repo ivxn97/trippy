@@ -51,6 +51,7 @@ Download the App here: URL`})
     return (
         <View style={styles.detailsContainer}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
+            <Text style={styles.Heading}>{JSON.stringify(discount).replace(/"/g,"")}% off</Text>
             <Text style={[styles.Heading, {fontSize:21}]}>Applicable for: {JSON.stringify(businessName).replace(/"/g,"")}</Text>
             <Text style={[styles.Heading, {fontSize:21}]}>Expires {Moment(expiry.toDate()).fromNow()}</Text>
             <View style={{ flexDirection:"row" }}>
@@ -58,7 +59,6 @@ Download the App here: URL`})
                         <Text style={styles.buttonSmallText}>Share</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.textNB}>Discount: {JSON.stringify(discount).replace(/"/g,"")}% off</Text>
             <Text style={styles.textNB}>{JSON.stringify(quantity).replace(/"/g,"")} remaining</Text>
             <Text style={styles.textNB}>Type: {JSON.stringify(dealType).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}</Text>

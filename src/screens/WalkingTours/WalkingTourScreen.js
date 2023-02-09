@@ -155,6 +155,10 @@ export default function WalkingTourScreen({ route, navigation }) {
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                disabled ={registeredButton} onPress={() => report("walkingtours", addedBy,  "description: " + description + "| tips: " + tips, email, name)}>
+                        <Text style={styles.buttonSmallText}>Report</Text>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('WT Map View', {location:location})}>
                         <Text style={styles.buttonSmallText}>Start Walk</Text>
                 </TouchableOpacity>

@@ -108,9 +108,13 @@ export default function AdminScreen ({navigation}) {
                 <List.Item title="Manage Forum Sections" onPress={() => navigation.navigate('Manage Forum Sections')}/>
                 <List.Item title="Delete Post & replies" onPress={() => navigation.navigate('Delete Forum Post List')}/>
                 <List.Item title="View Forum" onPress={() => navigation.navigate('Forum Page')}/>
-                <List.Item title="View reports" onPress={() => navigation.navigate('Reports List')}/>
         </List.Accordion>
         </List.Section>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Reports List')}
+            title ="View Reports"
+        >
+            <Text style={styles.text}>View Reports</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Page Content Choice')}
             title ="Page Contents"

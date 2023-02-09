@@ -75,8 +75,9 @@ export default function LOLGuideList ({ navigation }) {
             renderItem={({ item }) => (
         <TouchableHighlight
             underlayColor="#C8c9c9"
-            onPress={() => {navigation.navigate('Guide Screen', {name: item.name, location: item.location,
-                                                                        mrt: item.mrt, tips: item.tips, description: item.description, images: item.images})}}>
+            onPress={() => {navigation.navigate('Guide Screen', {name : item.name, location: item.location,
+                mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType, images: item.images
+                , username: item.username, date: item.date, addedBy: item.addedBy})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
         </View>

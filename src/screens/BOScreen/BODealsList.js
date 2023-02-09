@@ -99,7 +99,7 @@ export default function BODeals( { navigation }) {
         underlayColor="#C8c9c9"
         onPress={() => {navigation.navigate('Deal detail', {name: item.dealname, dealType: item.type, 
           code: item.code, description: item.description, discount: item.discount, quantity: item.quantity, TNC: item.TNC,
-          businessName: item.businessName, expiry: item.expiry, images: item.images})}}>
+          businessName: item.businessName, expiry: item.expiry})}}>
           <View style={styles.list}>
             <Text>{item.dealname}</Text>
             <Text>{item.discount}% off</Text>

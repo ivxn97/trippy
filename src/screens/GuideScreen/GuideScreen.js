@@ -11,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Moment from 'moment';
 
 export default function GuideScreen({ route, navigation }) {
-    const { name, location, mrt, tips, description, activityType, username, date } = route.params;
+    const { name, location, mrt, tips, description, activityType, username, date, addedBy } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
     const [images, setImages] = useState([]);
@@ -152,6 +152,10 @@ export default function GuideScreen({ route, navigation }) {
             <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={()=> onReview()}>
                         <Text style={styles.buttonSmallText}>Read Reviews</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
+                disabled ={registeredButton} onPress={() => report("guides", addedBy, "description: " + description + "| tips: " + tips, email, name)}>
+                        <Text style={styles.buttonSmallText}>Report</Text>
                 </TouchableOpacity>
             </View>
         </View>

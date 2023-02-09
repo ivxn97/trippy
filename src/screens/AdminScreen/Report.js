@@ -14,58 +14,29 @@ export default function Report ( {route, navigation} ) {
     const [description, setDescription] = useState('')
 
     const remove = async () => {
-        if (activityType == "Forum Post") {
-            try {
-                await deleteDoc(doc(db, "forum", name));
-                await deleteDoc(doc(db, "reports", name));
-                alert("Content Removed")
-                navigation.navigate('Admin page')
-            }
-            catch (e) {
-                console.log(e);
-            }
+        try {
+            await deleteDoc(doc(db, activityType, name));
+            await deleteDoc(doc(db, "reports", name));
+            alert("Content Removed")
+            navigation.navigate('Admin page')
         }
-        else if (activityType == "Forum Reply") {
-            try {
-                await deleteDoc(doc(db, "forum reply", name));
-                await deleteDoc(doc(db, "reports", name));
-                alert("Content Removed")
-                navigation.navigate('Admin page')
-            }
-            catch (e) {
-                console.log(e);
-            }
+        catch (e) {
+            console.log(e);
         }
     }
 
     const removeAndSuspend = async () => {
-        if (activityType == "Forum Post") {
-            try {
-                await deleteDoc(doc(db, "forum", name));
-                await setDoc(doc(db, "users", addedBy), {
-                    status: "Suspended"
-                }, {merge: true})
-                await deleteDoc(doc(db, "reports", name));
-                alert("Content Removed and User suspended")
-                navigation.navigate('Admin page')
-            }
-            catch (e) {
-                console.log(e);
-            }
+        try {
+            await deleteDoc(doc(db, activityType, name));
+            await setDoc(doc(db, "users", addedBy), {
+                status: "Suspended"
+            }, {merge: true})
+            await deleteDoc(doc(db, "reports", name));
+            alert("Content Removed and User suspended")
+            navigation.navigate('Admin page')
         }
-        else if (activityType == "Forum Reply") {
-            try {
-                await deleteDoc(doc(db, "forum reply", name));
-                await setDoc(doc(db, "users", addedBy), {
-                    status: "Suspended"
-                }, {merge: true})
-                await deleteDoc(doc(db, "reports", name));
-                alert("Content Removed and User suspended")
-                navigation.navigate('Admin page')
-            }
-            catch (e) {
-                console.log(e);
-            }
+        catch (e) {
+            console.log(e);
         }
     }
 

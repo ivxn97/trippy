@@ -24,8 +24,6 @@ export default function ProfilePage({ navigation, route }) {
             await setDoc(doc(db, "users", email), {
                 firstName: first,
                 lastName: last,
-                username: newUsername,
-                email: newEmail,
                 bio: newBio,
 
             }, { merge: true });
@@ -123,30 +121,16 @@ export default function ProfilePage({ navigation, route }) {
                 <View>
                     <Text style={styles.normalText}>Username</Text>
                 </View>
-                <TextInput 
-                    placeholder='username'
-                    placeholderTextColor="#aaaaaa"
-                    style={styles.roleContainer}
-                    onChangeText={(Text) => setNewUsername(Text)}
-                    value={newUsername}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                >
-                </TextInput>
+                <View style={styles.roleContainer}>
+                    <Text>{username}</Text>
+                </View>
 
                 <View>
                     <Text style={styles.normalText}>Email Address</Text>
                 </View>
-                <TextInput
-                    placeholder='email'
-                    placeholderTextColor="#aaaaaa"
-                    style={styles.roleContainer}
-                    onChangeText={(Text) => setNewEmail(Text)}
-                    value={newEmail}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                >
-                </TextInput>
+                <View style={styles.roleContainer}>
+                    <Text>{email}</Text>
+                </View>
                 <View>
                     <Text style={styles.normalText}>Roles</Text>
                 </View>

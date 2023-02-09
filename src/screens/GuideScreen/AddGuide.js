@@ -28,6 +28,7 @@ export default function AddGuide({ navigation }) {
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
     const [imageUploaded, setImageUploaded] = useState(false)
+    const date = new Date()
 
     const storage = getStorage();
 
@@ -191,7 +192,8 @@ export default function AddGuide({ navigation }) {
                     description: description,
                     activityType: 'guides',
                     section: section,
-                    images: images
+                    images: images,
+                    date: date
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')

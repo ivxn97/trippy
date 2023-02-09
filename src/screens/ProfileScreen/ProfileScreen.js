@@ -29,7 +29,7 @@ export default function ProfileScreen ( {navigation} ) {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
                 setEmail(email);
-                console.log(email)
+                console.log("Email: ", email)
             }
             else {
                 console.log("No Email Selected at Login")
@@ -94,7 +94,6 @@ export default function ProfileScreen ( {navigation} ) {
     }
     
     useEffect(() => {
-        getEmail()
         checkExpiry();
         checkDealExpiry();
         if (email) {
@@ -180,7 +179,7 @@ export default function ProfileScreen ( {navigation} ) {
 
     useFocusEffect(React.useCallback(() => 
     {
-        
+        getEmail()
         getRole();
         console.log("Current Role:", role)
     },[role]));

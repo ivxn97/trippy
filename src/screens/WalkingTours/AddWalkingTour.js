@@ -28,6 +28,7 @@ export default function AddWalkingTour({ navigation }) {
     const [imageCount, setImageCount] = useState(0)
     const [images, setImages] = useState([]);
     const [imageUploaded, setImageUploaded] = useState(false)
+    const date = new Date()
     const storage = getStorage();
 
     const typePlaceholder = {
@@ -189,7 +190,8 @@ export default function AddWalkingTour({ navigation }) {
                     activityType: 'walkingtours',
                     section: section,
                     expired: false,
-                    images: images
+                    images: images,
+                    date: date
                 });
                 //console.log("Document written with ID: ", docRef.id);
                 navigation.navigate('Profile Page')

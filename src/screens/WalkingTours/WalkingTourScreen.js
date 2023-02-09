@@ -8,9 +8,10 @@ import * as WebBrowser from 'expo-web-browser';
 import {bookmark, itinerary} from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import Moment from 'moment';
 
 export default function WalkingTourScreen({ route, navigation }) {
-    const { addedBy, name, location, tips, description, activityType, username } = route.params;
+    const { addedBy, name, location, tips, description, activityType, username, date } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
     const [images, setImages] = useState([]);
@@ -120,7 +121,7 @@ export default function WalkingTourScreen({ route, navigation }) {
                 <View style={{flexDirection: 'row', alignItems: 'center', marginTop:10, marginBottom:5}}>
                 <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
                 <View>
-                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Added By {username}</Text>
+                <Text style={{textAlign: 'center', paddingHorizontal:8, fontWeight: 'bold'}}>Added By {username} on {Moment(date.toDate()).format('DD MMM YYYY')}</Text>
                 </View>
                 <View style={{flex: 1, height: 1, backgroundColor: 'black'}} />
                 </View>

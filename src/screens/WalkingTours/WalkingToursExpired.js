@@ -100,7 +100,8 @@ export default function WalkingToursExpired ({ route, navigation }) {
             <TouchableHighlight
                 underlayColor="#C8c9c9"
                 onPress={() => {navigation.navigate('Walking Tour Screen', {name : item.name, location: item.location, 
-                    tips: item.tips, description: item.description, activityType: item.activityType, username: item.username})}}>
+                    tips: item.tips, description: item.description, activityType: item.activityType, images: item.images,
+                    username: item.username, date: item.date})}}>
                 <View style={styles.list}>
                 <Text>{item.name}</Text>
                 <Text>Posted By {item.username}</Text>

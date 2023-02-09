@@ -100,7 +100,8 @@ export default function GuideSectionExpired ({ route, navigation }) {
             <TouchableHighlight
                 underlayColor="#C8c9c9"
                 onPress={() => {navigation.navigate('Guide Screen', {name : item.name, location: item.location,
-                     mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType, username: item.username})}}>
+                    mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType, images: item.images
+                    , username: item.username, date: item.date})}}>
                 <View style={styles.list}>
                 <Text>{item.name}</Text>
                 <Text>Posted By {item.username}</Text>

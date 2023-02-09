@@ -79,10 +79,6 @@ export default function EditPost ( {route, navigation} ) {
                 <KeyboardAwareScrollView
                     style={{ flex: 1, width: '100%' }}
                     keyboardShouldPersistTaps="always">
-                    {/*<Image
-                        style={styles.logo}
-                        source={require('../../../assets/icon.png')}
-                    />*/}
                 <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
                 <Text style={styles.text}>Section: {JSON.stringify(section).replace(/"/g,"")}</Text>
                 <Text style={styles.text}>Description:</Text>
@@ -117,10 +113,6 @@ export default function EditPost ( {route, navigation} ) {
                 <KeyboardAwareScrollView
                     style={{ flex: 1, width: '100%' }}
                     keyboardShouldPersistTaps="always">
-                    {/*<Image
-                        style={styles.logo}
-                        source={require('../../../assets/icon.png')}
-                    />*/}
                 <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
                 <Text style={styles.text}>Description:</Text>
                 <Text style={styles.desc}>{newDescription}</Text>

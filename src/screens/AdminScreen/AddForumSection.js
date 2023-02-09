@@ -70,10 +70,6 @@ export default function AddForumSection ( {navigation} ) {
             <KeyboardAwareScrollView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
             <Text style={styles.text}>Sub-Forum Name:</Text>
             <TextInput
                 style={styles.input}

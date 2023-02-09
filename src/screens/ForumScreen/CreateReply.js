@@ -59,10 +59,6 @@ export default function CreateReply ( {route, navigation} ) {
             <KeyboardAwareScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                {/*<Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />*/}
             <Text style={styles.text}>Post Title: {JSON.stringify(title).replace(/"/g,"")}</Text>
             <Text style={styles.text}>Description:</Text>
             <FilteredTextInput

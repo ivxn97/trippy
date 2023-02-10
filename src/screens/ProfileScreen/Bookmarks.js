@@ -171,7 +171,7 @@ export default function Bookmarks ( {navigation} ) {
                     <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Search Bookmarks')}>
                         <Text style={styles.buttonSmallListText}>Search</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonListRight}
+                    <TouchableOpacity style={styles.buttonSmall}
                     onPress={() => {navigation.navigate('Delete Bookmark')}}>
                     <Text style={styles.buttonSmallListText}>Remove</Text>
                     </TouchableOpacity>

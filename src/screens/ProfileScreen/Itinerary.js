@@ -191,7 +191,7 @@ export default function Itinerary({ navigation }) {
     }
 
     const onSubmitPress = async () => {
-        const submitList = completedArr.map(item => ({ name: item.name, position: item.position }))
+        const submitList = filteredData.map((item, index) => {return {name: item.name, position: index + 1}})
         console.log("submitted list:", submitList)
         try {
             await setDoc(doc(db, "users", email), {
@@ -286,7 +286,7 @@ export default function Itinerary({ navigation }) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 value={search}
-                onChangeText={(text) => searchFilter(text, completedArr)}
+                onChangeText={(text) => searchFilter(text, filteredData)}
             />
             <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonListLeft} onPress={() => navigation.navigate('Delete Itinerary')}>
@@ -300,7 +300,7 @@ export default function Itinerary({ navigation }) {
                 data={filteredData}
                 extraData={filteredData}
                 renderItem={renderItem}
-                onDragEnd={({ data }) => setCompletedArr(data)}
+                onDragEnd={({ data }) => setfilteredData(data)}
                 keyExtractor={(item) => item.position}
             />
             <TouchableOpacity

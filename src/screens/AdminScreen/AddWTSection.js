@@ -46,15 +46,15 @@ export default function AddWTSection ( {navigation} ) {
     getRole();
 
     const onSubmitPress = async () => {
-        if (name !== '' && newDescription !== '') {
+        if (name !== '' && description !== '') {
             if (role == 'Admin') {
                 try {
-                    await setDoc(doc(db, "forum sections", subforum), {
+                    await setDoc(doc(db, "walking tour sections", name), {
                         name: name,
                         addedBy: email,
-                        description: newDescription,
-                    }, {merge: true});
-                    alert('Forum Section Edited Successfully')
+                        description: description,
+                    });
+                    alert('Walking Tour Section Added')
                     navigation.navigate('Admin Page')
                 }
                 catch (e) {

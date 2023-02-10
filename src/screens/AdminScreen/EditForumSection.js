@@ -45,24 +45,29 @@ export default function EditForumSection ( {route, navigation} ) {
     getRole();
 
     const onSubmitPress = async () => {
-        if (role == 'Admin') {
-            try {
-                await setDoc(doc(db, "forum sections", subforum), {
-                    name: name,
-                    addedBy: email,
-                    description: newDescription,
-                }, {merge: true});
-                alert('Forum Section Edited Successfully')
-                navigation.navigate('Admin Page')
+        if (name !== '' && newDescription !== '') {
+            if (role == 'Admin') {
+                try {
+                    await setDoc(doc(db, "forum sections", subforum), {
+                        name: name,
+                        addedBy: email,
+                        description: newDescription,
+                    }, {merge: true});
+                    alert('Forum Section Edited Successfully')
+                    navigation.navigate('Admin Page')
+                }
+                catch (e) {
+                    console.log(e)
+                }
             }
-            catch (e) {
-                console.log(e)
+            else {
+                alert('Wrong Role')
             }
-        }
-        else {
-            alert('Wrong Role')
-        }
-    }
+       }
+       else {
+           alert('Please fill up all required information')
+       }
+   }
 
     return (
         <View style={styles.container}>

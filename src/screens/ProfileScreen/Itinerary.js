@@ -251,28 +251,29 @@ export default function Itinerary({ navigation }) {
 
     const renderItem = ({ item, drag, isActive }) => {
         return (
-          <ScaleDecorator>
-            <TouchableOpacity
-              activeOpacity={1}
-              onLongPress={drag}
-              disabled={isActive}
-              style={styles.list}
-              onPress={() => {
-                navigation.navigate('Details', {
-                    name: item.name, roomTypes: item.roomTypes,
-                    priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
-                    checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                    language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine, 
-                    price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
-                    closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
-                    startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
-                    addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address, images: item.images
-                })
-                }}
-            >
-              <Text>{item.position}. {item.name}</Text>
-            </TouchableOpacity>
-          </ScaleDecorator>
+            <ScaleDecorator>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPressIn={drag}
+                    onPressOut={drag}
+                    disabled={isActive}
+                    style={styles.list}
+                    onPress={() => {
+                        navigation.navigate('Details', {
+                            name: item.name, roomTypes: item.roomTypes,
+                            priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
+                            checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures,
+                            language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine,
+                            price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                            closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType,
+                            startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
+                            addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address, images: item.images
+                        })
+                    }}
+                >
+                    <Text>{item.position}. {item.name}</Text>
+                </TouchableOpacity>
+            </ScaleDecorator>
         )
     };
 
@@ -286,7 +287,7 @@ export default function Itinerary({ navigation }) {
                 underlineColorAndroid="transparent"
                 autoCapitalize="sentences"
                 value={search}
-                onChangeText={(text) => searchFilter(text, filteredData)}
+                onChangeText={(text) => searchFilter(text, completedArr)}
             />
             <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                 <TouchableOpacity style={styles.buttonListLeft} onPress={() => navigation.navigate('Delete Itinerary')}>

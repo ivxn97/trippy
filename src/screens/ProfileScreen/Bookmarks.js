@@ -176,7 +176,7 @@ export default function Bookmarks ( {navigation} ) {
                     <Text style={styles.buttonSmallListText}>Remove</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.title}>Restaurants</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Restaurants</Text>
                 <FlatList
                     data={restaurants}
                     extraData={restaurants}
@@ -193,7 +193,7 @@ export default function Bookmarks ( {navigation} ) {
                     </TouchableHighlight>
                     )}
                 />
-                <Text style={styles.title}>Hotels</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Hotels</Text>
                 <FlatList
                 data={hotels}
                 extraData={hotels}
@@ -215,7 +215,7 @@ export default function Bookmarks ( {navigation} ) {
                     </TouchableHighlight>
                 )}
                 />
-                <Text style={styles.title}>Paid Tours</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Paid Tours</Text>
                 <FlatList
                 data={paidTours}
                 extraData={paidTours}
@@ -233,7 +233,7 @@ export default function Bookmarks ( {navigation} ) {
                     </TouchableHighlight>
                 )}
                 />
-                <Text style={styles.title}>Attractions</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Attractions</Text>
                 <FlatList
                 data={attractions}
                 extraData={attractions}
@@ -250,7 +250,7 @@ export default function Bookmarks ( {navigation} ) {
                     </TouchableHighlight>
                 )}
                 />
-                <Text style={styles.title}>Guides</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Guides</Text>
                 <FlatList
                     data={guides}
                     extraData={guides}

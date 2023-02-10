@@ -10,22 +10,6 @@ import { sortFiles } from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const storage = getStorage();
 
-
-
-
-function Item({ title, onPress }) {
-    return (
-        <View style={styles.item}>
-            <Text style={styles.title}>{title}</Text>
-            <TouchableOpacity onPress={onPress}>
-                <Text style={styles.deleteButton}>Delete</Text>
-            </TouchableOpacity>
-        </View>
-    );
-}
-
-
-
 export default function ActiveThreadDelete({ navigation }) {
     const [username, setUsername] = useState('');
     const [loading, setLoading] = useState(true); // Set loading to true on component mount

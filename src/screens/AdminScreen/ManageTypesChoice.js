@@ -10,7 +10,7 @@ export default function ManageTypesChoice({ navigation }) {
         <View>
             <View >
                 <ScrollView>
-                <Text style={styles.title}>Attractions</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Attractions</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="attractionType"
                     onPress={() =>
@@ -21,7 +21,7 @@ export default function ManageTypesChoice({ navigation }) {
                 </TouchableOpacity>
 
 
-                <Text style={styles.title}>Hotels</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Hotels</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="amenitiesData"
                     onPress={() =>
@@ -49,7 +49,7 @@ export default function ManageTypesChoice({ navigation }) {
 
 
             
-                <Text style={styles.title}>PaidTours</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>PaidTours</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="paidTourType"
                     onPress={() =>
@@ -61,7 +61,7 @@ export default function ManageTypesChoice({ navigation }) {
 
 
          
-                <Text style={styles.title}>Restaurants</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Restaurants</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="typesOfCuisine"
                     onPress={() =>
@@ -73,7 +73,7 @@ export default function ManageTypesChoice({ navigation }) {
 
 
             
-                <Text style={styles.title}>Registered User Page</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Registered User Page</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="interestTypes"
                     onPress={() =>
@@ -85,7 +85,7 @@ export default function ManageTypesChoice({ navigation }) {
 
 
      
-                <Text style={styles.title}>Registration LOL</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Registration LOL</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="socialMediaPlatform"
                     onPress={() => { navigation.navigate('Manage Types', { type: 'socialMediaPlatform' }) }
@@ -96,7 +96,7 @@ export default function ManageTypesChoice({ navigation }) {
 
 
           
-                <Text style={styles.title}>Common Fields</Text>
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Common Fields</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="ageGroup"
                     onPress={() => { navigation.navigate('Manage Types', { type: 'ageGroup' }) }

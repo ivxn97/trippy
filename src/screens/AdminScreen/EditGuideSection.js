@@ -45,24 +45,29 @@ export default function EditGuideSection ( {route, navigation} ) {
     getRole();
 
     const onSubmitPress = async () => {
-        if (role == 'Admin') {
-            try {
-                await setDoc(doc(db, "guide sections", name), {
-                    name: name,
-                    addedBy: email,
-                    description: newDescription,
-                }, {merge: true});
-                alert('Guide Section Edited Successfully')
-                navigation.navigate('Admin Page')
+        if (name !== '' && newDescription !== '') {
+            if (role == 'Admin') {
+                try {
+                    await setDoc(doc(db, "guide sections", name), {
+                        name: name,
+                        addedBy: email,
+                        description: newDescription,
+                    }, {merge: true});
+                    alert('Guide Section Edited Successfully')
+                    navigation.navigate('Admin Page')
+                }
+                catch (e) {
+                    console.log(e)
+                }
             }
-            catch (e) {
-                console.log(e)
+            else {
+                alert('Wrong Role')
             }
-        }
-        else {
-            alert('Wrong Role')
-        }
-    }
+       }
+       else {
+           alert('Please fill up all required information')
+       }
+   }
 
 
     return (

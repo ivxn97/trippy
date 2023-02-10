@@ -1,4 +1,4 @@
-import { doc, updateDoc, arrayUnion, setDoc } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, setDoc, getDoc } from "firebase/firestore";
 import { db } from '../../config';
 import React, { useState } from 'react';
 import { TextInput } from 'react-native';
@@ -18,12 +18,22 @@ export async function bookmark(document, name ) {
 
 export async function itinerary(document, name ) {
     const ref = doc(db, "users", document);
+    let itineraryArr = []
+    const docSnap = await  getDoc(ref)
+    if (docSnap.exists()) {
+        itineraryArr = docSnap.data().itinerary
+    }
 
-    await updateDoc (ref, {
-        itinerary: arrayUnion(name)
-    })
-    alert(`${name} Added to itinerary`)
-    console.log(`${name} Added to itinerary`)
+    if (itineraryArr !== null && itineraryArr.length < 11) {
+        await updateDoc (ref, {
+            itinerary: arrayUnion(name)
+        })
+        alert(`${name} Added to itinerary`)
+        console.log(`${name} Added to itinerary`)
+    }
+    else {
+        alert("You can only have a maximum of 10 activities in the itinerary")
+    }
 }
 
 export async function claimDeals(document, name ) {

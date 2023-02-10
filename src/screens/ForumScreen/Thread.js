@@ -137,7 +137,7 @@ export default function Thread({route, navigation}) {
 
                 {/* details */}
                 <Text style={styles.textNB}>Section: {JSON.stringify(section).replace(/"/g,"")}</Text>
-                <Text style={styles.textNB}>Posted: {Moment(datetime.toDate()).fromNow()}</Text>
+                <Text style={styles.textNB}>Posted By: {JSON.stringify(addedBy).replace(/"/g,"")}, {Moment(datetime.toDate()).fromNow()}</Text>
                 <Text style={styles.textNB}>Likes Count: {likedArr.length}{"\n"}</Text>
                 <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}</Text>
                 

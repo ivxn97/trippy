@@ -279,37 +279,30 @@ export default function ProfileScreen ( {navigation} ) {
                                         style={{
                                             paddingVertical: 5,
                                             fontWeight: 'bold',
-                                            marginLeft: 50,
+                                            alignSelf: "center",
                                             fontSize: 15
                                         }}>
                                         {username}
                                     </Text>
                                 </View>
-                                <View style={{ alignItems: 'center', flex: 1, marginTop: -50 }}>
+                                <View style={{ alignItems: 'center', flex: 1}}>
                                     <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{"25"}</Text>
                                     <Text>Posts</Text>
                                 </View>
-                                <View style={{ alignItems: 'center', flex: 1, marginTop: -50 }}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{"36M"}</Text>
-                                    <Text>Followers</Text>
-                                </View>
-                                <View style={{ alignItems: 'center', flex: 1, marginTop: -50 }}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{"35"}</Text>
-                                    <Text>Following</Text>
-                                </View>
-                            </View>
+                                
+                            
                             <Text style={{ 
-                                alignSelf: 'center', 
-                                marginTop: -70, 
-                                fontSize: 15, 
-                                marginLeft: 115
+                                alignItems: 'center',
+                                flex: 1,
+                                fontSize: 15,
+                                marginRight: 10,
                             }}>Role : {role}</Text>
+                            </View>
                             <Text style={{
-                                paddingVertical: 15,
-                                marginTop: 15,
                                 fontSize: 15,
                                 marginLeft: 5,
                                 marginRight: 5,
+                                marginBottom: 5,
                             }}>{bio}</Text>
                         </View>
                     </View>

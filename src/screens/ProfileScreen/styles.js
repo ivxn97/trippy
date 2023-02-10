@@ -56,7 +56,7 @@ export default StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 100,
-        marginLeft: 20,
+        marginLeft: 10,
         marginTop: -10
     },
     informationBox: {
@@ -84,6 +84,7 @@ export default StyleSheet.create({
         marginLeft: "auto",
         marginRight: "auto",
         width: "90%",
+        
         height: "auto",
         background: "#E3E3E3",
         borderRadius: 10,

@@ -255,7 +255,8 @@ export default function Itinerary({ navigation }) {
                 <View style={{ height: 100 }}>
                     <TouchableOpacity
                         activeOpacity={1}
-                        onLongPress={drag}
+                        onPressIn={drag}
+                        onPressOut={drag}
                         disabled={isActive}
                         style={styles.list}
                         onPress={() => {

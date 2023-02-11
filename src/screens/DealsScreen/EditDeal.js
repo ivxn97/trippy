@@ -28,7 +28,7 @@ export default function EditDeal ( {route, navigation} ) {
     const [newDescription, setDescription] = useState(description);
     const [newTNC, setTNC] = useState(TNC);
     const [newBusinessName, setBusinessName] = useState(businessName);
-    const [expiryDT, setExpiryDT] = useState(Moment(expiry.toDate()))
+    const [expiryDT, setExpiryDT] = useState(expiry)
     const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
     const [hotels, setHotels] = useState([]);
     const [paidTours, setPaidTours] = useState([]);
@@ -127,7 +127,6 @@ export default function EditDeal ( {route, navigation} ) {
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "deals", name), {
-                type: business,
                 businessName: newBusinessName,
                 expiry: expiryDT,
                 code: newCode,
@@ -185,19 +184,6 @@ export default function EditDeal ( {route, navigation} ) {
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
             <Text style={[styles.text, {fontSize:20}]}>Name: {JSON.stringify(name).replace(/"/g,"")}</Text>
-            <Text style={styles.text}>Business Type:</Text>
-                <RNPickerSelect
-                    style={pickerSelectStyles}
-                    useNativeAndroidPickerStyle={false}
-                    value={business}
-                    onValueChange={(value) => setBusiness(value)}
-                    items={[
-                        { label: 'Attraction', value: 'Attraction'},
-                        { label: 'Hotel', value: 'Hotel' },
-                        { label: 'Restaurant', value: 'Restaurant' },
-                        { label: 'Paid Tour', value: 'Paid Tour' },
-                    ]}
-            />
             <Text style={styles.text}>Previous Business Activity selected: {businessName}</Text>
             <TouchableOpacity
                 style={styles.button}
@@ -263,7 +249,7 @@ export default function EditDeal ( {route, navigation} ) {
                 onConfirm={handleConfirmDateTime}
                 onCancel={hideDateTimePicker}
             />
-            <Text style={styles.text}>Selected Date: {Moment(expiryDT).format('DD MMM YYYY hh:mm A')}</Text>
+            <Text style={styles.text}>Selected Date: {Moment(expiryDT.toDate()).format('DD MMM YYYY hh:mm A')}</Text>
 
            <Text style={styles.text}>Description:</Text>
             <FilteredTextInput

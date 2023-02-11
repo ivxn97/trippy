@@ -127,24 +127,31 @@ export default function AddDeal ( {navigation} ) {
     }, [shouldRun, email, mergedArr])
 
     const onSubmitPress = async () => {
-        try {
-            await setDoc(doc(db, "deals", dealname), {
-                addedBy: email,
-                dealname: dealname,
-                type: businessType,
-                businessName: businessName,
-                expiry: expiryDT,
-                code: code,
-                discount: discount,
-                quantity: quantity,
-                description: description,
-                TNC: TNC
-            });
-            
-            navigation.navigate('BO Page')
+        if (email !== '' && dealname !== '' && businessType !== '' && businessName !== '' 
+        && expiryDT !== '' && code !== '' && discount !== '' && quantity !== '' 
+        && description !== '' && TNC !== '') {
+            try {
+                await setDoc(doc(db, "deals", dealname), {
+                    addedBy: email,
+                    dealname: dealname,
+                    type: businessType,
+                    businessName: businessName,
+                    expiry: expiryDT,
+                    code: code,
+                    discount: discount,
+                    quantity: quantity,
+                    description: description,
+                    TNC: TNC
+                });
+                
+                navigation.navigate('BO Page')
+            }
+            catch (e) {
+                console.log("Error adding deal: ", e);
+            }
         }
-        catch (e) {
-            console.log("Error adding deal: ", e);
+        else {
+            alert("Please fill in all details")
         }
     }
 

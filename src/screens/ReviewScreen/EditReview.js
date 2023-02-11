@@ -60,6 +60,7 @@ export default function EditReview({route, navigation}) {
                 style={styles.desc}
                 placeholder='Comment'
                 placeholderTextColor="#aaaaaa"
+                value={newComment}
                 onChangeText={(Text) => setNewComment(Text)}
                 underlineColorAndroid="transparent"
                 autoCapitalize="none"
@@ -69,6 +70,7 @@ export default function EditReview({route, navigation}) {
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
                 placeholder={ratingPlaceholder}
+                value={newRating}
                 onValueChange={(value) => setNewRating(value)}
                 items={[
                     { label: '⭐', value: '⭐' },

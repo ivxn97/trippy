@@ -74,7 +74,7 @@ export default function ReviewDetailScreen({route, navigation}) {
                     </Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Edit Review', {name: name, review: review, index: index})}>
+                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Edit Review', {name: name, review: review, index: index, rating: rating, comment: comment})}>
                                 <Text style={styles.buttonSmallText}>Edit</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonSmall} onPress={() => onDelete()}>

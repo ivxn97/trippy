@@ -12,7 +12,6 @@ import emailjs from '@emailjs/browser';
 export default function ReviewAccount ({route, navigation}) {
     const {email, UEN, firstName, lastName, role, id, status, socialMediaHandle, socialMediaPlatform} = route.params;
     const [screenshot, setScreenshot] = useState();
-    const [reason, setReason] = useState('')
     const storage = getStorage();
 
     const getScreenshot = () => {
@@ -37,22 +36,7 @@ export default function ReviewAccount ({route, navigation}) {
     }
 
     function AllView () {
-        const [newRole, setRole] = useState('')
-        const [newStatus, setStatus] = useState('')
-    
-        //Placeholders
-        const roleP = {
-            label: 'select a role',
-            value: null,
-            color: 'black',
-        };
-    
-        const statusP = {
-            label: 'select a status',
-            value: null,
-            color: 'black',
-        };
-    
+        const [reason, setReason] = useState('')
     
         const onApprove = ()  => {
             generateOTP();

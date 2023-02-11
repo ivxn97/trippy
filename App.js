@@ -84,6 +84,17 @@ function ProfileStackScreen() {
       <Stack.Screen name="Edit Walking Tours List" component={EditWalkingToursList} />
       <Stack.Screen name="Edit Walking Tours" component={EditWalkingTour} />
       <Stack.Screen name="Itinerary Map View" component={ItineraryMapView} />
+      <Stack.Screen name="Forum Page" component={ForumScreen} />
+      <Stack.Screen name="Section" component={Section} />
+      <Stack.Screen name="Create Reply" component={CreateReply} />
+      <Stack.Screen name="Thread" component={Thread} />
+      <Stack.Screen name="Edit Reply" component={EditReply} />
+      <Stack.Screen name="Edit Post" component={EditPost} />
+      <Stack.Screen name="Delete Forum Reply" component={DeleteReply} />
+      <Stack.Screen name="Delete Forum Post" component={DeletePost} />
+      <Stack.Screen name="Delete Forum Post List" component={DeleteForumPostList} />
+      <Stack.Screen name="Reports List" component={ReportsList} />
+      <Stack.Screen name="Report" component={Report} />
     </ProfileStack.Navigator>
   )
 }

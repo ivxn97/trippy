@@ -23,6 +23,21 @@ export default function ProfileScreen ( {navigation} ) {
     const storage = getStorage();
     const [loading, setLoading] = useState(true);
     const [images, setImages] = useState();
+    const [thread, setThread] = useState([])
+    const [threadLength, setThreadLength] = useState();
+
+    const getThreads = async(username) => {
+        const q = query(collection(db, "forum"), where("addedBy", "==", username));
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach(documentSnapshot => {
+            thread.push({
+                ...documentSnapshot.data(),
+                key: documentSnapshot.id,
+            });
+        });
+        setThreadLength(thread.length);
+        setLoading(false);
+    }
 
     const getEmail = async () => {
         try {
@@ -56,7 +71,7 @@ export default function ProfileScreen ( {navigation} ) {
         setBio(items[0].bio);
         setFirstName(items[0].firstName);
         setLastName(items[0].lastName);
-        
+        getThreads(items[0].username)
         console.log("user: ", user);
     }
 
@@ -217,11 +232,6 @@ export default function ProfileScreen ( {navigation} ) {
                 >
                     <Text style={styles.textList}>My Walking Tours</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Active Thread')}
-                    title="Active Threads"
-                >
-                    <Text style={styles.textList}>My Active Threads</Text>
-                </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Bookmarks')}
                     title="Saved"
                 >
@@ -235,7 +245,7 @@ export default function ProfileScreen ( {navigation} ) {
                 <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('Active Thread')}
                     title="Active Threads"
                 >
-                <Text style={styles.textList}>Active Threads</Text>
+                <Text style={styles.textList}>My Active Threads</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonList} onPress={() => navigation.navigate('User Bookings')}
                     title="My Bookings"
@@ -286,8 +296,8 @@ export default function ProfileScreen ( {navigation} ) {
                                     </Text>
                                 </View>
                                 <View style={{ alignItems: 'center', flex: 1}}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{"25"}</Text>
-                                    <Text>Posts</Text>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{threadLength}</Text>
+                                    <Text>Threads</Text>
                                 </View>
                                 
                             
@@ -332,7 +342,7 @@ export default function ProfileScreen ( {navigation} ) {
                 <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('Active Thread')}
                     title="Active Threads"
                 >
-                        <Text style={styles.textList}>Active Threads</Text>
+                        <Text style={styles.textList}>My Active Threads</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.profileButton} onPress={() => navigation.navigate('User Bookings')}
                     title="My Bookings"

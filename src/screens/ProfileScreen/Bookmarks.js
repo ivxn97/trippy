@@ -183,9 +183,11 @@ export default function Bookmarks ( {navigation} ) {
                     renderItem={({ item }) => (
                     <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => {navigation.navigate('Restaurant Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
-                    price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
-                    closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language})}}>
+                    onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 
+                        price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                        closingTime: item.closingTime, menu: item.menu, description: item.description, TNC: item.TNC, language: item.language
+                        , activityType: item.activityType, review: item.review, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
+                        capacity: item.capacity, address: item.address, images: item.images})}}>
                     <View style={styles.list}>
                         <Text>{item.name}</Text>
                         <Text>{item.price}</Text>
@@ -201,13 +203,13 @@ export default function Bookmarks ( {navigation} ) {
                     <TouchableHighlight
                         underlayColor="#C8c9c9"
                         onPress={() => {
-                        navigation.navigate('Hotel details', {
-                            name: item.name, roomTypes: item.roomTypes,
-                            priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
-                            checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
-                            language: item.language,description: item.description, TNC: item.TNC
-                        })
-                        }}>
+                            navigation.navigate('Details',  {
+                              name: item.name, roomTypes: item.roomTypes,
+                              hotelClass: item.hotelClass, checkInTime: item.checkInTime,
+                              checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
+                              language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType,
+                              addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, address: item.address, images: item.images 
+                          })}}>
                         <View style={styles.list}>
                             <Text>{item.name}</Text>
                             <Text>{item.hotelClass}</Text>
@@ -222,10 +224,11 @@ export default function Bookmarks ( {navigation} ) {
                 renderItem={({ item }) => (
                     <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => {navigation.navigate('Paid tour details', {name: item.name, tourType: item.tourType, 
-                    price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
-                    endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
-                    TNC: item.TNC})}}>
+                    onPress={() => {navigation.navigate('Details', {name: item.name, tourType: item.tourType, 
+                        price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, startingTime: item.startingTime,
+                        endingTime: item.endingTime, duration: item.duration, description: item.description, language: item.language,
+                        TNC: item.TNC, activityType: item.activityType, addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, 
+                        capacity: item.capacity, address: item.address, images: item.images})}}>
                     <View style={styles.list}>
                     <Text>{item.name}</Text>
                     <Text>${item.price}</Text>
@@ -240,9 +243,11 @@ export default function Bookmarks ( {navigation} ) {
                 renderItem={({ item }) => (
                     <TouchableHighlight
                     underlayColor="#C8c9c9"
-                    onPress={() => {navigation.navigate('Attraction Details', {name: item.name, attractionType: item.attractionType, 
-                    price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
-                    closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC})}}>
+                    onPress={() => {navigation.navigate('Details', {name: item.name, attractionType: item.attractionType, 
+                        price: item.price, ageGroup: item.ageGroup, groupSize: item.groupSize, openingTime: item.openingTime,
+                        closingTime: item.closingTime, description: item.description, language: item.language, TNC: item.TNC, 
+                        activityType: item.activityType, mapURL: item.mapURL, capacity: item.capacity, address: item.address,
+                        addedBy: item.addedBy, images: item.images})}}>
                     <View style={styles.list}>
                     <Text>{item.name}</Text>
                     <Text>${item.price}</Text>
@@ -257,8 +262,25 @@ export default function Bookmarks ( {navigation} ) {
                     renderItem={({ item }) => (
                     <TouchableHighlight
                         underlayColor="#C8c9c9"
-                        onPress={() => {navigation.navigate('Guide Screen', {name: item.name, location: item.location,
-                                                                                    mrt: item.mrt, tips: item.tips, description: item.description})}}>
+                        onPress={() => {navigation.navigate('Guide Screen', {name : item.name, location: item.location,
+                            mrt: item.mrt, tips: item.tips, description: item.description, activityType: item.activityType, images: item.images
+                            , username: item.username, date: item.date, addedBy: item.addedBy})}}>
+                    <View style={styles.list}>
+                    <Text>{item.name}</Text>
+                    </View>
+                    </TouchableHighlight>
+                )}
+                />
+                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Walking Tours</Text>
+                <FlatList
+                    data={walkingTours}
+                    extraData={walkingTours}
+                    renderItem={({ item }) => (
+                    <TouchableHighlight
+                        underlayColor="#C8c9c9"
+                        onPress={() => {navigation.navigate('Walking Tour Screen', {name : item.name, location: item.location, 
+                            tips: item.tips, description: item.description, activityType: item.activityType, images: item.images,
+                            username: item.username, date: item.date, addedBy: item.addedBy})}}>
                     <View style={styles.list}>
                     <Text>{item.name}</Text>
                     </View>

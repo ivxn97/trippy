@@ -399,8 +399,7 @@ export default function HotelList({ navigation }) {
                       checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
                       language: item.language,description: item.description, TNC: item.TNC, activityType: item.activityType,
                       addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, address: item.address, images: item.images 
-                  })
-                    }}>
+                  })}}>
                         <View style={{flexDirection: 'row', position: 'absolute'}}>
                         <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={styles.imageList} />
                         <View style={{alignItems: 'center', justifyContent: 'center', flex: 1, right: '70%'}}>

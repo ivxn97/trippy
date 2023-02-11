@@ -58,7 +58,7 @@ export default function UserPreviousBookings ({ route, navigation }) {
                 underlayColor="#C8c9c9"
                 onPress={() => navigation.navigate('Previous Booking Details', {date: item.date, orgPrice: item.orgPrice, 
                     discount: item.discount, finalPrice: item.finalPrice, groupSize: item.groupSize, id: item.id, 
-                    name: item.name, time: item.time, email: item.bookedBy})}>
+                    name: item.name, time: item.time, email: item.bookedBy, activityType: item.activityType, startDate: item.startDate, endDate: item.endDate})}>
                 <View style={styles.list}>
                 <Text>{item.name}</Text>
                 </View>

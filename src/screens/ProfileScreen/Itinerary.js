@@ -64,9 +64,11 @@ export default function Itinerary({ navigation }) {
                     }
                 }
             });
-            console.log("initial arr:", itineraryData)
+
+            const filteredArr = itineraryData.map(item => item.name)
+            console.log("Filtered arr:", filteredArr)
             console.log("final Array:", finalArray)
-            setItineraryArr(itineraryData);
+            setItineraryArr(filteredArr);
             setFinalArr(finalArray);
 
             setShouldRun(false);
@@ -182,6 +184,7 @@ export default function Itinerary({ navigation }) {
             
             setCompletedArr(completedArr)
             setfilteredData(completedArr)
+            console.log(extractedArray)
             setAddresses(extractedArray)
         }
 
@@ -263,10 +266,10 @@ export default function Itinerary({ navigation }) {
                             navigation.navigate('Details', {
                                 name: item.name, roomTypes: item.roomTypes,
                                 priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
-                                checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures,
-                                language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine,
+                                checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
+                                language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine, 
                                 price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
-                                closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType,
+                                closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
                                 startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
                                 addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address, images: item.images
                             })

@@ -33,13 +33,6 @@ export default function ConfirmBooking ({route, navigation}) {
   const [dealQuantity, setDealQuantity] = useState()
   const [difference, setDifference] = useState()
 
-  if (activityType == 'hotels') {
-    const diff = moment(startDate).startOf('day').diff(moment(endDate).startOf('day'), 'days')
-    console.log(diff)
-    setDifference(diff)
-    setHCurrentPrice(price * diff)
-  }
-
   const getClaimedDeals = async () => {
     const docRef = doc(db, "users", email)
     const docSnap = await getDoc(docRef)
@@ -81,6 +74,12 @@ export default function ConfirmBooking ({route, navigation}) {
   useEffect(() => {
     if (shouldRun) {
       getClaimedDeals();
+      if (activityType == "hotels") {
+        const diff = moment(endDate).startOf('day').diff(moment(startDate).startOf('day'), 'days')
+        console.log(diff)
+        setDifference(diff)
+        setHCurrentPrice(price * diff)
+      }
       if (claimedDeals) {
         getDealInfo();
       }
@@ -99,7 +98,8 @@ export default function ConfirmBooking ({route, navigation}) {
         groupSize: groupSize,
         time: time,
         date: date,
-        expired: false
+        expired: false,
+        activityType: activityType
       })
       alert("Booking Successful!")
       DealCount();
@@ -121,7 +121,29 @@ export default function ConfirmBooking ({route, navigation}) {
         finalPrice: currentPrice,
         groupSize: groupSize,
         date: date,
-        expired: false
+        expired: false,
+        activityType: activityType
+      })
+      alert("Booking Successful!")
+      DealCount();
+      navigation.navigate('Home Page')
+    }
+    catch (e) {
+      console.log("Error adding document: ", e);
+    }
+  }
+
+  const onRPaymentPress = async () => {
+    try {
+      await setDoc(doc(db, "bookings", id), {
+        id: id,
+        bookedBy: email,
+        name: name,
+        groupSize: groupSize,
+        date: date,
+        expired: false,
+        activityType: activityType,
+        time: time
       })
       alert("Booking Successful!")
       DealCount();
@@ -138,14 +160,15 @@ export default function ConfirmBooking ({route, navigation}) {
         id: id,
         bookedBy: email,
         name: name,
-        orgPrice: price,
+        orgPrice: (price * difference),
         discount: selectedDiscount,
         finalPrice: HcurrentPrice,
         time: time,
         roomType: roomType,
         startDate: startDate,
         endDate: endDate,
-        expired: false
+        expired: false,
+        activityType: activityType
       })
       alert("Booking Successful!")
       DealCount();
@@ -180,7 +203,7 @@ export default function ConfirmBooking ({route, navigation}) {
     return <ActivityIndicator />;
   }
 
-  if (activityType == "paidtours" || activityType == "restaurants") {
+  if (activityType == "paidtours") {
     return (
       <View style={[styles.detailsContainer]}>
       <View style={{alignItems: 'flex-end'}}>
@@ -251,7 +274,7 @@ export default function ConfirmBooking ({route, navigation}) {
             renderItem={({ item }) => (
                 <TouchableHighlight
                 underlayColor="#C8c9c9"
-                onPress={() => paymentCalculation(price, item.discount, item.dealname, item.quantity)}>
+                onPress={() => HpaymentCalculation(price, item.discount, item.dealname, item.quantity)}>
                 <View style={styles.list}>
                 <Text>{item.discount}% OFF</Text>
                 <Text>Expires {Moment(item.expiry.toDate()).fromNow()}</Text>
@@ -261,7 +284,7 @@ export default function ConfirmBooking ({route, navigation}) {
         />
         ) : null}
       <Text style={[styles.price, {fontSize:21}]}>Price: ${price}</Text>
-      <Text style={[styles.price, {fontSize:21}]}>Price X {difference}: ${price * difference}</Text>
+      <Text style={[styles.price, {fontSize:21}]}>Price X {difference} Days: ${price * difference}</Text>
       <Text style={[styles.price, {fontSize:21}]}>Discount from Deal: ${selectedDiscount}</Text>
       <Text style={styles.price}>Final Price: ${HcurrentPrice}</Text>
       <TouchableOpacity
@@ -311,6 +334,24 @@ export default function ConfirmBooking ({route, navigation}) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => onATPaymentPress()}>
+        <Text style={styles.buttonTitle}>Complete Booking</Text>
+      </TouchableOpacity>
+      </View>
+    )
+  }
+  else if (activityType == "restaurants") {
+    return (
+      <View style={[styles.detailsContainer]}>
+      <View style={{alignItems: 'flex-end'}}>
+      <Text style={styles.Heading}>Booking For {JSON.stringify(name).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Chosen Date: {Moment(date).format('DD MMM YYYY')}</Text>
+      <Text style={styles.textBooking}>Chosen Time: {JSON.stringify(time).replace(/"/g,"")}</Text>
+      <Text style={styles.textBooking}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => onRPaymentPress()}>
         <Text style={styles.buttonTitle}>Complete Booking</Text>
       </TouchableOpacity>
       </View>

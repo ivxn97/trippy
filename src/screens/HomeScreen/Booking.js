@@ -29,12 +29,13 @@ export default function Booking ({route, navigation}) {
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
   const [isDateTimePickerVisible, setDateTimePickerVisiblity] = useState(false);
   const [time, setTime] = useState('');
-  const [size, setGroupSize] = useState(1);
+  const [size, setGroupSize] = useState('');
   const [date, setDate] = useState(new Date());
   const [confirmed, setConfirmed] = useState(true);
   const [newCapacity, setCapacity] = useState(capacity);
   const [hotelType, setSelectedType] = useState()
   const [hotelPrice, setHotelPrice] = useState()
+  const [roomSelected, setRoomSelected] = useState(true)
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -82,26 +83,62 @@ export default function Booking ({route, navigation}) {
         const q = query(collectionRef, where('name', '==', name));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          if (activityType == 'restaurants' || activityType == 'attractions' || activityType == 'paidtours') {
-            if (Moment(date).format('DD-MM-YYYY') == Moment(doc.data().date.toDate()).format('DD-MM-YYYY')) {
-              if (time == doc.data().time) {
-                currentCapacity = currentCapacity - doc.data().groupSize
+          if (activityType == 'restaurants' || activityType == 'paidtours') {
+            if (date !== '' && time !== '' && size !== '') {
+              if (Moment(date).format('DD-MM-YYYY') == Moment(doc.data().date.toDate()).format('DD-MM-YYYY')) {
+                if (time == doc.data().time) {
+                  currentCapacity = currentCapacity - doc.data().groupSize
+                }
               }
+              if (currentCapacity > (0 + size)) {
+                alert("Booking Details Is Valid");
+                setConfirmed(false)
+              }
+              else {
+                alert("The activity is unavailable on the chosen date and time")
+              }
+            }
+            else {
+              alert("Please fill in all booking details")
             }
           }
           else if (activityType == 'hotels') {
-            if (Moment(startDate).format('DD-MM-YYYY') == Moment(doc.data().startDate.toDate()).format('DD-MM-YYYY')) {
-              currentCapacity = currentCapacity - doc.data().groupSize
+            if (startDate !== '' && endDate !== '') {
+              if (Moment(startDate).format('DD-MM-YYYY') == Moment(doc.data().startDate.toDate()).format('DD-MM-YYYY')) {
+                currentCapacity = currentCapacity - doc.data().groupSize
+              }
+              if (currentCapacity > (0 + size)) {
+                alert("Booking Details Is Valid");
+                setConfirmed(false)
+              }
+              else {
+                alert("The activity is unavailable on the chosen date and time")
+              }
+            }
+            else {
+              alert("Please fill in all booking details")
+            }
+          }
+          else if (activityType == 'attractions') {
+            if (date !== '' && size !== '') {
+              if (Moment(date).format('DD-MM-YYYY') == Moment(doc.data().date.toDate()).format('DD-MM-YYYY')) {
+                if (time == doc.data().time) {
+                  currentCapacity = currentCapacity - doc.data().groupSize
+                }
+              }
+              if (currentCapacity > (0 + size)) {
+                alert("Booking Details Is Valid");
+                setConfirmed(false)
+              }
+              else {
+                alert("The activity is unavailable on the chosen date and time")
+              }
+            }
+            else {
+              alert("Please fill in all booking details")
             }
           }
         })
-        if (currentCapacity > (0 + size)) {
-          alert("Booking Details Is Valid");
-          setConfirmed(false)
-        }
-        else {
-          alert("The activity is unavailable on the chosen date and time")
-        }
   }
 
 
@@ -109,7 +146,7 @@ export default function Booking ({route, navigation}) {
     setHotelPrice(price)
     setSelectedType(type)
     setCapacity(capacity)
-    setConfirmed(true)
+    setRoomSelected(false)
   }
 
   useFocusEffect(React.useCallback(async ()=> {
@@ -260,8 +297,8 @@ export default function Booking ({route, navigation}) {
           onCancel={hideDatePicker}
         />
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => onConfirmPress()}>
+          style={[styles.button, {opacity: roomSelected ? 0.2 : 1}]}
+          onPress={() => onConfirmPress()} disabled={roomSelected}>
           <Text style={styles.buttonTitle}>Confirm Details</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -351,8 +388,8 @@ export default function Booking ({route, navigation}) {
     </TouchableOpacity>
     <TouchableOpacity
       style={[styles.button, {opacity: confirmed ? 0.2 : 1}]}
-      onPress={() => navigation.navigate('Confirm Booking', { time: time, date: date, groupSize: groupSize, 
-        name: name, email: email, price: price, activityType: activityType})}
+      onPress={() => navigation.navigate('Confirm Booking', { time: time, date: date, groupSize: size, 
+        name: name, email: email, activityType: activityType})}
       disabled={confirmed}>
       <Text style={styles.buttonTitle}>Go to Confirmation Screen</Text>
     </TouchableOpacity>

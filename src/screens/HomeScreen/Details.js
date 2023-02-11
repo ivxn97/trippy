@@ -235,7 +235,8 @@ Download the App here: URL`})
             <Text>{"\n"}{"\n"}{"\n"}</Text>
             </ScrollView>
             <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0 : 1, position: 'absolute', bottom:0}]}
-                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name, timeSlots: timeSlots, 
+                    openingTime: openingTime, closingTime: closingTime, duration: duration, groupSize: groupSize, capacity: capacity})}} title="Booking">
                         <Text style={[styles.textNB, {fontWeight:'bold'}]}>Book</Text>
             </TouchableOpacity>
         </View>
@@ -503,7 +504,8 @@ Download the App here: URL`})
                 <Text>{"\n"}{"\n"}{"\n"}</Text>
                 </ScrollView>
                 <TouchableOpacity style={[styles.buttonBook, {opacity: registeredButton ? 0 : 1, position: 'absolute', bottom:0}]}
-                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name})}} title="Booking">
+                disabled ={registeredButton} onPress={() => {navigation.navigate('Booking', {activityType: activityType, name: name,
+                    openingTime: openingTime, closingTime: closingTime, price: price, groupSize: groupSize, capacity: capacity})}} title="Booking">
                         <Text style={[styles.textNB, {fontWeight:'bold'}]}>Book</Text>
                 </TouchableOpacity>
             </View>

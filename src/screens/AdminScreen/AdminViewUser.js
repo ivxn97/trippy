@@ -9,7 +9,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 
 export default function AdminViewUser ({route, navigation}) {
-    const {email, UEN, firstName, lastName, role, id, status, socialMediaHandle, socialMediaPlatform} = route.params;
+    const {email, UEN, firstName, lastName, role, id, status, socialMediaHandle, socialMediaPlatform, username} = route.params;
     const [screenshot, setScreenshot] = useState();
     const storage = getStorage();
 
@@ -52,35 +52,45 @@ export default function AdminViewUser ({route, navigation}) {
         };
     
         const onChangeRolePress = ()  => {
-            try {
-                const docRef = setDoc(doc(db, "users", email), {
-                    role: newRole
-                }, { merge:true });
-                alert(`Role changed to ${newRole}`)
-                navigation.navigate('List Of Accounts')
+            if (newRole !== '') {
+                try {
+                    const docRef = setDoc(doc(db, "users", email), {
+                        role: newRole
+                    }, { merge:true });
+                    alert(`Role changed to ${newRole}`)
+                    navigation.navigate('Admin Page')
+                }
+                catch (e) {
+                    console.log("Error updating document: ", e);
+                }
             }
-            catch (e) {
-                console.log("Error updating document: ", e);
+            else {
+                alert("No Role selected")
             }
         }
     
         const onChangeStatusPress = ()  => {
-            try {
-                const docRef = setDoc(doc(db, "users", email), {
-                    status: newStatus
-                }, { merge:true });
-                alert(`Account status changed to ${newStatus}`)
-                navigation.navigate('List Of Accounts')
+            if (newStatus !== '') {
+                try {
+                    const docRef = setDoc(doc(db, "users", email), {
+                        status: newStatus
+                    }, { merge:true });
+                    alert(`Account status changed to ${newStatus}`)
+                    navigation.navigate('Admin Page')
+                }
+                catch (e) {
+                    console.log("Error updating document: ", e);
+                }
             }
-            catch (e) {
-                console.log("Error updating document: ", e);
+            else {
+                alert("No Status selected")
             }
         }
     
         const onDeletePress = ()  => {
             deleteDoc(doc(db, "users", email));
             alert(`Account deleted`)
-            navigation.navigate('List Of Accounts')
+            navigation.navigate('Admin Page')
         }
     
         return (
@@ -138,6 +148,7 @@ export default function AdminViewUser ({route, navigation}) {
             <View>
                 <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
                 <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(username)}</Text>
                 <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
                 <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
                 <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>
@@ -153,6 +164,7 @@ export default function AdminViewUser ({route, navigation}) {
             <View>
                 <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
                 <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(username)}</Text>
                 <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
                 <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
                 <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>
@@ -168,6 +180,7 @@ export default function AdminViewUser ({route, navigation}) {
             <View>
                 <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
                 <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(username)}</Text>
                 <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
                 <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
                 <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>
@@ -187,6 +200,7 @@ export default function AdminViewUser ({route, navigation}) {
             <View>
                 <Text style={styles.text}>ID: {JSON.stringify(id)}</Text>
                 <Text style={styles.text}>Email: {JSON.stringify(email)}</Text>
+                <Text style={styles.text}>Last Name: {JSON.stringify(username)}</Text>
                 <Text style={styles.text}>First Name: {JSON.stringify(firstName)}</Text>
                 <Text style={styles.text}>Last Name: {JSON.stringify(lastName)}</Text>
                 <Text style={styles.text}>Role: {JSON.stringify(role)}</Text>

@@ -162,7 +162,7 @@ export default function UserBookings ({ navigation }) {
                 underlayColor="#C8c9c9"
                 onPress={() => navigation.navigate('Booking Details', {date: item.date, orgPrice: item.orgPrice, 
                     discount: item.discount, finalPrice: item.finalPrice, groupSize: item.groupSize, id: item.id, 
-                    name: item.name, time: item.time, email: item.bookedBy})}>
+                    name: item.name, time: item.time, email: item.bookedBy, activityType: item.activityType, startDate: item.startDate, endDate: item.endDate})}>
                 <View style={styles.list}>
                 <Text>{item.name}</Text>
                 </View>
@@ -190,13 +190,13 @@ export default function UserBookings ({ navigation }) {
 
         {/* Buttons */}
         <View style={{ flexDirection:"row", justifyContent: 'flex-end' }}>
-            <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
+            <TouchableOpacity style={styles.buttonSmall} onPress={() => onPressSort()}>
                 <Text style={styles.buttonSmallListText}>Sort</Text>
             </TouchableOpacity> 
             <TouchableOpacity 
-            style={[styles.buttonSmall, {height:35, width:200}]}
+            style={[styles.buttonSmall, { width:200}]}
             onPress={() => onPressExpired()}>
-            <Text style={styles.text}>View Previous Bookings</Text>
+            <Text style={styles.buttonSmallListText}>View Previous Bookings</Text>
             </TouchableOpacity>
         </View>
         

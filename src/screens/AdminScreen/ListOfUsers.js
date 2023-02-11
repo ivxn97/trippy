@@ -32,7 +32,7 @@ export default function ListOfUsers( {navigation} ) {
   const searchFilter = (text, type) => {
     if (text) {
         const newData = type.filter((item) => {
-            const itemData = item.name ? item.name.toUpperCase()
+            const itemData = item.email ? item.email.toUpperCase()
                 : ''.toUpperCase()
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1;
@@ -64,7 +64,7 @@ export default function ListOfUsers( {navigation} ) {
           underlayColor="#C8c9c9"
           onPress={() => {navigation.navigate('Admin View Account', {email: item.email, UEN: item.UEN, firstName: item.firstName,
           lastName: item.lastName, role: item.role, id: item.id, status: item.status, socialMediaHandle: item.socialMediaHandle,
-          socialMediaPlatform: item.socialMediaPlatform })}}>
+          socialMediaPlatform: item.socialMediaPlatform, username: item.username })}}>
           <View style={styles.list}>
             <Text>Email: {item.email}</Text>
             <Text>Role: {item.role}</Text>

@@ -39,6 +39,7 @@ export default function ActiveThread({ navigation }) {
             });
         });
         setItems(items);
+        console.log(items.length)
         setLoading(false);
     }
 
@@ -58,7 +59,8 @@ export default function ActiveThread({ navigation }) {
         return (
             <TouchableHighlight
                 underlayColor="#C8c9c9"
-                onPress={() => { navigation.navigate('Thread', { title: item.title, description: item.description, section: item.section }) }}>
+                onPress={() => { navigation.navigate('Thread', {title : item.title, description: item.description, 
+                    section: item.section, addedBy: item.addedBy, likedBy: item.likedBy, datetime: item.datetime}) }}>
                 <View style={styles.list}>
                     <Text>{item.title}</Text>
                 </View>

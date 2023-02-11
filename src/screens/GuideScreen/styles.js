@@ -281,5 +281,10 @@ export default StyleSheet.create({
         marginLeft: 30,
         marginRight: 8,
         paddingLeft: 16
-    }
+    },
+    carouselStyle: {
+        width: 410,
+        height: 320,
+        alignSelf: "center"
+    },
 })

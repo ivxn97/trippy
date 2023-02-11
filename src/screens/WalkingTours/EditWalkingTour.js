@@ -151,13 +151,13 @@ export default function EditWalkingTour({ route, navigation }) {
     />);
 
     const onSubmitPress = async () => {
+        console.log(newSection)
         if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "walkingtours", name), {
                     location: locationArr,
                     tips: newTips,
                     description: newDescription,
-                    activityType: 'walkingtours',
                     section: newSection,
                     expired: isExpired,
                     images: newImages

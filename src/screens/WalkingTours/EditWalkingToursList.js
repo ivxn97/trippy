@@ -66,7 +66,8 @@ export default function EditWalkingToursList ({ navigation }) {
         <TouchableHighlight
             underlayColor="#C8c9c9"
             onPress={() => {navigation.navigate('Edit Walking Tours', {name : item.name, location: item.location, 
-                tips: item.tips, description: item.description, activityType: item.activityType, expired: item.expired, images: item.images})}}>
+                tips: item.tips, description: item.description, activityType: item.activityType, images: item.images,
+                username: item.username, date: item.date, addedBy: item.addedBy, section: item.section, expired: item.expired})}}>
         <View style={styles.list}>
           <Text>{item.name}</Text>
         </View>

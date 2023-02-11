@@ -11,10 +11,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import Moment from 'moment';
 
 export default function GuideScreen({ route, navigation }) {
-    const { name, location, mrt, tips, description, activityType, username, date, addedBy } = route.params;
+    const { name, location, mrt, tips, description, activityType, username, date, addedBy, images } = route.params;
     const storage = getStorage();
     const width = Dimensions.get('window').width;
-    const [images, setImages] = useState([]);
+    console.log(images)
     const [email, setEmail] = useState('');
     const [registeredButton, setRegisteredButton] = useState(true);
 
@@ -43,24 +43,6 @@ export default function GuideScreen({ route, navigation }) {
         getEmail();
     }, []));
 
-    useEffect(() => {
-        const listRef = ref(storage, `guides/${name.trimEnd()}/images`);
-        Promise.all([
-            listAll(listRef).then((res) => {
-              const promises = res.items.map((folderRef) => {
-                return getDownloadURL(folderRef).then((link) =>  {
-                  return link;
-                });
-              });
-              return Promise.all(promises);
-            })
-          ]).then((results) => {
-            const fetchedImages = results[0];
-            console.log(fetchedImages);
-            setImages(fetchedImages);
-          });
-    }, [])
-
     const onShare = async () => {
         try {
             await Share.share({message:`Check out this amazing guide I found on TripAid!  
@@ -86,9 +68,10 @@ export default function GuideScreen({ route, navigation }) {
 
     return (
         <View style={styles.detailsContainer}>
+            <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
             <Carousel width={width}
-                height={width / 2}
+                height={width / 1.5}
                 mode="horizontal"
                 data={images}
                 renderItem={({ item }, index) => (
@@ -162,6 +145,7 @@ export default function GuideScreen({ route, navigation }) {
                         <Text style={styles.buttonSmallText}>Report</Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         </View>
     )
 }

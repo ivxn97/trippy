@@ -112,10 +112,10 @@ export default function Deals( { navigation }) {
     return <ActivityIndicator />;
   }
 
-  const searchFilter = (text, type) => {
+  const searchFilter = (text) => {
     if (text) {
-        const newData = type.filter((item) => {
-            const itemData = item.name ? item.name.toUpperCase()
+        const newData = deals.filter((item) => {
+            const itemData = item.dealname ? item.dealname.toUpperCase()
                 : ''.toUpperCase()
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1;
@@ -123,10 +123,10 @@ export default function Deals( { navigation }) {
         setfilteredData(newData);
         setSearch(text);
     } else {
-        setfilteredData(type);
+        setfilteredData(deals);
         setSearch(text);
     }
-  }
+   }
 
   return (
     <View>

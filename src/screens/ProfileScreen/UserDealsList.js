@@ -16,6 +16,7 @@ export default function UserDealsList( { navigation }) {
   const [redeemableDeals, setRedeemableDeals] = useState([]);
   const [claimedDeals, setClaimedDeals] = useState();
   const [shouldRun, setShouldRun] = useState(true);
+      const [status, setStatus] = useState('Loading Claimed Deals')
 
   const [sortModalVisible, setSortModalVisible] = useState(false);
   const [sortIsPressed, setSortIsPressed] = useState(false);
@@ -157,9 +158,20 @@ export default function UserDealsList( { navigation }) {
     sortOrderData.map(item => item.isChecked = false); // set all to false
   }
 
-  if (loading) {
-    return <ActivityIndicator />;
-  }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setStatus('Claimed Deals is empty!');
+        }, 8000);
+        return () => clearInterval(interval)
+    })
+
+    if (loading) {
+        return (
+            <View>
+                <ActivityIndicator />
+                <Text style={styles.Heading}>{status}</Text>
+            </View>);
+    }
 
   const searchFilter = (text, type) => {
     if (text) {

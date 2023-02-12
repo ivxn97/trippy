@@ -16,7 +16,8 @@ export default StyleSheet.create({
     },
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     message: {
         fontSize: 18,
@@ -82,6 +83,10 @@ export default StyleSheet.create({
         marginBottom: 5,
         marginLeft: 8,
         marginRight: 30
+    },
+    space: {
+        width: 20, // or whatever size you need
+        height: 20,
     },
     textNB: {
         borderRadius: 5,

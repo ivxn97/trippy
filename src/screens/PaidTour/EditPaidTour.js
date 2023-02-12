@@ -155,7 +155,7 @@ export default function EditPaidTour ( { route, navigation }) {
 
         const startingTime = startingHour+startingMinute
         const endingTime = endingHour+endingMinute
-        const interval = durationMinute
+        const interval = newDurationMinute
 
         let currentTime = moment(startingTime, 'HHmm');
 
@@ -171,17 +171,17 @@ export default function EditPaidTour ( { route, navigation }) {
         if (imageUploaded == true) {
             try {
                 await setDoc(doc(db, "paidtours", name), {
-                    tourType: tourType,
-                    language: language,
-                    price: price,
-                    ageGroup: ageGroup,
-                    groupSize: groupSize,
+                    tourType: newTourType,
+                    language: newLanguage,
+                    price: newPrice,
+                    ageGroup: newAgeGroup,
+                    groupSize: newGroupSize,
                     timeSlots: timeSlots,
                     startingTime: startingHour + ':' + startingMinute,
                     endingTime: endingHour + ':' + endingMinute,
-                    duration: durationMinute,
-                    description: description,
-                    TNC: TNC,
+                    duration: newDurationMinute,
+                    description: newDescription,
+                    TNC: newTNC,
                     capacity: newCapacity,
                     address: newAddress,
                     longitude: newLongitude,

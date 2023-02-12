@@ -152,7 +152,6 @@ export default function Itinerary({ navigation }) {
                 key: doc.id
             })
         })
-        getMergeArr();
     }
 
     //Merge activities arrays
@@ -234,6 +233,7 @@ export default function Itinerary({ navigation }) {
             getAttractions();
             getGuides();
             getWalkingTours();
+            getMergeArr();
         }
     }, [shouldRun, email, finalArr]))
 

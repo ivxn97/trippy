@@ -72,7 +72,6 @@ export default function ProfileScreen ( {navigation} ) {
         setFirstName(items[0].firstName);
         setLastName(items[0].lastName);
         getThreads(items[0].username)
-        console.log("user: ", user);
     }
 
     const changeExpiry = async (id) => {
@@ -303,7 +302,7 @@ export default function ProfileScreen ( {navigation} ) {
                                                         marginRight: "auto", 
                                                         marginTop: "auto", 
                                                         marginBottom: "3%"
-                                                    }}>{{threadLength} + " Threads"}</Text>
+                                                    }}>{threadLength} Threads</Text>
                                     </View>
                                     
                                     <Text style={{ 

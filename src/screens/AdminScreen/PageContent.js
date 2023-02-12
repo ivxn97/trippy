@@ -17,8 +17,13 @@ export default function PageContent ( {navigation, route} ) {
     const [paidTours, setPaidTours] = useState([]);
     const [attractions, setAttractions] = useState([]);
     const [mergedArr, setMergedArr] = useState([]);
-    const [completedArr, setCompletedArr] = useState([]);
-    const [search, useSearch] = useState('')
+    const [search, setSearch] = useState('');
+
+    const [filteredAll, setFilteredAll]  = useState();
+    const [filteredRes, setFilteredRes] = useState();
+    const [filteredAttr, setFilteredAttr] = useState();
+    const [filteredHotels, setFilteredHotels] = useState();
+    const [filteredPT, setFilteredPT] = useState();
 
     const [shouldRun, setShouldRun] = useState(true);
     const [listedTopPage, setListedTopPage] = useState([]);
@@ -125,6 +130,7 @@ export default function PageContent ( {navigation, route} ) {
                 key: doc.id
             })
         })
+        setFilteredRes(restaurants)
     }
 
     const getHotels = async () => {
@@ -136,6 +142,7 @@ export default function PageContent ( {navigation, route} ) {
                 key: doc.id
             })
         })
+        setFilteredHotels(hotels)
     }
 
     const getPaidTours = async () => {
@@ -147,6 +154,7 @@ export default function PageContent ( {navigation, route} ) {
                 key: doc.id
             })
         })
+        setFilteredPT(paidTours)
     }
 
     const getAttractions = async () => {
@@ -158,6 +166,7 @@ export default function PageContent ( {navigation, route} ) {
                 key: doc.id
             })
         })
+        setFilteredAttr(attractions)
         getMergeArr();
     }
 
@@ -168,7 +177,7 @@ export default function PageContent ( {navigation, route} ) {
         mergedArr.push(...paidTours);
         mergedArr.push(...attractions);
         console.log("merged arr:", mergedArr)
-        setCompletedArr(completedArr)
+        setFilteredAll(mergedArr)
         setLoading(false);
     }
 
@@ -245,6 +254,21 @@ export default function PageContent ( {navigation, route} ) {
     }
 
     if (activityType == 'topPage'){
+        const searchFilter = (text) => {
+            if (text) {
+                const newData = filteredAll.filter((item) => {
+                    const itemData = item.name ? item.name.toUpperCase()
+                        : ''.toUpperCase()
+                    const textData = text.toUpperCase()
+                    return itemData.indexOf(textData) > -1;
+                });
+                setFilteredAll(newData)
+                setSearch(text);
+            } else {
+                setFilteredAll(mergedArr);
+                setSearch(text);
+            }
+        }
         return (
             <View>
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
@@ -255,11 +279,11 @@ export default function PageContent ( {navigation, route} ) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="sentences"
                     value={search}
-                    onChangeText={(text) => searchFilter(text, users)}
+                    onChangeText={(text) => searchFilter(text)}
                 />
                 <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                     <FlatList
-                        data={mergedArr}
+                        data={filteredAll}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
@@ -283,6 +307,21 @@ export default function PageContent ( {navigation, route} ) {
     }
 
     else if (activityType == 'restaurants') {
+        const searchFilter = (text) => {
+            if (text) {
+                const newData = filteredRes.filter((item) => {
+                    const itemData = item.name ? item.name.toUpperCase()
+                        : ''.toUpperCase()
+                    const textData = text.toUpperCase()
+                    return itemData.indexOf(textData) > -1;
+                });
+                setFilteredRes(newData);
+                setSearch(text);
+            } else {
+                setFilteredRes(restaurants);
+                setSearch(text);
+            }
+        }
         return (
             <View>
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
@@ -293,11 +332,11 @@ export default function PageContent ( {navigation, route} ) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="sentences"
                     value={search}
-                    onChangeText={(text) => searchFilter(text, users)}
+                    onChangeText={(text) => searchFilter(text)}
                 />
                 <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                     <FlatList
-                        data={restaurants}
+                        data={filteredRes}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
@@ -320,6 +359,21 @@ export default function PageContent ( {navigation, route} ) {
         );
     }
     else if (activityType == 'paidtours') {
+        const searchFilter = (text) => {
+            if (text) {
+                const newData = filteredPT.filter((item) => {
+                    const itemData = item.name ? item.name.toUpperCase()
+                        : ''.toUpperCase()
+                    const textData = text.toUpperCase()
+                    return itemData.indexOf(textData) > -1;
+                });
+                setFilteredPT(newData);
+                setSearch(text);
+            } else {
+                setFilteredPT(paidTours);
+                setSearch(text);
+            }
+        }
         return (
             <View>
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
@@ -330,11 +384,11 @@ export default function PageContent ( {navigation, route} ) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="sentences"
                     value={search}
-                    onChangeText={(text) => searchFilter(text, users)}
+                    onChangeText={(text) => searchFilter(text)}
                 />
                 <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                     <FlatList
-                        data={paidTours}
+                        data={filteredPT}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
@@ -357,6 +411,21 @@ export default function PageContent ( {navigation, route} ) {
         );
     }
     else if (activityType == 'hotels') {
+        const searchFilter = (text) => {
+            if (text) {
+                const newData = filteredHotels.filter((item) => {
+                    const itemData = item.name ? item.name.toUpperCase()
+                        : ''.toUpperCase()
+                    const textData = text.toUpperCase()
+                    return itemData.indexOf(textData) > -1;
+                });
+                setFilteredHotels(newData);
+                setSearch(text);
+            } else {
+                setFilteredHotels(hotels);
+                setSearch(text);
+            }
+        }
         return (
             <View>
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
@@ -367,11 +436,11 @@ export default function PageContent ( {navigation, route} ) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="sentences"
                     value={search}
-                    onChangeText={(text) => searchFilter(text, users)}
+                    onChangeText={(text) => searchFilter(text)}
                 />
                 <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                     <FlatList
-                        data={hotels}
+                        data={filteredHotels}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>
@@ -394,6 +463,21 @@ export default function PageContent ( {navigation, route} ) {
         );
     }
     else if (activityType == 'attractions') {
+        const searchFilter = (text) => {
+            if (text) {
+                const newData = filteredAttr.filter((item) => {
+                    const itemData = item.name ? item.name.toUpperCase()
+                        : ''.toUpperCase()
+                    const textData = text.toUpperCase()
+                    return itemData.indexOf(textData) > -1;
+                });
+                setFilteredAttr(newData);
+                setSearch(text);
+            } else {
+                setFilteredAttr(attractions);
+                setSearch(text);
+            }
+        }
         return (
             <View>
                 <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
@@ -404,11 +488,11 @@ export default function PageContent ( {navigation, route} ) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="sentences"
                     value={search}
-                    onChangeText={(text) => searchFilter(text, users)}
+                    onChangeText={(text) => searchFilter(text)}
                 />
                 <View style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
                     <FlatList
-                        data={attractions}
+                        data={filteredAttr}
                         renderItem={({ item }) => (
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={[styles.text, { marginLeft: 20, marginRight:10 }]}>{item.name}</Text>

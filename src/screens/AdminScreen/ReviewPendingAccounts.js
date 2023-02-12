@@ -33,7 +33,7 @@ export default function ReviewPendingAccounts( {navigation} ) {
   const searchFilter = (text, type) => {
     if (text) {
         const newData = type.filter((item) => {
-            const itemData = item.name ? item.name.toUpperCase()
+            const itemData = item.email ? item.email.toUpperCase()
                 : ''.toUpperCase()
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1;

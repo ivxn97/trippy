@@ -40,21 +40,26 @@ export default function CreatePost ( {route, navigation} ) {
 
 
     const onSubmitPress = async () => {
-        try {
-            await setDoc(doc(db, "forum", title), {
-                addedBy: username,
-                title: title,
-                section: sectionName,
-                description: description,
-                datetime: datetime,
-                likedBy: ''
-            });
-            navigation.replace('Forum Page')
-        }
-        catch (e) {
-            console.log("Error adding Post: ", e);
-        }
-    }
+        if (title !== '' && description !== '') {
+            try {
+                await setDoc(doc(db, "forum", title), {
+                    addedBy: username,
+                    title: title,
+                    section: sectionName,
+                    description: description,
+                    datetime: datetime,
+                    likedBy: ''
+                });
+                navigation.replace('Forum Page')
+            }
+            catch (e) {
+                console.log("Error adding Post: ", e);
+            }
+       }
+       else {
+           alert('Please fill up all required information')
+       }
+   }
 
     return (
         <View style={styles.container}>

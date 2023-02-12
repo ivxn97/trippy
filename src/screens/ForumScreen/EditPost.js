@@ -47,18 +47,22 @@ export default function EditPost ( {route, navigation} ) {
     // edit post
 
     const onSubmitPress = async () => {
-        try {
-            await setDoc(doc(db, "forum", title), {
-                description: newDescription,
-                datetime: datetime
-            }, {merge:true});
-            
-            navigation.replace('Forum Page')
-        }
-        catch (e) {
-            console.log("Error editing post: ", e);
-        }
-    }
+        if (title !== '' && newDescription !== '') {
+            try {
+                await setDoc(doc(db, "forum", title), {
+                    description: newDescription,
+                    datetime: datetime
+                });
+                navigation.replace('Forum Page')
+            }
+            catch (e) {
+                console.log("Error editing Post: ", e);
+            }
+       }
+       else {
+           alert('Please fill up all required information')
+       }
+   }
 
     // delete post
 

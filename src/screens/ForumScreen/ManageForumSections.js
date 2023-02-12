@@ -28,7 +28,7 @@ export default function ManageForumSections ({ navigation }) {
     const searchFilter = (text) => {
         if (text) {
             const newData = forum.filter((item) => {
-                const itemData = item.title ? item.title.toUpperCase()
+                const itemData = item.name ? item.name.toUpperCase()
                     : ''.toUpperCase()
                 const textData = text.toUpperCase()
                 return itemData.indexOf(textData) > -1;

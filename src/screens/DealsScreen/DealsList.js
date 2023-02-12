@@ -17,6 +17,9 @@ export default function Deals( { navigation }) {
   const [sortOrderData, setSortOrderData] = useState();
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [isPressed, setIsPressed] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [typesOfActivity, setTypesOfActivity] = useState()
 
 
   useEffect(async () => {
@@ -27,8 +30,18 @@ export default function Deals( { navigation }) {
             key: documentSnapshot.id,
           });
         });
+    
+        const allTypeOfActivity = deals.map(item => ({
+          name: item.activityType,
+          isChecked: false
+        }))
+
+        const reducedTOA = allTypeOfActivity.filter((item, index) => {
+          return allTypeOfActivity.findIndex((otherItem) => otherItem.name === item.name) === index;
+        })
 
         setDeals(deals);
+        setTypesOfActivity(reducedTOA)
         setLoading(false);
       },[]);
   
@@ -128,6 +141,23 @@ export default function Deals( { navigation }) {
     }
    }
 
+   const onPressFilter =() => {
+    const allActivityIsTrue = typesOfActivity.every(({ isChecked }) => isChecked)
+    if (allActivityIsTrue) {typesOfActivity.map(item => item.isChecked = false)}
+    setIsPressed(!isPressed);
+    setModalVisible(!modalVisible)
+  }
+
+  const toggleButton = (filters) => {
+    typesOfActivity.map((item) => {
+      if (filters.name === item.name) {
+        item.isChecked = !item.isChecked;
+        setIsPressed(!isPressed);
+      }
+    })
+    console.log(isPressed);
+  }
+
   return (
     <View>
     <TextInput
@@ -143,7 +173,7 @@ export default function Deals( { navigation }) {
         <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
           <Text style={styles.buttonSmallListText}>Sort</Text>
         </TouchableOpacity> 
-        <TouchableOpacity style={styles.buttonListRight}>
+        <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressFilter()}>
           <Text style={styles.buttonSmallListText}>Filter</Text>
         </TouchableOpacity>
     </View>
@@ -163,6 +193,40 @@ export default function Deals( { navigation }) {
         </TouchableHighlight>
       )}
     />
+      {modalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={modal.centeredView}>
+            <View style={modal.modalView}>
+              <Text style={modal.modalText}>Activity Type</Text>
+              <View style={modal.buttonView}>
+              {typesOfActivity
+                //.filter((item) => !checked || item.checked)
+                .map((item, index) => (
+                  <View style={styles.checklist} key={index}>
+                      <TouchableHighlight 
+                      onPress={() => toggleButton(item)}
+                      style={item.isChecked? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                  </View>
+              ))}
+              </View>
+              <TouchableHighlight 
+                      onPress={() => onSubmitFilter()}
+                      style={modal.button}>
+                        <Text>Submit</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+      )}
       {sortModalVisible && (
         <Modal
           animationType="slide"

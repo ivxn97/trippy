@@ -161,9 +161,6 @@ export default function GuideList ({ navigation }) {
                 <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
                     <Text style={styles.buttonSmallListText}>Sort</Text>
                 </TouchableOpacity> 
-            <TouchableOpacity style={[styles.buttonSmall, {marginTop:5, marginBottom:5}]}>
-            <Text style={styles.buttonSmallListText}>Filter</Text>
-            </TouchableOpacity>
         </View>
         
         {/* Flatlist */}

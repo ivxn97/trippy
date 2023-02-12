@@ -54,7 +54,7 @@ export default function BODeals( { navigation }) {
   const searchFilter = (text, type) => {
     if (text) {
         const newData = type.filter((item) => {
-            const itemData = item.name ? item.name.toUpperCase()
+            const itemData = item.dealname ? item.dealname.toUpperCase()
                 : ''.toUpperCase()
             const textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1;

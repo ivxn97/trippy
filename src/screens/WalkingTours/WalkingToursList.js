@@ -31,7 +31,7 @@ export default function GuideList ({ navigation }) {
         });
 
 
-        const sortByChoice = ["name", "location"];
+        const sortByChoice = ["name"];
         const sortByResult = sortByChoice.map(attributeName => ({
             name: attributeName,
             value: attributeName,

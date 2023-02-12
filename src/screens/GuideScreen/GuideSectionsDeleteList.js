@@ -27,7 +27,7 @@ export default function GuideSectionsDeleteList ({ navigation }) {
             });
         });
 
-        const sortByChoice = ["title", "section"];
+        const sortByChoice = ["name"];
         const sortByResult = sortByChoice.map(attributeName => ({
             name: attributeName,
             value: attributeName,

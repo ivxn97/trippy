@@ -38,21 +38,26 @@ export default function CreateReply ( {route, navigation} ) {
     getUsername();
 
     const onSubmitPress = async () => {
-        try {
-            await setDoc(doc(db, "forum reply", id), {
-                addedBy: username,
-                title: title,
-                datetime: datetime,
-                comment_id: id,
-                description: description
-            });
-            
-            navigation.replace('Forum Page')
+        if (title !== '' && description !== '') {
+            try {
+                await setDoc(doc(db, "forum reply", id), {
+                    addedBy: username,
+                    title: title,
+                    datetime: datetime,
+                    comment_id: id,
+                    description: description
+                });
+                
+                navigation.replace('Forum Page')
+            }
+            catch (e) {
+                console.log("Error adding reply: ", e);
+            }
         }
-        catch (e) {
-            console.log("Error adding Post: ", e);
-        }
-    }
+       else {
+           alert('Please fill up all required information')
+       }
+   }
 
     return (
         <View style={styles.container}>

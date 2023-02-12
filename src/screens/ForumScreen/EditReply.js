@@ -47,19 +47,24 @@ export default function EditReply ( {route, navigation} ) {
 
     // edit reply
 
-    const onSubmitPress = async () => {
-        try {
-            await setDoc(doc(db, "forum reply", comment_id), {
-                datetime: datetime,
-                description: newDescription
-            }, {merge:true});
-            
-            navigation.replace('Forum Page')
+     const onSubmitPress = async () => {
+        if (title !== '' && newDescription !== '') {
+            try {
+                await setDoc(doc(db, "forum reply", comment_id), {
+                    datetime: datetime,
+                    description: newDescription
+                }, {merge:true});
+                
+                navigation.replace('Forum Page')
+            }
+            catch (e) {
+                console.log("Error editing reply: ", e);
+            }
         }
-        catch (e) {
-            console.log("Error editing reply: ", e);
-        }
-    }
+       else {
+           alert('Please fill up all required information')
+       }
+   }
 
     // delete reply
 

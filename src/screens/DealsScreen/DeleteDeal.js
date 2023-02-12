@@ -184,7 +184,7 @@ export default function DeleteDeal({ navigation }) {
                 extraData={filteredData}
                 renderItem={({ item }) => (
                     <TouchableHighlight
-                        underlayColor="#C8c9c9"attractions
+                        underlayColor="#C8c9c9"
                         onPress={() => onDelete(item.dealname)}>
                         <View style={styles.list}>
                             <Text>{item.dealname}</Text>

@@ -1,9 +1,30 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+    buttonTypesText: {
+        alignSelf: "center",
+        fontSize: 18,
+        marginTop: 5
+    },
+    HeadingTypes: {
+        fontSize: 23,
+        textAlign: 'right',
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 8,
+        marginRight: 30
+    },
     container: {
         flex: 1,
         alignItems: 'center'
+    },
+    message: {
+        fontSize: 18,
+        marginBottom: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
     },
     detailsContainer: {
         color:'#dfdfdf',

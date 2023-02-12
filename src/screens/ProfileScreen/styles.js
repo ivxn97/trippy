@@ -22,7 +22,6 @@ export default StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
         paddingVertical: 20,
         
     },

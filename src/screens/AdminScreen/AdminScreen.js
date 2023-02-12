@@ -86,15 +86,15 @@ export default function AdminScreen ({navigation}) {
         <List.Accordion 
             title="Manage Activities"
             left={props => <List.Icon{...props} icon="folder"/>}>
-                <List.Item title="Walking Tours" onPress={() => navigation.navigate('Admin Edit Walking Tours List')}/>
+                <List.Item title="Walking Tours" onPress={() => navigation.navigate('Admin Delete Walking Tours')}/>
                 <List.Item title="Manage Walking Tour Sections" onPress={() => navigation.navigate('Manage Walking Tour Sections')}/>
-                <List.Item title="Guides" onPress={() => navigation.navigate('Admin Edit Guides List')}/>
+                <List.Item title="Guides" onPress={() => navigation.navigate('Admin Delete Guides')}/>
                 <List.Item title="Manage Guide Sections" onPress={() => navigation.navigate('Manage Guide Sections')}/>
-                <List.Item title="Attractions" onPress={() => navigation.navigate('Admin Edit Attractions List')} />
-                <List.Item title="Hotels" onPress={() => navigation.navigate('Admin Edit Hotels List')} />
-                <List.Item title="Restaurants" onPress={() => navigation.navigate('Admin Edit Restaurants List')} />
-                <List.Item title="Paid Tours" onPress={() => navigation.navigate('Admin Edit PaidTours List')} />
-                <List.Item title="Deals" onPress={() => navigation.navigate('Admin Edit Deals List')} />
+                <List.Item title="Attractions" onPress={() => navigation.navigate('Admin Delete Attractions')} />
+                <List.Item title="Hotels" onPress={() => navigation.navigate('Admin Delete Hotels')} />
+                <List.Item title="Restaurants" onPress={() => navigation.navigate('Admin Delete Restaurants')} />
+                <List.Item title="Paid Tours" onPress={() => navigation.navigate('Admin Delete PaidTours')} />
+                <List.Item title="Deals" onPress={() => navigation.navigate('Admin Delete Deals')} />
         </List.Accordion>
         <List.Accordion 
             title="Users/Accounts"

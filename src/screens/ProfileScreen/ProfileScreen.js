@@ -281,7 +281,7 @@ export default function ProfileScreen ( {navigation} ) {
                     }}>Welcome, User!
                     </Text>
                     <View style={styles.informationBox}>
-                        <View style={{ alignItems: 'center', flex: 1 }}>
+                        <View>
                             <View style={styles.infoText}>
                                 <View>
                                     <Image source={{uri: images}} style={styles.profileImage} />
@@ -295,26 +295,33 @@ export default function ProfileScreen ( {navigation} ) {
                                         {username}
                                     </Text>
                                 </View>
-                                <View style={{ alignItems: 'center', flex: 1}}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{threadLength}</Text>
-                                    <Text>Threads</Text>
+                                <View style = {{flexDirection: "column"}}>
+                                    <View style={{ flex: 1}}>
+                                        <Text style={{ fontWeight: 'bold', 
+                                                        fontSize: 18, 
+                                                        marginLeft: "20%", 
+                                                        marginRight: "auto", 
+                                                        marginTop: "auto", 
+                                                        marginBottom: "3%"
+                                                    }}>{{threadLength} + " Threads"}</Text>
+                                    </View>
+                                    
+                                    <Text style={{ 
+                                        flex: 1,
+                                        fontSize: 15,
+                                        marginLeft: "20%"
+                                        
+                                    }}>Role : {role}</Text>
                                 </View>
-                                
-                            
-                            <Text style={{ 
-                                alignItems: 'center',
-                                flex: 1,
-                                fontSize: 15,
-                                marginRight: 10,
-                            }}>Role : {role}</Text>
                             </View>
+
                             <Text style={{
                                 fontSize: 15,
                                 marginLeft: 5,
                                 marginRight: 5,
                                 marginBottom: 5,
                             }}>{bio}</Text>
-                        </View>
+                        </View> 
                     </View>
 
                 </View>

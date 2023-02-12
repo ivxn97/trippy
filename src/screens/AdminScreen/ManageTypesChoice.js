@@ -10,25 +10,25 @@ export default function ManageTypesChoice({ navigation }) {
         <View>
             <View >
                 <ScrollView>
-                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Attractions</Text>
+                    <Text style={[styles.HeadingTypes, {textAlign: "left"}]}>Attractions</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="attractionType"
                     onPress={() =>
                         {navigation.navigate('Manage Types', { type: 'attractionType'})}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>attractionType</Text>
+                        <Text style={styles.buttonTypesText}>attractionType</Text>
                 </TouchableOpacity>
 
 
-                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Hotels</Text>
+                    <Text style={[styles.HeadingTypes, {textAlign: "left"}]}>Hotels</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="amenitiesData"
                     onPress={() =>
                     { navigation.navigate('Manage Types', { type: 'amenitiesData'})}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>amenitiesData</Text>
+                        <Text style={styles.buttonTypesText}>amenitiesData</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonLanding}
@@ -36,7 +36,7 @@ export default function ManageTypesChoice({ navigation }) {
                     onPress={() => { navigation.navigate('Manage Types', { type: 'roomFeaturesData' }) }
                     }
                 >
-                    <Text style={styles.buttonSmallText}>roomFeaturesData</Text>
+                        <Text style={styles.buttonTypesText}>roomFeaturesData</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonLanding}
@@ -44,65 +44,65 @@ export default function ManageTypesChoice({ navigation }) {
                     onPress={() => { navigation.navigate('Manage Types', { type: 'roomTypesData' }) }
                     }
                 >
-                    <Text style={styles.buttonSmallText}>roomTypesData</Text>
+                        <Text style={styles.buttonTypesText}>roomTypesData</Text>
                 </TouchableOpacity>
 
 
             
-                <Text style={[styles.HeadingList, {textAlign: "left"}]}>PaidTours</Text>
+                    <Text style={[styles.HeadingTypes, {textAlign: "left"}]}>PaidTours</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="paidTourType"
                     onPress={() =>
                     { navigation.navigate('Manage Types', { type: 'paidTourType'})}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>paidTourType</Text>
+                        <Text style={styles.buttonTypesText}>paidTourType</Text>
                 </TouchableOpacity>
 
 
          
-                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Restaurants</Text>
+                    <Text style={[styles.HeadingTypes, {textAlign: "left"}]}>Restaurants</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="typesOfCuisine"
                     onPress={() =>
                     { navigation.navigate('Manage Types', { type: 'typesOfCuisine' })}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>typesOfCuisine</Text>
+                        <Text style={styles.buttonTypesText}>typesOfCuisine</Text>
                 </TouchableOpacity>
 
 
             
-                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Registered User Page</Text>
+                    <Text style={[styles.HeadingTypes, {textAlign: "left"}]}>Registered User Page</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="interestTypes"
                     onPress={() =>
                     { navigation.navigate('Manage Types', { type: 'interestTypes' })}
                     }
                 >
-                    <Text style={styles.buttonSmallText}>interestTypes</Text>
+                        <Text style={styles.buttonTypesText}>interestTypes</Text>
                 </TouchableOpacity>
 
 
      
-                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Registration LOL</Text>
+                    <Text style={[styles.HeadingTypes, {textAlign: "left"}]}>Registration LOL</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="socialMediaPlatform"
                     onPress={() => { navigation.navigate('Manage Types', { type: 'socialMediaPlatform' }) }
                     }
                 >
-                    <Text style={styles.buttonSmallText}>socialMediaPlatform</Text>
+                        <Text style={styles.buttonTypesText}>socialMediaPlatform</Text>
                 </TouchableOpacity>
 
 
           
-                <Text style={[styles.HeadingList, {textAlign: "left"}]}>Common Fields</Text>
+                    <Text style={[styles.HeadingTypes, {textAlign: "left"}]}>Common Fields</Text>
                 <TouchableOpacity style={styles.buttonLanding}
                     title="ageGroup"
                     onPress={() => { navigation.navigate('Manage Types', { type: 'ageGroup' }) }
                     }
                 >
-                    <Text style={styles.buttonSmallText}>ageGroup</Text>
+                        <Text style={styles.buttonTypesText}>ageGroup</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonLanding}
@@ -110,7 +110,7 @@ export default function ManageTypesChoice({ navigation }) {
                     onPress={() => { navigation.navigate('Manage Types', { type: 'countries' }) }
                     }
                 >
-                    <Text style={styles.buttonSmallText}>countries</Text>
+                        <Text style={styles.buttonTypesText}>countries</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonLanding}
@@ -118,7 +118,7 @@ export default function ManageTypesChoice({ navigation }) {
                     onPress={() => { navigation.navigate('Manage Types', { type: 'languages' }) }
                     }
                 >
-                    <Text style={styles.buttonSmallText}>languages</Text>
+                        <Text style={styles.buttonTypesText}>languages</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.buttonLanding}
@@ -126,7 +126,7 @@ export default function ManageTypesChoice({ navigation }) {
                     onPress={() => { navigation.navigate('Manage Types', { type: 'preferredLanguage' }) }
                     }
                 >
-                    <Text style={styles.buttonSmallText}>preferredLanguage</Text>
+                        <Text style={styles.buttonTypesText}>preferredLanguage</Text>
                 </TouchableOpacity>
                 </ScrollView>
             </View>

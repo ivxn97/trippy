@@ -21,9 +21,9 @@ import {
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
   GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks, EditGuide,
-  EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminEditGuidesList,
-  AdminEditWalkingToursList, AdminEditAttractionsList, AdminEditDealsList, AdminEditHotelsList, AdminEditPaidToursList, 
-  AdminEditRestaurantsList, ManageTypes, ManageTypesChoice, 
+  EditGuidesList, GuideSectionExpired, EditWalkingTour, EditWalkingToursList, WalkingToursExpired, AdminDeleteGuides,
+  AdminDeleteWalkingTours, AdminDeleteAttractions, AdminDeleteDeals, AdminDeleteHotels, AdminDeletePaidTours, 
+  AdminDeleteRestaurants, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
   ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, 
   ForumSectionsDeleteList, ItineraryMapView, EditPost, DeleteForumPostList, DeletePost, DeleteReply, Report, ReportsList
@@ -193,13 +193,13 @@ function AdminStackScreen() {
       <Stack.Screen name="Page Content" component={PageContent} />
       <Stack.Screen name="Page Content Choice" component={PageContentChoice} />
       <Stack.Screen name="Review Account" component={ReviewAccount} />
-      <Stack.Screen name="Admin Edit Walking Tours List" component={AdminEditWalkingToursList} />
-      <Stack.Screen name="Admin Edit Guides List" component={AdminEditGuidesList} />
-      <Stack.Screen name="Admin Edit Attractions List" component={AdminEditAttractionsList} />
-      <Stack.Screen name="Admin Edit Deals List" component={AdminEditDealsList} />
-      <Stack.Screen name="Admin Edit Hotels List" component={AdminEditHotelsList} />
-      <Stack.Screen name="Admin Edit PaidTours List" component={AdminEditPaidToursList} />
-      <Stack.Screen name="Admin Edit Restaurants List" component={AdminEditRestaurantsList} />
+      <Stack.Screen name="Admin Delete Walking Tours" component={AdminDeleteWalkingTours} />
+      <Stack.Screen name="Admin Delete Guides" component={AdminDeleteGuides} />
+      <Stack.Screen name="Admin Delete Attractions" component={AdminDeleteAttractions} />
+      <Stack.Screen name="Admin Delete Deals" component={AdminDeleteDeals} />
+      <Stack.Screen name="Admin Delete Hotels" component={AdminDeleteHotels} />
+      <Stack.Screen name="Admin Delete PaidTours" component={AdminDeletePaidTours} />
+      <Stack.Screen name="Admin Delete Restaurants" component={AdminDeleteRestaurants} />
       <Stack.Screen name="Edit Walking Tours" component={EditWalkingTour} />
       <Stack.Screen name="Edit Guide" component={EditGuide} />
       <Stack.Screen name="Edit Restaurant" component={EditRestaurant} />

@@ -7,7 +7,7 @@ import { sortFiles } from '../commonFunctions';
 
 export default function ForumScreen ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [forum, setForum] = useState([]); // Initial empty array of hotels
+    const [forum, setForum] = useState([]); // Initial empty array of forum
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(forum);
     

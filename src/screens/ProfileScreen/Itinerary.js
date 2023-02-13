@@ -13,7 +13,7 @@ export default function Itinerary({ navigation }) {
     const [email, setEmail] = useState();
     const [itineraryArr, setItineraryArr] = useState();
     const [finalArr, setFinalArr] = useState();
-    const [restaurants, setRestaurants] = useState([]); // Initial empty array of restaurants
+    const [restaurants, setRestaurants] = useState([]); // Initial empty array of activities
     const [hotels, setHotels] = useState([]);
     const [paidTours, setPaidTours] = useState([]);
     const [attractions, setAttractions] = useState([]);
@@ -65,7 +65,7 @@ export default function Itinerary({ navigation }) {
                 }
             });
 
-            const filteredArr = itineraryData.map(item => item.name)
+            const filteredArr = finalArray.map(item => item.name)
             console.log("Filtered arr:", filteredArr)
             console.log("final Array:", finalArray)
             setItineraryArr(filteredArr);
@@ -138,21 +138,23 @@ export default function Itinerary({ navigation }) {
                 key: doc.id
             })
         })
-        /*if (itineraryArr) {
-            setLoading(false);
-        }*/
     }
 
     const getWalkingTours = async () => {
-        const collectionRef = collection(db, "walkingtours")
-        const q = query(collectionRef, where('name', 'in', itineraryArr));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            walkingTours.push({
-                ...doc.data(),
-                key: doc.id
+        try {
+            const collectionRef = collection(db, "walkingtours")
+            const q = query(collectionRef, where('name', 'in', itineraryArr));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                walkingTours.push({
+                    ...doc.data(),
+                    key: doc.id
+                })
             })
-        })
+        }
+        catch (e) {
+            console.log(e)
+        }
         getMergeArr();
     }
 
@@ -201,7 +203,6 @@ export default function Itinerary({ navigation }) {
             await setDoc(doc(db, "users", email), {
                 itinerary: submitList
             }, { merge: true });
-            //console.log("Document written with ID: ", docRef.id);
             navigation.navigate('Profile Page')
         }
         catch (e) {

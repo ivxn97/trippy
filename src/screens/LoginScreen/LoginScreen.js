@@ -25,20 +25,7 @@ export default function LoginScreen({navigation}) {
         navigation.navigate('Reset Password')
     }
 
-    async function getLogin (email) {
-        var loginRef = doc(db, "users", email);
-        const docSnap = await getDoc(loginRef);
-
-        if (docSnap.exists()) {
-            //console.log("Document data: ", docSnap.data());
-            const roleData = docSnap.data().role
-            setRole(roleData);
-        }
-        else {
-            console.log("Error", error)
-        }
-    }
-
+    //Store Role, Email, Username, Business Name to Async Storage
     const storeRole = async (role) => {
         try {
             await AsyncStorage.setItem('role', role)
@@ -73,26 +60,8 @@ export default function LoginScreen({navigation}) {
             console.log(e)
         }
     }
-    /*
-    const onLoginPress = () => {
-        signInWithEmailAndPassword(auth, email, password)
-        .then(userCredentials => {
-            const user = userCredentials.user;
-            getLogin(user.email);
-            storeEmail(user.email);
-            console.log('Logged in with: ', user.email);
-            navigation.navigate('Profile Page');
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorCode + ': ' + errorMessage)
-        })
-    }
-    console.log('Role: ' + role)
-    storeRole(role);
-    */
 
+    // Verify with Firebase Authentication, then Check Firestore DB for account. 
     const onLoginPress = () => {
         signInWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
@@ -119,7 +88,12 @@ export default function LoginScreen({navigation}) {
             alert('Wrong email or password entered')
         })
     }
-
+    /*
+    If Status is pending, tell user their registration has not yet been approved
+    If Status is awaiting, redirect user to OTP page where they can enter the OTP sent to their Email
+    If Status is approved, redirect user to Admin Stack/ Business Owner Stack/ Profile Page depending on role
+    If status is suspended, tell user that they have been suspended 
+    */
     useEffect(()=> {
         if ( !didMount.current ) {
             return() => { didMount.current = true;}

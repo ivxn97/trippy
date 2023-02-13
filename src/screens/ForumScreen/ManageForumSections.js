@@ -8,7 +8,7 @@ import { sortFiles } from '../commonFunctions';
 // Displays List of Forum Sections
 export default function ManageForumSections ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [forum, setForum] = useState([]); // Initial empty array of hotels
+    const [forum, setForum] = useState([]);  
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(forum);
 

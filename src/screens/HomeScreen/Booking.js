@@ -15,12 +15,6 @@ import { db } from '../../../config';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import uuid from 'react-native-uuid';
 
-//Check capacity for paid tour has reached
-//Check to ensure date and time matches operating hours
-//Check Process payment
-// Have deals redemption ability
-
-
 export default function Booking ({route, navigation}) {
   const {activityType, name, timeSlots, capacity, startingTime, endingTime, duration, price, groupSize, roomTypes, checkInTime, checkOutTime} = route.params;
   const [email, setEmail] = useState('');
@@ -39,15 +33,12 @@ export default function Booking ({route, navigation}) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  
+  // Generates Group Size display for the Select Picker from the provided groupSize
   const groupSizePicker = Array.from({length: groupSize}, (_, i) => i + 1).map(n => ({label: `${n}`, value: `${n}`}));
   console.log(groupSizePicker);
   console.log(timeSlots)
-  
-  function onSubmit(model) {
-    Alert.alert('Success: ' + JSON.stringify(model, null, 2))
-  }
 
+  //Placeholders
   const timeSlotPlaceholder = {
     label: 'Select time-slot',
     value: null,
@@ -60,6 +51,7 @@ export default function Booking ({route, navigation}) {
     color: 'black',
   };
 
+  // Get User Email from Async Storage
   const getEmail = async () => {
     try {
         const email = await AsyncStorage.getItem('email');
@@ -77,6 +69,12 @@ export default function Booking ({route, navigation}) {
     }
   }
 
+  /*
+  Checks for other bookings made where activity name matches current activity name, 
+   Then checks the bookings for matching date and time as the one selected by the user,
+   If date and time match, check for capacity. (Capacity for given activity - group sizes of other bookings on the same date and time)
+   If current capacity is more than the group size choosen by the user, user can proceed to payment. Else, tell user that the activity is unavailable.
+   */
   const onConfirmPress = async () => {
     const currentCapacity = newCapacity;
     const collectionRef = collection(db, "bookings")

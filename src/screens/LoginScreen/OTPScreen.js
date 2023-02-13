@@ -15,6 +15,7 @@ export default function OTPScreen({route, navigation}) {
     const [result, setResult] = useState();
     const didMount = useRef(false);
 
+    // Store Role/ Email/ Username/ business name in Async Storage after successful OTP
     const storeRole = async (role) => {
         try {
             await AsyncStorage.setItem('role', role)
@@ -49,7 +50,7 @@ export default function OTPScreen({route, navigation}) {
             console.log(e)
         }
     }
-
+    // Get OTP assigned to the user from Firestore DB
     const getOTP = async () => {
         var OTPRef = doc(db, "OTP", email);
         getDoc(OTPRef).then((docSnap) => {
@@ -60,6 +61,7 @@ export default function OTPScreen({route, navigation}) {
         })
     }
 
+    // Generate a new OTP, then set that OTP in firestore DB, and Email user the new OTP
     const generateOTP = async () => {
         const digits = '0123456789';
         let OTP = '';
@@ -97,6 +99,7 @@ export default function OTPScreen({route, navigation}) {
         alert("OTP has been sent to your provided email.")
     };
 
+    // Change status of user upon successful OTP
     const changeStatus = async () => {
         try {
             const docRef = await setDoc(doc(db, "users", email), {
@@ -109,6 +112,8 @@ export default function OTPScreen({route, navigation}) {
         deleteDoc(doc(db, "OTP", email))
     }
 
+    // Change Status of user to Approved, Store information to Async Storage,
+    // then navigate user to respective pages depending on role
     const onSubmitPress = () => {
         if (OTP == result) {
             changeStatus();

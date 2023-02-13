@@ -10,7 +10,7 @@ import {bookmark, itinerary} from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { report } from '../commonFunctions';
-
+// Details Page for when user clicks on a Attraction/ Restaurant/ Paid Tour/ Hotel
 export default function Details({route, navigation}) {
     const {activityType, name, typeOfCuisine, price, ageGroup, groupSize, openingTime, closingTime, language, 
         description, TNC, tourType, startingTime, endingTime, duration, hotelClass, roomTypes, 
@@ -31,6 +31,7 @@ export default function Details({route, navigation}) {
     const [valueAmenities, setValueAmenities] = useState();
     const [valueRoomFeatures, setValueRoomFeatures] = useState();
 
+    // Filter so only Selected Room Types/ Amenities/ Features are displayed
     const filterHotel = () => {
         if (activityType == 'hotels') {
         const filteredRoomTypes = roomTypes.filter(item => item.isChecked === true);
@@ -52,6 +53,7 @@ export default function Details({route, navigation}) {
         }
     }
 
+    // Get User Email from Async Storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -68,6 +70,7 @@ export default function Details({route, navigation}) {
         }
     }
 
+    // Get User Role from Async Storage
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
@@ -92,7 +95,7 @@ export default function Details({route, navigation}) {
         filterHotel();
     }, [])
 
-    //Restaurants only
+    //Restaurants only: Get Restaurant Menu from Firebase Storage
     const getMenu = () => {
         const listRef = ref(storage, `restaurants/${name.trimEnd()}/menu`);
         Promise.all([
@@ -128,7 +131,7 @@ export default function Details({route, navigation}) {
             </View>
         )
     }
-
+    // Share to social media
     const onShare = async () => {
         try {
             await Share.share({message:`Check out this amazing ${activityType} I found on TripAid!  
@@ -151,7 +154,7 @@ Download the App here: URL`})
     const onReview = () => {
         navigation.navigate('Review Screen', {name, activityType});
     }
-
+    // Opens address in browser/ Google maps app
     const openAddress = async () => {
         await WebBrowser.openBrowserAsync(mapURL)
     }

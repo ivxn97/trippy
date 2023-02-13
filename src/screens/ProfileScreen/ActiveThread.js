@@ -11,7 +11,7 @@ export default function ActiveThread({ navigation }) {
     const [username, setUsername] = useState('');
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [items, setItems] = useState([]); 
-    const [forum, setForum] = useState([]); // Initial empty array of hotels
+    const [forum, setForum] = useState([]); // Initial empty array of forums
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(items);
     
@@ -29,6 +29,7 @@ export default function ActiveThread({ navigation }) {
         }
     }
 
+    // get forum posts where it was added by user
     const getThreads = async() => {
         const q = query(collection(db, "forum"), where("addedBy", "==", username));
         const querySnapshot = await getDocs(q)

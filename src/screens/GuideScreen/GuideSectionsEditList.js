@@ -4,7 +4,7 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-
+// Edit a Guide Section
 export default function GuideSectionsEditList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [guide, setGuide] = useState([]); // Initial empty array of guide sections

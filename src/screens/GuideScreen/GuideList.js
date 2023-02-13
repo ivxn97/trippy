@@ -4,7 +4,7 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-
+// Guides List Displaying all Available Sections
 export default function GuideList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [guides, setGuides] = useState([]); // Initial empty array of guides

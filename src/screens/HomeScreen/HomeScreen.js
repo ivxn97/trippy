@@ -16,13 +16,12 @@ export default function HomeScreen( {navigation} ) {
     const [topPage, setTopPage] = useState([])
     const [loading, setLoading] = useState(true)
     const isInitialMount = useRef(true);
-
+    //Get User Role. If User Role is Admin or BO, navigate them to the respective stacks
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
             if (role !== null) {
                 if (role == "Admin") {
-                    //navigation.navigate('Admin Stack');
                     navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
                 }
                 else if (role == "Business Owner") {
@@ -37,6 +36,7 @@ export default function HomeScreen( {navigation} ) {
             console.log(error)
         }
     }
+    // Get activities from the homepage collection. The Contents of this is set by Admin in PageContent.js
     const getActivities = async () => {
         const querySnapshot = await getDocs(collection(db, "homepage"));
         querySnapshot.forEach(documentSnapshot => {
@@ -49,7 +49,6 @@ export default function HomeScreen( {navigation} ) {
                 restaurants.push({
                     ...documentSnapshot.data().activities
                 });
-                //console.log(restaurants)
             }
             else if (documentSnapshot.id == "hotels") {
                 hotels.push({
@@ -85,7 +84,8 @@ export default function HomeScreen( {navigation} ) {
 
         setLoading(false)
     }
-    
+    //Checks for Expiry of Bookings and Deals upon app launch. If current date is after the date in bookings/ deals, 
+    // Set those bookings as expired, and remove the expired deals
     const changeExpiry = async (id) => {
         await setDoc(doc(db, "bookings", id), {
             expired: true

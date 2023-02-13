@@ -5,10 +5,10 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from '../LOLScreen/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+// Guides List for Editing
 export default function EditGuideList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [guides, setGuides] = useState([]); // Initial empty array of hotels
+    const [guides, setGuides] = useState([]); // Initial empty array of guides
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {

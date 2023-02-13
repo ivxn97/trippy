@@ -21,6 +21,7 @@ export default function Bookmarks ( {navigation} ) {
 
     const [shouldRun, setShouldRun] = useState(true);
 
+    // Get user email from Async Storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -36,6 +37,7 @@ export default function Bookmarks ( {navigation} ) {
         }
     }
 
+    // Get User Bookmarks
     async function getBookmarks (email) {
         var loginRef = doc(db, "users", email);
         const docSnap = await getDoc(loginRef);
@@ -52,6 +54,7 @@ export default function Bookmarks ( {navigation} ) {
         }
     }
 
+    // Get activities that matches the names in user bookmarks
     const getRestaurants = async () => {
         const collectionRef = collection(db, "restaurants")
         const q = query(collectionRef, where('name', 'in', bookmarksArr));
@@ -140,6 +143,7 @@ export default function Bookmarks ( {navigation} ) {
         }
     },[shouldRun, email, bookmarksArr]))
 
+    // If Bookmarks isnt loaded after 8 seconds, tell user that bookmarks is empty. 
     useEffect(() => {
         const interval = setInterval(() => {
             setStatus('Bookmarks is empty!');

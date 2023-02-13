@@ -9,7 +9,7 @@ import {bookmark, itinerary} from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Moment from 'moment';
-
+// Displays Guides Details
 export default function GuideScreen({ route, navigation }) {
     const { name, location, mrt, tips, description, activityType, username, date, addedBy, images } = route.params;
     const storage = getStorage();

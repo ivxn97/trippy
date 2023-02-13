@@ -3,18 +3,10 @@ import {  View, ActivityIndicator, Text, TouchableOpacity, Alert, StyleSheet, Fl
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styles from './styles';
 import { db } from '../../../config';
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import Carousel from 'react-native-reanimated-carousel';
-import * as WebBrowser from 'expo-web-browser';
-import {bookmark, itinerary} from '../commonFunctions';
-import ReviewScreen from '../ReviewScreen/ReviewScreen';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-import RNPickerSelect from 'react-native-picker-select';
 import Moment from 'moment';
 import { doc, setDoc, getDoc, getDocs, collection, DocumentSnapshot, deleteDoc } from "firebase/firestore";
-import uuid from 'react-native-uuid';
 
+// Display booking details depending on activity Type
 export default function BookingDetails ({route, navigation}) {
   const { date, orgPrice, discount, finalPrice, groupSize, id, name, time, email, activityType, startDate, endDate } = route.params;
   const [showModal, setShowModal] = useState(false);

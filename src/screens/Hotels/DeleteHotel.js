@@ -13,7 +13,7 @@ const storage = getStorage();
 
 export default function DeleteHotel({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [items, setItems] = useState([]); // Initial empty array of hotels
+    const [items, setItems] = useState([]); 
     const [filteredData, setfilteredData] = useState(items);
     const [selectedName, setSelectedName] = useState(null);
     const [showModal, setShowModal] = useState(false);

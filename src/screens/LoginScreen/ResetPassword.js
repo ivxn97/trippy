@@ -7,7 +7,7 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 export default function ResetPassword({navigation}) {
     const [email, setEmail] = useState();
-
+    // Sends an email to reset password. Function is handled by Firebase directly. 
     const sendResetEmail = () => {
         const auth = getAuth();
         sendPasswordResetEmail(auth, email, null)

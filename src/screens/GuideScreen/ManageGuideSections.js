@@ -5,29 +5,29 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-
+// View all Guide Sections (Business Owner)
 export default function ManageGuideSections ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [forum, setForum] = useState([]); // Initial empty array of hotels
+    const [section, setSection] = useState([]); // Initial empty array of guide sections
     const [search, setSearch] = useState('');
-    const [filteredData, setfilteredData] = useState(forum);
+    const [filteredData, setfilteredData] = useState(section);
     
     useEffect(async () => {
         const querySnapshot = await getDocs(collection(db, "guide sections"));
         querySnapshot.forEach(documentSnapshot => {
-            forum.push({
+            section.push({
                 ...documentSnapshot.data(),
                 key: documentSnapshot.id,
             });
         });
 
-        setForum(forum);
+        setSection(section);
         setLoading(false);
     }, []);
 
     const searchFilter = (text) => {
         if (text) {
-            const newData = forum.filter((item) => {
+            const newData = section.filter((item) => {
                 const itemData = item.title ? item.title.toUpperCase()
                     : ''.toUpperCase()
                 const textData = text.toUpperCase()
@@ -36,7 +36,7 @@ export default function ManageGuideSections ({ navigation }) {
             setfilteredData(newData);
             setSearch(text);
         } else {
-            setfilteredData(forum);
+            setfilteredData(section);
             setSearch(text);
         }
        }

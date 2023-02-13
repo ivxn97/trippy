@@ -33,6 +33,7 @@ export default function ConfirmBooking ({route, navigation}) {
   const [dealQuantity, setDealQuantity] = useState()
   const [difference, setDifference] = useState()
 
+  // Get list of claimed deals from user
   const getClaimedDeals = async () => {
     const docRef = doc(db, "users", email)
     const docSnap = await getDoc(docRef)
@@ -42,6 +43,7 @@ export default function ConfirmBooking ({route, navigation}) {
     setShouldRun(false)
   }
 
+  // Get deal information from Firestore DB
   const getDealInfo = async () => {
     const querySnapshot = await getDocs(collection(db, "deals"))
     querySnapshot.forEach(documentSnapshot => {
@@ -60,6 +62,7 @@ export default function ConfirmBooking ({route, navigation}) {
     setLoading(false)
   }
 
+  // Update Deal Quantity to reflect User using it
   const DealCount = async () => {
     try {
       await setDoc(doc(db, "deals", dealName), {
@@ -75,6 +78,7 @@ export default function ConfirmBooking ({route, navigation}) {
     if (shouldRun) {
       getClaimedDeals();
       if (activityType == "hotels") {
+        // Hotels: Calculate the amount of days booked by the user
         const diff = moment(endDate).startOf('day').diff(moment(startDate).startOf('day'), 'days')
         console.log(diff)
         setDifference(diff)
@@ -86,6 +90,7 @@ export default function ConfirmBooking ({route, navigation}) {
     }
   },[claimedDeals])
 
+  //Paid Tours Payment Press
   const onPTPaymentPress = async () => {
     try {
       await setDoc(doc(db, "bookings", id), {
@@ -110,6 +115,7 @@ export default function ConfirmBooking ({route, navigation}) {
     }
   }
 
+  //Attractions Payment Press
   const onATPaymentPress = async () => {
     try {
       await setDoc(doc(db, "bookings", id), {
@@ -133,6 +139,7 @@ export default function ConfirmBooking ({route, navigation}) {
     }
   }
 
+  // Restaurants Payment Press
   const onRPaymentPress = async () => {
     try {
       await setDoc(doc(db, "bookings", id), {
@@ -154,6 +161,7 @@ export default function ConfirmBooking ({route, navigation}) {
     }
   }
 
+  // Hotel Payment Press
   const onHotelPaymentPress = async () => {
     try {
       await setDoc(doc(db, "bookings", id), {
@@ -179,6 +187,7 @@ export default function ConfirmBooking ({route, navigation}) {
     }
   }
 
+  // Calculate payment after applying Deal
   const paymentCalculation = (price, discount, dealName, quantity) => {
     setDealName(dealName)
     console.log("Deal Q: ", quantity-1)
@@ -189,6 +198,7 @@ export default function ConfirmBooking ({route, navigation}) {
     setShouldShow(!shouldShow);
   }
 
+  // Calculate payment for hotel after appyling Deal (Uses amount of days instead of group size)
   const HpaymentCalculation = (price, discount, dealName, quantity) => {
     setDealName(dealName)
     console.log("Deal Q: ", quantity-1)

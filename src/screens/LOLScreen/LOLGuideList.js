@@ -5,7 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+// Guides List for LOL
 export default function LOLGuideList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [guides, setGuides] = useState([]); // Initial empty array of guides

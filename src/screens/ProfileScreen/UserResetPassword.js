@@ -13,7 +13,7 @@ export default function UserResetPassword({ navigation}) {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
                 setEmail(email);
-                console.log("Emailuserrrr: ", email)
+                console.log("Email: ", email)
             }
             else {
                 console.log("No Email Selected at Login")

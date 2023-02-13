@@ -11,7 +11,7 @@ export default function ListOfUsers( {navigation} ) {
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(users);
 
-
+  // Get all users from Firestore DB
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(db, "users"));
         querySnapshot.forEach(documentSnapshot => {
@@ -29,6 +29,7 @@ export default function ListOfUsers( {navigation} ) {
     return <ActivityIndicator />;
   }
 
+  //Handles Search
   const searchFilter = (text, type) => {
     if (text) {
         const newData = type.filter((item) => {

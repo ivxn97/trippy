@@ -72,6 +72,7 @@ export default function AddAttraction ( { navigation }) {
 
     const storage = getStorage();
 
+    // Get User Email from ASync Storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -87,6 +88,7 @@ export default function AddAttraction ( { navigation }) {
     }
     getEmail();
 
+    //Handles Image deletion when user clicks "Delete All Uploaded Images"
     const deleteImages = () => {
         deleteFolder(`/attractions/${name}/images`)
         setImageUploaded(false)
@@ -104,6 +106,7 @@ export default function AddAttraction ( { navigation }) {
         .catch(error => console.log(error));
     }
 
+    // Gets the image URL after uploading to store in Firestore DB
     const getImages = async () => {
         const listRef = ref(storage, `attractions/${name}/images`);
         Promise.all([
@@ -122,7 +125,8 @@ export default function AddAttraction ( { navigation }) {
             setImageUploaded(true)
           });
     }
-
+    
+    // Handles image picker
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -156,6 +160,7 @@ export default function AddAttraction ( { navigation }) {
         };
     };
 
+    // Get Attraction Types from Firestore DB 
     const getAttractionTypes = async () => {
         const docRef = doc(db, "types", "AddAttraction");
         const docSnap = await getDoc(docRef);
@@ -169,6 +174,7 @@ export default function AddAttraction ( { navigation }) {
         }
     }
 
+    // Get Preferred Language and Age Group data from Firestore DB
     const getData = async () => {
         const docRef = doc(db, "types", "commonFields");
         const docSnap = await getDoc(docRef);
@@ -192,6 +198,7 @@ export default function AddAttraction ( { navigation }) {
         }
     }, [ageGroupData]);
       
+    // Checks to ensure all fields are filled then add to attractions collection in Firestore DB
     const onSubmitPress = async () => {
          if (email !== '' && name !== '' && attractionType !== '' && price !== '' && ageGroup !== '' 
             && groupSize !== '' && openingHour !== '' && openingMinute !== '' && closingHour !== '' 

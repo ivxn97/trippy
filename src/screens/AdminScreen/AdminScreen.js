@@ -13,21 +13,23 @@ export default function AdminScreen ({navigation}) {
     const [refresh, setRefresh] = useState();
     const auth = getAuth();
 
-        const onSignout = () => {
-        signOut(auth).then(() => {
-            // Sign-out successful.
-            removeRole();
-            removeEmail();
-            removeUsername();
-            navigation.reset({index: 0, routes: [{name: 'Home'}]})
-            alert("Successfully Logged out")
-        }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            alert(errorCode + ': ' + errorMessage)
-         });
+    //Handles Sign Out (Removes Role, Email, Username from Async Storage, Re-routes user to Home Stack)
+    const onSignout = () => {
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        removeRole();
+        removeEmail();
+        removeUsername();
+        navigation.reset({index: 0, routes: [{name: 'Home'}]})
+        alert("Successfully Logged out")
+    }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorCode + ': ' + errorMessage)
+        });
     }
 
+    // Remove Role from Async Storage
     const removeRole = async () => {
         try {
             const role = await AsyncStorage.removeItem('role');
@@ -38,6 +40,7 @@ export default function AdminScreen ({navigation}) {
         }
     }
 
+    // Remove Email from Async Storage
     const removeEmail = async () => {
         try {
             const email = await AsyncStorage.removeItem('email');
@@ -47,6 +50,7 @@ export default function AdminScreen ({navigation}) {
         }
     }
 
+    // Remove Username from Async Storage
     const removeUsername = async () => {
         try {
             const username = await AsyncStorage.removeItem('username');
@@ -56,6 +60,7 @@ export default function AdminScreen ({navigation}) {
         }
     }
     
+    // Get Role From Async Storage
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');

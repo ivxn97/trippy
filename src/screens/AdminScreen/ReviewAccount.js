@@ -14,6 +14,7 @@ export default function ReviewAccount ({route, navigation}) {
     const [screenshot, setScreenshot] = useState();
     const storage = getStorage();
 
+    // Get All Screenshots submitted by LOL during registration
     const getScreenshot = () => {
         const listRef = ref(storage, `RegistrationLOL/${email}/images`);
         Promise.all([
@@ -37,7 +38,10 @@ export default function ReviewAccount ({route, navigation}) {
 
     function AllView () {
         const [reason, setReason] = useState('')
-    
+        
+        // Account Approved: Generate OTP code and send it to the user via email, 
+        //change status in Firestore DB to 'Awaiting'. 
+        //User will be prompted to input OTP the next time he attempts login.
         const onApprove = ()  => {
             generateOTP();
             try {
@@ -52,6 +56,8 @@ export default function ReviewAccount ({route, navigation}) {
             }
         }
 
+        // Account Rejected: Delete User from Firestore DB, Delete images uploaded by the user. 
+        // Send Email to the user Informing User of Rejection
         const onReject = async () => {
             deleteDoc(doc(db, "users", email))
             deleteFolder(`/users/${email}`)
@@ -72,7 +78,7 @@ export default function ReviewAccount ({route, navigation}) {
             alert('Account Rejected and deleted')
             navigation.replace('Review Pending Accounts')
         }
-
+        // Deletes images uploaded by the user
         function deleteFolder(path) {
             const listRef = ref(storage, path)
             listAll(listRef)
@@ -82,7 +88,7 @@ export default function ReviewAccount ({route, navigation}) {
                 })
                 .catch(error => console.log(error));
         }
-
+        // Generates OTP code and emails it to user
         const generateOTP = async () => {
             const digits = '0123456789';
             let OTP = '';

@@ -11,6 +11,7 @@ export default function ReviewPendingAccounts( {navigation} ) {
   const [search, setSearch] = useState('');
   const [filteredData, setfilteredData] = useState(users);
 
+  // Gets all users from Firestore DB where their status is pending approval. 
   useEffect(async () => {
     const collectionRef = collection(db, "users")
     const q = query(collectionRef, where('status', '==', 'Pending'))
@@ -30,6 +31,7 @@ export default function ReviewPendingAccounts( {navigation} ) {
     return <ActivityIndicator />;
   }
 
+  // Handles search
   const searchFilter = (text, type) => {
     if (text) {
         const newData = type.filter((item) => {

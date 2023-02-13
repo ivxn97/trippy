@@ -9,10 +9,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FilteredTextInput } from '../commonFunctions';
 import { useFocusEffect } from '@react-navigation/native';
 
+// This File handles reports submitted by other users
 export default function Report ( {route, navigation} ) {
     const {activityType, addedBy, content, reportedBy, name} = route.params;
     const [description, setDescription] = useState('')
 
+    // Remove activity/ forum post from Database
     const remove = async () => {
         try {
             await deleteDoc(doc(db, activityType, name));
@@ -25,6 +27,7 @@ export default function Report ( {route, navigation} ) {
         }
     }
 
+    // Remove activity/ forum post from database and suspend the user that wrote it
     const removeAndSuspend = async () => {
         try {
             await deleteDoc(doc(db, activityType, name));
@@ -40,6 +43,7 @@ export default function Report ( {route, navigation} ) {
         }
     }
 
+    // Ignore report, Report gets removed from Firestore DB
     const ignore = async () => {
         await deleteDoc(doc(db, "reports", name));
         alert("Report Removed")

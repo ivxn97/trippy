@@ -3,7 +3,7 @@ import { ActivityIndicator, View, Text, TouchableOpacity, FlatList, CheckBox } f
 import styles from './styles';
 import { ScrollView} from 'react-native-gesture-handler';
 export default function ManageTypesChoice({ navigation }) {
-    // State to store the list of items
+    // Displays the types choices
     
 
     return (

@@ -12,7 +12,7 @@ export default function ResetPassword({navigation}) {
         const auth = getAuth();
         sendPasswordResetEmail(auth, email, null)
         .then(() => {
-            alert("Reset email sent to " + email )
+            alert("Password Reset email sent to " + email )
         })
         .catch((e) => {
             console.log(e)

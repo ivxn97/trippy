@@ -13,6 +13,7 @@ export default function DeleteForumSection ( {route, navigation} ) {
     const [role, setRole] = useState('');
     const [newDescription, setDescription] = useState(description);
 
+    // Get User email from Async Storage 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -28,6 +29,7 @@ export default function DeleteForumSection ( {route, navigation} ) {
     }
     getEmail();
 
+    // Get User Role from Async Storage
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
@@ -44,12 +46,13 @@ export default function DeleteForumSection ( {route, navigation} ) {
     }
     getRole();
 
+    // Delete a forum section from firestore DB
     const onConfirmDelete = async () => {
         if (role == 'Admin') {
             try {
                 await deleteDoc(doc(db, "forum sections", name));
                 
-                navigation.replace('Admin Page')
+                navigation.navigate('Admin Page')
             }
             catch (e) {
                 console.log("Error deleting forum section: ", e);

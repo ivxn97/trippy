@@ -13,6 +13,7 @@ export default function DeleteGuideSection ( {route, navigation} ) {
     const [role, setRole] = useState('');
     const [newDescription, setDescription] = useState(description);
 
+    // Get User email from Async Storage 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -28,6 +29,7 @@ export default function DeleteGuideSection ( {route, navigation} ) {
     }
     getEmail();
 
+    // Get User Role from Async Storage
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
@@ -44,6 +46,7 @@ export default function DeleteGuideSection ( {route, navigation} ) {
     }
     getRole();
 
+    // Delete a guide section from firestore DB
     const onConfirmDelete = async () => {
         if (role == 'Admin') {
             try {

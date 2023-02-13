@@ -14,6 +14,7 @@ export default function AddWTSection ( {navigation} ) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
+    // Get User email from Async Storage 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -29,6 +30,7 @@ export default function AddWTSection ( {navigation} ) {
     }
     getEmail();
 
+    // Get User Role from Async Storage 
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
@@ -45,6 +47,7 @@ export default function AddWTSection ( {navigation} ) {
     }
     getRole();
 
+    // Add new Walking Tour Section to Firestore Database
     const onSubmitPress = async () => {
         if (name !== '' && description !== '') {
             if (role == 'Admin') {

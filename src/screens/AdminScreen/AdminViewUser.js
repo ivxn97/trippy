@@ -13,6 +13,7 @@ export default function AdminViewUser ({route, navigation}) {
     const [screenshot, setScreenshot] = useState();
     const storage = getStorage();
 
+    // Get Images uploaded from the LOL 
     const getScreenshot = () => {
         const listRef = ref(storage, `RegistrationLOL/${email}/images`);
         Promise.all([
@@ -51,6 +52,7 @@ export default function AdminViewUser ({route, navigation}) {
             color: 'black',
         };
     
+        // Submits Role Change to Firestore DB
         const onChangeRolePress = ()  => {
             if (newRole !== '') {
                 try {
@@ -69,6 +71,7 @@ export default function AdminViewUser ({route, navigation}) {
             }
         }
     
+        // Submits Status change to Firestore DB
         const onChangeStatusPress = ()  => {
             if (newStatus !== '') {
                 try {
@@ -87,6 +90,7 @@ export default function AdminViewUser ({route, navigation}) {
             }
         }
     
+        // Deletes user Account
         const onDeletePress = ()  => {
             deleteDoc(doc(db, "users", email));
             alert(`Account deleted`)

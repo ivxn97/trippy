@@ -3,7 +3,7 @@ import { ActivityIndicator, View, Text, TouchableOpacity, FlatList, CheckBox } f
 import styles from './styles';
 
 export default function PageContentChoice({ navigation, route }) {
-    // State to store the list of items
+    // Displays the HomePage content choices
     
 
     return (

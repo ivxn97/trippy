@@ -14,6 +14,7 @@ export default function AddForumSection ( {navigation} ) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
+    // Get User Email from Async storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -29,6 +30,7 @@ export default function AddForumSection ( {navigation} ) {
     }
     getEmail();
 
+    // Get User Role from Async Storage
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
@@ -45,6 +47,7 @@ export default function AddForumSection ( {navigation} ) {
     }
     getRole();
 
+    // Add the new forum section to Firestore Database 
     const onSubmitPress = async () => {
         if (name !== '' && description !== '') {
             if (role == 'Admin') {

@@ -82,45 +82,8 @@ export default function PageContent ( {navigation, route} ) {
         }
         
     };
-/*
-    const getCurrentContent = async () => {
-        if (activityType == 'topPage') {
-            const docSnap = await getDoc(doc(db, "homepage", "topPage"))
 
-            if (docSnap.exists()) {
-                setListedTopPage(docSnap.data().activities)
-            }
-        }
-        else if (activityType == 'restaurants') {
-            const docSnap = await getDoc(doc(db, "homepage", "restaurants"))
-
-            if (docSnap.exists()) {
-                setListedRestaurants(docSnap.data().activities)
-            }
-        }
-        else if (activityType == 'hotels') {
-            const docSnap = await getDoc(doc(db, "homepage", "hotels"))
-
-            if (docSnap.exists()) {
-                setListedHotels(docSnap.data().activities)
-            }
-        }
-        else if (activityType == 'paidtours') {
-            const docSnap = await getDoc(doc(db, "homepage", "paidtours"))
-
-            if (docSnap.exists()) {
-                setListedPaidtours(docSnap.data().activities)
-            }
-        }
-        else if (activityType == 'attractions') {
-            const docSnap = await getDoc(doc(db, "homepage", "attractions"))
-
-            if (docSnap.exists()) {
-                setListedAttractions(docSnap.data().activities)
-            }
-        }
-    }*/
-
+    // Get Activities
     const getRestaurants = async () => {
         const collectionRef = collection(db, "restaurants")
         const querySnapshot = await getDocs(collectionRef);
@@ -170,7 +133,7 @@ export default function PageContent ( {navigation, route} ) {
         getMergeArr();
     }
 
-
+    // Merge all activities into 1 array for HomePage Carousel
     const getMergeArr = () => {
         mergedArr.push(...restaurants);
         mergedArr.push(...hotels);
@@ -181,6 +144,7 @@ export default function PageContent ( {navigation, route} ) {
         setLoading(false);
     }
 
+    // Submits new Home Page content to Firestore DB
     const onSubmitPress = async () => {
         if (activityType == 'topPage') {
             try {

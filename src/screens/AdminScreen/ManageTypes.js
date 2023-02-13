@@ -48,6 +48,8 @@ export default function ManageTypes({ navigation, route }) {
         setSelectedName(name);
         setShowModal(true);
     }
+
+    // Delete item from Type List
     const onConfirmDelete = async () => {
         
         if (type == 'attractionType') {
@@ -205,6 +207,7 @@ export default function ManageTypes({ navigation, route }) {
         setShowModal(false);
     }
     
+    // Add item to Type List
     const handleSubmit = async () => {
         if (type == 'attractionType') {
             const object = {
@@ -399,6 +402,7 @@ export default function ManageTypes({ navigation, route }) {
         setModalVisible(false);
     };
 
+    // Get Current items inside the Type lists
     const getCurrentContent = async () => {
         if (type == 'attractionType') {
             const docRef = doc(db, "types", "AddAttraction");

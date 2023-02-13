@@ -41,6 +41,7 @@ export default function DeleteAttraction({ navigation }) {
         }
       }
     
+      // Get All Attractions added by the user
       const getAttractions = async () => {
         const collectionRef = collection(db, "attractions")
         const q = query(collectionRef, where('addedBy', '==', email));
@@ -61,6 +62,7 @@ export default function DeleteAttraction({ navigation }) {
         }
       },[email]);
 
+    // Handle Sort
     useEffect(async () => {
         const sortByChoice = ["name", "attractionType"];
         const sortByResult = sortByChoice.map(attributeName => ({
@@ -84,6 +86,7 @@ export default function DeleteAttraction({ navigation }) {
         setShowModal(true);
     }
 
+    //Delete selected attraction from firestore DB and its images from firebase storage
     const onConfirmDelete = () => {
         deleteDoc(doc(db, "attractions", selectedName));
         deleteFolder(`/attractions/${selectedName}/images`)

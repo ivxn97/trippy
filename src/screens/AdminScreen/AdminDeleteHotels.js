@@ -12,13 +12,14 @@ const storage = getStorage();
 
 export default function AdminDeleteHotels({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [items, setItems] = useState([]); // Initial empty array of attractions
+    const [items, setItems] = useState([]); // Initial empty array of hotels
     const [selectedName, setSelectedName] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState('');
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(items);
 
+    // Get User email from Async Storage 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -33,6 +34,7 @@ export default function AdminDeleteHotels({ navigation }) {
         }
     }
 
+    // Get All Hotels from Firestore Database
     const getHotels = async () => {
         const querySnapshot = await getDocs(collection(db, "hotels"));
         querySnapshot.forEach((doc) => {
@@ -57,13 +59,14 @@ export default function AdminDeleteHotels({ navigation }) {
         setSelectedName(name);
         setShowModal(true);
     }
+    // Delete Selected Hotel from Firestore Database and Delete its Images from Firebase Storage
     const onConfirmDelete = () => {
         deleteDoc(doc(db, "hotels", selectedName));
         deleteFolder(`/hotels/${selectedName}/images`)
         setItems((prevItems) => prevItems.filter((item) => item.name !== selectedName));
         setShowModal(false);
     }
-
+    // Delete Images from Firebase Storage 
     function deleteFolder(path) {
         const listRef = ref(storage, path)
         listAll(listRef)
@@ -78,6 +81,7 @@ export default function AdminDeleteHotels({ navigation }) {
         return <ActivityIndicator />;
     }
 
+    // Handles Search 
     const searchFilter = (text, type) => {
         if (text) {
             const newData = type.filter((item) => {

@@ -19,6 +19,7 @@ export default function AdminDeleteAttractions({ navigation }) {
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(items);
 
+    // Get User email from Async Storage 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -33,6 +34,7 @@ export default function AdminDeleteAttractions({ navigation }) {
         }
     }
 
+    // Get All Attractions from Firestore Database
     const getAttractions = async () => {
         const querySnapshot = await getDocs(collection(db, "attractions"));
         querySnapshot.forEach((doc) => {
@@ -52,12 +54,13 @@ export default function AdminDeleteAttractions({ navigation }) {
     }, [email]);
 
  
-
+    // Show Modal on Press
     const onDelete = (name) => {
         setSelectedName(name);
         setShowModal(true);
     }
 
+    // Delete Selected Attraction from Firestore Database and Delete its Images from Firebase Storage
     const onConfirmDelete = () => {
         deleteDoc(doc(db, "attractions", selectedName));
         deleteFolder(`/attractions/${selectedName}/images`)
@@ -65,6 +68,7 @@ export default function AdminDeleteAttractions({ navigation }) {
         setShowModal(false);
     }
 
+    // Delete Images from Firebase Storage 
     function deleteFolder(path) {
         const listRef = ref(storage, path)
         listAll(listRef)
@@ -79,6 +83,7 @@ export default function AdminDeleteAttractions({ navigation }) {
         return <ActivityIndicator />;
     }
 
+    // Handles Search 
     const searchFilter = (text, type) => {
         if (text) {
             const newData = type.filter((item) => {

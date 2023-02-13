@@ -11,6 +11,7 @@ export default function ReportsList ({ navigation }) {
     const [reports, setReports] = useState([]); // Initial empty array of reports
     const [email, setEmail] = useState('');
 
+    // Get all reports and display in a list
     const getReports = async () => {
         const querySnapshot = await getDocs(collection(db, "reports"));
         querySnapshot.forEach(documentSnapshot => {

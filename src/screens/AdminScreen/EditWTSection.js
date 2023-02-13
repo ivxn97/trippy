@@ -13,6 +13,7 @@ export default function EditWTSection ( {route, navigation} ) {
     const [role, setRole] = useState('');
     const [newDescription, setDescription] = useState(description);
 
+    // Get User email from Async Storage 
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -28,6 +29,7 @@ export default function EditWTSection ( {route, navigation} ) {
     }
     getEmail();
 
+    // Get User Role from Async Storage
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
@@ -44,6 +46,7 @@ export default function EditWTSection ( {route, navigation} ) {
     }
     getRole();
 
+    // Update Walking Tour Section with the edited information
     const onSubmitPress = async () => {
         if (name !== '' && newDescription !== '') {
             if (role == 'Admin') {

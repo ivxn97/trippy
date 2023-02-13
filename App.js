@@ -26,7 +26,7 @@ import {
   AdminDeleteRestaurants, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
   ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, 
-  ForumSectionsDeleteList, ItineraryMapView, EditPost, DeleteForumPostList, DeletePost, DeleteReply, Report, ReportsList
+  ForumSectionsDeleteList, ItineraryMapView, EditPost, DeleteForumPostList, DeletePost, DeleteReply, Report, ReportsList, UserResetPassword
 } from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
@@ -49,6 +49,7 @@ function ProfileStackScreen() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="OTP Screen" component={OTPScreen} />
       <Stack.Screen name="Reset Password" component={ResetPassword} />
+      <Stack.Screen name="User Reset Password" component={UserResetPassword} />
       <Stack.Screen name="Registration Selector" component={RegistrationSelector} />
       <Stack.Screen name="Register User" component={RegistrationRegisteredUser} />
       <Stack.Screen name="Register LOL" component={RegistrationLOL} />

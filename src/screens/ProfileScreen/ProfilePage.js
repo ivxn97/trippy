@@ -153,6 +153,9 @@ export default function ProfilePage({ navigation, route }) {
                 ></TextInput>
 
                 <View>
+                    <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate("User Reset Password", newEmail)}>
+                        <Text style={styles.updateButtonText}>Change Password</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.updateButton} onPress={() => onSubmitPress()}>
                         <Text style={styles.updateButtonText}>Update</Text>
                     </TouchableOpacity>
@@ -227,8 +230,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         shadowOpacity: 80,
         elevation: 15,
-        marginTop: 20,
-        marginBottom: 40,
+        marginTop: 5,
+        marginBottom: 5,
         backgroundColor: '#000'
     },
     updateButtonText: {

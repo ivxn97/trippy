@@ -296,8 +296,7 @@ export default function ProfileScreen ( {navigation} ) {
                                 </View>
                                 <View style = {{flexDirection: "column"}}>
                                     <View style={{ flex: 1}}>
-                                        <Text style={{ fontWeight: 'bold', 
-                                                        fontSize: 18, 
+                                        <Text style={{   fontSize: 18, 
                                                         marginLeft: "20%", 
                                                         marginRight: "auto", 
                                                         marginTop: "auto", 

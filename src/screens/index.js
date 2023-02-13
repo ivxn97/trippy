@@ -103,6 +103,7 @@ export { default as PreviousBookingDetails } from './ProfileScreen/PreviousBooki
 export { default as UserDealsList} from './ProfileScreen/UserDealsList'
 export { default as SearchBookmarks } from './ProfileScreen/SearchBookmarks'
 export { default as ItineraryMapView } from './ProfileScreen/ItineraryMapView'
+export { default as UserResetPassword } from './ProfileScreen/UserResetPassword'
 
 //Home Screens
 export { default as HomeScreen } from './HomeScreen/HomeScreen'

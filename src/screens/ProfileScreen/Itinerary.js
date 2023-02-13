@@ -80,6 +80,7 @@ export default function Itinerary({ navigation }) {
 
     //Get activities from Firestore where it matches the user's itinerary array
     const getRestaurants = async () => {
+        console.log("Itinerary arr at restaurants:", itineraryArr)
         const collectionRef = collection(db, "restaurants")
         const q = query(collectionRef, where('name', 'in', itineraryArr));
         const querySnapshot = await getDocs(q);
@@ -152,6 +153,7 @@ export default function Itinerary({ navigation }) {
                 key: doc.id
             })
         })
+        getMergeArr();
     }
 
     //Merge activities arrays
@@ -183,7 +185,7 @@ export default function Itinerary({ navigation }) {
             
             setCompletedArr(completedArr)
             setfilteredData(completedArr)
-            console.log(extractedArray)
+            console.log("Addresses:", extractedArray)
             setAddresses(extractedArray)
         }
 
@@ -233,7 +235,6 @@ export default function Itinerary({ navigation }) {
             getAttractions();
             getGuides();
             getWalkingTours();
-            getMergeArr();
         }
     }, [shouldRun, email, finalArr]))
 

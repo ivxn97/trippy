@@ -105,6 +105,7 @@ export default function DeleteAttraction({ navigation }) {
             .catch(error => console.log(error));
     }
 
+    // Handles sort
     const onPressSort = () => {
         const sortByDataIsTrue = sortByData.every(({ isChecked }) => isChecked)
         const sortOrderIsTrue = sortOrderData.every(({ isChecked }) => isChecked)
@@ -167,6 +168,7 @@ export default function DeleteAttraction({ navigation }) {
         return <ActivityIndicator />;
     }
 
+    // Handles search
     const searchFilter = (text, type) => {
         if (text) {
             const newData = type.filter((item) => {

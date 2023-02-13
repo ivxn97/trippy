@@ -4,7 +4,7 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-
+// Displays list for editing a forum section
 export default function ForumSectionsEditList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [forum, setForum] = useState([]); // Initial empty array of forum sections

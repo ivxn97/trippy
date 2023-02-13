@@ -22,6 +22,7 @@ export default function CreateReply ( {route, navigation} ) {
     const datetime = new Date();
     const id = uuid.v4();
 
+    // Get user's username from Async Storage 
     const getUsername = async () => {
         try {
             const username = await AsyncStorage.getItem('username');
@@ -37,6 +38,7 @@ export default function CreateReply ( {route, navigation} ) {
     }
     getUsername();
 
+    // Adds forum reply to Firestore DB
     const onSubmitPress = async () => {
         if (title !== '' && description !== '') {
             try {

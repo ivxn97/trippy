@@ -22,6 +22,7 @@ export default function CreatePost ( {route, navigation} ) {
     const [description, setDescription] = useState('');
     const datetime = new Date();
 
+    // Get user's username from Async Storage 
     const getUsername = async () => {
         try {
             const username = await AsyncStorage.getItem('username');
@@ -38,7 +39,7 @@ export default function CreatePost ( {route, navigation} ) {
     getUsername();
 
 
-
+    // Adds forum post to Firestore DB
     const onSubmitPress = async () => {
         if (title !== '' && description !== '') {
             try {

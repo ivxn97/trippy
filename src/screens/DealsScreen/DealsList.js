@@ -20,6 +20,7 @@ export default function Deals( { navigation }) {
   const [isPressed, setIsPressed] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [typesOfActivity, setTypesOfActivity] = useState()
+  const [checkboxFilter, setCheckboxFilter] = useState([]);
 
 
   useEffect(async () => {
@@ -32,7 +33,7 @@ export default function Deals( { navigation }) {
         });
     
         const allTypeOfActivity = deals.map(item => ({
-          name: item.activityType,
+          name: item.type,
           isChecked: false
         }))
 
@@ -155,7 +156,37 @@ export default function Deals( { navigation }) {
         setIsPressed(!isPressed);
       }
     })
-    console.log(isPressed);
+  }
+
+  const onSubmitFilter = () => {
+    setModalVisible(!modalVisible)
+    const allCuisineIsFalse = typesOfActivity.every(({ isChecked }) => !isChecked)
+    
+    if (allCuisineIsFalse) {
+      typesOfActivity.map(item => item.isChecked = true);
+    }
+
+      typesOfActivity.map ((item) => {
+        const allIsTrue = typesOfActivity.every(({ isChecked }) => isChecked)
+        if (item.isChecked) {
+          if(!checkboxFilter.includes(item.name)) {
+            checkboxFilter.push(item.name);
+          }
+          //
+        } else if (item.isChecked === false) {
+          if(checkboxFilter.includes(item.name)) {
+            const index = checkboxFilter.indexOf(item.name);
+            checkboxFilter.splice(index, 1);
+          }
+        } 
+      })
+    
+    if(checkboxFilter?.length > 0) {
+      const newData = deals.filter(item => checkboxFilter.includes(item.type));
+      setfilteredData(newData);
+    } else {
+      setfilteredData(deals);
+    }
   }
 
   return (

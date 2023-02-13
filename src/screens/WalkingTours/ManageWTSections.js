@@ -8,7 +8,7 @@ import { sortFiles } from '../commonFunctions';
 
 export default function ManageWTSections ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [walkingTour, setWalkingTour] = useState([]); // Initial empty array of hotels
+    const [walkingTour, setWalkingTour] = useState([]); 
     const [search, setSearch] = useState('');
     const [filteredData, setfilteredData] = useState(walkingTour);
 

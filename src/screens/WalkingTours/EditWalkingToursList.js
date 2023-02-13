@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function EditWalkingToursList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [walkingtours, setWalkingTours] = useState([]); // Initial empty array of hotels
+    const [walkingtours, setWalkingTours] = useState([]); 
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {

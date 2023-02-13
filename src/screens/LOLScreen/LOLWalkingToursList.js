@@ -6,10 +6,10 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
+// Walking Tours List for LOL
 export default function LOLWalkingToursList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
-    const [walkingtours, setWalkingTours] = useState([]); // Initial empty array of hotels
+    const [walkingtours, setWalkingTours] = useState([]); 
     const [email, setEmail] = useState('');
 
     const getEmail = async () => {

@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function HotelEditList({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [hotels, setHotels] = useState([]); // Initial empty array of hotels
-    const [filteredData, setfilteredData] = useState(hotels); // Initial empty array of hotels
+    const [filteredData, setfilteredData] = useState(hotels); 
     const [search, setSearch] = useState('');
     const [email, setEmail] = useState('');
     

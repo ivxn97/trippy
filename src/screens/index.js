@@ -112,7 +112,6 @@ export {default as Details} from './HomeScreen/Details'
 export {default as Booking} from './HomeScreen/Booking'
 export {default as Payment} from './HomeScreen/Payment'
 export {default as ConfirmBooking} from './HomeScreen/ConfirmBooking'
-export {default as ForYou} from './HomeScreen/ForYou'
 
 // Review Screens
 export {default as ReviewScreen} from './ReviewScreen/ReviewScreen'

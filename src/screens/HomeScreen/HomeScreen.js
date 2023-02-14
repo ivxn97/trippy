@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Dimensions, Image, Text, TextInput, TouchableOpacity, View, ScrollView, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
-import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, deleteDoc, query, where } from "firebase/firestore";
 import { db } from '../../../config';
 import Carousel from 'react-native-reanimated-carousel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,13 @@ export default function HomeScreen( {navigation} ) {
     const [role, setRole] = useState()
     const [FYButton, setFYButton] = useState(false)
     const isInitialMount = useRef(true);
+    const [FYLoading, setFYLoading] = useState(true)
+
+    const [FYattractions, FYsetAttractions] = useState([])
+    const [FYpaidTours, FYsetPaidTours] = useState([])
+    const [items, setItems] = useState([]); 
+    const [mergedArr, setMergedArr] = useState([])
+
     //Get User Role. If User Role is Admin or BO, navigate them to the respective stacks
     const getRole = async () => {
         try {
@@ -33,15 +40,68 @@ export default function HomeScreen( {navigation} ) {
                 else if (role == "Registered User") {
                     setRole(role);
                     setFYButton(true);
+                    try {
+                        const email = await AsyncStorage.getItem('email');
+                        if (email !== null) {
+                            const q = query(collection(db, "users"), where("email", "==", email));
+                            const querySnapshot = await getDocs(q);
+                            querySnapshot.forEach(documentSnapshot => {
+                                items.push({
+                                    ...documentSnapshot.data(),
+                                    key: documentSnapshot.id,
+                                });
+                                
+                            });
+                    
+                            const filteredInterests = items[0].interests.filter(interest => interest.isChecked === true)
+                            .map(interest => interest.name)
+                            getAttractions(filteredInterests)
+                            getPaidTours(filteredInterests)
+                        }
+                        else {
+                            console.log("No Email Selected at Login")
+                        }
+                    } catch (error) {
+                        console.log(error)
+                    }
                 }
             }
             else {
                 console.log("No Role Selected at Login")
+                setFYButton(false);
             }
         } catch (error) {
             console.log(error)
         }
     }
+
+    const getAttractions = async (interests) => {
+        const collectionRef = collection(db, "attractions")
+        const q = query(collectionRef, where('attractionType', 'in', interests));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            FYattractions.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
+    }
+
+    const getPaidTours = async (interests) => {
+        const collectionRef = collection(db, "paidtours")
+        const q = query(collectionRef, where('tourType', 'in', interests));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            FYpaidTours.push({
+                ...doc.data(),
+                key: doc.id
+            })
+        })
+        mergedArr.push(...FYattractions);
+        mergedArr.push(...FYpaidTours);
+        setFYLoading(false)
+    }
+
     // Get activities from the homepage collection. The Contents of this is set by Admin in PageContent.js
     const getActivities = async () => {
         const querySnapshot = await getDocs(collection(db, "homepage"));
@@ -128,7 +188,7 @@ export default function HomeScreen( {navigation} ) {
     useFocusEffect(React.useCallback(() => 
     {
         getRole();
-    },[role]));
+    },[]));
 
     useEffect(() => {
     if (isInitialMount.current) {
@@ -144,6 +204,9 @@ export default function HomeScreen( {navigation} ) {
         return <ActivityIndicator />;
     }
 
+    if (FYLoading && role == "Registered User") {
+        return <ActivityIndicator />;
+    }
     const width = Dimensions.get('window').width;
     return (
         <View style={styles.container}>
@@ -224,11 +287,48 @@ export default function HomeScreen( {navigation} ) {
             </TouchableOpacity>
         </View>
         {FYButton ? (
-            <TouchableOpacity style={styles.button}
-                title="For You"
-                onPress={() =>navigation.navigate("For You Page")}>
-                <Text style={styles.textList}>For You</Text>
+            <View>
+            <Text style={[styles.HeadingList, {fontWeight:'bold'}]}>For You:</Text>
+            <View style={{alignItems: 'center'}}>
+            <Carousel
+            loop
+            width={width/1.1}
+            height={width / 2}
+            autoPlay={false}
+            mode="normal"
+            data={mergedArr}
+            scrollAnimationDuration={1000}
+            pagingEnabled={true}
+            snapEnabled={true}
+            renderItem={({ item, index }) => (
+                <View
+                    style={{
+                        flex: 1,
+                        borderWidth: 1,
+                        justifyContent: 'center',
+                    }}
+                >
+                <TouchableOpacity key={index} style={[styles.buttonCarousel, {width: '100%'}]}               
+                onPress={() => {navigation.navigate('Details', {
+                name: item.name, roomTypes: item.roomTypes,
+                priceRange: item.priceRange, hotelClass: item.hotelClass, checkInTime: item.checkInTime,
+                checkOutTime: item.checkOutTime, amenities: item.amenities, roomFeatures: item.roomFeatures, 
+                language: item.language, description: item.description, TNC: item.TNC, activityType: item.activityType, typeOfCuisine: item.typeOfCuisine, 
+                price: item.price, ageGroup: item.ageGroup, location: item.location, groupSize: item.groupSize, openingTime: item.openingTime,
+                closingTime: item.closingTime, menu: item.menu, attractionType: item.attractionType, tourType: item.tourType, 
+                startingTime: item.startingTime, endingTime: item.endingTime, duration: item.duration, mrt: item.mrt, tips: item.tips,
+                addedBy: item.addedBy, timeSlots: item.timeSlots, mapURL: item.mapURL, capacity: item.capacity, address: item.address, images: item.images
+            })
+            }}>
+            <View style={{position: 'absolute', top: 120, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={styles.HeadingDisplay}>{JSON.stringify(item.name).replace(/"/g,"")}</Text></View>
+                <ImageBackground source={{uri: JSON.stringify(item.images[0]).replace(/"/g,"")}} style={[styles.imageDisplayCarousel, {width: '100%'}]} />
             </TouchableOpacity>
+                    </View>
+                )}
+            />
+            </View>
+            </View>
         ) : null}
         <Text style={[styles.HeadingList, {fontWeight:'bold'}]}>Restaurants:</Text>
         {restaurants.map((item, index) => (

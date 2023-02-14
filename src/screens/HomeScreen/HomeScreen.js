@@ -15,19 +15,25 @@ export default function HomeScreen( {navigation} ) {
     const [attractions, setAttractions] = useState([]);
     const [topPage, setTopPage] = useState([])
     const [loading, setLoading] = useState(true)
+    const [role, setRole] = useState()
+    const [FYButton, setFYButton] = useState(false)
     const isInitialMount = useRef(true);
     //Get User Role. If User Role is Admin or BO, navigate them to the respective stacks
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
             if (role !== null) {
+                console.log(role)
                 if (role == "Admin") {
                     navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
                 }
                 else if (role == "Business Owner") {
                     navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
                 }
-                console.log(role)
+                else if (role == "Registered User") {
+                    setRole(role);
+                    setFYButton(true);
+                }
             }
             else {
                 console.log("No Role Selected at Login")
@@ -121,14 +127,18 @@ export default function HomeScreen( {navigation} ) {
 
     useFocusEffect(React.useCallback(() => 
     {
-        if (isInitialMount.current) {
         getRole();
+    },[role]));
+
+    useEffect(() => {
+    if (isInitialMount.current) {
+        //getRole();
         checkExpiry();
         checkDealExpiry();
         getActivities();
         isInitialMount.current = false;
         }
-    },[]));
+    },[])
 
     if (loading) {
         return <ActivityIndicator />;
@@ -150,7 +160,6 @@ export default function HomeScreen( {navigation} ) {
                 scrollAnimationDuration={6000}
                 pagingEnabled={true}
                 snapEnabled={true}
-                //onSnapToItem={(index) => console.log('current index:', index)}
                 renderItem={({ item, index }) => (
                     <View
                         style={{
@@ -214,6 +223,13 @@ export default function HomeScreen( {navigation} ) {
             <Text style={styles.buttonSmallText}>Paid Tours</Text>
             </TouchableOpacity>
         </View>
+        {FYButton ? (
+            <TouchableOpacity style={styles.button}
+                title="For You"
+                onPress={() =>navigation.navigate("For You Page")}>
+                <Text style={styles.textList}>For You</Text>
+            </TouchableOpacity>
+        ) : null}
         <Text style={[styles.HeadingList, {fontWeight:'bold'}]}>Restaurants:</Text>
         {restaurants.map((item, index) => (
             <TouchableOpacity key={index} style={[styles.displayBox]} onPress={() => {navigation.navigate('Details', {name: item.name, typeOfCuisine: item.typeOfCuisine, 

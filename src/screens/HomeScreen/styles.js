@@ -28,6 +28,13 @@ export default StyleSheet.create({
         marginBottom: 7,
         marginLeft: 15,
     },
+    textList: {
+        display: "flex",
+        borderRadius: 5,
+        color: 'black',
+        marginLeft: 20,
+        fontSize: 18,
+    },
     HeadingDisplay: {
         flex: 1,
         fontSize: 30,

@@ -112,9 +112,7 @@ export {default as Details} from './HomeScreen/Details'
 export {default as Booking} from './HomeScreen/Booking'
 export {default as Payment} from './HomeScreen/Payment'
 export {default as ConfirmBooking} from './HomeScreen/ConfirmBooking'
-
-export {default as ManageForumSections} from './ForumScreen/ManageForumSections'
-export {default as ForumSectionsEditList} from './ForumScreen/ForumSectionsEditList'
+export {default as ForYou} from './HomeScreen/ForYou'
 
 // Review Screens
 export {default as ReviewScreen} from './ReviewScreen/ReviewScreen'
@@ -131,6 +129,8 @@ export {default as Thread} from './ForumScreen/Thread'
 export {default as CreateReply} from './ForumScreen/CreateReply'
 export {default as EditReply} from './ForumScreen/EditReply'
 export {default as EditPost} from './ForumScreen/EditPost'
+export {default as ManageForumSections} from './ForumScreen/ManageForumSections'
+export {default as ForumSectionsEditList} from './ForumScreen/ForumSectionsEditList'
 
 //Admin Screens
 export {default as AdminScreen} from './AdminScreen/AdminScreen'

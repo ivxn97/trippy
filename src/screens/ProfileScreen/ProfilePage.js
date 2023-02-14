@@ -19,6 +19,7 @@ export default function ProfilePage({ navigation, route }) {
     const [loading, setLoading] = useState(true);
     const storage = getStorage();
 
+    // Submit Updated profile information to Firestore DB
     const onSubmitPress = async () => {
         try {
             await setDoc(doc(db, "users", email), {
@@ -35,6 +36,7 @@ export default function ProfilePage({ navigation, route }) {
         }
     }
 
+    // Handles Image picker for when user wants to change their profile photo
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -71,6 +73,7 @@ export default function ProfilePage({ navigation, route }) {
         };
     };
 
+    // Get Profile Photo from Firebase Storage
     useEffect(() => {
         const listRef = ref(storage, `users/${email}/profile`);
         Promise.all([

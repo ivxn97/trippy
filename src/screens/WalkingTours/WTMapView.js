@@ -18,6 +18,8 @@ export default function WTMapView({route, navigation}) {
     const [longitude, setLongitude] = useState()
     const [latitude, setLatitude] = useState()
     const mapRef = React.useRef();
+
+    // Get the first and last location from the array of itinerary locations. 
     const origin = location.slice(0,1).map((loc) => {
         return loc.address;
     })
@@ -25,6 +27,7 @@ export default function WTMapView({route, navigation}) {
         return loc.address;
     })
 
+    // Handles opening address on Google Maps app
     const openAddress = async () => {
         const mapURL = location.slice(0,1).map((loc) => {
             return loc.mapURL;
@@ -32,8 +35,10 @@ export default function WTMapView({route, navigation}) {
         await WebBrowser.openBrowserAsync(mapURL.join(""))
     }
 
+    // Creates waypoints between first and last location
     const mapViewWayPoints = location.slice(1, -1).map(item => item.address)
 
+    // Handles moving the map to the first location
     const changeRegion = () => {
         const latitude = location.slice(0,1).map((loc) => {
             return loc.lat;
@@ -53,6 +58,7 @@ export default function WTMapView({route, navigation}) {
           
     }
 
+    // Requests for location permission and Gets user's current location. 
     useEffect(() => {
         (async () => {
           
@@ -91,7 +97,6 @@ export default function WTMapView({route, navigation}) {
                     key={index}
                     coordinate={{latitude: marker.lat, longitude: marker.long}}
                     title={marker.address}
-                    //onPress={() => openAddress(marker.mapURL)}
                 />
             ))}
             <MapViewDirections 

@@ -97,7 +97,6 @@ export default function ItineraryMapView({route, navigation}) {
                     key={index}
                     coordinate={{latitude: marker.lat, longitude: marker.long}}
                     title={marker.address}
-                    //onPress={() => openAddress(marker.mapURL)}
                 />
             ))}
             <MapViewDirections 

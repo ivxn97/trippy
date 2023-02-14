@@ -7,7 +7,7 @@ import styles from './styles';
 import { sortFiles } from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
-
+// List displaying expired walking tours
 export default function WalkingToursExpired ({ route, navigation }) {
     const {sectionName} = route.params;
     const [loading, setLoading] = useState(true); // Set loading to true on component mount

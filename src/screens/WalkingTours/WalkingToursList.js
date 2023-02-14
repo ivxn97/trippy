@@ -4,7 +4,7 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-
+// List displaying walking tours to normal users
 export default function GuideList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [walkingTours, setWalkingTours] = useState([]); // Initial empty array of walkingTours

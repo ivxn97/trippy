@@ -32,7 +32,7 @@ import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
-
+/* Stack Navigator provides a way for the app to transition between screens where each new screen is placed on top of a stack */
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreAllLogs(); //Disable Log messages
@@ -273,6 +273,7 @@ function BOStackScreen() {
     </BOStack.Navigator>
   )
 }
+// Handles the bottom navigation tab in the App
 function Tabs() {
   return (
     <Tab.Navigator

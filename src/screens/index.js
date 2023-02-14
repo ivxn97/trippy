@@ -1,3 +1,4 @@
+// Handles the Indexing of all Screens in the app
 //Login Screens
 export { default as LoginScreen } from './LoginScreen/LoginScreen'
 export {default as OTPScreen} from './LoginScreen/OTPScreen'

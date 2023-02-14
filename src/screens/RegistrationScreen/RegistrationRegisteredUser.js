@@ -34,7 +34,6 @@ export default function RegistrationRegisteredUser({navigation}) {
     //Langauges
     let languageArr = []
     const [languageData, setLanguages] = useState([])
-    // Implement password length check, minimum length of 6
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
@@ -100,12 +99,10 @@ export default function RegistrationRegisteredUser({navigation}) {
         docTypeData.map(curr => {
             if (item.name === curr.name) {
                 if (curr.isChecked == false) {
-                    //setUserInterests(current => [...current, item.name]);
                     return {...curr, isChecked: true};
                     
                 }
                 else if (curr.isChecked == true) {
-                    //setUserInterests((current) => current.filter((item)=> item.name !== userInterests ))
                     return {...curr, isChecked: false};
                 }
             } else {

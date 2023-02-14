@@ -24,8 +24,8 @@ export default function RegistrationLOL({navigation}) {
     const [username, setUsername] = useState('')
     const [imageUploaded, setImageUploaded] = useState(false)
     const [followerImageUploaded, setFImageUploaded] = useState(false)
-    // Implement password length check, minimum length of 6
 
+    // Get list of social media platforms from Firestore DB
     const getData = async () => {
         const docRef = doc(db, "types", "RegistrationLOL");
         const docSnap = await getDoc(docRef);
@@ -52,6 +52,7 @@ export default function RegistrationLOL({navigation}) {
         color: 'black',
     };
 
+    // Image uploading for Profile Photo
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -89,6 +90,7 @@ export default function RegistrationLOL({navigation}) {
         };
     };
 
+    // Image uploading for Follower Count Photo
     const pickFollowerImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({

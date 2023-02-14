@@ -7,8 +7,6 @@ import styles from './styles';
 import { db } from '../../../config';
 import { render } from 'react-dom';
 import Checkbox from 'expo-checkbox';
-import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
-import * as ImagePicker from 'expo-image-picker';
 
 
 export default function RegistrationBO({navigation}) {
@@ -20,7 +18,6 @@ export default function RegistrationBO({navigation}) {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [UEN, setUEN] = useState('')
     const [username, setUsername] = useState('')
-    // Implement password length check, minimum length of 6
 
     const onFooterLinkPress = () => {
         navigation.navigate('Login')

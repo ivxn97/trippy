@@ -4,7 +4,7 @@ import { doc, getDoc, collection, query, where, getDocs } from "firebase/firesto
 import { db } from '../../../config';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-
+// List for deleting a walking tour section
 export default function WTSectionsEditList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [walkingTour, setWalkingTour] = useState([]); // Initial empty array of walking tour sections

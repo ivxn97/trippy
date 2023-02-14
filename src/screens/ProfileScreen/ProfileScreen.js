@@ -26,6 +26,7 @@ export default function ProfileScreen ( {navigation} ) {
     const [thread, setThread] = useState([])
     const [threadLength, setThreadLength] = useState();
 
+    // Get threads created by the user, used for counting the amount of threads made 
     const getThreads = async(username) => {
         const q = query(collection(db, "forum"), where("addedBy", "==", username));
         const querySnapshot = await getDocs(q)
@@ -39,6 +40,7 @@ export default function ProfileScreen ( {navigation} ) {
         setLoading(false);
     }
 
+    // Get User's Email from Async Storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -55,6 +57,7 @@ export default function ProfileScreen ( {navigation} ) {
         }
     }
 
+    // Get User's information (Bio, username, First Name, Last Name, call getThreads)
     const getUser = async () => {
         const q = query(collection(db, "users"), where("email", "==", email));
         const querySnapshot = await getDocs(q);
@@ -74,6 +77,8 @@ export default function ProfileScreen ( {navigation} ) {
         getThreads(items[0].username)
     }
 
+    //Checks for Expiry of Bookings and Deals upon app launch. If current date is after the date in bookings/ deals, 
+    // Set those bookings as expired, and remove the expired deals
     const changeExpiry = async (id) => {
         await setDoc(doc(db, "bookings", id), {
             expired: true
@@ -107,6 +112,7 @@ export default function ProfileScreen ( {navigation} ) {
          })
     }
     
+    // Check for Expiry and Get User's profile Photo from Firebase Storage
     useEffect(() => {
         checkExpiry();
         checkDealExpiry();
@@ -133,6 +139,7 @@ export default function ProfileScreen ( {navigation} ) {
         
     }, [email]);
 
+    // SignOut: Remove Role/ Email/ username from Async Storage 
     const onSignout = () => {
         signOut(auth).then(() => {
             // Sign-out successful.

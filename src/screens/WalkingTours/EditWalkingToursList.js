@@ -5,7 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+// List for editing a walking tour
 export default function EditWalkingToursList ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [walkingtours, setWalkingTours] = useState([]); 

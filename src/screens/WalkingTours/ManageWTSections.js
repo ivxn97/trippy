@@ -5,7 +5,7 @@ import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import styles from './styles';
 import { sortFiles } from '../commonFunctions';
-
+// List displaying all Walking Tour Sections (For Business Owner)
 export default function ManageWTSections ({ navigation }) {
     const [loading, setLoading] = useState(true); // Set loading to true on component mount
     const [walkingTour, setWalkingTour] = useState([]); 

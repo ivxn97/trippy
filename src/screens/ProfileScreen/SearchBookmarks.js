@@ -26,6 +26,7 @@ export default function SearchBookmarks({ navigation, route}) {
     const [filteredData, setfilteredData] = useState(mergedArr);
     const [shouldRun, setShouldRun] = useState(true);
 
+    // Get User Email from Async Storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
@@ -41,6 +42,7 @@ export default function SearchBookmarks({ navigation, route}) {
         }
     }
 
+    // Get User Bookmarks, then Get activities that matches bookmarks. 
     async function getBookmarks(email) {
         const q = query(collection(db, "users"), where("email", "==", email));
         const querySnapshot = await getDocs(q);
@@ -144,10 +146,6 @@ export default function SearchBookmarks({ navigation, route}) {
        
         
     }
-
-    
-
-    
 
     useFocusEffect(React.useCallback(() => {
         if (shouldRun) {

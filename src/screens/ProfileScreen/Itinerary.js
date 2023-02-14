@@ -28,7 +28,7 @@ export default function Itinerary({ navigation }) {
 
     const [shouldRun, setShouldRun] = useState(true);
 
-    //Get email from storage
+    //Get email from Async storage
     const getEmail = async () => {
         try {
             const email = await AsyncStorage.getItem('email');

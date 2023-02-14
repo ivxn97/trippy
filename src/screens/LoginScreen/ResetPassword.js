@@ -28,7 +28,7 @@ export default function ResetPassword({navigation}) {
                     style={styles.logo}
                     source={require('../../../assets/splash.png')}
                 />
-                <Text style={styles.Text}>Enter your E-mail address</Text>
+                <Text style={styles.text}>Enter your E-mail address</Text>
                 <TextInput
                     style={styles.input}
                     placeholder='E-mail'

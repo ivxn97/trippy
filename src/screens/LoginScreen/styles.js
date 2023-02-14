@@ -44,6 +44,14 @@ export default StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center'
     },
+    text: {
+        borderRadius: 5,
+        marginTop: 7,
+        marginBottom: 7,
+        marginLeft: 8,
+        paddingLeft: 16,
+        fontWeight: 'bold',
+    },
     buttonTitle: {
         color: 'white',
         fontSize: 16,

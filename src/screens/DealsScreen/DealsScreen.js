@@ -11,6 +11,7 @@ export default function DealsScreen ( {route, navigation} ) {
 
     const {name, dealType, discount, code, description, quantity, TNC, businessName, expiry} = route.params;
     const [email, setEmail] = useState('');
+    const [disabled, setDisabled] = useState(true)
     const onShare = async () => {
         try {
             await Share.share({message:`Get ${discount}% off on ${name} with TripAid!  
@@ -27,6 +28,7 @@ Download the App here: URL`})
             if (email !== null) {
                 setEmail(email);
                 console.log(email)
+                setDisabled(false)
             }
             else {
                 console.log("No Email Selected at Login")
@@ -63,7 +65,7 @@ Download the App here: URL`})
             <Text style={styles.textNB}>Type: {JSON.stringify(dealType).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Description: {JSON.stringify(description).replace(/"/g,"")}</Text>
             <Text style={styles.textNB}>Terms & Conditions: {JSON.stringify(TNC).replace(/"/g,"")}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => onClaim()}>
+            <TouchableOpacity style={[styles.button, {opacity: disabled ? 0 : 1}]} onPress={() => onClaim()} disabled={disabled}>
                         <Text style={styles.buttonTitle}>Claim</Text>
             </TouchableOpacity>
         </View>

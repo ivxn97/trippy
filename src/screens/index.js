@@ -161,3 +161,5 @@ export {default as DeletePost} from './ForumScreen/DeletePost'
 export {default as DeleteReply} from './ForumScreen/DeleteReply'
 export {default as ReportsList} from './AdminScreen/ReportsList'
 export {default as Report} from './AdminScreen/Report'
+
+export {default as Test} from './HomeScreen/Test'

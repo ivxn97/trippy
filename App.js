@@ -26,8 +26,7 @@ import {
   AdminDeleteRestaurants, ManageTypes, ManageTypesChoice, 
   ManageGuideSections, AddGuideSection, EditGuideSection, GuideSectionsEditList, DeleteGuideSection, GuideSectionsDeleteList,
   ManageWTSections, AddWTSection, EditWTSection, WTSectionsEditList, WTSectionsDeleteList, DeleteWTSection, DeleteItinerary, DeleteForumSection, 
-  ForumSectionsDeleteList, ItineraryMapView, EditPost, DeleteForumPostList, DeletePost, DeleteReply, Report, ReportsList, UserResetPassword
-} from './src/screens'
+  ForumSectionsDeleteList, ItineraryMapView, EditPost, DeleteForumPostList, DeletePost, DeleteReply, Report, ReportsList, UserResetPassword, Test} from './src/screens'
 import { decode, encode } from 'base-64'
 if (!global.btoa) { global.btoa = encode }
 if (!global.atob) { global.atob = decode }
@@ -154,6 +153,7 @@ function HomeStackScreen() {
       <Stack.Screen name="Booking" component={Booking}/>
       <Stack.Screen name="Payment" component={Payment}/>
       <Stack.Screen name="Confirm Booking" component={ConfirmBooking}/>
+      <Stack.Screen name="Test" component={Test}/>
     </HomeStack.Navigator>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {  View, ActivityIndicator, Text, TouchableOpacity, Alert, StyleSheet, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+//import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
@@ -14,6 +14,7 @@ import Moment from 'moment';
 import { db } from '../../../config';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import uuid from 'react-native-uuid';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function Booking ({route, navigation}) {
   const {activityType, name, timeSlots, capacity, startingTime, endingTime, duration, price, groupSize, roomTypes, checkInTime, checkOutTime} = route.params;
@@ -166,39 +167,32 @@ export default function Booking ({route, navigation}) {
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
+  };
+
+  const hideStartPicker = () => {
     setStartDatePickerVisibility(false);
+  }
+
+  const hideEndPicker = () => {
     setEndDatePickerVisibility(false);
-  };
+  }
 
-  const showDateTimePicker = () => {
-    setDateTimePickerVisiblity(true);
-  };
-
-  const hideDateTimePicker = () => {
-    setDateTimePickerVisiblity(false);
-  };
-
-  const handleConfirmDateTime = (date) => {
-    console.warn("A date has been picked: ", date);
-    hideDateTimePicker();
-  };
-
-  const handleConfirmDate = (date) => {
+  const handleConfirmDate = (event, date) => {
     console.warn("A date has been picked: ", date);
     setDate(date);
     hideDatePicker();
   };
 
-  const handleConfirmStartDate = (date) => {
+  const handleConfirmStartDate = (event, date) => {
     console.warn("A date has been picked: ", date);
     setStartDate(date);
-    hideDatePicker();
+    hideStartPicker();
   };
 
-  const handleConfirmEndDate = (date) => {
+  const handleConfirmEndDate = (event, date) => {
     console.warn("A date has been picked: ", date);
     setEndDate(date);
-    hideDatePicker();
+    hideEndPicker();
   };
 
   if (activityType == 'paidtours') {
@@ -212,13 +206,21 @@ export default function Booking ({route, navigation}) {
         <TouchableOpacity style={styles.button} onPress={showDatePicker}>
           <Text style={styles.buttonTitle}>Select Date</Text>
         </TouchableOpacity>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          minimumDate={new Date()}
-          onConfirm={handleConfirmDate}
-          onCancel={hideDatePicker}
-        />
+        <View style={styleSheet.MainContainer}>
+        {isDatePickerVisible && (
+          <DateTimePicker
+            value={date}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'inline' : 'default'}
+            is24Hour={true}
+            onChange={handleConfirmDate}
+            style={styleSheet.datePicker}
+            textColor={"black"}
+            themeVariant={"light"}
+            minimumDate={new Date()}
+          />
+        )}
+        </View>
         <RNPickerSelect
           style={pickerSelectStyles}
           useNativeAndroidPickerStyle={false}
@@ -257,10 +259,40 @@ export default function Booking ({route, navigation}) {
         <TouchableOpacity style={styles.button} onPress={showStartDatePicker}>
           <Text style={styles.buttonTitle}>Select Check-In Date</Text>
         </TouchableOpacity>
+        <View style={styleSheet.MainContainer}>
+        {isStartDatePickerVisible && (
+          <DateTimePicker
+            value={startDate}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'inline' : 'default'}
+            is24Hour={true}
+            onChange={handleConfirmStartDate}
+            style={styleSheet.datePicker}
+            textColor={"black"}
+            themeVariant={"light"}
+            minimumDate={new Date()}
+          />
+        )}
+        </View>
         <Text style={[styles.Heading, {fontSize:20}]}>Selected Check-Out Date: {Moment(endDate).format('DD MMM YYYY')}</Text>
         <TouchableOpacity style={styles.button} onPress={showEndDatePicker}>
           <Text style={styles.buttonTitle}>Select Check-Out Date</Text>
         </TouchableOpacity>
+        <View style={styleSheet.MainContainer}>
+        {isEndDatePickerVisible && (
+          <DateTimePicker
+            value={endDate}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'inline' : 'default'}
+            is24Hour={true}
+            onChange={handleConfirmEndDate}
+            style={styleSheet.datePicker}
+            textColor={"black"}
+            themeVariant={"light"}
+            minimumDate={startDate}
+          />
+        )}
+        </View>
         <Text style={styles.HeadingList}>Room Types:</Text>
         {
         roomTypes.map(item => {
@@ -279,21 +311,7 @@ export default function Booking ({route, navigation}) {
         }
         <Text style={[styles.text, {fontSize:18}]}>Selected Room Type: {hotelType}</Text>
         <Text style={[styles.text, {marginLeft:8}]}>Check In Time: {JSON.stringify(checkInTime).replace(/"/g, "")}</Text>
-                <Text style={[styles.text, {marginLeft:8}]}>Check Out Time: {JSON.stringify(checkOutTime).replace(/"/g, "")}</Text>
-        <DateTimePickerModal
-          isVisible={isStartDatePickerVisible}
-          mode="date"
-          minimumDate={new Date()}
-          onConfirm={handleConfirmStartDate}
-          onCancel={hideDatePicker}
-        />
-        <DateTimePickerModal
-          isVisible={isEndDatePickerVisible}
-          mode="date"
-          minimumDate={startDate}
-          onConfirm={handleConfirmEndDate}
-          onCancel={hideDatePicker}
-        />
+                <Text style={[styles.text, {marginLeft:8}]}>Check Out Time: {JSON.stringify(checkOutTime).replace(/"/g, "")}</Text>       
         <TouchableOpacity
           style={[styles.button, {opacity: roomSelected ? 0.2 : 1}]}
           onPress={() => onConfirmPress()} disabled={roomSelected}>
@@ -319,13 +337,21 @@ export default function Booking ({route, navigation}) {
         <TouchableOpacity style={styles.button} onPress={showDatePicker}>
           <Text style={styles.buttonTitle}>Select Date</Text>
         </TouchableOpacity>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="date"
-          minimumDate={new Date()}
-          onConfirm={handleConfirmDate}
-          onCancel={hideDatePicker}
-        />
+        <View style={styleSheet.MainContainer}>
+        {isDatePickerVisible && (
+          <DateTimePicker
+            value={date}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'inline' : 'default'}
+            is24Hour={true}
+            onChange={handleConfirmDate}
+            style={styleSheet.datePicker}
+            textColor={"black"}
+            themeVariant={"light"}
+            minimumDate={new Date()}
+          />
+        )}
+        </View>
         <RNPickerSelect
           style={pickerSelectStyles}
           useNativeAndroidPickerStyle={false}
@@ -358,13 +384,21 @@ export default function Booking ({route, navigation}) {
     <TouchableOpacity style={styles.button} onPress={showDatePicker}>
       <Text style={styles.buttonTitle}>Select Date</Text>
     </TouchableOpacity>
-    <DateTimePickerModal
-      isVisible={isDatePickerVisible}
-      mode="date"
-      minimumDate={new Date()}
-      onConfirm={handleConfirmDate}
-      onCancel={hideDatePicker}
-    />
+    <View style={styleSheet.MainContainer}>
+        {isDatePickerVisible && (
+          <DateTimePicker
+            value={date}
+            mode={'date'}
+            display={Platform.OS === 'ios' ? 'inline' : 'default'}
+            is24Hour={true}
+            onChange={handleConfirmDate}
+            style={styleSheet.datePicker}
+            textColor={"black"}
+            themeVariant={"light"}
+            minimumDate={new Date()}
+          />
+        )}
+    </View>
     <RNPickerSelect
       style={pickerSelectStyles}
       useNativeAndroidPickerStyle={false}
@@ -428,3 +462,29 @@ export default function Booking ({route, navigation}) {
         paddingLeft: 16
       }
 })
+
+const styleSheet = StyleSheet.create({
+ 
+  MainContainer: {
+    alignItems: 'center',
+  },
+ 
+  text: {
+    fontSize: 25,
+    color: 'red',
+    padding: 3,
+    marginBottom: 10,
+    textAlign: 'center'
+  },
+ 
+  // Style for iOS ONLY...
+  datePicker: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: 320,
+    height: 260,
+    display: 'flex',
+    
+  },
+ 
+});

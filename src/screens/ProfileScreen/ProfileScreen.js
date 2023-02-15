@@ -20,6 +20,7 @@ export default function ProfileScreen ( {navigation} ) {
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [bio, setBio] = useState('');
+    const [interests, setInterests] = useState()
     const storage = getStorage();
     const [loading, setLoading] = useState(true);
     const [images, setImages] = useState();
@@ -74,6 +75,7 @@ export default function ProfileScreen ( {navigation} ) {
         setBio(items[0].bio);
         setFirstName(items[0].firstName);
         setLastName(items[0].lastName);
+        setInterests(items[0].interests)
         getThreads(items[0].username)
     }
 
@@ -220,7 +222,8 @@ export default function ProfileScreen ( {navigation} ) {
                     username: username,
                     bio: bio,
                     email: email,
-                    role: role,})}
+                    role: role,
+                    interests: interests})}
                     title="View Profile"
                 >
                     <Text style={styles.textList}>View Profile</Text>
@@ -336,7 +339,8 @@ export default function ProfileScreen ( {navigation} ) {
                     username: username,
                     bio: bio,
                     email: email,
-                    role: role,})}
+                    role: role,
+                    interests: interests})}
                     title="View Profile"
                 >
                         <Text style={styles.textList}>View Profile</Text>

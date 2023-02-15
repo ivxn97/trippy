@@ -37,7 +37,7 @@ export default function HomeScreen( {navigation} ) {
                 else if (role == "Business Owner") {
                     navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
                 }
-                else if (role == "Registered User") {
+                else if (role == "Registered User" || role == "LOL") {
                     setRole(role);
                     setFYButton(true);
                     try {
@@ -204,7 +204,7 @@ export default function HomeScreen( {navigation} ) {
         return <ActivityIndicator />;
     }
 
-    if (FYLoading && role == "Registered User") {
+    if (FYLoading && (role == "Registered User" || role == "LOL")) {
         return <ActivityIndicator />;
     }
     const width = Dimensions.get('window').width;

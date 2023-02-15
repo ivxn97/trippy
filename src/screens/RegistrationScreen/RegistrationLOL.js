@@ -6,6 +6,7 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 import { db } from '../../../config';
 import { render } from 'react-dom';
+import Checkbox from 'expo-checkbox';
 import RNPickerSelect from 'react-native-picker-select';
 import * as ImagePicker from 'expo-image-picker';
 import { getStorage, ref, uploadBytes, listAll } from "firebase/storage";
@@ -42,6 +43,7 @@ export default function RegistrationLOL({navigation}) {
 
     useEffect(() => {
         if (loading) {
+            getInterests();
             getData();
         }
     }, [socialMediaPlatformData]);
@@ -51,6 +53,43 @@ export default function RegistrationLOL({navigation}) {
         value: null,
         color: 'black',
     };
+
+    // Interests
+    let docData = [];
+    const [docTypeData, setD] = useState([])
+
+    // Get Interests from Firestore
+    async function getInterests () {
+        var interestRef = doc(db, "types", "RegisteredUserPage");
+        const docSnap = await getDoc(interestRef);
+
+        if (docSnap.exists()) {
+            docData = docSnap.data().interestTypes
+        }
+        else {
+            console.log("Error")
+        }
+        setD(docData);
+    }
+
+    const setInterest = (item) => {
+       setD(
+        docTypeData.map(curr => {
+            if (item.name === curr.name) {
+                if (curr.isChecked == false) {
+                    return {...curr, isChecked: true};
+                    
+                }
+                else if (curr.isChecked == true) {
+                    return {...curr, isChecked: false};
+                }
+            } else {
+                return curr;
+            }
+        })
+       )
+    }
+
 
     // Image uploading for Profile Photo
     const pickImage = async () => {
@@ -144,7 +183,8 @@ export default function RegistrationLOL({navigation}) {
                             role: 'LOL',
                             socialMediaPlatform: socialMediaPlatform,
                             socialMediaHandle: socialMediaHandle,
-                            username: username
+                            username: username,
+                            interests: docTypeData
                         });
                         alert("Your registration request has been received and is awaiting approval.")
                         navigation.navigate('Profile Page', {user: auth})
@@ -250,6 +290,14 @@ export default function RegistrationLOL({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
+                <Text style={styles.text}>Interests:</Text>
+                {docTypeData.map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setInterest(item)}/>
+                        <Text>{item.name}</Text>
+                    </View>
+                ))}
+
                 <Text style={styles.text}>Please specify your social media handle for verification:</Text>
                 <RNPickerSelect
                     style={pickerSelectStyles}

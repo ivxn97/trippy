@@ -143,7 +143,7 @@ export default function LoginScreen({navigation}) {
                 storeEmail(email);
                 storeRole(role);
                 storeUserName(username);
-                navigation.navigate('Profile Page');
+                navigation.reset({index: 0, routes: [{name: 'Profile Page'}]})
             }
             else if (status == "Suspended") {
                 alert("Your account has been suspended.")
@@ -160,7 +160,7 @@ export default function LoginScreen({navigation}) {
                 storeEmail(email);
                 storeRole(role);
                 storeUserName(username);
-                navigation.navigate('Profile Page');
+                navigation.reset({index: 0, routes: [{name: 'Profile Page'}]})
             }
             else if (status == "Suspended") {
                 alert("Your account has been suspended.")

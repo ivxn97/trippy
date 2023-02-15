@@ -382,15 +382,14 @@ export default StyleSheet.create({
         fontSize: 14
     },
     checklist: {
-        flexDirection: 'row',
+        flexDirection: 'row', 
         alignItems: 'center'
-
-    },
+      },
     checkbox: {
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 30,
         marginRight: 8,
         paddingLeft: 16
-    }
+    },
 })

@@ -4,9 +4,10 @@ import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 import { db } from '../../../config';
 import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from 'expo-image-picker';
+import Checkbox from 'expo-checkbox';
 
 export default function ProfilePage({ navigation, route }) {
-    const { firstName, lastName, username, bio, email, role} = route.params;
+    const { firstName, lastName, username, bio, email, role, interests} = route.params;
 
     const [name, setName] = useState(firstName + " " + lastName);
     const [newName, setNewName] = useState(name);
@@ -15,6 +16,7 @@ export default function ProfilePage({ navigation, route }) {
     const [newPassword, setNewPassword] = useState("");
     const [newEmail, setNewEmail] = useState(email);
     const [newBio, setNewBio] = useState(bio);
+    const [newInterests, setInterests] = useState(interests)
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(true);
     const storage = getStorage();
@@ -26,10 +28,11 @@ export default function ProfilePage({ navigation, route }) {
                 firstName: first,
                 lastName: last,
                 bio: newBio,
-
+                interests: newInterests
             }, { merge: true });
             //console.log("Document written with ID: ", docRef.id);
-            navigation.navigate('Profile Page')
+            //navigation.navigate('Profile Page')
+            navigation.reset({index: 0, routes: [{name: 'Profile Page'}]})
         }
         catch (e) {
             console.log("Error adding document: ", e);
@@ -72,6 +75,24 @@ export default function ProfilePage({ navigation, route }) {
             console.log('No Image uploaded!')
         };
     };
+
+    const setInterest = (item) => {
+        setInterests(
+         newInterests.map(curr => {
+             if (item.name === curr.name) {
+                 if (curr.isChecked == false) {
+                     return {...curr, isChecked: true};
+                     
+                 }
+                 else if (curr.isChecked == true) {
+                     return {...curr, isChecked: false};
+                 }
+             } else {
+                 return curr;
+             }
+         })
+        )
+     }
 
     // Get Profile Photo from Firebase Storage
     useEffect(() => {
@@ -154,6 +175,14 @@ export default function ProfilePage({ navigation, route }) {
                     autoCapitalize="none"   
                     maxLength={100}
                 ></TextInput>
+                <Text style={[styles.normalText, {marginBottom: -30}]}>Interests</Text>
+                {newInterests.map((item, index) => (
+                    <View style={styles.checklist} key={index}>
+                        <Checkbox style={styles.checkbox} value={item.isChecked} onValueChange={() => setInterest(item)}/>
+                        <Text>{item.name}</Text>
+                    </View>
+                ))}
+                <Text>{"\n"}</Text>
 
                 <View>
                     <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate("User Reset Password", newEmail)}>
@@ -242,6 +271,17 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontWeight: 'bold',
         marginLeft: 10
+    },
+    checklist: {
+        flexDirection: 'row', 
+        alignItems: 'center'
+      },
+    checkbox: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 30,
+        marginRight: 8,
+        paddingLeft: 16
     },
 });
 

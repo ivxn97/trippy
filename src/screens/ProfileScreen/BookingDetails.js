@@ -50,7 +50,6 @@ export default function BookingDetails ({route, navigation}) {
       <Text style={styles.textBooking}>Booking ID: </Text>
       <Text style={styles.textBooking}>{JSON.stringify(id).replace(/"/g,"")}</Text>
       <Text style={styles.textBooking}>Chosen Date: {Moment(date.toDate()).format('DD MMM YYYY')}</Text>
-      <Text style={styles.textBooking}>Chosen Time: {JSON.stringify(time).replace(/"/g,"")}</Text>
       <Text style={styles.textBooking}>Group Size: {JSON.stringify(groupSize).replace(/"/g,"")}</Text>
       </View>
       <Text>{'\n'}</Text>

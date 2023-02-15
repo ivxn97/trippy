@@ -81,6 +81,11 @@ export default function Booking ({route, navigation}) {
     const collectionRef = collection(db, "bookings")
         const q = query(collectionRef, where('name', '==', name));
         const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          alert("Booking Details Is Valid");
+          setConfirmed(false)
+        }
+        else {
         querySnapshot.forEach((doc) => {
           if (activityType == 'restaurants' || activityType == 'paidtours') {
             if (date !== '' && time !== '' && size !== '') {
@@ -137,7 +142,7 @@ export default function Booking ({route, navigation}) {
               alert("Please fill in all booking details")
             }
           }
-        })
+        })}
   }
 
 

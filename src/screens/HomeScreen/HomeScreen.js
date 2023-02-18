@@ -25,7 +25,11 @@ export default function HomeScreen( {navigation} ) {
     const [items, setItems] = useState([]); 
     const [mergedArr, setMergedArr] = useState([])
 
-    //Get User Role. If User Role is Admin or BO, navigate them to the respective stacks
+    /*
+    Get User Role. If User Role is Admin or BO, navigate them to the respective stacks.
+    If role is Registered User or LOL, get their interests, then filter to those they selected.
+    Then, get activities where their types match the user interests. 
+    */
     const getRole = async () => {
         try {
             const role = await AsyncStorage.getItem('role');
@@ -75,6 +79,7 @@ export default function HomeScreen( {navigation} ) {
         }
     }
 
+    //Get activities for interests
     const getAttractions = async (interests) => {
         const collectionRef = collection(db, "attractions")
         const q = query(collectionRef, where('attractionType', 'in', interests));

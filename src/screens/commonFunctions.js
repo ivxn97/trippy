@@ -26,8 +26,14 @@ export async function itinerary(document, name ) {
     if (docSnap.exists()) {
         itineraryArr = docSnap.data().itinerary
     }
-
-    if (itineraryArr !== null && itineraryArr.length < 11) {
+    if (itineraryArr == null) {
+        await setDoc (ref, {
+            itinerary: [name]
+        }, {merge:true})
+        alert(`${name} Added to itinerary`)
+        console.log(`${name} Added to itinerary`)
+    }
+    else if (itineraryArr !== null && itineraryArr.length < 11) {
         await updateDoc (ref, {
             itinerary: arrayUnion(name)
         })

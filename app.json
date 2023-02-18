@@ -16,7 +16,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/38b8edd6-f924-4fc3-9934-d8c37984ec49"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -25,9 +26,18 @@
       "supportsTablet": true
     },
     "android": {
-      "softwareKeyboardLayoutMode": "resize"
+      "softwareKeyboardLayoutMode": "resize",
+      "package": "com.FYP.Tripaid"
     },
     "description": "TripAID Project",
-    "githubUrl": "https://github.com/ivxn97/trippy"
+    "githubUrl": "https://github.com/ivxn97/trippy",
+    "extra": {
+      "eas": {
+        "projectId": "38b8edd6-f924-4fc3-9934-d8c37984ec49"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }

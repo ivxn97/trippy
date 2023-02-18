@@ -29,6 +29,7 @@
     "expo-image-picker": "~14.0.2",
     "expo-location": "~15.0.1",
     "expo-status-bar": "~1.4.0",
+    "expo-updates": "~0.15.6",
     "expo-web-browser": "~12.0.0",
     "firebase": "^9.16.0",
     "leo-profanity": "^1.7.0",

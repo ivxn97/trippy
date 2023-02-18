@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, FlatList, View, Text, TextInput } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text, TextInput, ScrollView } from 'react-native';
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from '../../../config';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -48,6 +48,7 @@ export default function ListOfUsers( {navigation} ) {
 
   return (
     <View>
+      <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
       <TextInput
           style={styles.inputSearch}
           placeholder='search'
@@ -73,6 +74,7 @@ export default function ListOfUsers( {navigation} ) {
           </TouchableHighlight>
         )}
       />
+      </ScrollView>
     </View>
   );
 }

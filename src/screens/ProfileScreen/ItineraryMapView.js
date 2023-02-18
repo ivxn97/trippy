@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { View, ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Location from 'expo-location';
@@ -89,6 +89,7 @@ export default function ItineraryMapView({route, navigation}) {
           <MapView style={styles.map} 
           ref={mapRef}
           showsUserLocation={true}
+          provider= {PROVIDER_GOOGLE}
           initialRegion={{latitude: currLocation.coords.latitude, longitude: currLocation.coords.longitude, 
             latitudeDelta: 0.0421, longitudeDelta: 0.0421,}}
           >

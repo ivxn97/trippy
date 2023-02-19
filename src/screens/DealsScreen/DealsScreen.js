@@ -55,7 +55,7 @@ Download the App here: URL`})
             <Text style={styles.Heading}>{JSON.stringify(name).replace(/"/g,"")}</Text>
             <Text style={styles.Heading}>{JSON.stringify(discount).replace(/"/g,"")}% off</Text>
             <Text style={[styles.Heading, {fontSize:21}]}>Applicable for: {JSON.stringify(businessName).replace(/"/g,"")}</Text>
-            <Text style={[styles.Heading, {fontSize:21}]}>Expires {Moment(expiry.toDate()).fromNow()}</Text>
+            <Text style={[styles.Heading, {fontSize:21}]}>Expires {Moment(expiry.toDate()).fromNow()}, {Moment(expiry.toDate()).format('DD MM YYYY')}</Text>
             <View style={{ flexDirection:"row" }}>
                 <TouchableOpacity style={styles.buttonSmall} onPress={() => onShare()}>
                         <Text style={styles.buttonSmallText}>Share</Text>

@@ -7,6 +7,7 @@
       "android",
       "web"
     ],
+    "owner": "TripAID",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -31,11 +32,11 @@
     },
     "description": "TripAID Project",
     "githubUrl": "https://github.com/ivxn97/trippy",
-    "extra": {
+    /*"extra": {
       "eas": {
         "projectId": "38b8edd6-f924-4fc3-9934-d8c37984ec49"
       }
-    },
+    },*/
     "runtimeVersion": {
       "policy": "sdkVersion"
     }

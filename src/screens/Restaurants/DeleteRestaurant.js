@@ -26,6 +26,12 @@ export default function DeleteRestaurant({ navigation }) {
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+  const [checkboxFilter, setCheckboxFilter] = useState([]);
+  const [typesOfCuisineFilter, setTypesOfCuisineFilter] = useState();
+  const [typesOfPriceFilter, setTypesOfPriceFilter] = useState();
+
   const getEmail = async () => {
     try {
         const email = await AsyncStorage.getItem('email');
@@ -50,6 +56,27 @@ export default function DeleteRestaurant({ navigation }) {
             key: doc.id
         })
     })
+
+    const allTypeOfCuisine = items.map(item => ({
+      name: item.typeOfCuisine,
+      isChecked: false
+    }))
+
+    const allTypeOfPrice = items.map(item => ({
+      name: item.price,
+      isChecked: false,
+    }))
+
+    const reducedTOC = allTypeOfCuisine.filter((item, index) => {
+      return allTypeOfCuisine.findIndex((otherItem) => otherItem.name === item.name) === index;
+    });
+
+    const reducedPrice = allTypeOfPrice.filter((item, index) => {
+      return allTypeOfPrice.findIndex((otherItem) => otherItem.name === item.name) === index;
+    })
+
+    setTypesOfCuisineFilter(reducedTOC);
+    setTypesOfPriceFilter(reducedPrice);
     setLoading(false);
   }
 
@@ -179,6 +206,85 @@ export default function DeleteRestaurant({ navigation }) {
     }
   }
 
+  const onPressFilter =() => {
+    const allCuisineIsTrue = typesOfCuisineFilter.every(({ isChecked }) => isChecked)
+    const allPriceIsTrue = typesOfPriceFilter.every(({ isChecked }) => isChecked)
+    if (allCuisineIsTrue) {typesOfCuisineFilter.map(item => item.isChecked = false)}
+    if (allPriceIsTrue) {typesOfPriceFilter.map(item => item.isChecked = false)}
+    setIsPressed(!isPressed);
+    setModalVisible(!modalVisible)
+  }
+
+  const toggleButton = (filters) => {
+    typesOfCuisineFilter.map((item) => {
+      if (filters.name === item.name) {
+        item.isChecked = !item.isChecked;
+        setIsPressed(!isPressed);
+      }
+    })
+    typesOfPriceFilter.map((item) => {
+      if (filters.name === item.name) {
+        item.isChecked = !item.isChecked;
+        setIsPressed(!isPressed);
+      }
+    })
+    console.log(isPressed);
+  }
+
+  const onSubmitFilter = () => {
+    setModalVisible(!modalVisible)
+    const allCuisineIsFalse = typesOfCuisineFilter.every(({ isChecked }) => !isChecked)
+    const allPriceIsFalse = typesOfPriceFilter.every(({ isChecked }) => !isChecked)
+    
+    if (allCuisineIsFalse) {
+      typesOfCuisineFilter.map(item => item.isChecked = true);
+    }
+
+    if (allPriceIsFalse) {
+      typesOfPriceFilter.map(item => item.isChecked = true);
+    }
+
+      typesOfCuisineFilter.map ((item) => {
+        const allIsTrue = typesOfCuisineFilter.every(({ isChecked }) => isChecked)
+        if (item.isChecked) {
+          if(!checkboxFilter.includes(item.name)) {
+            checkboxFilter.push(item.name);
+          }
+          //
+        } else if (item.isChecked === false) {
+          if(checkboxFilter.includes(item.name)) {
+            const index = checkboxFilter.indexOf(item.name);
+            checkboxFilter.splice(index, 1);
+          }
+        } 
+      })
+    
+      typesOfPriceFilter.map ((item) => {
+        const allIsTrue = typesOfCuisineFilter.every(({ isChecked }) => isChecked)
+        if (item.isChecked) {
+          if(!checkboxFilter.includes(item.name)) {
+            checkboxFilter.push(item.name);
+          }
+          //
+        } else if (item.isChecked === false) {
+          if(checkboxFilter.includes(item.name)) {
+            const index = checkboxFilter.indexOf(item.name);
+            checkboxFilter.splice(index, 1);
+          }
+        } 
+      })
+    console.log(checkboxFilter);
+    
+
+    if(checkboxFilter?.length > 0) {
+      const newData = items.filter(item => checkboxFilter.includes(item.price) && checkboxFilter.includes(item.typeOfCuisine));
+      setfilteredData(newData);
+    } else {
+      setfilteredData(items);
+    }
+  }
+
+
   return (
     <View>
       <TextInput
@@ -194,7 +300,7 @@ export default function DeleteRestaurant({ navigation }) {
         <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
           <Text style={styles.buttonSmallListText}>Sort</Text>
         </TouchableOpacity> 
-        <TouchableOpacity style={styles.buttonListRight}>
+        <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressFilter()}>
           <Text style={styles.buttonSmallListText}>Filter</Text>
         </TouchableOpacity>
       </View>
@@ -213,6 +319,55 @@ export default function DeleteRestaurant({ navigation }) {
         )}
         keyExtractor={(item) => item.name}
       />
+      {modalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={modal.centeredView}>
+            <View style={modal.modalView}>
+              <Text style={modal.modalText}>Type Of Cuisine</Text>
+              <View style={modal.buttonView}>
+              {typesOfCuisineFilter
+                //.filter((item) => !checked || item.checked)
+                .map((item, index) => (
+                  <View style={styles.checklist} key={index}>
+                      <TouchableHighlight 
+                      onPress={() => toggleButton(item)}
+                      style={item.isChecked? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                  </View>
+              ))}
+              </View>
+
+              <Text style={modal.modalText}>Price</Text>
+              <View style={modal.buttonView}>
+              {typesOfPriceFilter
+                //.filter((item) => !checked || item.checked)
+                .map((item, index) => (
+                  <View style={styles.checklist} key={index}>
+                      <TouchableHighlight 
+                      onPress={() => toggleButton(item)}
+                      style={item.isChecked? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                  </View>
+              ))}
+              </View>
+              <TouchableHighlight 
+                      onPress={() => onSubmitFilter()}
+                      style={modal.button}>
+                        <Text>Submit</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+      )}
       {sortModalVisible && (
         <Modal
           animationType="slide"

@@ -26,6 +26,10 @@ export default function DeletePaidTour({ navigation }) {
     const [sortBy, setSortBy] = useState("");
     const [sortOrder, setSortOrder] = useState("");
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [isPressed, setIsPressed] = useState(false);
+    const [checkboxFilter, setCheckboxFilter] = useState([]);
+    const [typesOfAttraction, setTypesOfAttraction] = useState();
   
 
     const getEmail = async () => {
@@ -52,6 +56,16 @@ export default function DeletePaidTour({ navigation }) {
                 key: doc.id
             })
         })
+
+        const allTypeOfAttraction = items.map(item => ({
+            name: item.tourType,
+            isChecked: false,
+          }))
+      
+          const reducedType = allTypeOfAttraction.filter((item, index) => {
+            return allTypeOfAttraction.findIndex((otherItem) => otherItem.name === item.name) === index;
+          })
+          setTypesOfAttraction(reducedType);
         setLoading(false);
       }
     
@@ -164,6 +178,56 @@ export default function DeletePaidTour({ navigation }) {
     if (loading) {
         return <ActivityIndicator />;
     }
+
+    const onPressFilter =() => {
+        const allTypeIsTrue = typesOfAttraction.every(({ isChecked }) => isChecked)
+        if (allTypeIsTrue) {typesOfAttraction.map(item => item.isChecked = false)}
+        setIsPressed(!isPressed);
+        setModalVisible(!modalVisible)
+      }
+    
+      const toggleButton = (filters) => {
+        typesOfAttraction.map((item) => {
+          if (filters.name === item.name) {
+            item.isChecked = !item.isChecked;
+            setIsPressed(!isPressed);
+          }
+        })
+        console.log(isPressed);
+      }
+    
+      const onSubmitFilter = () => {
+        setModalVisible(!modalVisible)
+        const allTypeIsFalse = typesOfAttraction.every(({ isChecked }) => !isChecked)
+        
+        if (allTypeIsFalse) {
+          typesOfAttraction.map(item => item.isChecked = true);
+        }
+    
+          typesOfAttraction.map ((item) => {
+            const allIsTrue = typesOfAttraction.every(({ isChecked }) => isChecked)
+            if (item.isChecked) {
+              if(!checkboxFilter.includes(item.name)) {
+                checkboxFilter.push(item.name);
+              }
+              //
+            } else if (item.isChecked === false) {
+              if(checkboxFilter.includes(item.name)) {
+                const index = checkboxFilter.indexOf(item.name);
+                checkboxFilter.splice(index, 1);
+              }
+            } 
+          })
+        console.log(checkboxFilter);
+        
+    
+        if(checkboxFilter?.length > 0) {
+          const newData = items.filter(item => checkboxFilter.includes(item.tourType));
+          setfilteredData(newData);
+        } else {
+          setfilteredData(items);
+        }
+      }
     
     return (
         <View>
@@ -180,7 +244,7 @@ export default function DeletePaidTour({ navigation }) {
                 <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
                     <Text style={styles.buttonSmallListText}>Sort</Text>
                 </TouchableOpacity> 
-                <TouchableOpacity style={styles.buttonListRight}>
+                <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressFilter()}>
                     <Text style={styles.buttonSmallListText}>Filter</Text>
                 </TouchableOpacity>
             </View>
@@ -199,6 +263,41 @@ export default function DeletePaidTour({ navigation }) {
                 )}
                 keyExtractor={(item) => item.name}
             />
+            {modalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={modal.centeredView}>
+            <View style={modal.modalView}>
+              <Text style={modal.modalText}>Type Of Tour</Text>
+              <View style={modal.buttonView}>
+              {typesOfAttraction
+                //.filter((item) => !checked || item.checked)
+                .map((item, index) => (
+                  <View style={styles.checklist} key={index}>
+                      <TouchableHighlight 
+                      onPress={() => toggleButton(item)}
+                      style={item.isChecked? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                  </View>
+              ))}
+              </View>
+
+              <TouchableHighlight 
+                      onPress={() => onSubmitFilter()}
+                      style={modal.button}>
+                        <Text>Submit</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+      )}
             {sortModalVisible && (
                 <Modal
                     animationType="slide"

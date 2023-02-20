@@ -19,6 +19,11 @@ export default function EditDealsDeals( { navigation }) {
   const [sortOrderData, setSortOrderData] = useState();
   const [sortBy, setSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState("");
+  const [isPressed, setIsPressed] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [typesOfActivity, setTypesOfActivity] = useState()
+  const [checkboxFilter, setCheckboxFilter] = useState([]);
+
 
   const getEmail = async () => {
     try {
@@ -44,6 +49,17 @@ export default function EditDealsDeals( { navigation }) {
             key: doc.id
         })
     })
+
+    const allTypeOfActivity = deals.map(item => ({
+      name: item.type,
+      isChecked: false
+    }))
+
+    const reducedTOA = allTypeOfActivity.filter((item, index) => {
+      return allTypeOfActivity.findIndex((otherItem) => otherItem.name === item.name) === index;
+    })
+
+    setTypesOfActivity(reducedTOA)
     setLoading(false);
   }
 
@@ -150,6 +166,53 @@ export default function EditDealsDeals( { navigation }) {
     }
   }
 
+  const onPressFilter =() => {
+    const allActivityIsTrue = typesOfActivity.every(({ isChecked }) => isChecked)
+    if (allActivityIsTrue) {typesOfActivity.map(item => item.isChecked = false)}
+    setIsPressed(!isPressed);
+    setModalVisible(!modalVisible)
+  }
+
+  const toggleButton = (filters) => {
+    typesOfActivity.map((item) => {
+      if (filters.name === item.name) {
+        item.isChecked = !item.isChecked;
+        setIsPressed(!isPressed);
+      }
+    })
+  }
+
+  const onSubmitFilter = () => {
+    setModalVisible(!modalVisible)
+    const allCuisineIsFalse = typesOfActivity.every(({ isChecked }) => !isChecked)
+    
+    if (allCuisineIsFalse) {
+      typesOfActivity.map(item => item.isChecked = true);
+    }
+
+      typesOfActivity.map ((item) => {
+        const allIsTrue = typesOfActivity.every(({ isChecked }) => isChecked)
+        if (item.isChecked) {
+          if(!checkboxFilter.includes(item.name)) {
+            checkboxFilter.push(item.name);
+          }
+          //
+        } else if (item.isChecked === false) {
+          if(checkboxFilter.includes(item.name)) {
+            const index = checkboxFilter.indexOf(item.name);
+            checkboxFilter.splice(index, 1);
+          }
+        } 
+      })
+    
+    if(checkboxFilter?.length > 0) {
+      const newData = deals.filter(item => checkboxFilter.includes(item.type));
+      setfilteredData(newData);
+    } else {
+      setfilteredData(deals);
+    }
+  }
+
   return (
     <View>
     <TextInput
@@ -165,7 +228,7 @@ export default function EditDealsDeals( { navigation }) {
         <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressSort()}>
           <Text style={styles.buttonSmallListText}>Sort</Text>
         </TouchableOpacity> 
-        <TouchableOpacity style={styles.buttonListRight}>
+        <TouchableOpacity style={styles.buttonListRight} onPress={() => onPressFilter()}>
           <Text style={styles.buttonSmallListText}>Filter</Text>
         </TouchableOpacity>
     </View>
@@ -185,6 +248,40 @@ export default function EditDealsDeals( { navigation }) {
         </TouchableHighlight>
       )}
     />
+    {modalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={modal.centeredView}>
+            <View style={modal.modalView}>
+              <Text style={modal.modalText}>Activity Type</Text>
+              <View style={modal.buttonView}>
+              {typesOfActivity
+                //.filter((item) => !checked || item.checked)
+                .map((item, index) => (
+                  <View style={styles.checklist} key={index}>
+                      <TouchableHighlight 
+                      onPress={() => toggleButton(item)}
+                      style={item.isChecked? modal.buttonPressed : modal.button}>
+                        <Text>{item.name}</Text>
+                      </TouchableHighlight>
+                  </View>
+              ))}
+              </View>
+              <TouchableHighlight 
+                      onPress={() => onSubmitFilter()}
+                      style={modal.button}>
+                        <Text>Submit</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
+      )}
       {sortModalVisible && (
         <Modal
           animationType="slide"

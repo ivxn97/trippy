@@ -46,7 +46,7 @@ export default function HotelList({ navigation }) {
 
         const roomType = hotels.map(item => item.roomTypes);
         const allRoomType = roomType[0].map(item => ({
-          name: item.name,
+          name: item.type,
           isChecked: false,
         }));
         const reducedRoomType = allRoomType.filter((item, index) => {

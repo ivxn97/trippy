@@ -58,8 +58,6 @@ export default function AttractionList( {navigation }) {
     setSortByData(sortByResult);
     setSortOrderData(sortOrderResult);
 
-    console.log(reducedType);
-
     setTypesOfAttraction(reducedType);
     setAttractions(attractions);
     setLoading(false);

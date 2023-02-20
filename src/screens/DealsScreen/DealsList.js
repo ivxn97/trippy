@@ -142,7 +142,7 @@ export default function Deals( { navigation }) {
     }
    }
 
-   const onPressFilter =() => {
+  const onPressFilter =() => {
     const allActivityIsTrue = typesOfActivity.every(({ isChecked }) => isChecked)
     if (allActivityIsTrue) {typesOfActivity.map(item => item.isChecked = false)}
     setIsPressed(!isPressed);

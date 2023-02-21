@@ -32,8 +32,6 @@ export default function DeleteHotel({ navigation }) {
     const [checkboxFilter, setCheckboxFilter] = useState([]);
 
     const [hotelClassFilter, setHotelClassFilter] = useState();
-    const [roomTypesFilter, setRoomTypesFilter] = useState([]);
-    const [roomTypesCheckbox, setRoomTypesCheckbox] = useState([]);
     const [roomFeaturesFilter, setRoomFeaturesFilter] = useState([]);
     const [roomFeaturesCheckbox, setRoomFeaturesCheckbox] = useState([]);
     const [amenitiesFilter, setAmenitiesFilter] = useState([]);
@@ -64,15 +62,6 @@ export default function DeleteHotel({ navigation }) {
             })
         })
 
-        const roomType = items.map(item => item.roomTypes);
-        const allRoomType = roomType[0].map(item => ({
-          name: item.type,
-          isChecked: false,
-        }));
-        const reducedRoomType = allRoomType.filter((item, index) => {
-          return allRoomType.findIndex((otherItem) => otherItem.name === item.name) === index;
-        })
-
         const roomFeature = items.map(item => item.roomFeatures);
         const allRoomFeature = roomFeature[0].map(item => ({
           name: item.name,
@@ -101,7 +90,6 @@ export default function DeleteHotel({ navigation }) {
 
         setAmenitiesFilter(reducedHotelAmenities);
         setRoomFeaturesFilter(reducedRoomFeature);
-        setRoomTypesFilter(reducedRoomType);
         setHotelClassFilter(reducedClass);
         setLoading(false);
     }
@@ -237,9 +225,6 @@ export default function DeleteHotel({ navigation }) {
         const allClassIsTrue = hotelClassFilter.every(({ isChecked }) => isChecked)
         if (allClassIsTrue) {hotelClassFilter.map(item => item.isChecked = false)}
 
-        const allTypeOfRoomIsTrue = roomTypesFilter.every(({ isChecked }) => isChecked)
-        if (allTypeOfRoomIsTrue) {roomTypesFilter.map(item => item.isChecked = false)}
-
         const allRoomFeatureIsTrue = roomFeaturesFilter.every(({ isChecked }) => isChecked)
         if (allRoomFeatureIsTrue) {roomFeaturesFilter.map(item => item.isChecked = false)}
 
@@ -252,12 +237,6 @@ export default function DeleteHotel({ navigation }) {
 
     const toggleButton = (filters) => {
         hotelClassFilter.map((item) => {
-          if (filters.name === item.name) {
-            item.isChecked = !item.isChecked;
-            setIsPressed(!isPressed);
-          }
-        })
-        roomTypesFilter.map((item) => {
           if (filters.name === item.name) {
             item.isChecked = !item.isChecked;
             setIsPressed(!isPressed);
@@ -299,20 +278,6 @@ export default function DeleteHotel({ navigation }) {
             } 
           })
 
-          roomTypesFilter.map ((item) => {
-            if (item.isChecked) {
-              if(!roomTypesCheckbox.includes(item.name)) {
-                roomTypesCheckbox.push(item.name);
-              }
-              //
-            } else if (item.isChecked === false) {
-              if(roomTypesCheckbox.includes(item.name)) {
-                const index = roomTypesCheckbox.indexOf(item.name);
-                roomTypesCheckbox.splice(index, 1);
-              }
-            } 
-          })
-
           roomFeaturesFilter.map ((item) => {
             if (item.isChecked) {
               if(!roomFeaturesCheckbox.includes(item.name)) {
@@ -343,25 +308,6 @@ export default function DeleteHotel({ navigation }) {
 
 
           items.map(item => {
-            const roomT = item.roomTypes;
-            const roomInHotel = [];
-            roomT.map (filterItem => {
-              if(filterItem.isChecked){
-                roomInHotel.push(filterItem.name);
-              }
-            })
-            if (roomTypesCheckbox.every(a => roomInHotel.includes(a))) {
-              if (!checkboxFilter.includes(roomT)) {
-                checkboxFilter.push(roomT)
-              }
-            } else if (!roomTypesCheckbox.every(a => roomInHotel.includes(a))) {
-              if (checkboxFilter.includes(roomT)) {
-                const index = checkboxFilter.indexOf(roomT);
-                checkboxFilter.splice(index, 1);
-              }
-            }
-
-
             const roomF = item.roomFeatures;
             const roomFeaturesInHotel = [];
             roomF.map (filterItem => {
@@ -402,8 +348,7 @@ export default function DeleteHotel({ navigation }) {
         
     
         if(checkboxFilter?.length > 0) {
-        const newData = items.filter(item => checkboxFilter.includes(item.hotelClass) 
-        && checkboxFilter.includes(item.roomTypes) 
+        const newData = items.filter(item => checkboxFilter.includes(item.hotelClass)
         && checkboxFilter.includes(item.roomFeatures)
         && checkboxFilter.includes(item.amenities));
         
@@ -459,21 +404,6 @@ export default function DeleteHotel({ navigation }) {
             }}>
             <ScrollView scrollIndicatorInsets={{ top: 1, bottom: 1 }}>
               <View style={modal.modalView}>
-                <Text style={modal.modalText}>Type Of Room</Text>
-                <View style={modal.buttonView}>
-                  {roomTypesFilter
-                    //.filter((item) => !checked || item.checked)
-                    .map((item, index) => (
-                      <View style={styles.checklist} key={index}>
-                        <TouchableHighlight
-                          onPress={() => toggleButton(item)}
-                          style={item.isChecked ? modal.buttonPressed : modal.button}>
-                          <Text>{item.name}</Text>
-                        </TouchableHighlight>
-                      </View>
-                    ))}
-                </View>
-
                 <Text style={modal.modalText}>Room Features</Text>
                 <View style={modal.buttonView}>
                   {roomFeaturesFilter

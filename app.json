@@ -24,7 +24,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.FYP.Tripaid"
     },
     "android": {
       "softwareKeyboardLayoutMode": "resize",
@@ -32,13 +33,14 @@
     },
     "description": "TripAID Project",
     "githubUrl": "https://github.com/ivxn97/trippy",
-    /*"extra": {
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    /*
+    "extra": {
       "eas": {
         "projectId": "38b8edd6-f924-4fc3-9934-d8c37984ec49"
       }
-    },*/
-    "runtimeVersion": {
-      "policy": "sdkVersion"
-    }
+    }*/
   }
 }

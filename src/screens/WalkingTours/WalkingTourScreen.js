@@ -5,7 +5,7 @@ import styles from './styles';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import Carousel from 'react-native-reanimated-carousel';
 import * as WebBrowser from 'expo-web-browser';
-import {bookmark, itinerary} from '../commonFunctions';
+import {bookmark} from '../commonFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import Moment from 'moment';
@@ -61,9 +61,6 @@ export default function WalkingTourScreen({ route, navigation }) {
         bookmark(email, name)
     }
   
-    const onItinerary = () => {
-        itinerary(email, name)
-    }
 
     return (
         <View style={styles.detailsContainer}>
@@ -92,10 +89,6 @@ export default function WalkingTourScreen({ route, navigation }) {
                 <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]}
                 disabled ={registeredButton} onPress={() => onSave()}>
                         <Text style={styles.buttonSmallText}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.buttonSmall, {opacity: registeredButton ? 0.3 : 1}]} 
-                disabled ={registeredButton} onPress={() => onItinerary()}>
-                        <Text style={styles.buttonSmallText}>Add To Itinerary</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonSmall}  onPress={() => onShare()}>
                         <Text style={styles.buttonSmallText}>Share</Text>

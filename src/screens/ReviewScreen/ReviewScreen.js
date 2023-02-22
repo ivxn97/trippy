@@ -65,7 +65,7 @@ export default function ReviewScreen({route, navigation}) {
             renderItem={({ item }) => (
                 <TouchableHighlight 
                 underlayColor="#C8c9c9"
-                onPress={() => navigation.navigate('Review Detail Screen', {name: name, review: review, index: review.indexOf(item)})}>
+                onPress={() => navigation.navigate('Review Detail Screen', {name: name, review: review, index: review.indexOf(item), activityType: activityType})}>
                 <View style={styles.list}>
                     <Text>{item.userName}</Text>
                     <Text>{item.rating}</Text>

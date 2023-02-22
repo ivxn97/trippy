@@ -152,7 +152,7 @@ Download the App here: URL`})
     }
 
     const onReview = () => {
-        navigation.navigate('Review Screen', {name, activityType});
+        navigation.navigate('Review Screen', {name: name, activityType: activityType});
     }
     // Opens address in browser/ Google maps app
     const openAddress = async () => {

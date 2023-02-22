@@ -117,8 +117,6 @@ export {default as ConfirmBooking} from './HomeScreen/ConfirmBooking'
 export {default as ReviewScreen} from './ReviewScreen/ReviewScreen'
 export {default as AddReviewScreen} from './ReviewScreen/AddReviewScreen'
 export {default as ReviewDetailScreen} from './ReviewScreen/ReviewDetailScreen'
-export {default as EditReview} from './ReviewScreen/EditReview'
-
 
 // Forum Screens
 export {default as ForumScreen} from './ForumScreen/ForumScreen'

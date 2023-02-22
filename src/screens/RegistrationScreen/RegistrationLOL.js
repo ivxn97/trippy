@@ -251,6 +251,7 @@ export default function RegistrationLOL({navigation}) {
                     value={email}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
+                    keyboardType='email-address'
                 />
 
                 <Text style={styles.text}>Upload Profile Picture:</Text>

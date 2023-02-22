@@ -155,6 +155,7 @@ export default function RegistrationBO({navigation}) {
                     value={email}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
+                    keyboardType='email-address'
                 />
 
                 <Text style={styles.text}>Username:</Text>

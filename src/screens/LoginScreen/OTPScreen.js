@@ -128,10 +128,10 @@ export default function OTPScreen({route, navigation}) {
                 navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
             }
             else if (role == "Registered User") {
-                navigation.navigate('Profile Page');
+                navigation.reset({index: 0, routes: [{name: 'Profile Page'}]})
             }
             else if (role == "LOL") {
-                navigation.navigate('Profile Page');
+                navigation.reset({index: 0, routes: [{name: 'Profile Page'}]})
             }
             else {
                 alert("Account does not exist");

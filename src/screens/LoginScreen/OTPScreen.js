@@ -117,20 +117,30 @@ export default function OTPScreen({route, navigation}) {
     const onSubmitPress = () => {
         if (OTP == result) {
             changeStatus();
-            storeEmail(email);
-            storeRole(role);
-            storeBusinesses(businesses);
-            storeUserName(username);
             if (role == "Admin") {
+                storeEmail(email);
+                storeRole(role);
+                storeBusinesses(businesses);
+                storeUserName(username);
                 navigation.reset({index: 0, routes: [{name: 'Admin Stack'}]})
             }
             else if (role == "Business Owner") {
+                storeEmail(email);
+                storeRole(role);
+                storeBusinesses(businesses);
+                storeUserName(username);
                 navigation.reset({index: 0, routes: [{name: 'BO Stack'}]})
             }
             else if (role == "Registered User") {
+                storeEmail(email);
+                storeRole(role);
+                storeUserName(username);
                 navigation.reset({index: 0, routes: [{name: 'Profile Page'}]})
             }
             else if (role == "LOL") {
+                storeEmail(email);
+                storeRole(role);
+                storeUserName(username);
                 navigation.reset({index: 0, routes: [{name: 'Profile Page'}]})
             }
             else {

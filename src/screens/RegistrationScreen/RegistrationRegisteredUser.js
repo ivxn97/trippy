@@ -290,6 +290,7 @@ export default function RegistrationRegisteredUser({navigation}) {
                     value={email}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
+                    keyboardType='email-address'
                 />
                 <Text style={styles.text}>Upload Profile Picture:</Text>
                 <TouchableOpacity style={[styles.button, {opacity: email ? 1: 0.2}]} onPress={pickImage} 
@@ -349,6 +350,8 @@ export default function RegistrationRegisteredUser({navigation}) {
                     value={year}
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
+                    keyboardType='numeric'
+                    maxLength={4}
                 />
                 <Text style={styles.text}>Password:</Text>
                 <TextInput

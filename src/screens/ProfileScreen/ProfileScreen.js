@@ -60,6 +60,7 @@ export default function ProfileScreen ( {navigation} ) {
 
     // Get User's information (Bio, username, First Name, Last Name, call getThreads)
     const getUser = async () => {
+        console.log("Email here", email)
         const q = query(collection(db, "users"), where("email", "==", email));
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach(documentSnapshot => {
@@ -71,12 +72,19 @@ export default function ProfileScreen ( {navigation} ) {
         });
         setItems(items);
         setUser(items);
+        console.log("ITEMS:", items)
+        if (items.length === 0) {
+            getUser();
+        }
+        else {
         setUsername(items[0].username);
         setBio(items[0].bio);
         setFirstName(items[0].firstName);
         setLastName(items[0].lastName);
         setInterests(items[0].interests)
         getThreads(items[0].username)
+        setLoading(false)
+        }
     }
 
     //Checks for Expiry of Bookings and Deals upon app launch. If current date is after the date in bookings/ deals, 
@@ -135,7 +143,6 @@ export default function ProfileScreen ( {navigation} ) {
                 const fetchedString = fetchedImages[0]
                 console.log(fetchedImages);
                 setImages(fetchedString);
-                setLoading(false)
               });
         }
         

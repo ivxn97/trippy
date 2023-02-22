@@ -93,8 +93,20 @@ export default function AdminViewUser ({route, navigation}) {
         // Deletes user Account
         const onDeletePress = ()  => {
             deleteDoc(doc(db, "users", email));
+            deleteFolder(`/users/${email}/profile/`)
             alert(`Account deleted`)
             navigation.navigate('Admin Page')
+        }
+
+        // Delete Images from Firebase Storage 
+        function deleteFolder(path) {
+            const listRef = ref(storage, path)
+            listAll(listRef)
+                .then(dir => {
+                    dir.items.forEach(fileRef => deleteObject(ref(storage, fileRef)));
+                    console.log("Files deleted successfully from Firebase Storage");
+                })
+                .catch(error => console.log(error));
         }
     
         return (

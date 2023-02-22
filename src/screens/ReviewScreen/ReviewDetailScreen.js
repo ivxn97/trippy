@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, FlatList, View, Text, TouchableOpacity, Button, Div } from 'react-native';
-import { doc, setDoc, arrayUnion, collection, updateDoc } from "firebase/firestore";
+import { doc, setDoc, arrayUnion, collection, updateDoc, arrayRemove } from "firebase/firestore";
 import { db } from '../../../config';
 
 export default function ReviewDetailScreen({route, navigation}) {
-    const {name, index, review} = route.params;
+    const {name, index, review, activityType} = route.params;
     const [currentUserEmail, setCurrentUserEamil] = useState('');
     const [userName, setUserName] = useState ('');
     const [rating, setRating] = useState ('');
     const [comment, setComment] = useState ('');
+    const [email, setEmail] = useState ('');
     const [currReview, setCurrReview] = useState (review[index]);
 
     const getUserInfo = async () => {
@@ -31,22 +32,21 @@ export default function ReviewDetailScreen({route, navigation}) {
 
     const getReviewDetails = () => {
         setUserName(currReview.userName);
+        setEmail(currReview.email)
         setRating(currReview.rating);
         setComment(currReview.comment);
     }
 
     const onDelete = async () => {
-        review.splice(index, 1);
-        console.log(review);
         try {
-            await updateDoc(doc(db, "restaurants", name), {
-                review: review
+            await updateDoc(doc(db, activityType, name), {
+                review: arrayRemove({email: email, comment: comment, rating: rating, userName: userName})
             });
             //console.log("Document written with ID: ", docRef.id);
-            navigation.navigate('Review Screen', {name});
+            navigation.replace('Review Screen', {name: name, activityType: activityType});
         }
         catch (e) {
-            console.log("Error adding document: ", e);
+            console.log("Error removing document: ", e);
         }
     }
 
@@ -74,9 +74,6 @@ export default function ReviewDetailScreen({route, navigation}) {
                     </Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.buttonSmall} onPress={() => navigation.navigate('Edit Review', {name: name, review: review, index: index, rating: rating, comment: comment})}>
-                                <Text style={styles.buttonSmallText}>Edit</Text>
-                    </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonSmall} onPress={() => onDelete()}>
                                 <Text style={styles.buttonSmallText}>Delete</Text>
                     </TouchableOpacity>

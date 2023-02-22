@@ -34,9 +34,8 @@ export default function GuideScreen({ route, navigation }) {
             console.log(error)
         }
     }
-
     const onReview = () => {
-        navigation.navigate('Review Screen', {name, activityType});
+        navigation.navigate('Review Screen', {name: name, activityType: activityType});
     }
 
     useFocusEffect(React.useCallback(async ()=> {

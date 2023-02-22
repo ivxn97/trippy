@@ -17,7 +17,7 @@ import {
   EditHotel, DealsEditList, EditDeal, Bookmarks, Itinerary, Details, ManageForumSections, AddForumSection,
   EditForumSection, ForumSectionsEditList, Section, ReviewScreen, AddReviewScreen, Thread, 
   CreateReply, EditReply, ReviewDetailScreen, ActiveThread, PageContent, Booking, PageContentChoice, 
-  ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, EditReview, ProfilePage, OTPScreen,
+  ActiveThreadEditList, ActiveThreadEdit, ActiveThreadDelete, DeleteBookmark, ProfilePage, OTPScreen,
   ResetPassword, ReviewPendingAccounts, ReviewAccount, GuideSection, Payment, ConfirmBooking, UserBookings, 
   BookingDetails, UserPreviousBookings, PreviousBookingDetails, UserDealsList, LOLWalkingToursList, AddWalkingTour, 
   GuideWTLanding, WalkingToursList, WalkingTourSection, WalkingTourScreen, WTMapView, SearchBookmarks, EditGuide,
@@ -130,7 +130,6 @@ function GuideStackScreen() {
       <Stack.Screen name="Review Screen" component={ReviewScreen} />
       <Stack.Screen name="Add Review Screen" component={AddReviewScreen} />
       <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen} />
-      <Stack.Screen name="Edit Review" component={EditReview} />
     </GuideStack.Navigator>
   )
 }
@@ -149,7 +148,6 @@ function HomeStackScreen() {
       <Stack.Screen name="Review Screen" component={ReviewScreen} />
       <Stack.Screen name="Add Review Screen" component={AddReviewScreen} />
       <Stack.Screen name="Review Detail Screen" component={ReviewDetailScreen} />
-      <Stack.Screen name="Edit Review" component={EditReview} />
       <Stack.Screen name="Booking" component={Booking}/>
       <Stack.Screen name="Payment" component={Payment}/>
       <Stack.Screen name="Confirm Booking" component={ConfirmBooking}/>

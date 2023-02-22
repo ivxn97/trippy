@@ -32,6 +32,7 @@ export default function AddReviewScreen ( { route, navigation }) {
             const username = await AsyncStorage.getItem('username');
             if (username !== null) {
                 console.log(username);
+                setUserName(username)
             }
             else {
                 console.log("No Name Selected at Login")
@@ -39,6 +40,7 @@ export default function AddReviewScreen ( { route, navigation }) {
             const email = await AsyncStorage.getItem('email');
             if (email !== null) {
                 console.log(email);
+                setEmail(email)
             }
             else {
                 console.log("No Name Selected at Login")
@@ -60,7 +62,7 @@ export default function AddReviewScreen ( { route, navigation }) {
                         email: email}])
             }, {merge:true});
             //console.log("Document written with ID: ", docRef.id);
-            navigation.replace('Review Screen', {name});
+            navigation.replace('Review Screen', {name: name, activityType: activityType});
         }
         catch (e) {
             console.log("Error adding document: ", e);
